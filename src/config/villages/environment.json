@@ -1,0 +1,111 @@
+{
+  "villageId": "environment",
+  "villageName": "Village of Earth Stewards",
+  "description": "Environmental professionals protecting our planet",
+  "color": "#22c55e",
+  "icon": "Leaf",
+  "roles": [
+    {
+      "roleId": "conservationist",
+      "roleName": "Conservationist",
+      "description": "Protect wildlife and natural ecosystems",
+      "icon": "Trees",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "tools": [
+        {
+          "id": "species_tracker",
+          "name": "Species Tracker",
+          "icon": "Squirrel",
+          "description": "Track wildlife populations",
+          "component": "SpeciesTracker"
+        },
+        {
+          "id": "patrol_log",
+          "name": "Patrol Log",
+          "icon": "FootprintsIcon",
+          "description": "Log conservation patrols",
+          "component": "PatrolLog"
+        },
+        {
+          "id": "incident_report",
+          "name": "Incident Report",
+          "icon": "AlertTriangle",
+          "description": "Report environmental incidents",
+          "component": "IncidentReport"
+        }
+      ]
+    },
+    {
+      "roleId": "waste_mgmt",
+      "roleName": "Waste Management Worker",
+      "description": "Manage waste collection and recycling",
+      "icon": "Recycle",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "tools": [
+        {
+          "id": "collection_routes",
+          "name": "Collection Routes",
+          "icon": "Route",
+          "description": "View waste collection routes",
+          "component": "CollectionRoutes"
+        },
+        {
+          "id": "recycling_tracker",
+          "name": "Recycling Tracker",
+          "icon": "Recycle",
+          "description": "Track recycling metrics",
+          "component": "RecyclingTracker"
+        },
+        {
+          "id": "disposal_log",
+          "name": "Disposal Log",
+          "icon": "Trash2",
+          "description": "Log waste disposal",
+          "component": "DisposalLog"
+        }
+      ]
+    },
+    {
+      "roleId": "renewable_energy",
+      "roleName": "Renewable Energy Technician",
+      "description": "Install and maintain renewable energy systems",
+      "icon": "Sun",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "tools": [
+        {
+          "id": "system_monitor",
+          "name": "System Monitor",
+          "icon": "Activity",
+          "description": "Monitor energy systems",
+          "component": "SystemMonitor"
+        },
+        {
+          "id": "maintenance_log",
+          "name": "Maintenance Log",
+          "icon": "Wrench",
+          "description": "Log system maintenance",
+          "component": "MaintenanceLog"
+        },
+        {
+          "id": "efficiency_calc",
+          "name": "Efficiency Calculator",
+          "icon": "Zap",
+          "description": "Calculate energy efficiency",
+          "component": "EfficiencyCalc"
+        }
+      ]
+    }
+  ]
+}

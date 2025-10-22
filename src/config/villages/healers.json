@@ -1,0 +1,111 @@
+{
+  "villageId": "healers",
+  "villageName": "Village of Healers",
+  "description": "Healthcare professionals dedicated to healing and wellness",
+  "color": "#10b981",
+  "icon": "Heart",
+  "roles": [
+    {
+      "roleId": "physician_general",
+      "roleName": "Physician (General)",
+      "description": "General medical practitioner providing primary healthcare",
+      "icon": "Stethoscope",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "tools": [
+        {
+          "id": "patient_queue",
+          "name": "Patient Queue",
+          "icon": "Users",
+          "description": "Manage patient appointments and queue",
+          "component": "PatientQueue"
+        },
+        {
+          "id": "telemedicine",
+          "name": "Telemedicine",
+          "icon": "Video",
+          "description": "Virtual consultations with patients",
+          "component": "Telemedicine"
+        },
+        {
+          "id": "prescription",
+          "name": "Prescriptions",
+          "icon": "Pill",
+          "description": "Write and manage prescriptions",
+          "component": "Prescription"
+        }
+      ]
+    },
+    {
+      "roleId": "nurse",
+      "roleName": "Registered Nurse",
+      "description": "Provide nursing care and patient support",
+      "icon": "HeartPulse",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "tools": [
+        {
+          "id": "patient_vitals",
+          "name": "Patient Vitals",
+          "icon": "Activity",
+          "description": "Record and monitor vital signs",
+          "component": "VitalsTracker"
+        },
+        {
+          "id": "medication_admin",
+          "name": "Medication Admin",
+          "icon": "Syringe",
+          "description": "Administer medications to patients",
+          "component": "MedicationAdmin"
+        },
+        {
+          "id": "shift_handover",
+          "name": "Shift Handover",
+          "icon": "RefreshCw",
+          "description": "Handover notes between shifts",
+          "component": "ShiftHandover"
+        }
+      ]
+    },
+    {
+      "roleId": "pharmacist",
+      "roleName": "Pharmacist",
+      "description": "Dispense medications and provide pharmaceutical care",
+      "icon": "Pill",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "tools": [
+        {
+          "id": "prescription_fill",
+          "name": "Fill Prescriptions",
+          "icon": "ClipboardList",
+          "description": "Dispense medications from prescriptions",
+          "component": "PrescriptionFill"
+        },
+        {
+          "id": "inventory",
+          "name": "Drug Inventory",
+          "icon": "Package",
+          "description": "Manage medication stock levels",
+          "component": "DrugInventory"
+        },
+        {
+          "id": "drug_interaction",
+          "name": "Interaction Checker",
+          "icon": "AlertTriangle",
+          "description": "Check for drug interactions",
+          "component": "InteractionChecker"
+        }
+      ]
+    }
+  ]
+}

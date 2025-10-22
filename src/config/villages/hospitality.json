@@ -1,0 +1,111 @@
+{
+  "villageId": "hospitality",
+  "villageName": "Village of Hosts",
+  "description": "Hospitality professionals serving with excellence",
+  "color": "#14b8a6",
+  "icon": "Utensils",
+  "roles": [
+    {
+      "roleId": "chef",
+      "roleName": "Chef/Cook",
+      "description": "Prepare delicious meals in restaurants",
+      "icon": "ChefHat",
+      "theme": {
+        "primary": "#14b8a6",
+        "secondary": "#0d9488",
+        "accent": "#2dd4bf"
+      },
+      "tools": [
+        {
+          "id": "recipe_book",
+          "name": "Recipe Book",
+          "icon": "BookOpen",
+          "description": "Manage your recipes",
+          "component": "RecipeBook"
+        },
+        {
+          "id": "inventory_kitchen",
+          "name": "Kitchen Inventory",
+          "icon": "Apple",
+          "description": "Track ingredients and stock",
+          "component": "KitchenInventory"
+        },
+        {
+          "id": "menu_planner",
+          "name": "Menu Planner",
+          "icon": "ClipboardList",
+          "description": "Plan daily/weekly menus",
+          "component": "MenuPlanner"
+        }
+      ]
+    },
+    {
+      "roleId": "waiter",
+      "roleName": "Waiter/Server",
+      "description": "Serve customers with excellent service",
+      "icon": "UserCheck",
+      "theme": {
+        "primary": "#14b8a6",
+        "secondary": "#0d9488",
+        "accent": "#2dd4bf"
+      },
+      "tools": [
+        {
+          "id": "order_system",
+          "name": "Order System",
+          "icon": "ClipboardCheck",
+          "description": "Take and manage orders",
+          "component": "OrderSystem"
+        },
+        {
+          "id": "table_mgmt",
+          "name": "Table Management",
+          "icon": "LayoutGrid",
+          "description": "Manage table assignments",
+          "component": "TableMgmt"
+        },
+        {
+          "id": "tip_tracker",
+          "name": "Tip Tracker",
+          "icon": "DollarSign",
+          "description": "Track daily tips",
+          "component": "TipTracker"
+        }
+      ]
+    },
+    {
+      "roleId": "hotel_staff",
+      "roleName": "Hotel Staff",
+      "description": "Manage hotel operations and guest services",
+      "icon": "Hotel",
+      "theme": {
+        "primary": "#14b8a6",
+        "secondary": "#0d9488",
+        "accent": "#2dd4bf"
+      },
+      "tools": [
+        {
+          "id": "booking_system",
+          "name": "Booking System",
+          "icon": "CalendarCheck",
+          "description": "Manage room bookings",
+          "component": "BookingSystem"
+        },
+        {
+          "id": "room_status",
+          "name": "Room Status",
+          "icon": "Bed",
+          "description": "Track room availability",
+          "component": "RoomStatus"
+        },
+        {
+          "id": "guest_services",
+          "name": "Guest Services",
+          "icon": "Bell",
+          "description": "Handle guest requests",
+          "component": "GuestServices"
+        }
+      ]
+    }
+  ]
+}

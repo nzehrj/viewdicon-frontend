@@ -1,0 +1,111 @@
+{
+  "villageId": "transport",
+  "villageName": "Village of Movers",
+  "description": "Transportation and logistics professionals",
+  "color": "#eab308",
+  "icon": "Truck",
+  "roles": [
+    {
+      "roleId": "taxi_driver",
+      "roleName": "Taxi/Ride-share Driver",
+      "description": "Transport passengers safely",
+      "icon": "Car",
+      "theme": {
+        "primary": "#eab308",
+        "secondary": "#ca8a04",
+        "accent": "#fde047"
+      },
+      "tools": [
+        {
+          "id": "ride_log",
+          "name": "Ride Log",
+          "icon": "FileText",
+          "description": "Log daily rides and earnings",
+          "component": "RideLog"
+        },
+        {
+          "id": "earnings_tracker",
+          "name": "Earnings Tracker",
+          "icon": "DollarSign",
+          "description": "Track daily/weekly earnings",
+          "component": "EarningsTracker"
+        },
+        {
+          "id": "vehicle_maintenance",
+          "name": "Vehicle Maintenance",
+          "icon": "Wrench",
+          "description": "Maintenance schedule and logs",
+          "component": "VehicleMaintenance"
+        }
+      ]
+    },
+    {
+      "roleId": "bus_driver",
+      "roleName": "Bus Driver",
+      "description": "Drive buses on designated routes",
+      "icon": "Bus",
+      "theme": {
+        "primary": "#eab308",
+        "secondary": "#ca8a04",
+        "accent": "#fde047"
+      },
+      "tools": [
+        {
+          "id": "route_schedule",
+          "name": "Route Schedule",
+          "icon": "MapPin",
+          "description": "View route timetable",
+          "component": "RouteSchedule"
+        },
+        {
+          "id": "passenger_count",
+          "name": "Passenger Count",
+          "icon": "Users",
+          "description": "Count and report passengers",
+          "component": "PassengerCount"
+        },
+        {
+          "id": "fuel_tracker",
+          "name": "Fuel Tracker",
+          "icon": "Fuel",
+          "description": "Track fuel consumption",
+          "component": "FuelTracker"
+        }
+      ]
+    },
+    {
+      "roleId": "logistics",
+      "roleName": "Logistics Coordinator",
+      "description": "Coordinate deliveries and shipments",
+      "icon": "Package",
+      "theme": {
+        "primary": "#eab308",
+        "secondary": "#ca8a04",
+        "accent": "#fde047"
+      },
+      "tools": [
+        {
+          "id": "delivery_tracker",
+          "name": "Delivery Tracker",
+          "icon": "Truck",
+          "description": "Track all deliveries",
+          "component": "DeliveryTracker"
+        },
+        {
+          "id": "route_optimizer",
+          "name": "Route Optimizer",
+          "icon": "Route",
+          "description": "Optimize delivery routes",
+          "component": "RouteOptimizer"
+        },
+        {
+          "id": "fleet_mgmt",
+          "name": "Fleet Management",
+          "icon": "Truck",
+          "description": "Manage vehicle fleet",
+          "component": "FleetMgmt"
+        }
+      ]
+    }
+  ]
+}

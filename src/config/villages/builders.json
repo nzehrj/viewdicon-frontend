@@ -1,0 +1,111 @@
+{
+  "villageId": "builders",
+  "villageName": "Village of Master Builders",
+  "description": "Construction professionals building infrastructure",
+  "color": "#3b82f6",
+  "icon": "HardHat",
+  "roles": [
+    {
+      "roleId": "civil_engineer",
+      "roleName": "Civil Engineer",
+      "description": "Design and oversee construction projects",
+      "icon": "Building2",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "tools": [
+        {
+          "id": "project_tracker",
+          "name": "Project Tracker",
+          "icon": "BarChart3",
+          "description": "Track project progress and milestones",
+          "component": "ProjectTracker"
+        },
+        {
+          "id": "material_calc",
+          "name": "Material Calculator",
+          "icon": "Calculator",
+          "description": "Calculate materials needed",
+          "component": "MaterialCalculator"
+        },
+        {
+          "id": "site_inspection",
+          "name": "Site Inspection",
+          "icon": "Search",
+          "description": "Log site inspections and issues",
+          "component": "SiteInspection"
+        }
+      ]
+    },
+    {
+      "roleId": "mason",
+      "roleName": "Mason/Bricklayer",
+      "description": "Build structures with bricks and blocks",
+      "icon": "Brick",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "tools": [
+        {
+          "id": "daily_work_log",
+          "name": "Daily Work Log",
+          "icon": "FileText",
+          "description": "Log daily tasks and progress",
+          "component": "WorkLog"
+        },
+        {
+          "id": "material_request",
+          "name": "Material Request",
+          "icon": "Package",
+          "description": "Request building materials",
+          "component": "MaterialRequest"
+        },
+        {
+          "id": "safety_checklist",
+          "name": "Safety Checklist",
+          "icon": "CheckSquare",
+          "description": "Daily safety checks",
+          "component": "SafetyChecklist"
+        }
+      ]
+    },
+    {
+      "roleId": "electrician",
+      "roleName": "Electrician",
+      "description": "Install and maintain electrical systems",
+      "icon": "Zap",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "tools": [
+        {
+          "id": "circuit_calculator",
+          "name": "Circuit Calculator",
+          "icon": "Zap",
+          "description": "Calculate electrical load and wiring",
+          "component": "CircuitCalculator"
+        },
+        {
+          "id": "job_scheduler",
+          "name": "Job Scheduler",
+          "icon": "CalendarDays",
+          "description": "Schedule installation jobs",
+          "component": "JobScheduler"
+        },
+        {
+          "id": "equipment_inventory",
+          "name": "Equipment Inventory",
+          "icon": "Wrench",
+          "description": "Track tools and parts",
+          "component": "EquipmentInventory"
+        }
+      ]
+    }
+  ]
+}

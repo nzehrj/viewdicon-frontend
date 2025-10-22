@@ -1,0 +1,111 @@
+{
+  "villageId": "traders",
+  "villageName": "Village of Traders",
+  "description": "Merchants and traders facilitating commerce",
+  "color": "#8b5cf6",
+  "icon": "TrendingUp",
+  "roles": [
+    {
+      "roleId": "import_export",
+      "roleName": "Import/Export Trader",
+      "description": "Trade goods across international borders",
+      "icon": "Ship",
+      "theme": {
+        "primary": "#8b5cf6",
+        "secondary": "#7c3aed",
+        "accent": "#a78bfa"
+      },
+      "tools": [
+        {
+          "id": "shipment_tracker",
+          "name": "Shipment Tracker",
+          "icon": "Package",
+          "description": "Track international shipments",
+          "component": "ShipmentTracker"
+        },
+        {
+          "id": "customs_docs",
+          "name": "Customs Docs",
+          "icon": "FileText",
+          "description": "Manage customs paperwork",
+          "component": "CustomsDocs"
+        },
+        {
+          "id": "currency_converter",
+          "name": "Currency Converter",
+          "icon": "DollarSign",
+          "description": "Real-time exchange rates",
+          "component": "CurrencyConverter"
+        }
+      ]
+    },
+    {
+      "roleId": "market_vendor",
+      "roleName": "Market Vendor",
+      "description": "Sell goods at local markets",
+      "icon": "Store",
+      "theme": {
+        "primary": "#8b5cf6",
+        "secondary": "#7c3aed",
+        "accent": "#a78bfa"
+      },
+      "tools": [
+        {
+          "id": "inventory_mgmt",
+          "name": "Inventory",
+          "icon": "BarChart",
+          "description": "Stock management system",
+          "component": "InventoryMgmt"
+        },
+        {
+          "id": "sales_tracker",
+          "name": "Sales Tracker",
+          "icon": "DollarSign",
+          "description": "Daily sales records",
+          "component": "SalesTracker"
+        },
+        {
+          "id": "supplier_connect",
+          "name": "Supplier Connect",
+          "icon": "Handshake",
+          "description": "Connect with suppliers",
+          "component": "SupplierConnect"
+        }
+      ]
+    },
+    {
+      "roleId": "wholesaler",
+      "roleName": "Wholesaler",
+      "description": "Buy and sell goods in bulk quantities",
+      "icon": "Warehouse",
+      "theme": {
+        "primary": "#8b5cf6",
+        "secondary": "#7c3aed",
+        "accent": "#a78bfa"
+      },
+      "tools": [
+        {
+          "id": "bulk_orders",
+          "name": "Bulk Orders",
+          "icon": "ClipboardList",
+          "description": "Manage large orders",
+          "component": "BulkOrders"
+        },
+        {
+          "id": "warehouse_mgmt",
+          "name": "Warehouse",
+          "icon": "Building2",
+          "description": "Warehouse management",
+          "component": "WarehouseMgmt"
+        },
+        {
+          "id": "pricing_tool",
+          "name": "Pricing Tool",
+          "icon": "DollarSign",
+          "description": "Dynamic pricing engine",
+          "component": "PricingTool"
+        }
+      ]
+    }
+  ]
+}

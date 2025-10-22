@@ -1,0 +1,111 @@
+{
+  "villageId": "farmers",
+  "villageName": "Village of Harvesters",
+  "description": "Agricultural workers cultivating the land",
+  "color": "#f59e0b",
+  "icon": "Sprout",
+  "roles": [
+    {
+      "roleId": "crop_farmer",
+      "roleName": "Crop Farmer",
+      "description": "Cultivate crops for food and commerce",
+      "icon": "Wheat",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "tools": [
+        {
+          "id": "weather_oracle",
+          "name": "Weather Oracle",
+          "icon": "CloudSun",
+          "description": "Local weather forecast and alerts",
+          "component": "WeatherOracle"
+        },
+        {
+          "id": "crop_calendar",
+          "name": "Crop Calendar",
+          "icon": "Calendar",
+          "description": "Planting and harvest schedule",
+          "component": "CropCalendar"
+        },
+        {
+          "id": "marketplace",
+          "name": "Marketplace",
+          "icon": "ShoppingCart",
+          "description": "Buy inputs and sell produce",
+          "component": "Marketplace"
+        }
+      ]
+    },
+    {
+      "roleId": "livestock_farmer",
+      "roleName": "Livestock Farmer",
+      "description": "Raise and manage livestock",
+      "icon": "Beef",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "tools": [
+        {
+          "id": "herd_tracker",
+          "name": "Herd Tracker",
+          "icon": "Beef",
+          "description": "Track livestock health and breeding",
+          "component": "HerdTracker"
+        },
+        {
+          "id": "vet_connect",
+          "name": "Vet Connect",
+          "icon": "Stethoscope",
+          "description": "Connect with veterinarians",
+          "component": "VetConnect"
+        },
+        {
+          "id": "market_prices",
+          "name": "Market Prices",
+          "icon": "DollarSign",
+          "description": "Livestock market rates",
+          "component": "MarketPrices"
+        }
+      ]
+    },
+    {
+      "roleId": "fisherfolk",
+      "roleName": "Fisherfolk",
+      "description": "Catch and sell fish and seafood",
+      "icon": "Fish",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "tools": [
+        {
+          "id": "catch_log",
+          "name": "Catch Log",
+          "icon": "Fish",
+          "description": "Record daily catch and species",
+          "component": "CatchLog"
+        },
+        {
+          "id": "tide_forecast",
+          "name": "Tide Forecast",
+          "icon": "Waves",
+          "description": "Tide and sea conditions",
+          "component": "TideForecast"
+        },
+        {
+          "id": "fish_market",
+          "name": "Fish Market",
+          "icon": "Store",
+          "description": "Sell fresh catch to buyers",
+          "component": "FishMarket"
+        }
+      ]
+    }
+  ]
+}

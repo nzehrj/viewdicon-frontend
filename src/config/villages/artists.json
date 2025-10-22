@@ -1,0 +1,111 @@
+{
+  "villageId": "artists",
+  "villageName": "Village of Creatives",
+  "description": "Artists and creators expressing African culture",
+  "color": "#ec4899",
+  "icon": "Palette",
+  "roles": [
+    {
+      "roleId": "musician",
+      "roleName": "Musician",
+      "description": "Create and perform music",
+      "icon": "Music",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "tools": [
+        {
+          "id": "dga_upload",
+          "name": "DGA Upload",
+          "icon": "Upload",
+          "description": "Upload music to Digital Griot Archive",
+          "component": "DGAUpload"
+        },
+        {
+          "id": "royalty_tracker",
+          "name": "Royalty Tracker",
+          "icon": "DollarSign",
+          "description": "Track KSE earnings",
+          "component": "RoyaltyTracker"
+        },
+        {
+          "id": "collab_studio",
+          "name": "Collab Studio",
+          "icon": "Headphones",
+          "description": "Collaborate with other artists",
+          "component": "CollabStudio"
+        }
+      ]
+    },
+    {
+      "roleId": "visual_artist",
+      "roleName": "Visual Artist",
+      "description": "Create visual art and designs",
+      "icon": "Palette",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "tools": [
+        {
+          "id": "portfolio",
+          "name": "Portfolio",
+          "icon": "Image",
+          "description": "Showcase your artwork",
+          "component": "Portfolio"
+        },
+        {
+          "id": "commission_mgmt",
+          "name": "Commissions",
+          "icon": "Briefcase",
+          "description": "Manage art commissions",
+          "component": "CommissionMgmt"
+        },
+        {
+          "id": "art_marketplace",
+          "name": "Art Marketplace",
+          "icon": "ShoppingBag",
+          "description": "Sell artwork online",
+          "component": "ArtMarketplace"
+        }
+      ]
+    },
+    {
+      "roleId": "writer",
+      "roleName": "Writer/Author",
+      "description": "Write books, articles, and content",
+      "icon": "PenTool",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "tools": [
+        {
+          "id": "writing_studio",
+          "name": "Writing Studio",
+          "icon": "FileText",
+          "description": "Distraction-free writing workspace",
+          "component": "WritingStudio"
+        },
+        {
+          "id": "publishing",
+          "name": "Publishing",
+          "icon": "Book",
+          "description": "Publish your works",
+          "component": "Publishing"
+        },
+        {
+          "id": "reader_connect",
+          "name": "Reader Connect",
+          "icon": "Users",
+          "description": "Engage with your readers",
+          "component": "ReaderConnect"
+        }
+      ]
+    }
+  ]
+}

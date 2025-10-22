@@ -1,0 +1,111 @@
+{
+  "villageId": "tech",
+  "villageName": "Village of Innovators",
+  "description": "Technology professionals driving innovation",
+  "color": "#6366f1",
+  "icon": "Code",
+  "roles": [
+    {
+      "roleId": "software_dev",
+      "roleName": "Software Developer",
+      "description": "Build software applications and systems",
+      "icon": "Code",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "tools": [
+        {
+          "id": "project_board",
+          "name": "Project Board",
+          "icon": "Trello",
+          "description": "Kanban board for tasks",
+          "component": "ProjectBoard"
+        },
+        {
+          "id": "code_review",
+          "name": "Code Review",
+          "icon": "GitPullRequest",
+          "description": "Review code and pull requests",
+          "component": "CodeReview"
+        },
+        {
+          "id": "deploy_pipeline",
+          "name": "Deploy Pipeline",
+          "icon": "Rocket",
+          "description": "CI/CD deployment pipeline",
+          "component": "DeployPipeline"
+        }
+      ]
+    },
+    {
+      "roleId": "it_support",
+      "roleName": "IT Support Specialist",
+      "description": "Provide technical support and troubleshooting",
+      "icon": "Headset",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "tools": [
+        {
+          "id": "ticket_system",
+          "name": "Ticket System",
+          "icon": "Ticket",
+          "description": "Manage support tickets",
+          "component": "TicketSystem"
+        },
+        {
+          "id": "remote_assist",
+          "name": "Remote Assist",
+          "icon": "MonitorPlay",
+          "description": "Remote desktop support",
+          "component": "RemoteAssist"
+        },
+        {
+          "id": "asset_inventory",
+          "name": "Asset Inventory",
+          "icon": "Database",
+          "description": "Track IT assets",
+          "component": "AssetInventory"
+        }
+      ]
+    },
+    {
+      "roleId": "data_analyst",
+      "roleName": "Data Analyst",
+      "description": "Analyze data and generate insights",
+      "icon": "BarChart",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "tools": [
+        {
+          "id": "dashboard_builder",
+          "name": "Dashboard Builder",
+          "icon": "LayoutDashboard",
+          "description": "Build data dashboards",
+          "component": "DashboardBuilder"
+        },
+        {
+          "id": "query_tool",
+          "name": "Query Tool",
+          "icon": "Search",
+          "description": "Query databases",
+          "component": "QueryTool"
+        },
+        {
+          "id": "report_generator",
+          "name": "Report Generator",
+          "icon": "FileSpreadsheet",
+          "description": "Generate analytics reports",
+          "component": "ReportGenerator"
+        }
+      ]
+    }
+  ]
+}

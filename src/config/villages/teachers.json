@@ -1,0 +1,111 @@
+{
+  "villageId": "teachers",
+  "villageName": "Village of Scholars",
+  "description": "Educators shaping the next generation",
+  "color": "#06b6d4",
+  "icon": "GraduationCap",
+  "roles": [
+    {
+      "roleId": "primary_teacher",
+      "roleName": "Primary School Teacher",
+      "description": "Educate young children (ages 6-12)",
+      "icon": "School",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "tools": [
+        {
+          "id": "lesson_planner",
+          "name": "Lesson Planner",
+          "icon": "BookOpen",
+          "description": "Plan and organize lessons",
+          "component": "LessonPlanner"
+        },
+        {
+          "id": "student_tracker",
+          "name": "Student Tracker",
+          "icon": "BarChart",
+          "description": "Track student progress",
+          "component": "StudentTracker"
+        },
+        {
+          "id": "parent_connect",
+          "name": "Parent Connect",
+          "icon": "Users",
+          "description": "Communicate with parents",
+          "component": "ParentConnect"
+        }
+      ]
+    },
+    {
+      "roleId": "secondary_teacher",
+      "roleName": "Secondary School Teacher",
+      "description": "Teach secondary school subjects",
+      "icon": "GraduationCap",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "tools": [
+        {
+          "id": "grading_system",
+          "name": "Grading System",
+          "icon": "CheckCircle",
+          "description": "Grade assignments and exams",
+          "component": "GradingSystem"
+        },
+        {
+          "id": "exam_creator",
+          "name": "Exam Creator",
+          "icon": "FileText",
+          "description": "Create and manage exams",
+          "component": "ExamCreator"
+        },
+        {
+          "id": "class_schedule",
+          "name": "Class Schedule",
+          "icon": "Calendar",
+          "description": "Manage class timetable",
+          "component": "ClassSchedule"
+        }
+      ]
+    },
+    {
+      "roleId": "tutor",
+      "roleName": "Private Tutor",
+      "description": "Provide one-on-one tutoring services",
+      "icon": "UserCheck",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "tools": [
+        {
+          "id": "session_scheduler",
+          "name": "Session Scheduler",
+          "icon": "CalendarDays",
+          "description": "Schedule tutoring sessions",
+          "component": "SessionScheduler"
+        },
+        {
+          "id": "progress_reports",
+          "name": "Progress Reports",
+          "icon": "TrendingUp",
+          "description": "Student progress tracking",
+          "component": "ProgressReports"
+        },
+        {
+          "id": "payment_tracker",
+          "name": "Payment Tracker",
+          "icon": "CreditCard",
+          "description": "Track session payments",
+          "component": "PaymentTracker"
+        }
+      ]
+    }
+  ]
+}

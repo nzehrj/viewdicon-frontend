@@ -1,0 +1,111 @@
+{
+  "villageId": "civic",
+  "villageName": "Village of Leaders",
+  "description": "Community leaders and civic organizers",
+  "color": "#f97316",
+  "icon": "Flag",
+  "roles": [
+    {
+      "roleId": "community_organizer",
+      "roleName": "Community Organizer",
+      "description": "Organize community initiatives and events",
+      "icon": "Users",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "tools": [
+        {
+          "id": "event_planner",
+          "name": "Event Planner",
+          "icon": "Calendar",
+          "description": "Plan community events",
+          "component": "EventPlanner"
+        },
+        {
+          "id": "volunteer_mgmt",
+          "name": "Volunteer Management",
+          "icon": "Users",
+          "description": "Manage volunteers",
+          "component": "VolunteerMgmt"
+        },
+        {
+          "id": "moot_creator",
+          "name": "Moot Creator",
+          "icon": "Scale",
+          "description": "Create Moot resolutions",
+          "component": "MootCreator"
+        }
+      ]
+    },
+    {
+      "roleId": "ngo_worker",
+      "roleName": "NGO Worker",
+      "description": "Work for non-profit organizations",
+      "icon": "Heart",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "tools": [
+        {
+          "id": "project_mgmt",
+          "name": "Project Management",
+          "icon": "FolderKanban",
+          "description": "Manage NGO projects",
+          "component": "ProjectMgmt"
+        },
+        {
+          "id": "donor_relations",
+          "name": "Donor Relations",
+          "icon": "Handshake",
+          "description": "Manage donor relationships",
+          "component": "DonorRelations"
+        },
+        {
+          "id": "impact_tracker",
+          "name": "Impact Tracker",
+          "icon": "TrendingUp",
+          "description": "Track social impact metrics",
+          "component": "ImpactTracker"
+        }
+      ]
+    },
+    {
+      "roleId": "local_govt",
+      "roleName": "Local Government Official",
+      "description": "Serve in local government positions",
+      "icon": "Landmark",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "tools": [
+        {
+          "id": "citizen_portal",
+          "name": "Citizen Portal",
+          "icon": "Users",
+          "description": "Handle citizen requests",
+          "component": "CitizenPortal"
+        },
+        {
+          "id": "budget_tracker",
+          "name": "Budget Tracker",
+          "icon": "DollarSign",
+          "description": "Track budget allocation",
+          "component": "BudgetTracker"
+        },
+        {
+          "id": "service_monitor",
+          "name": "Service Monitor",
+          "icon": "BarChart3",
+          "description": "Monitor public services",
+          "component": "ServiceMonitor"
+        }
+      ]
+    }
+  ]
+}
