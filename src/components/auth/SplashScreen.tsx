@@ -86,7 +86,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                   }`}
                 >
                   <img
-                    src="public/assets/vi.jpg"
+                    src="src/assets/vi.jpg"
                     alt="ViewDicon Logo"
                     className="w-full h-full object-cover"
                     onError={(e) => {
