@@ -7,11 +7,21 @@ export type AuthStep =
   | 'consent'
   | 'phone'
   | 'otp'
+  | 'three-circles'
+  | 'heritage'
+  | 'heritage-challenge'
+  | 'device'
   | 'fingerprint'
-  | 'voice'
+  | 'face'
+  | 'kyc'
+  | 'voice-phrase'
+  | 'voice-auth'
+  | 'family-tree'
   | 'village'
   | 'circle_resolve'
   | 'dashboard';
+
+export type UserLocation = 'africa' | 'diaspora' | 'other';
 
 export interface AuthState {
   step: AuthStep;
@@ -22,6 +32,10 @@ export interface AuthState {
   userId: string | null;
   accessToken: string | null;
   refreshToken: string | null;
+  phoneNumber?: string;
+  userLocation?: UserLocation;
+  village?: string;
+  role?: string;
 }
 
 // Login Start

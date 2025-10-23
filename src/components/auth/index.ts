@@ -9,5 +9,4 @@ export { FingerprintSetup } from './FingerprintSetup';
 export { VoicePhrase } from './VoicePhrase';
 export { VoiceAuthentication } from './VoiceAuthentication';
 export { VillageSelection } from './VillageSelection';
-export { CircleRouter } from './CircleRouter';
 export { HeritagePrompt } from './HeritagePrompt';

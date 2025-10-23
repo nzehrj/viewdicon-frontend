@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Send, AlertCircle } from 'lucide-react';
+import { Phone, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { Button } from '@components/common/Button';
@@ -9,7 +9,7 @@ import { validatePhone } from '@utils/validators';
 import { formatPhoneDisplay } from '@utils/formatters';
 
 interface PhoneVerificationProps {
-  onNext: () => void;
+  onNext: (phone: string) => void;
 }
 
 export const PhoneVerification: React.FC<PhoneVerificationProps> = ({ onNext }) => {
@@ -56,7 +56,7 @@ export const PhoneVerification: React.FC<PhoneVerificationProps> = ({ onNext }) 
       console.log('📱 Mock OTP sent:', generatedOTP);
 
       setTimeout(() => {
-        onNext();
+        onNext(fullPhone);
       }, 2000);
     } catch (err) {
       setError('Failed to send verification code. Please try again.');

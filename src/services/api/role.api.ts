@@ -1,7 +1,7 @@
 ﻿import { apiClient } from './client';
 import { GRIOT } from '@config/services.config';
 import type { RoleManifest } from '@/types/role.types';
-import type { GriotRoleManifestResponse, KinshipTierResponse, GlobalPoliciesResponse } from '@/types/griot.types';
+import type { KinshipTierResponse, GlobalPoliciesResponse } from '@/types/griot.types';
 
 export const roleApi = {
   // Get role manifest

@@ -10,6 +10,8 @@ const initialState: AuthState = {
   userId: null,
   accessToken: null,
   refreshToken: null,
+  phoneNumber: undefined,
+  userLocation: undefined,
 };
 
 const authSlice = createSlice({
@@ -56,7 +58,15 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
     },
     
-    logout: (state) => {
+    setPhoneNumber: (state, action: PayloadAction<string>) => {
+      state.phoneNumber = action.payload;
+    },
+    
+    setUserLocation: (state, action: PayloadAction<AuthState['userLocation']>) => {
+      state.userLocation = action.payload;
+    },
+    
+    logout: (): AuthState => {
       return { ...initialState, step: 'splash' };
     },
     
@@ -71,6 +81,8 @@ export const {
   setSessionId,
   setTokens,
   clearTokens,
+  setPhoneNumber,
+  setUserLocation,
   logout,
   resetAuth,
 } = authSlice.actions;
