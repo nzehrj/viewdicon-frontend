@@ -274,11 +274,11 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
           </div>
 
           {/* Continue Button */}
-          <div className="flex justify-center">
+          <div className="w-full">
             <Button
               onClick={handleContinue}
               disabled={!selectedCircle}
-              className="px-12"
+              fullWidth
               size="lg"
             >
               {selectedCircle ? (

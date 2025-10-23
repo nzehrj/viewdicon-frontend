@@ -119,7 +119,9 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
     }
   };
 
-  const maskedPhone = phone.replace(/(\d{3})(\d{4})(\d{4})/, '+234 $1 *** $3');
+  // Format phone number properly - remove any + prefix and country code
+  const cleanPhone = phone.replace(/^\+?234/, ''); // Remove +234 or 234 prefix
+  const maskedPhone = cleanPhone.replace(/(\d{3})(\d{4})/, '+234 $1 *** $2');
 
   return (
     <GradientBackground>
@@ -153,28 +155,30 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
               </span>
             </p>
 
-            <div className="flex justify-center gap-2 mb-6" onPaste={handlePaste}>
-              {otp.map((digit, index) => (
-                <input
-                  key={index}
-                  ref={(el) => (inputRefs.current[index] = el)}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className={`w-12 h-14 text-center text-2xl font-bold rounded-xl border-2 transition-all ${
-                    error
-                      ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                      : digit
-                      ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                      : theme === 'dark'
-                      ? 'border-gray-600 bg-gray-900/50 focus:border-green-500'
-                      : 'border-gray-300 bg-gray-50 focus:border-green-500'
-                  } ${theme === 'dark' ? 'text-white' : 'text-gray-900'} focus:outline-none focus:ring-2 focus:ring-green-500/20`}
-                />
-              ))}
+            <div className="mb-6" onPaste={handlePaste}>
+              <div className="flex justify-between gap-2">
+                {otp.map((digit, index) => (
+                  <input
+                    key={index}
+                    ref={(el) => (inputRefs.current[index] = el)}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    className={`flex-1 h-14 text-center text-2xl font-bold rounded-xl border-2 transition-all ${
+                      error
+                        ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                        : digit
+                        ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                        : theme === 'dark'
+                        ? 'border-gray-600 bg-gray-900/50 focus:border-green-500'
+                        : 'border-gray-300 bg-gray-50 focus:border-green-500'
+                    } ${theme === 'dark' ? 'text-white' : 'text-gray-900'} focus:outline-none focus:ring-2 focus:ring-green-500/20`}
+                  />
+                ))}
+              </div>
             </div>
 
             {error && (
