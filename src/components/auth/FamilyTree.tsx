@@ -84,36 +84,36 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
 
   return (
     <GradientBackground>
-      <div className="min-h-screen flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`p-8 rounded-3xl ${
+            className={`p-6 sm:p-8 rounded-3xl ${
               theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm' : 'bg-white shadow-xl'
             }`}
           >
             {/* Header */}
             <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                <Users className="w-10 h-10 text-white" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                <Users className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
             </div>
 
-            <h2 className={`text-3xl font-bold text-center mb-3 ${
+            <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-3 ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
               Build Your Family Tree
             </h2>
 
-            <p className={`text-center mb-2 ${
+            <p className={`text-sm sm:text-base text-center mb-2 ${
               theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
             }`}>
               Add at least 3 family members to continue
             </p>
 
             {/* Progress */}
-            <div className="flex justify-center items-center gap-2 mb-8">
+            <div className="flex justify-center items-center gap-2 mb-6 sm:mb-8">
               <div className={`text-sm font-medium ${
                 theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
               }`}>
@@ -125,7 +125,7 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
             </div>
 
             {/* Progress Bar */}
-            <div className={`h-2 rounded-full mb-8 ${
+            <div className={`h-2 rounded-full mb-6 sm:mb-8 ${
               theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
             }`}>
               <div
@@ -135,7 +135,7 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
             </div>
 
             {/* Family Members List */}
-            <div className="space-y-4 mb-6">
+            <div className="space-y-3 sm:space-y-4 mb-6">
               <AnimatePresence>
                 {members.map((member, index) => (
                   <motion.div
@@ -143,24 +143,24 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
-                    className={`p-4 rounded-xl border-2 ${
+                    className={`p-3 sm:p-4 rounded-xl border-2 ${
                       theme === 'dark'
                         ? 'bg-gray-900/50 border-gray-700'
                         : 'bg-gray-50 border-gray-200'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
+                      <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm sm:text-base">
                           {index + 1}
                         </div>
-                        <div>
-                          <h3 className={`font-semibold ${
+                        <div className="flex-1 min-w-0">
+                          <h3 className={`font-semibold text-sm sm:text-base truncate ${
                             theme === 'dark' ? 'text-white' : 'text-gray-900'
                           }`}>
                             {member.name}
                           </h3>
-                          <p className={`text-sm ${
+                          <p className={`text-xs sm:text-sm truncate ${
                             theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                           }`}>
                             {member.relationship} • +234 {member.phone}
@@ -169,9 +169,9 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
                       </div>
                       <button
                         onClick={() => handleRemoveMember(member.id)}
-                        className="p-2 rounded-lg hover:bg-red-500/10 transition-colors"
+                        className="p-2 rounded-lg hover:bg-red-500/10 transition-colors flex-shrink-0"
                       >
-                        <X className="w-5 h-5 text-red-500" />
+                        <X className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
                       </button>
                     </div>
                   </motion.div>
@@ -186,11 +186,11 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className={`p-6 rounded-xl mb-6 ${
+                  className={`p-4 sm:p-6 rounded-xl mb-6 ${
                     theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50'
                   }`}
                 >
-                  <h3 className={`text-lg font-semibold mb-4 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-4 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     Add Family Member
@@ -243,7 +243,7 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
                       }`}>
                         Phone Number
                       </label>
-                      <div className="flex gap-3">
+                      <div className="flex flex-col sm:flex-row gap-3">
                         <div className={`flex items-center px-4 rounded-xl border-2 ${
                           theme === 'dark'
                             ? 'bg-gray-900/50 border-gray-700'
@@ -273,8 +273,8 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
                       </div>
                     </div>
 
-                    {/* Form Actions */}
-                    <div className="flex gap-3 pt-2">
+                    {/* Form Actions - STACKED ON MOBILE */}
+                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
                       <Button
                         variant="outline"
                         onClick={() => {
@@ -282,13 +282,13 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
                           setCurrentMember({ name: '', relationship: '', phone: '' });
                           setErrors({});
                         }}
-                        className="flex-1"
+                        className="w-full sm:flex-1"
                       >
                         Cancel
                       </Button>
                       <Button
                         onClick={handleAddMember}
-                        className="flex-1"
+                        className="w-full sm:flex-1"
                       >
                         Add Member
                       </Button>

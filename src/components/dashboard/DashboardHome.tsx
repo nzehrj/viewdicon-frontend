@@ -1,417 +1,510 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  Wrench, 
-  MessageSquare, 
-  CreditCard, 
-  Bot, 
-  ChevronRight,
-  User,
+  Home,
   Settings,
   Bell,
   Search,
-  Plus,
-  Wheat,
-  Fish,
-  Milk,
-  Droplet,
-  ShoppingBag,
-  Hammer,
-  Package,
-  Briefcase,
-  Home,
-  Users,
-  Heart,
-  Calendar
+  User,
+  Menu,
+  X,
+  LogOut,
+  ChevronRight,
+  Grid,
+  BarChart,
+  Calendar,
+  MessageSquare,
+  FileText,
+  Users
 } from 'lucide-react';
+import * as Icons from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
-import { GradientBackground } from '@components/common/GradientBackground';
+
+// Import all village configs
+import healersConfig from '@config/villages/healers.json';
+import farmersConfig from '@config/villages/farmers.json';
+import buildersConfig from '@config/villages/builders.json';
+import tradersConfig from '@config/villages/traders.json';
+import artistsConfig from '@config/villages/artists.json';
+import teachersConfig from '@config/villages/teachers.json';
+import civicConfig from '@config/villages/civic.json';
+import transportConfig from '@config/villages/transport.json';
+import techConfig from '@config/villages/tech.json';
+import hospitalityConfig from '@config/villages/hospitality.json';
+import financeConfig from '@config/villages/finance.json';
+import environmentConfig from '@config/villages/environment.json';
+
+const villageConfigs: Record<string, any> = {
+  healers: healersConfig,
+  farmers: farmersConfig,
+  builders: buildersConfig,
+  traders: tradersConfig,
+  artists: artistsConfig,
+  teachers: teachersConfig,
+  civic: civicConfig,
+  transport: transportConfig,
+  tech: techConfig,
+  hospitality: hospitalityConfig,
+  finance: financeConfig,
+  environment: environmentConfig,
+};
+
+interface Tool {
+  toolId: string;
+  toolName: string;
+  description: string;
+  icon?: string;
+  category?: string;
+}
 
 const DashboardHome: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'home' | 'tools' | 'social' | 'banking' | 'ai'>('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeView, setActiveView] = useState<'overview' | 'tools' | 'analytics'>('overview');
+  
   const theme = useAppSelector((state) => state.theme.theme);
-  const userRole = useAppSelector((state) => state.auth.userRole);
-  const userVillage = useAppSelector((state) => state.auth.userVillage);
-  const userName = useAppSelector((state) => state.auth.userName || 'User');
+  const userVillage = useAppSelector((state) => state.user.village);
+  const userRole = useAppSelector((state) => state.user.role);
   const phoneNumber = useAppSelector((state) => state.auth.phoneNumber);
 
-  // Role-based tools configuration
-  const getRoleTools = () => {
-    const toolsMap: Record<string, Array<{
-      icon: any;
-      title: string;
-      color: string;
-      bgColor: string;
-      description: string;
-    }>> = {
-      // FARMERS VILLAGE
-      'Crop Farmer': [
-        { icon: Wheat, title: 'Crop Management', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Manage your crops and planting schedules' },
-        { icon: Calendar, title: 'Planting Calendar', color: 'text-amber-600', bgColor: 'bg-amber-100 dark:bg-amber-900/30', description: 'Plan your planting and harvest times' },
-        { icon: Droplet, title: 'Irrigation System', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Monitor and control irrigation' },
-        { icon: Package, title: 'Crop Storage', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Track stored produce' },
-        { icon: ShoppingBag, title: 'Market Connect', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Connect with buyers' },
-        { icon: Bot, title: 'AI Crop Advisor', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'Get AI-powered farming tips' },
-      ],
-      'Livestock Farmer': [
-        { icon: Milk, title: 'Livestock Management', color: 'text-brown-600', bgColor: 'bg-orange-100 dark:bg-orange-900/30', description: 'Track your animals health' },
-        { icon: Heart, title: 'Health Monitor', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Animal health tracking' },
-        { icon: Calendar, title: 'Breeding Schedule', color: 'text-pink-600', bgColor: 'bg-pink-100 dark:bg-pink-900/30', description: 'Plan breeding cycles' },
-        { icon: Package, title: 'Feed Management', color: 'text-yellow-600', bgColor: 'bg-yellow-100 dark:bg-yellow-900/30', description: 'Track feed inventory' },
-        { icon: ShoppingBag, title: 'Livestock Market', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Buy and sell livestock' },
-        { icon: Bot, title: 'AI Vet Assistant', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Virtual veterinary help' },
-      ],
-      'Fishery': [
-        { icon: Fish, title: 'Fish Farm Manager', color: 'text-cyan-600', bgColor: 'bg-cyan-100 dark:bg-cyan-900/30', description: 'Manage your fish ponds' },
-        { icon: Droplet, title: 'Water Quality', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Monitor water conditions' },
-        { icon: Package, title: 'Feed Tracker', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Track fish feed' },
-        { icon: Calendar, title: 'Harvest Planner', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Plan harvest cycles' },
-        { icon: ShoppingBag, title: 'Fish Market', color: 'text-teal-600', bgColor: 'bg-teal-100 dark:bg-teal-900/30', description: 'Sell your catch' },
-        { icon: Bot, title: 'AI Aquaculture', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'Smart farming tips' },
-      ],
+  // Get village config and role-specific tools
+  const villageConfig = userVillage?.villageId ? villageConfigs[userVillage.villageId] : null;
+  const roleConfig = villageConfig?.roles?.find((r: any) => r.roleId === userRole?.roleId);
+  const tools: Tool[] = roleConfig?.tools || [];
+  const villageColor = villageConfig?.color || '#10b981';
 
-      // BUSINESS VILLAGE
-      'Entrepreneur': [
-        { icon: Briefcase, title: 'Business Hub', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Manage your business' },
-        { icon: Package, title: 'Inventory', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Track your stock' },
-        { icon: CreditCard, title: 'Finances', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Financial management' },
-        { icon: Users, title: 'Team Manager', color: 'text-orange-600', bgColor: 'bg-orange-100 dark:bg-orange-900/30', description: 'Manage your team' },
-        { icon: ShoppingBag, title: 'Sales Portal', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Track sales and orders' },
-        { icon: Bot, title: 'Business AI', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'AI business insights' },
-      ],
-      'Trader': [
-        { icon: ShoppingBag, title: 'Trade Hub', color: 'text-amber-600', bgColor: 'bg-amber-100 dark:bg-amber-900/30', description: 'Manage your trades' },
-        { icon: Package, title: 'Product Catalog', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'List your products' },
-        { icon: CreditCard, title: 'Payments', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Track transactions' },
-        { icon: Users, title: 'Suppliers', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Manage suppliers' },
-        { icon: Calendar, title: 'Orders', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Order management' },
-        { icon: Bot, title: 'Trade AI', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'Market predictions' },
-      ],
-
-      // CRAFTSMEN VILLAGE
-      'Artisan': [
-        { icon: Hammer, title: 'Craft Workshop', color: 'text-orange-600', bgColor: 'bg-orange-100 dark:bg-orange-900/30', description: 'Manage your crafts' },
-        { icon: Package, title: 'Materials', color: 'text-brown-600', bgColor: 'bg-amber-100 dark:bg-amber-900/30', description: 'Track raw materials' },
-        { icon: ShoppingBag, title: 'Craft Store', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Sell your crafts' },
-        { icon: Calendar, title: 'Orders', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Custom orders' },
-        { icon: Users, title: 'Gallery', color: 'text-pink-600', bgColor: 'bg-pink-100 dark:bg-pink-900/30', description: 'Showcase your work' },
-        { icon: Bot, title: 'Design AI', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'AI design assistant' },
-      ],
-    };
-
-    return toolsMap[userRole || ''] || [
-      { icon: Wrench, title: 'General Tools', color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-900/30', description: 'Coming soon' },
-    ];
+  // Helper to resolve Lucide icons
+  const resolveIcon = (iconName?: string) => {
+    if (!iconName) return Grid;
+    const IconComp = (Icons as any)[iconName];
+    return IconComp || Grid;
   };
 
-  const tools = getRoleTools();
-
-  // Get role color scheme
-  const getRoleColorScheme = () => {
-    const colorMap: Record<string, { bg: string; text: string; accent: string }> = {
-      'Crop Farmer': { bg: 'bg-gradient-to-br from-green-500 to-emerald-600', text: 'text-green-600', accent: 'bg-green-500' },
-      'Livestock Farmer': { bg: 'bg-gradient-to-br from-orange-500 to-amber-600', text: 'text-orange-600', accent: 'bg-orange-500' },
-      'Fishery': { bg: 'bg-gradient-to-br from-cyan-500 to-blue-600', text: 'text-cyan-600', accent: 'bg-cyan-500' },
-      'Entrepreneur': { bg: 'bg-gradient-to-br from-blue-500 to-indigo-600', text: 'text-blue-600', accent: 'bg-blue-500' },
-      'Trader': { bg: 'bg-gradient-to-br from-amber-500 to-yellow-600', text: 'text-amber-600', accent: 'bg-amber-500' },
-      'Artisan': { bg: 'bg-gradient-to-br from-purple-500 to-pink-600', text: 'text-purple-600', accent: 'bg-purple-500' },
-    };
-
-    return colorMap[userRole || ''] || { bg: 'bg-gradient-to-br from-gray-500 to-gray-600', text: 'text-gray-600', accent: 'bg-gray-500' };
-  };
-
-  const roleColors = getRoleColorScheme();
+  // Get role icon
+  const RoleIcon = resolveIcon(roleConfig?.icon);
 
   return (
-    <GradientBackground>
-      <div className="min-h-screen flex flex-col">
-        {/* Header - WeChat Style Profile */}
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className={`${roleColors.bg} text-white p-6 rounded-b-3xl shadow-lg`}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              {/* Profile Picture */}
-              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/50">
-                <User className="w-8 h-8 text-white" />
-              </div>
-              
-              {/* User Info */}
-              <div>
-                <h2 className="text-xl font-bold">{userName}</h2>
-                <p className="text-sm text-white/80">{phoneNumber}</p>
-                <p className="text-xs text-white/60">{userRole} • {userVillage}</p>
-              </div>
-            </div>
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      {/* Mobile Header */}
+      <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className={`lg:hidden p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
 
-            {/* Header Actions */}
-            <div className="flex gap-3">
-              <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
-                <Search className="w-5 h-5" />
-              </button>
-              <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
-                <Bell className="w-5 h-5" />
-              </button>
-              <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
-                <Settings className="w-5 h-5" />
-              </button>
+          {/* Logo/Title */}
+          <div className="flex items-center gap-3">
+            <div 
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+            >
+              <RoleIcon className="w-6 h-6" />
+            </div>
+            <div className="hidden sm:block">
+              <h1 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                {roleConfig?.roleName || 'Dashboard'}
+              </h1>
+              <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                {villageConfig?.villageName}
+              </p>
             </div>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-3">
-              <p className="text-2xl font-bold">12</p>
-              <p className="text-xs text-white/70">Active Tools</p>
+          {/* Header Actions */}
+          <div className="flex items-center gap-2">
+            <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
+              <Search className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+            </button>
+            <button className={`p-2 rounded-lg relative ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
+              <Bell className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+            <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
+              <Settings className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className={`lg:hidden border-t ${theme === 'dark' ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'}`}
+          >
+            <nav className="px-4 py-4 space-y-2">
+              <button
+                onClick={() => { setActiveView('overview'); setIsMobileMenuOpen(false); }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'overview'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <Home className="w-5 h-5" />
+                <span className="font-medium">Overview</span>
+              </button>
+              <button
+                onClick={() => { setActiveView('tools'); setIsMobileMenuOpen(false); }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'tools'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <Grid className="w-5 h-5" />
+                <span className="font-medium">My Tools</span>
+              </button>
+              <button
+                onClick={() => { setActiveView('analytics'); setIsMobileMenuOpen(false); }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'analytics'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <BarChart className="w-5 h-5" />
+                <span className="font-medium">Analytics</span>
+              </button>
+            </nav>
+          </motion.div>
+        )}
+      </header>
+
+      <div className="flex">
+        {/* Desktop Sidebar */}
+        <aside className={`hidden lg:block w-64 h-[calc(100vh-73px)] sticky top-[73px] ${
+          theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        } border-r`}>
+          <div className="p-6">
+            {/* User Profile */}
+            <div className={`p-4 rounded-xl mb-6 ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  theme === 'dark' ? 'bg-gray-600' : 'bg-gray-200'
+                }`}>
+                  <User className={`w-6 h-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={`font-semibold text-sm truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    {phoneNumber || 'User'}
+                  </p>
+                  <p className={`text-xs truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {roleConfig?.roleName}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+                  {tools.length} tools available
+                </span>
+              </div>
             </div>
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-3">
-              <p className="text-2xl font-bold">45</p>
-              <p className="text-xs text-white/70">Connections</p>
+
+            {/* Navigation */}
+            <nav className="space-y-2">
+              <button
+                onClick={() => setActiveView('overview')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'overview'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <Home className="w-5 h-5" />
+                <span className="font-medium">Overview</span>
+              </button>
+              <button
+                onClick={() => setActiveView('tools')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'tools'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <Grid className="w-5 h-5" />
+                <span className="font-medium">My Tools</span>
+                <span 
+                  className="ml-auto px-2 py-0.5 text-xs rounded-full"
+                  style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+                >
+                  {tools.length}
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveView('analytics')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'analytics'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <BarChart className="w-5 h-5" />
+                <span className="font-medium">Analytics</span>
+              </button>
+            </nav>
+
+            {/* Quick Links */}
+            <div className="mt-8">
+              <h3 className={`text-xs font-semibold uppercase tracking-wider mb-3 px-4 ${
+                theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+              }`}>
+                Quick Links
+              </h3>
+              <div className="space-y-2">
+                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                  theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}>
+                  <Calendar className="w-4 h-4" />
+                  <span className="text-sm">Calendar</span>
+                </button>
+                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                  theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}>
+                  <MessageSquare className="w-4 h-4" />
+                  <span className="text-sm">Messages</span>
+                </button>
+                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                  theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}>
+                  <Users className="w-4 h-4" />
+                  <span className="text-sm">Community</span>
+                </button>
+                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                  theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}>
+                  <FileText className="w-4 h-4" />
+                  <span className="text-sm">Reports</span>
+                </button>
+              </div>
             </div>
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-3">
-              <p className="text-2xl font-bold">8</p>
-              <p className="text-xs text-white/70">Tasks</p>
+
+            {/* Logout */}
+            <div className="mt-auto pt-6">
+              <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
+              }`}>
+                <LogOut className="w-5 h-5" />
+                <span className="font-medium">Logout</span>
+              </button>
             </div>
           </div>
-        </motion.div>
+        </aside>
 
         {/* Main Content */}
-        <div className="flex-1 p-6">
-          <AnimatePresence mode="wait">
-            {activeTab === 'home' && (
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+            {/* Overview */}
+            {activeView === 'overview' && (
               <motion.div
-                key="home"
+                key="overview"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
               >
-                {/* Quick Actions */}
-                <div className="mb-6">
-                  <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    Quick Actions
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <button
-                      onClick={() => setActiveTab('tools')}
-                      className={`${roleColors.bg} text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow`}
-                    >
-                      <Wrench className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm font-semibold">My Tools</p>
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('social')}
-                      className="bg-gradient-to-br from-pink-500 to-red-600 text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
-                    >
-                      <MessageSquare className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm font-semibold">Social</p>
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('banking')}
-                      className="bg-gradient-to-br from-green-500 to-teal-600 text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
-                    >
-                      <CreditCard className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm font-semibold">Banking</p>
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('ai')}
-                      className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
-                    >
-                      <Bot className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm font-semibold">AI Help</p>
-                    </button>
+                {/* Welcome Banner */}
+                <div 
+                  className="p-6 sm:p-8 rounded-2xl text-white relative overflow-hidden"
+                  style={{ background: `linear-gradient(135deg, ${villageColor} 0%, ${villageColor}dd 100%)` }}
+                >
+                  <div className="relative z-10">
+                    <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                      Welcome back! 👋
+                    </h2>
+                    <p className="text-white/90 text-sm sm:text-base">
+                      You have {tools.length} tools ready to help you succeed as a {roleConfig?.roleName}
+                    </p>
+                  </div>
+                  <div className="absolute right-0 top-0 w-32 h-32 sm:w-48 sm:h-48 opacity-10">
+                    <RoleIcon className="w-full h-full" />
                   </div>
                 </div>
 
-                {/* Recent Activity */}
-                <div className={`p-6 rounded-3xl ${theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm' : 'bg-white shadow-lg'}`}>
-                  <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    Recent Activity
-                  </h3>
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-gray-100 dark:bg-gray-700/30">
-                        <div className={`w-12 h-12 rounded-full ${roleColors.accent} flex items-center justify-center`}>
-                          <Calendar className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <p className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                            Activity {i}
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <Grid className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                    </div>
+                    <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {tools.length}
+                    </p>
+                    <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Total Tools
+                    </p>
+                  </div>
+                  <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <BarChart className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                    </div>
+                    <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      85%
+                    </p>
+                    <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Progress
+                    </p>
+                  </div>
+                  <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <Calendar className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                    </div>
+                    <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      12
+                    </p>
+                    <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Tasks Today
+                    </p>
+                  </div>
+                  <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <Users className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                    </div>
+                    <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      248
+                    </p>
+                    <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Community
+                    </p>
+                  </div>
+                </div>
+
+                {/* Quick Access Tools */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      Quick Access
+                    </h3>
+                    <button 
+                      onClick={() => setActiveView('tools')}
+                      className="text-sm font-medium flex items-center gap-1"
+                      style={{ color: villageColor }}
+                    >
+                      View All
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {tools.slice(0, 6).map((tool) => {
+                      const ToolIcon = resolveIcon(tool.icon);
+                      return (
+                        <button
+                          key={tool.toolId}
+                          className={`p-4 rounded-xl text-left transition-all hover:shadow-lg ${
+                            theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-md'
+                          }`}
+                        >
+                          <div 
+                            className="w-12 h-12 rounded-lg flex items-center justify-center mb-3"
+                            style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+                          >
+                            <ToolIcon className="w-6 h-6" />
+                          </div>
+                          <h4 className={`font-semibold mb-1 text-sm sm:text-base ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                            {tool.toolName}
+                          </h4>
+                          <p className={`text-xs sm:text-sm line-clamp-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                            {tool.description}
                           </p>
-                          <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                            2 hours ago
-                          </p>
-                        </div>
-                        <ChevronRight className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} />
-                      </div>
-                    ))}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {activeTab === 'tools' && (
+            {/* Tools View */}
+            {activeView === 'tools' && (
               <motion.div
                 key="tools"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
               >
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    {userRole} Tools
-                  </h3>
-                  <button className={`${roleColors.bg} text-white p-3 rounded-full shadow-lg`}>
-                    <Plus className="w-6 h-6" />
-                  </button>
+                <div>
+                  <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    My Tools
+                  </h2>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {tools.length} tools available for {roleConfig?.roleName}
+                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {tools.map((tool, index) => {
-                    const Icon = tool.icon;
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {tools.map((tool) => {
+                    const ToolIcon = resolveIcon(tool.icon);
                     return (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`p-6 rounded-3xl cursor-pointer hover:shadow-xl transition-all ${
-                          theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm hover:bg-gray-800/50' : 'bg-white shadow-lg hover:shadow-2xl'
+                      <motion.button
+                        key={tool.toolId}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`p-6 rounded-xl text-left transition-all ${
+                          theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-lg'
                         }`}
                       >
-                        <div className={`w-16 h-16 rounded-2xl ${tool.bgColor} flex items-center justify-center mb-4`}>
-                          <Icon className={`w-8 h-8 ${tool.color}`} />
+                        <div 
+                          className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
+                          style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+                        >
+                          <ToolIcon className="w-7 h-7" />
                         </div>
-                        <h4 className={`text-lg font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                          {tool.title}
+                        <h4 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                          {tool.toolName}
                         </h4>
-                        <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        <p className={`text-sm line-clamp-2 mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                           {tool.description}
                         </p>
-                        <div className="mt-4 flex items-center gap-2 text-sm font-semibold" style={{ color: tool.color.replace('text-', '') }}>
-                          <span>Open Tool</span>
-                          <ChevronRight className="w-4 h-4" />
-                        </div>
-                      </motion.div>
+                        {tool.category && (
+                          <span 
+                            className="inline-block px-2 py-1 text-xs rounded-full"
+                            style={{ backgroundColor: `${villageColor}15`, color: villageColor }}
+                          >
+                            {tool.category}
+                          </span>
+                        )}
+                      </motion.button>
                     );
                   })}
                 </div>
               </motion.div>
             )}
 
-            {activeTab === 'social' && (
+            {/* Analytics View */}
+            {activeView === 'analytics' && (
               <motion.div
-                key="social"
+                key="analytics"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="text-center py-20"
+                className="space-y-6"
               >
-                <MessageSquare className="w-20 h-20 mx-auto mb-4 text-pink-500" />
-                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  ViewDicon Social Media
-                </h3>
-                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Connect with your community
-                </p>
+                <div>
+                  <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Analytics
+                  </h2>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Track your progress and performance
+                  </p>
+                </div>
+
+                <div className={`p-12 rounded-xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+                  <BarChart className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                  <p className={`text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Analytics Coming Soon
+                  </p>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Track your activity and see detailed insights
+                  </p>
+                </div>
               </motion.div>
             )}
-
-            {activeTab === 'banking' && (
-              <motion.div
-                key="banking"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="text-center py-20"
-              >
-                <CreditCard className="w-20 h-20 mx-auto mb-4 text-green-500" />
-                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  Banking Services
-                </h3>
-                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Manage your finances
-                </p>
-              </motion.div>
-            )}
-
-            {activeTab === 'ai' && (
-              <motion.div
-                key="ai"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="text-center py-20"
-              >
-                <Bot className="w-20 h-20 mx-auto mb-4 text-purple-500" />
-                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  AI Assistant
-                </h3>
-                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Get intelligent help
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Bottom Navigation Bar */}
-        <div className={`border-t ${theme === 'dark' ? 'bg-gray-900/50 border-gray-800' : 'bg-white border-gray-200'} backdrop-blur-sm`}>
-          <div className="flex justify-around p-4">
-            <button
-              onClick={() => setActiveTab('home')}
-              className={`flex flex-col items-center gap-1 transition-colors ${
-                activeTab === 'home' ? roleColors.text : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              }`}
-            >
-              <Home className="w-6 h-6" />
-              <span className="text-xs font-medium">Home</span>
-            </button>
-            
-            <button
-              onClick={() => setActiveTab('tools')}
-              className={`flex flex-col items-center gap-1 transition-colors ${
-                activeTab === 'tools' ? roleColors.text : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              }`}
-            >
-              <Wrench className="w-6 h-6" />
-              <span className="text-xs font-medium">Tools</span>
-            </button>
-            
-            <button
-              onClick={() => setActiveTab('social')}
-              className={`flex flex-col items-center gap-1 transition-colors ${
-                activeTab === 'social' ? 'text-pink-500' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              }`}
-            >
-              <MessageSquare className="w-6 h-6" />
-              <span className="text-xs font-medium">Social</span>
-            </button>
-            
-            <button
-              onClick={() => setActiveTab('banking')}
-              className={`flex flex-col items-center gap-1 transition-colors ${
-                activeTab === 'banking' ? 'text-green-500' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              }`}
-            >
-              <CreditCard className="w-6 h-6" />
-              <span className="text-xs font-medium">Banking</span>
-            </button>
-            
-            <button
-              onClick={() => setActiveTab('ai')}
-              className={`flex flex-col items-center gap-1 transition-colors ${
-                activeTab === 'ai' ? 'text-purple-500' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              }`}
-            >
-              <Bot className="w-6 h-6" />
-              <span className="text-xs font-medium">AI</span>
-            </button>
           </div>
-        </div>
+        </main>
       </div>
-    </GradientBackground>
+    </div>
   );
 };
 

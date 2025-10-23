@@ -1,73 +1,71 @@
 ﻿import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { User } from '@/types/user.types';
 
-interface UserState {
-  user: User | null;
-  isLoading: boolean;
-  error: string | null;
-  selectedVillage: {
+export interface UserState {
+  user: {
+    id: string | null;
+    phoneNumber: string | null;
+    name: string | null;
+  } | null;
+  village: {
     villageId: string;
     villageName: string;
   } | null;
-  selectedRole: {
+  role: {
     roleId: string;
     roleName: string;
   } | null;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: UserState = {
   user: null,
+  village: null,
+  role: null,
   isLoading: false,
   error: null,
-  selectedVillage: null,
-  selectedRole: null,
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // Set user after successful login
-    setUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
+    setUser: (state, action: PayloadAction<{ id: string; phoneNumber: string; name?: string }>) => {
+      state.user = {
+        id: action.payload.id,
+        phoneNumber: action.payload.phoneNumber,
+        name: action.payload.name || null,
+      };
+      state.error = null;
     },
-
-    // Clear entire user state (for logout)
+    setUserVillage: (state, action: PayloadAction<{ villageId: string; villageName: string }>) => {
+      state.village = action.payload;
+    },
+    setUserRole: (state, action: PayloadAction<{ roleId: string; roleName: string }>) => {
+      state.role = action.payload;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
     clearUser: (state) => {
       state.user = null;
-      state.isLoading = false;
+      state.village = null;
+      state.role = null;
       state.error = null;
-      state.selectedVillage = null;
-      state.selectedRole = null;
-    },
-
-    setUserVillage: (
-      state,
-      action: PayloadAction<{ villageId: string; villageName: string }>
-    ) => {
-      state.selectedVillage = action.payload;
-    },
-
-    setUserRole: (
-      state,
-      action: PayloadAction<{ roleId: string; roleName: string }>
-    ) => {
-      state.selectedRole = action.payload;
-    },
-
-    clearUserSelection: (state) => {
-      state.selectedVillage = null;
-      state.selectedRole = null;
     },
   },
 });
 
 export const {
   setUser,
-  clearUser,
   setUserVillage,
   setUserRole,
-  clearUserSelection,
+  setLoading,
+  setError,
+  clearUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;
