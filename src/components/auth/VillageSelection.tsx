@@ -410,11 +410,11 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                   </div>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={() => setSelectedRoleId(null)}
                     disabled={isSubmitting}
-                    className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-colors ${
+                    className={`w-full sm:flex-1 px-6 py-3 rounded-xl font-semibold transition-colors ${
                       theme === 'dark'
                         ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -425,7 +425,7 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                   <button
                     onClick={handleComplete}
                     disabled={isSubmitting}
-                    className="flex-1 px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg flex items-center justify-center gap-2"
+                    className="w-full sm:flex-1 px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <>

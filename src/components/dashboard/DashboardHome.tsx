@@ -15,10 +15,19 @@ import {
   Calendar,
   MessageSquare,
   FileText,
-  Users
+  Users,
+  Sun,
+  Moon,
+  // Bottom Nav Icons
+  Share2,
+  Compass,
+  Wallet,
+  Bot,
+  TrendingUp
 } from 'lucide-react';
 import * as Icons from 'lucide-react';
-import { useAppSelector } from '@store/hooks';
+import { useAppSelector, useAppDispatch } from '@store/hooks';
+import { toggleTheme } from '@store/slices/themeSlice';
 
 // Import all village configs
 import healersConfig from '@config/villages/healers.json';
@@ -60,7 +69,9 @@ interface Tool {
 const DashboardHome: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState<'overview' | 'tools' | 'analytics'>('overview');
+  const [activeBottomTab, setActiveBottomTab] = useState<'social' | 'discover' | 'banking' | 'ai'>('social');
   
+  const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
   const userVillage = useAppSelector((state) => state.user.village);
   const userRole = useAppSelector((state) => state.user.role);
@@ -82,8 +93,16 @@ const DashboardHome: React.FC = () => {
   // Get role icon
   const RoleIcon = resolveIcon(roleConfig?.icon);
 
+  // Bottom navigation items
+  const bottomNavItems = [
+    { id: 'social', icon: Share2, label: 'Social', color: '#3b82f6' },
+    { id: 'discover', icon: Compass, label: 'Discover', color: '#ec4899' },
+    { id: 'banking', icon: Wallet, label: 'Banking', color: '#10b981' },
+    { id: 'ai', icon: Bot, label: 'AI Agent', color: '#8b5cf6' },
+  ];
+
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen pb-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Mobile Header */}
       <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="flex items-center justify-between px-4 py-3">
@@ -121,6 +140,17 @@ const DashboardHome: React.FC = () => {
             <button className={`p-2 rounded-lg relative ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
               <Bell className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+            <button 
+              onClick={() => dispatch(toggleTheme())}
+              className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-yellow-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-600" />
+              )}
             </button>
             <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
               <Settings className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
@@ -339,7 +369,7 @@ const DashboardHome: React.FC = () => {
                   </div>
                   <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
                     <div className="flex items-center justify-between mb-2">
-                      <BarChart className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                      <TrendingUp className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
                     </div>
                     <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                       85%
@@ -504,6 +534,52 @@ const DashboardHome: React.FC = () => {
           </div>
         </main>
       </div>
+
+      {/* Bottom Navigation Bar */}
+      <nav className={`fixed bottom-0 left-0 right-0 z-50 ${
+        theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+      } border-t`}>
+        <div className="flex items-center justify-around px-4 py-3 max-w-screen-xl mx-auto">
+          {bottomNavItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeBottomTab === item.id;
+            
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveBottomTab(item.id as any)}
+                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all ${
+                  isActive
+                    ? 'scale-105'
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+              >
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                    isActive ? 'scale-110' : ''
+                  }`}
+                  style={{
+                    backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6',
+                    color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280'
+                  }}
+                >
+                  <Icon className="w-6 h-6" />
+                </div>
+                <span
+                  className={`text-xs font-medium transition-colors ${
+                    isActive
+                      ? theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }`}
+                  style={{ color: isActive ? item.color : undefined }}
+                >
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 };
