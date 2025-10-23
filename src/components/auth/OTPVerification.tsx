@@ -167,7 +167,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
                     value={digit}
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className={`flex-1 h-14 text-center text-2xl font-bold rounded-xl border-2 transition-all ${
+                    className={`w-10 h-10 text-center text-2xl font-bold rounded-xl border-2 transition-all ${
                       error
                         ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
                         : digit
