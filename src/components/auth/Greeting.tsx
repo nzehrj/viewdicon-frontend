@@ -4,6 +4,7 @@ import { GradientBackground } from '@components/common/GradientBackground';
 import { Button } from '@components/common/Button';
 import { useAppSelector } from '@store/hooks';
 import { getGreeting } from '@utils/helpers';
+import { Sunrise, Sun, Moon } from 'lucide-react'; // Lucide icons
 
 interface GreetingProps {
   onNext: () => void;
@@ -26,11 +27,30 @@ export const Greeting: React.FC<GreetingProps> = ({ onNext }) => {
     return 'evening';
   };
 
-  const getTimeEmoji = () => {
+  const getTimeIcon = () => {
     const timeOfDay = getTimeOfDay();
-    if (timeOfDay === 'morning') return '🌅';
-    if (timeOfDay === 'afternoon') return '☀️';
-    return '🌙';
+
+    if (timeOfDay === 'morning') {
+      return (
+        <div className="p-6 rounded-full bg-gradient-to-br from-amber-100 via-orange-200 to-yellow-300 shadow-lg flex items-center justify-center">
+          <Sunrise className="w-16 h-16 text-amber-700" />
+        </div>
+      );
+    }
+
+    if (timeOfDay === 'afternoon') {
+      return (
+        <div className="p-6 rounded-full bg-gradient-to-br from-yellow-200 via-amber-300 to-orange-400 shadow-lg flex items-center justify-center">
+          <Sun className="w-16 h-16 text-yellow-700" />
+        </div>
+      );
+    }
+
+    return (
+      <div className="p-6 rounded-full bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-700 shadow-lg flex items-center justify-center">
+        <Moon className="w-16 h-16 text-indigo-200" />
+      </div>
+    );
   };
 
   return (
@@ -47,18 +67,26 @@ export const Greeting: React.FC<GreetingProps> = ({ onNext }) => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring' }}
-            className="text-8xl mb-6"
+            className="mb-6 flex justify-center"
           >
-            {getTimeEmoji()}
+            {getTimeIcon()}
           </motion.div>
 
           {/* Greeting */}
-          <h1 className={`text-5xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+          <h1
+            className={`text-5xl font-bold mb-4 ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
             {greeting}
           </h1>
 
           {/* Subtext */}
-          <p className={`text-xl mb-12 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p
+            className={`text-xl mb-12 ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}
+          >
             Welcome to the Digital Motherland
           </p>
 
@@ -71,3 +99,5 @@ export const Greeting: React.FC<GreetingProps> = ({ onNext }) => {
     </GradientBackground>
   );
 };
+
+export default Greeting;
