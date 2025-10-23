@@ -5,7 +5,6 @@ import { setTokens, setStep, logout } from '@store/slices/authSlice';
 import { clearUser } from '@store/slices/userSlice';
 import { storage } from '@utils/storage';
 import { authApi } from '@services/api';
-
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

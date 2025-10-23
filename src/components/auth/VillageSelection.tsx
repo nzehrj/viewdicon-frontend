@@ -1,12 +1,13 @@
 // src/components/auth/VillageSelection.tsx
 import React, { useMemo, useState } from 'react';
-import { ArrowRight, Check, Loader2, Globe } from 'lucide-react'; // ✅ Added Globe icon
+import { ArrowRight, Check, Loader2, Globe } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { setUserRole, setUserVillage } from '@store/slices/userSlice';
+import { setAuthenticated } from '@store/slices/authSlice'; // ✅ ADDED: Import setAuthenticated
 import { nextStep } from '@store/slices/authFlowSlice';
 
 // ✅ Village JSON imports
@@ -75,36 +76,67 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
   };
 
   const handleVillageSelect = (id: string) => {
+    console.log('🏘️ Village selected:', id);
     setSelectedVillageId(id);
     setSelectedRoleId(null);
   };
 
-  const handleRoleSelect = (id: string) => setSelectedRoleId(id);
+  const handleRoleSelect = (id: string) => {
+    console.log('👤 Role selected:', id);
+    setSelectedRoleId(id);
+  };
 
   const handleComplete = async () => {
     if (!selectedVillageId || !selectedRoleId) return;
+    
+    console.log('🚀 Complete button clicked');
+    console.log('Selected Village ID:', selectedVillageId);
+    console.log('Selected Role ID:', selectedRoleId);
+    
     setIsSubmitting(true);
 
     const villageCfg = villageConfigs[selectedVillageId];
     const roleCfg = villageCfg.roles.find((r: any) => r.roleId === selectedRoleId);
 
+    console.log('📝 Dispatching to Redux...');
+    console.log('Village:', villageCfg.villageName);
+    console.log('Role:', roleCfg.roleName);
+
+    // Dispatch village info
     dispatch(
       setUserVillage({
         villageId: villageCfg.villageId,
         villageName: villageCfg.villageName,
       })
     );
+    console.log('✓ Village dispatched');
 
+    // Dispatch role info
     dispatch(
       setUserRole({
         roleId: roleCfg.roleId,
         roleName: roleCfg.roleName,
       })
     );
+    console.log('✓ Role dispatched');
 
+    // ✅ CRITICAL: Mark user as authenticated
+    dispatch(setAuthenticated(true));
+    console.log('✓ Authentication set to true');
+
+    // Dispatch next step
     dispatch(nextStep());
+    console.log('✓ Next step dispatched');
+
+    // Call parent callback
+    console.log('🎯 Calling onSelect callback...');
     onSelect(villageCfg.villageId, roleCfg.roleId);
-    setTimeout(() => navigate('/dashboard'), 400);
+
+    // Navigate to dashboard
+    console.log('🚀 Navigating to dashboard...');
+    setTimeout(() => {
+      navigate('/dashboard', { replace: true });
+    }, 400);
   };
 
   return (
@@ -124,7 +156,7 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                 theme === 'dark' ? 'text-white' : 'text-gray-900'
               } flex items-center gap-2`}
             >
-              <Globe className="w-6 h-6 text-green-600" /> {/* 🌍 replaced with Lucide Globe */}
+              <Globe className="w-6 h-6 text-green-600" />
               Choose Your Village & Role
             </h2>
             <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
@@ -201,7 +233,7 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                       }`}
                     >
                       <div
-                        className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
+                        className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"
                         style={{
                           background: `linear-gradient(135deg, ${v.color}20 0%, ${v.color}40 100%)`,
                           color: v.color,
@@ -210,14 +242,14 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                         <Icon className="w-7 h-7" />
                       </div>
                       <h3
-                        className={`font-semibold text-center ${
+                        className={`font-semibold text-center mb-1 ${
                           theme === 'dark' ? 'text-white' : 'text-gray-900'
                         }`}
                       >
                         {v.name}
                       </h3>
                       <p
-                        className={`text-xs text-center mt-1 ${
+                        className={`text-xs text-center ${
                           theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                         }`}
                       >

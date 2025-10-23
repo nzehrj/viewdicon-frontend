@@ -1,706 +1,417 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Award,
-  TrendingUp,
-  Zap,
-  Target,
-  Calendar,
-  Star,
-  Clock,
-  Grid3x3,
-  List,
+import { 
+  Wrench, 
+  MessageSquare, 
+  CreditCard, 
+  Bot, 
+  ChevronRight,
+  User,
+  Settings,
+  Bell,
   Search,
+  Plus,
+  Wheat,
+  Fish,
+  Milk,
+  Droplet,
+  ShoppingBag,
+  Hammer,
+  Package,
   Briefcase,
+  Home,
+  Users,
+  Heart,
+  Calendar
 } from 'lucide-react';
-import * as Icons from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
-import ToolCard from './ToolCard';
-
-// Import all village configurations
-import healersConfig from '../../config/villages/healers.json';
-import farmersConfig from '../../config/villages/farmers.json';
-import buildersConfig from '../../config/villages/builders.json';
-import tradersConfig from '../../config/villages/traders.json';
-import artistsConfig from '../../config/villages/artists.json';
-import teachersConfig from '../../config/villages/teachers.json';
-import civicConfig from '../../config/villages/civic.json';
-import transportConfig from '../../config/villages/transport.json';
-import techConfig from '../../config/villages/tech.json';
-import hospitalityConfig from '../../config/villages/hospitality.json';
-import financeConfig from '../../config/villages/finance.json';
-import environmentConfig from '../../config/villages/environment.json';
-
-const villageConfigs: Record<string, any> = {
-  healers: healersConfig,
-  farmers: farmersConfig,
-  builders: buildersConfig,
-  traders: tradersConfig,
-  artists: artistsConfig,
-  teachers: teachersConfig,
-  civic: civicConfig,
-  transport: transportConfig,
-  tech: techConfig,
-  hospitality: hospitalityConfig,
-  finance: financeConfig,
-  environment: environmentConfig,
-};
-
-interface Tool {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  category: string;
-  status: 'active' | 'coming-soon';
-  component: string;
-}
-
-interface Role {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  color: string;
-  tools: Tool[];
-}
-
-interface Village {
-  id: string;
-  name: string;
-  description: string;
-  color: string;
-  icon: string;
-  emoji: string;
-  roles: Role[];
-}
+import { GradientBackground } from '@components/common/GradientBackground';
 
 const DashboardHome: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'home' | 'tools' | 'social' | 'banking' | 'ai'>('home');
   const theme = useAppSelector((state) => state.theme.theme);
+  const userRole = useAppSelector((state) => state.auth.userRole);
+  const userVillage = useAppSelector((state) => state.auth.userVillage);
+  const userName = useAppSelector((state) => state.auth.userName || 'User');
+  const phoneNumber = useAppSelector((state) => state.auth.phoneNumber);
 
-  // Get user's selected village and role
-  const selectedVillageId = localStorage.getItem('selected_village') || 'healers';
-  const selectedRoleId = localStorage.getItem('selected_role') || 'physician';
-  const selectedCircle = localStorage.getItem('selected_circle') || 'C1';
+  // Role-based tools configuration
+  const getRoleTools = () => {
+    const toolsMap: Record<string, Array<{
+      icon: any;
+      title: string;
+      color: string;
+      bgColor: string;
+      description: string;
+    }>> = {
+      // FARMERS VILLAGE
+      'Crop Farmer': [
+        { icon: Wheat, title: 'Crop Management', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Manage your crops and planting schedules' },
+        { icon: Calendar, title: 'Planting Calendar', color: 'text-amber-600', bgColor: 'bg-amber-100 dark:bg-amber-900/30', description: 'Plan your planting and harvest times' },
+        { icon: Droplet, title: 'Irrigation System', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Monitor and control irrigation' },
+        { icon: Package, title: 'Crop Storage', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Track stored produce' },
+        { icon: ShoppingBag, title: 'Market Connect', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Connect with buyers' },
+        { icon: Bot, title: 'AI Crop Advisor', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'Get AI-powered farming tips' },
+      ],
+      'Livestock Farmer': [
+        { icon: Milk, title: 'Livestock Management', color: 'text-brown-600', bgColor: 'bg-orange-100 dark:bg-orange-900/30', description: 'Track your animals health' },
+        { icon: Heart, title: 'Health Monitor', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Animal health tracking' },
+        { icon: Calendar, title: 'Breeding Schedule', color: 'text-pink-600', bgColor: 'bg-pink-100 dark:bg-pink-900/30', description: 'Plan breeding cycles' },
+        { icon: Package, title: 'Feed Management', color: 'text-yellow-600', bgColor: 'bg-yellow-100 dark:bg-yellow-900/30', description: 'Track feed inventory' },
+        { icon: ShoppingBag, title: 'Livestock Market', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Buy and sell livestock' },
+        { icon: Bot, title: 'AI Vet Assistant', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Virtual veterinary help' },
+      ],
+      'Fishery': [
+        { icon: Fish, title: 'Fish Farm Manager', color: 'text-cyan-600', bgColor: 'bg-cyan-100 dark:bg-cyan-900/30', description: 'Manage your fish ponds' },
+        { icon: Droplet, title: 'Water Quality', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Monitor water conditions' },
+        { icon: Package, title: 'Feed Tracker', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Track fish feed' },
+        { icon: Calendar, title: 'Harvest Planner', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Plan harvest cycles' },
+        { icon: ShoppingBag, title: 'Fish Market', color: 'text-teal-600', bgColor: 'bg-teal-100 dark:bg-teal-900/30', description: 'Sell your catch' },
+        { icon: Bot, title: 'AI Aquaculture', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'Smart farming tips' },
+      ],
 
-  // State
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [favoriteTools, setFavoriteTools] = useState<string[]>([]);
-  const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+      // BUSINESS VILLAGE
+      'Entrepreneur': [
+        { icon: Briefcase, title: 'Business Hub', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Manage your business' },
+        { icon: Package, title: 'Inventory', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Track your stock' },
+        { icon: CreditCard, title: 'Finances', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Financial management' },
+        { icon: Users, title: 'Team Manager', color: 'text-orange-600', bgColor: 'bg-orange-100 dark:bg-orange-900/30', description: 'Manage your team' },
+        { icon: ShoppingBag, title: 'Sales Portal', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Track sales and orders' },
+        { icon: Bot, title: 'Business AI', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'AI business insights' },
+      ],
+      'Trader': [
+        { icon: ShoppingBag, title: 'Trade Hub', color: 'text-amber-600', bgColor: 'bg-amber-100 dark:bg-amber-900/30', description: 'Manage your trades' },
+        { icon: Package, title: 'Product Catalog', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'List your products' },
+        { icon: CreditCard, title: 'Payments', color: 'text-green-600', bgColor: 'bg-green-100 dark:bg-green-900/30', description: 'Track transactions' },
+        { icon: Users, title: 'Suppliers', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Manage suppliers' },
+        { icon: Calendar, title: 'Orders', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30', description: 'Order management' },
+        { icon: Bot, title: 'Trade AI', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'Market predictions' },
+      ],
 
-  // Get village and role configuration
-  const villageConfig: Village = villageConfigs[selectedVillageId];
-  const roleConfig: Role | undefined = villageConfig?.roles.find((r: any) => r.id === selectedRoleId);
-  const userTools: Tool[] = roleConfig?.tools || [];
+      // CRAFTSMEN VILLAGE
+      'Artisan': [
+        { icon: Hammer, title: 'Craft Workshop', color: 'text-orange-600', bgColor: 'bg-orange-100 dark:bg-orange-900/30', description: 'Manage your crafts' },
+        { icon: Package, title: 'Materials', color: 'text-brown-600', bgColor: 'bg-amber-100 dark:bg-amber-900/30', description: 'Track raw materials' },
+        { icon: ShoppingBag, title: 'Craft Store', color: 'text-purple-600', bgColor: 'bg-purple-100 dark:bg-purple-900/30', description: 'Sell your crafts' },
+        { icon: Calendar, title: 'Orders', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30', description: 'Custom orders' },
+        { icon: Users, title: 'Gallery', color: 'text-pink-600', bgColor: 'bg-pink-100 dark:bg-pink-900/30', description: 'Showcase your work' },
+        { icon: Bot, title: 'Design AI', color: 'text-indigo-600', bgColor: 'bg-indigo-100 dark:bg-indigo-900/30', description: 'AI design assistant' },
+      ],
+    };
 
-  // Get categories from tools
-  const categories = ['all', ...new Set(userTools.map((tool) => tool.category))];
-
-  // Filter tools based on search and category
-  const filteredTools = userTools.filter((tool) => {
-    const matchesSearch =
-      tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tool.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  // Active and coming soon counts
-  const activeToolsCount = userTools.filter((t) => t.status === 'active').length;
-  const comingSoonCount = userTools.filter((t) => t.status === 'coming-soon').length;
-  const favoriteToolsCount = favoriteTools.length;
-
-  // Load favorites from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('favorite_tools');
-    if (saved) {
-      setFavoriteTools(JSON.parse(saved));
-    }
-  }, []);
-
-  // Toggle favorite
-  const toggleFavorite = (toolId: string) => {
-    const updated = favoriteTools.includes(toolId)
-      ? favoriteTools.filter((id) => id !== toolId)
-      : [...favoriteTools, toolId];
-    setFavoriteTools(updated);
-    localStorage.setItem('favorite_tools', JSON.stringify(updated));
+    return toolsMap[userRole || ''] || [
+      { icon: Wrench, title: 'General Tools', color: 'text-gray-600', bgColor: 'bg-gray-100 dark:bg-gray-900/30', description: 'Coming soon' },
+    ];
   };
 
-  // Get icon component
-  const VillageIcon =
-    (Icons[villageConfig?.icon as keyof typeof Icons] as Icons.LucideIcon) || Icons.Home;
-  const RoleIcon = (Icons[roleConfig?.icon as keyof typeof Icons] as Icons.LucideIcon) || Icons.User;
+  const tools = getRoleTools();
 
-  if (!villageConfig || !roleConfig) {
-    return (
-      <div className="flex items-center justify-center h-full min-h-screen">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
-            Loading your dashboard...
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // Get role color scheme
+  const getRoleColorScheme = () => {
+    const colorMap: Record<string, { bg: string; text: string; accent: string }> = {
+      'Crop Farmer': { bg: 'bg-gradient-to-br from-green-500 to-emerald-600', text: 'text-green-600', accent: 'bg-green-500' },
+      'Livestock Farmer': { bg: 'bg-gradient-to-br from-orange-500 to-amber-600', text: 'text-orange-600', accent: 'bg-orange-500' },
+      'Fishery': { bg: 'bg-gradient-to-br from-cyan-500 to-blue-600', text: 'text-cyan-600', accent: 'bg-cyan-500' },
+      'Entrepreneur': { bg: 'bg-gradient-to-br from-blue-500 to-indigo-600', text: 'text-blue-600', accent: 'bg-blue-500' },
+      'Trader': { bg: 'bg-gradient-to-br from-amber-500 to-yellow-600', text: 'text-amber-600', accent: 'bg-amber-500' },
+      'Artisan': { bg: 'bg-gradient-to-br from-purple-500 to-pink-600', text: 'text-purple-600', accent: 'bg-purple-500' },
+    };
+
+    return colorMap[userRole || ''] || { bg: 'bg-gradient-to-br from-gray-500 to-gray-600', text: 'text-gray-600', accent: 'bg-gray-500' };
+  };
+
+  const roleColors = getRoleColorScheme();
 
   return (
-    <div className="space-y-6">
-      {/* ================================================================== */}
-      {/* WELCOME BANNER */}
-      {/* ================================================================== */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl p-8"
-        style={{
-          background:
-            theme === 'dark'
-              ? `linear-gradient(135deg, ${roleConfig.color}20 0%, ${roleConfig.color}10 100%)`
-              : `linear-gradient(135deg, ${roleConfig.color}15 0%, ${roleConfig.color}05 100%)`,
-        }}
-      >
-        {/* African Pattern Overlay */}
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `repeating-linear-gradient(45deg, ${roleConfig.color} 0, ${roleConfig.color} 2px, transparent 0, transparent 50%)`,
-              backgroundSize: '20px 20px',
-            }}
-          ></div>
-        </div>
-
-        <div className="relative z-10 flex items-start gap-6">
-          {/* Village & Role Icons */}
-          <div className="flex-shrink-0">
-            <div className="text-6xl mb-3">{villageConfig.emoji}</div>
-            <div
-              className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
-              style={{ backgroundColor: roleConfig.color }}
-            >
-              <RoleIcon className="w-10 h-10 text-white" />
-            </div>
-          </div>
-
-          {/* Welcome Content */}
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h1
-                className={`text-4xl md:text-5xl font-bold ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {roleConfig.name} Dashboard
-              </h1>
-              {selectedCircle && (
-                <span
-                  className="px-3 py-1 rounded-full text-sm font-semibold"
-                  style={{
-                    backgroundColor: `${roleConfig.color}30`,
-                    color: roleConfig.color,
-                  }}
-                >
-                  {selectedCircle === 'C1' ? '🌍 Continental' : selectedCircle === 'C2' ? '✈️ Diaspora' : '❤️ Ally'}
-                </span>
-              )}
-            </div>
-
-            <p
-              className={`text-lg mb-4 ${
-                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-              }`}
-            >
-              {roleConfig.description}
-            </p>
-
-            <div
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl ${
-                theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/50'
-              }`}
-            >
-              <VillageIcon className="w-5 h-5" style={{ color: villageConfig.color }} />
-              <span
-                className={`font-medium ${
-                  theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                }`}
-              >
-                {villageConfig.name}
-              </span>
-            </div>
-
-            {/* Ubuntu Quote */}
-            <div className="mt-6 pl-4 border-l-4" style={{ borderColor: roleConfig.color }}>
-              <p
-                className={`italic text-sm ${
-                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                }`}
-              >
-                "Ubuntu: I am because we are. Together, we build our community."
-              </p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* ================================================================== */}
-      {/* STATS CARDS */}
-      {/* ================================================================== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Total Tools */}
+    <GradientBackground>
+      <div className="min-h-screen flex flex-col">
+        {/* Header - WeChat Style Profile */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className={`p-6 rounded-2xl ${
-            theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-md'
-          }`}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className={`${roleColors.bg} text-white p-6 rounded-b-3xl shadow-lg`}
         >
-          <div className="flex items-center justify-between mb-3">
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: `${roleConfig.color}20`, color: roleConfig.color }}
-            >
-              <Briefcase className="w-6 h-6" />
-            </div>
-            <Target className="w-5 h-5 text-gray-400" />
-          </div>
-          <p
-            className={`text-3xl font-bold mb-1 ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {userTools.length}
-          </p>
-          <p
-            className={`text-sm ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}
-          >
-            Total Tools
-          </p>
-        </motion.div>
-
-        {/* Active Tools */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className={`p-6 rounded-2xl ${
-            theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-md'
-          }`}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-green-500" />
-            </div>
-            <Zap className="w-5 h-5 text-gray-400" />
-          </div>
-          <p
-            className={`text-3xl font-bold mb-1 ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {activeToolsCount}
-          </p>
-          <p
-            className={`text-sm ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}
-          >
-            Active Tools
-          </p>
-        </motion.div>
-
-        {/* Coming Soon */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className={`p-6 rounded-2xl ${
-            theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-md'
-          }`}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-              <Clock className="w-6 h-6 text-amber-500" />
-            </div>
-            <Calendar className="w-5 h-5 text-gray-400" />
-          </div>
-          <p
-            className={`text-3xl font-bold mb-1 ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {comingSoonCount}
-          </p>
-          <p
-            className={`text-sm ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}
-          >
-            Coming Soon
-          </p>
-        </motion.div>
-
-        {/* Favorites */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className={`p-6 rounded-2xl ${
-            theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-md'
-          }`}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center">
-              <Star className="w-6 h-6 text-pink-500" />
-            </div>
-            <Award className="w-5 h-5 text-gray-400" />
-          </div>
-          <p
-            className={`text-3xl font-bold mb-1 ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {favoriteToolsCount}
-          </p>
-          <p
-            className={`text-sm ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}
-          >
-            Favorite Tools
-          </p>
-        </motion.div>
-      </div>
-
-      {/* ================================================================== */}
-      {/* TOOLS SECTION */}
-      {/* ================================================================== */}
-      <div className="space-y-6">
-        {/* Section Header with Controls */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h2
-              className={`text-2xl font-bold mb-1 ${
-                theme === 'dark' ? 'text-white' : 'text-gray-900'
-              }`}
-            >
-              🛠️ Your Tools
-            </h2>
-            <p
-              className={`text-sm ${
-                theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-              }`}
-            >
-              {filteredTools.length} tools available
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* Search */}
-            <div className="relative">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              />
-              <input
-                type="text"
-                placeholder="Search tools..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={`pl-10 pr-4 py-2 rounded-xl border-2 transition-colors ${
-                  theme === 'dark'
-                    ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:border-green-500'
-                    : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-green-500'
-                }`}
-              />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              {/* Profile Picture */}
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/50">
+                <User className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* User Info */}
+              <div>
+                <h2 className="text-xl font-bold">{userName}</h2>
+                <p className="text-sm text-white/80">{phoneNumber}</p>
+                <p className="text-xs text-white/60">{userRole} • {userVillage}</p>
+              </div>
             </div>
 
-            {/* View Mode Toggle */}
-            <div
-              className={`flex items-center gap-1 p-1 rounded-lg ${
-                theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-              }`}
-            >
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'grid'
-                    ? 'bg-green-500 text-white'
-                    : theme === 'dark'
-                    ? 'text-gray-400 hover:text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <Grid3x3 className="w-5 h-5" />
+            {/* Header Actions */}
+            <div className="flex gap-3">
+              <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
+                <Search className="w-5 h-5" />
               </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'list'
-                    ? 'bg-green-500 text-white'
-                    : theme === 'dark'
-                    ? 'text-gray-400 hover:text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <List className="w-5 h-5" />
+              <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
+                <Bell className="w-5 h-5" />
+              </button>
+              <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
+                <Settings className="w-5 h-5" />
               </button>
             </div>
           </div>
-        </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-xl font-medium transition-all ${
-                selectedCategory === category
-                  ? 'text-white shadow-lg'
-                  : theme === 'dark'
-                  ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm'
-              }`}
-              style={
-                selectedCategory === category
-                  ? { backgroundColor: roleConfig.color }
-                  : {}
-              }
-            >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
-        </div>
-
-        {/* Tools Grid/List */}
-        {filteredTools.length > 0 ? (
-          <div
-            className={`grid gap-6 ${
-              viewMode === 'grid'
-                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                : 'grid-cols-1'
-            }`}
-          >
-            {filteredTools.map((tool, index) => {
-              const ToolIcon =
-                (Icons[tool.icon as keyof typeof Icons] as Icons.LucideIcon) ||
-                Icons.Wrench;
-              const isFavorite = favoriteTools.includes(tool.id);
-
-              return (
-                <motion.div
-                  key={tool.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="relative group"
-                >
-                  <ToolCard
-                    icon={ToolIcon}
-                    name={tool.name}
-                    description={tool.description}
-                    color={roleConfig.color}
-                    onClick={() => setSelectedTool(tool)}
-                    isActive={selectedTool?.id === tool.id}
-                  />
-                  
-                  {/* Favorite Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleFavorite(tool.id);
-                    }}
-                    className="absolute top-4 right-4 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <Star
-                      className={`w-5 h-5 ${
-                        isFavorite
-                          ? 'fill-yellow-500 text-yellow-500'
-                          : 'text-gray-400'
-                      }`}
-                    />
-                  </button>
-
-                  {/* Status Badge */}
-                  {tool.status === 'coming-soon' && (
-                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold">
-                      Coming Soon
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })}
+          {/* Quick Stats */}
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-3">
+              <p className="text-2xl font-bold">12</p>
+              <p className="text-xs text-white/70">Active Tools</p>
+            </div>
+            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-3">
+              <p className="text-2xl font-bold">45</p>
+              <p className="text-xs text-white/70">Connections</p>
+            </div>
+            <div className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-3">
+              <p className="text-2xl font-bold">8</p>
+              <p className="text-xs text-white/70">Tasks</p>
+            </div>
           </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-16"
-          >
-            <div className="text-6xl mb-4">🔍</div>
-            <h3
-              className={`text-xl font-bold mb-2 ${
-                theme === 'dark' ? 'text-white' : 'text-gray-900'
-              }`}
-            >
-              No tools found
-            </h3>
-            <p
-              className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
-            >
-              Try adjusting your search or filter
-            </p>
-          </motion.div>
-        )}
-      </div>
+        </motion.div>
 
-      {/* ================================================================== */}
-      {/* TOOL DETAIL MODAL */}
-      {/* ================================================================== */}
-      <AnimatePresence>
-        {selectedTool && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedTool(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className={`max-w-2xl w-full rounded-3xl p-8 ${
-                theme === 'dark'
-                  ? 'bg-gray-800 border-2 border-gray-700'
-                  : 'bg-white shadow-2xl'
-              }`}
-            >
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  {(() => {
-                    const Icon =
-                      (Icons[
-                        selectedTool.icon as keyof typeof Icons
-                      ] as Icons.LucideIcon) || Icons.Wrench;
-                    return (
-                      <div
-                        className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                        style={{
-                          backgroundColor: `${roleConfig.color}20`,
-                          color: roleConfig.color,
-                        }}
-                      >
-                        <Icon className="w-8 h-8" />
-                      </div>
-                    );
-                  })()}
-                  <div>
-                    <h3
-                      className={`text-2xl font-bold mb-1 ${
-                        theme === 'dark' ? 'text-white' : 'text-gray-900'
-                      }`}
+        {/* Main Content */}
+        <div className="flex-1 p-6">
+          <AnimatePresence mode="wait">
+            {activeTab === 'home' && (
+              <motion.div
+                key="home"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+              >
+                {/* Quick Actions */}
+                <div className="mb-6">
+                  <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Quick Actions
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <button
+                      onClick={() => setActiveTab('tools')}
+                      className={`${roleColors.bg} text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow`}
                     >
-                      {selectedTool.name}
-                    </h3>
-                    {selectedTool.status === 'coming-soon' && (
-                      <span className="text-sm px-3 py-1 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400">
-                        Coming Soon
-                      </span>
-                    )}
+                      <Wrench className="w-8 h-8 mx-auto mb-2" />
+                      <p className="text-sm font-semibold">My Tools</p>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('social')}
+                      className="bg-gradient-to-br from-pink-500 to-red-600 text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+                    >
+                      <MessageSquare className="w-8 h-8 mx-auto mb-2" />
+                      <p className="text-sm font-semibold">Social</p>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('banking')}
+                      className="bg-gradient-to-br from-green-500 to-teal-600 text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+                    >
+                      <CreditCard className="w-8 h-8 mx-auto mb-2" />
+                      <p className="text-sm font-semibold">Banking</p>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('ai')}
+                      className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+                    >
+                      <Bot className="w-8 h-8 mx-auto mb-2" />
+                      <p className="text-sm font-semibold">AI Help</p>
+                    </button>
                   </div>
                 </div>
-                <button
-                  onClick={() => setSelectedTool(null)}
-                  className={`p-2 rounded-lg transition-colors ${
-                    theme === 'dark'
-                      ? 'hover:bg-gray-700 text-gray-400'
-                      : 'hover:bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  <Icons.X className="w-6 h-6" />
-                </button>
-              </div>
 
-              <p
-                className={`text-lg mb-6 ${
-                  theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                }`}
+                {/* Recent Activity */}
+                <div className={`p-6 rounded-3xl ${theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm' : 'bg-white shadow-lg'}`}>
+                  <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Recent Activity
+                  </h3>
+                  <div className="space-y-4">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-gray-100 dark:bg-gray-700/30">
+                        <div className={`w-12 h-12 rounded-full ${roleColors.accent} flex items-center justify-center`}>
+                          <Calendar className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <p className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                            Activity {i}
+                          </p>
+                          <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                            2 hours ago
+                          </p>
+                        </div>
+                        <ChevronRight className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'tools' && (
+              <motion.div
+                key="tools"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
               >
-                {selectedTool.description}
-              </p>
-
-              <div
-                className={`text-center py-12 rounded-2xl ${
-                  theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50'
-                }`}
-              >
-                <div className="text-5xl mb-4">⚙️</div>
-                <p
-                  className={`font-semibold mb-2 ${
-                    theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                >
-                  Widget Component
-                </p>
-                <p
-                  className={`text-sm ${
-                    theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
-                  }`}
-                >
-                  {selectedTool.component}
-                </p>
-                <p
-                  className={`text-xs mt-4 ${
-                    theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
-                  }`}
-                >
-                  Widget implementation coming soon
-                </p>
-              </div>
-
-              {selectedTool.status === 'active' && (
-                <div className="mt-6 flex gap-3">
-                  <button
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-lg transition-shadow"
-                    style={{
-                      background: `linear-gradient(135deg, ${roleConfig.color} 0%, ${roleConfig.color}dd 100%)`,
-                    }}
-                  >
-                    Launch Tool
-                  </button>
-                  <button
-                    onClick={() => toggleFavorite(selectedTool.id)}
-                    className={`px-6 py-3 rounded-xl font-semibold border-2 transition-colors ${
-                      favoriteTools.includes(selectedTool.id)
-                        ? 'bg-yellow-500/20 border-yellow-500 text-yellow-600'
-                        : theme === 'dark'
-                        ? 'border-gray-700 text-gray-300 hover:bg-gray-700'
-                        : 'border-gray-200 text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <Star
-                      className={`w-5 h-5 inline ${
-                        favoriteTools.includes(selectedTool.id)
-                          ? 'fill-current'
-                          : ''
-                      }`}
-                    />
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    {userRole} Tools
+                  </h3>
+                  <button className={`${roleColors.bg} text-white p-3 rounded-full shadow-lg`}>
+                    <Plus className="w-6 h-6" />
                   </button>
                 </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {tools.map((tool, index) => {
+                    const Icon = tool.icon;
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className={`p-6 rounded-3xl cursor-pointer hover:shadow-xl transition-all ${
+                          theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm hover:bg-gray-800/50' : 'bg-white shadow-lg hover:shadow-2xl'
+                        }`}
+                      >
+                        <div className={`w-16 h-16 rounded-2xl ${tool.bgColor} flex items-center justify-center mb-4`}>
+                          <Icon className={`w-8 h-8 ${tool.color}`} />
+                        </div>
+                        <h4 className={`text-lg font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                          {tool.title}
+                        </h4>
+                        <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                          {tool.description}
+                        </p>
+                        <div className="mt-4 flex items-center gap-2 text-sm font-semibold" style={{ color: tool.color.replace('text-', '') }}>
+                          <span>Open Tool</span>
+                          <ChevronRight className="w-4 h-4" />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'social' && (
+              <motion.div
+                key="social"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="text-center py-20"
+              >
+                <MessageSquare className="w-20 h-20 mx-auto mb-4 text-pink-500" />
+                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  ViewDicon Social Media
+                </h3>
+                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Connect with your community
+                </p>
+              </motion.div>
+            )}
+
+            {activeTab === 'banking' && (
+              <motion.div
+                key="banking"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="text-center py-20"
+              >
+                <CreditCard className="w-20 h-20 mx-auto mb-4 text-green-500" />
+                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  Banking Services
+                </h3>
+                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Manage your finances
+                </p>
+              </motion.div>
+            )}
+
+            {activeTab === 'ai' && (
+              <motion.div
+                key="ai"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="text-center py-20"
+              >
+                <Bot className="w-20 h-20 mx-auto mb-4 text-purple-500" />
+                <h3 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  AI Assistant
+                </h3>
+                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Get intelligent help
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Bottom Navigation Bar */}
+        <div className={`border-t ${theme === 'dark' ? 'bg-gray-900/50 border-gray-800' : 'bg-white border-gray-200'} backdrop-blur-sm`}>
+          <div className="flex justify-around p-4">
+            <button
+              onClick={() => setActiveTab('home')}
+              className={`flex flex-col items-center gap-1 transition-colors ${
+                activeTab === 'home' ? roleColors.text : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+              }`}
+            >
+              <Home className="w-6 h-6" />
+              <span className="text-xs font-medium">Home</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('tools')}
+              className={`flex flex-col items-center gap-1 transition-colors ${
+                activeTab === 'tools' ? roleColors.text : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+              }`}
+            >
+              <Wrench className="w-6 h-6" />
+              <span className="text-xs font-medium">Tools</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('social')}
+              className={`flex flex-col items-center gap-1 transition-colors ${
+                activeTab === 'social' ? 'text-pink-500' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+              }`}
+            >
+              <MessageSquare className="w-6 h-6" />
+              <span className="text-xs font-medium">Social</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('banking')}
+              className={`flex flex-col items-center gap-1 transition-colors ${
+                activeTab === 'banking' ? 'text-green-500' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+              }`}
+            >
+              <CreditCard className="w-6 h-6" />
+              <span className="text-xs font-medium">Banking</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('ai')}
+              className={`flex flex-col items-center gap-1 transition-colors ${
+                activeTab === 'ai' ? 'text-purple-500' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+              }`}
+            >
+              <Bot className="w-6 h-6" />
+              <span className="text-xs font-medium">AI</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </GradientBackground>
   );
 };
 

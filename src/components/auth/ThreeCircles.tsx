@@ -1,5 +1,23 @@
 import React, { useState } from 'react';
-import { Globe, Users, Heart, ArrowRight, MapPin } from 'lucide-react';
+import { 
+  Globe, 
+  Users, 
+  Heart, 
+  ArrowRight, 
+  MapPin,
+  Home,
+  MessageCircle,
+  Languages,
+  UserCheck,
+  Sparkles,
+  Plane,
+  TreePine,
+  BookOpen,
+  Award,
+  GraduationCap,
+  Handshake,
+  Star
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { GradientBackground } from '../common/GradientBackground';
 import { Button } from '../common/Button';
@@ -11,6 +29,11 @@ interface ThreeCirclesProps {
 }
 
 type Circle = 'C1' | 'C2' | 'C3';
+
+interface Feature {
+  icon: React.ComponentType<{ className?: string }>;
+  text: string;
+}
 
 export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, onContinue }) => {
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
@@ -26,12 +49,12 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
       borderColor: 'border-green-500',
       description: 'You live on African soil, breathing the air of your ancestors',
       features: [
-        '🌍 Currently residing in Africa',
-        '🏘️ Direct tribal and ethnic knowledge',
-        '🗣️ Native languages and local dialects',
-        '👥 Community verification options',
-        '🎭 Deep cultural immersion',
-      ],
+        { icon: Globe, text: 'Currently residing in Africa' },
+        { icon: Home, text: 'Direct tribal and ethnic knowledge' },
+        { icon: MessageCircle, text: 'Native languages and local dialects' },
+        { icon: UserCheck, text: 'Community verification options' },
+        { icon: Sparkles, text: 'Deep cultural immersion' },
+      ] as Feature[],
       recommended: detectedLocation === 'africa',
     },
     C2: {
@@ -43,12 +66,12 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
       borderColor: 'border-amber-500',
       description: 'Your roots are African, though you walk distant lands',
       features: [
-        '✈️ African heritage, living abroad',
-        '👨‍👩‍👧‍👦 Family stories and ancestral knowledge',
-        '🌳 Ancestral homeland connection',
-        '🌐 Heritage languages preserved',
-        '🏆 Heritage Challenge to prove roots',
-      ],
+        { icon: Plane, text: 'African heritage, living abroad' },
+        { icon: Users, text: 'Family stories and ancestral knowledge' },
+        { icon: TreePine, text: 'Ancestral homeland connection' },
+        { icon: Languages, text: 'Heritage languages preserved' },
+        { icon: Award, text: 'Heritage Challenge to prove roots' },
+      ] as Feature[],
       recommended: detectedLocation === 'diaspora',
     },
     C3: {
@@ -60,12 +83,12 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
       borderColor: 'border-blue-500',
       description: 'Though not born of Africa, you carry her in your spirit',
       features: [
-        '❤️ Deep respect for African culture',
-        '📚 Cultural learning and appreciation',
-        '🤝 Community endorsement pathway',
-        '🌍 Cultural integration journey',
-        '🎓 Language learning support',
-      ],
+        { icon: Heart, text: 'Deep respect for African culture' },
+        { icon: BookOpen, text: 'Cultural learning and appreciation' },
+        { icon: Handshake, text: 'Community endorsement pathway' },
+        { icon: Globe, text: 'Cultural integration journey' },
+        { icon: GraduationCap, text: 'Language learning support' },
+      ] as Feature[],
       recommended: detectedLocation === 'other',
     },
   };
@@ -91,7 +114,7 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
           >
             {/* Header */}
             <div className="flex justify-center mb-6">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg">
                 <Globe className="w-12 h-12 text-white" />
               </div>
             </div>
@@ -134,7 +157,8 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
                   {/* Recommended Badge */}
                   {isRecommended && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                      <div className={`px-4 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${circle.color}`}>
+                      <div className={`px-4 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${circle.color} shadow-lg flex items-center gap-1`}>
+                        <Star className="w-3 h-3" />
                         Recommended for You
                       </div>
                     </div>
@@ -154,7 +178,7 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
                   >
                     {/* Icon */}
                     <div className="flex justify-center mb-4">
-                      <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${circle.color} flex items-center justify-center`}>
+                      <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${circle.color} flex items-center justify-center shadow-lg`}>
                         <IconComponent className="w-10 h-10 text-white" />
                       </div>
                     </div>
@@ -183,16 +207,26 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
                     <div className={`text-left space-y-2 p-4 rounded-xl ${
                       theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50'
                     }`}>
-                      {circle.features.map((feature, idx) => (
-                        <div
-                          key={idx}
-                          className={`text-sm flex items-start gap-2 ${
-                            theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                          }`}
-                        >
-                          <span>{feature}</span>
-                        </div>
-                      ))}
+                      {circle.features.map((feature, idx) => {
+                        const FeatureIcon = feature.icon;
+                        return (
+                          <div
+                            key={idx}
+                            className={`text-sm flex items-start gap-3 ${
+                              theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                            }`}
+                          >
+                            <FeatureIcon className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
+                              isSelected 
+                                ? 'text-green-500' 
+                                : theme === 'dark' 
+                                ? 'text-gray-400' 
+                                : 'text-gray-500'
+                            }`} />
+                            <span>{feature.text}</span>
+                          </div>
+                        );
+                      })}
                     </div>
 
                     {/* Selection Indicator */}
@@ -220,17 +254,23 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
           <div className={`p-6 rounded-2xl mb-8 ${
             theme === 'dark' ? 'bg-blue-900/20 border-2 border-blue-500/30' : 'bg-blue-50 border-2 border-blue-200'
           }`}>
-            <p className={`text-sm text-center ${
-              theme === 'dark' ? 'text-blue-300' : 'text-blue-700'
-            }`}>
-              <strong>Note:</strong> Your selection determines your verification pathway, 
-              language support, and community connections. 
-              {selectedCircle === 'C2' && (
-                <span className="block mt-2 font-semibold text-amber-600 dark:text-amber-400">
-                  ⚠️ Diaspora members must complete the Heritage Challenge to verify their African roots.
-                </span>
-              )}
-            </p>
+            <div className="flex items-start gap-3">
+              <BookOpen className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+              }`} />
+              <p className={`text-sm ${
+                theme === 'dark' ? 'text-blue-300' : 'text-blue-700'
+              }`}>
+                <strong>Note:</strong> Your selection determines your verification pathway, 
+                language support, and community connections.
+                {selectedCircle === 'C2' && (
+                  <span className="flex items-center gap-2 mt-2 font-semibold text-amber-600 dark:text-amber-400">
+                    <Award className="w-4 h-4" />
+                    Diaspora members must complete the Heritage Challenge to verify their African roots.
+                  </span>
+                )}
+              </p>
+            </div>
           </div>
 
           {/* Continue Button */}
@@ -259,3 +299,5 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
     </GradientBackground>
   );
 };
+
+export default ThreeCircles;

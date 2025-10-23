@@ -222,11 +222,12 @@ export const FaceRecognition: React.FC<FaceRecognitionProps> = ({ onNext }) => {
                     </ul>
                   </div>
 
-                  <div className="flex gap-4">
-                    <Button onClick={handleSkip} variant="outline" className="flex-1">
+                  {/* UPDATED: Stack buttons vertically on mobile */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button onClick={handleSkip} variant="outline" className="w-full sm:flex-1">
                       Skip for Now
                     </Button>
-                    <Button onClick={handleStartCapture} className="flex-1">
+                    <Button onClick={handleStartCapture} className="w-full sm:flex-1">
                       Start Camera
                       <Camera className="w-5 h-5 ml-2" />
                     </Button>
@@ -306,14 +307,15 @@ export const FaceRecognition: React.FC<FaceRecognitionProps> = ({ onNext }) => {
 
                   <canvas ref={canvasRef} className="hidden" />
 
-                  <div className="flex gap-4">
-                    <Button onClick={handleSkip} variant="outline" className="flex-1">
+                  {/* UPDATED: Stack buttons vertically on mobile */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button onClick={handleSkip} variant="outline" className="w-full sm:flex-1">
                       Skip
                     </Button>
                     <Button
                       onClick={captureImage}
                       disabled={!cameraActive}
-                      className="flex-1"
+                      className="w-full sm:flex-1"
                     >
                       {step === 'neutral' ? (
                         <>
@@ -351,7 +353,7 @@ export const FaceRecognition: React.FC<FaceRecognitionProps> = ({ onNext }) => {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mb-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     {neutralImage && (
                       <div className="rounded-xl overflow-hidden">
                         <img src={neutralImage} alt="Neutral" className="w-full h-auto transform scale-x-[-1]" />
@@ -374,11 +376,12 @@ export const FaceRecognition: React.FC<FaceRecognitionProps> = ({ onNext }) => {
                     )}
                   </div>
 
-                  <div className="flex gap-4">
-                    <Button onClick={handleRetry} variant="outline" className="flex-1">
+                  {/* UPDATED: Stack buttons vertically on mobile */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button onClick={handleRetry} variant="outline" className="w-full sm:flex-1">
                       Retake Photos
                     </Button>
-                    <Button onClick={handleComplete} className="flex-1">
+                    <Button onClick={handleComplete} className="w-full sm:flex-1">
                       Continue
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </Button>
@@ -392,3 +395,5 @@ export const FaceRecognition: React.FC<FaceRecognitionProps> = ({ onNext }) => {
     </GradientBackground>
   );
 };
+
+export default FaceRecognition;

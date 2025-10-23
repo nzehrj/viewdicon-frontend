@@ -24,6 +24,15 @@ const VillageSelection = lazy(() => import('../components/auth/VillageSelection'
 const HeritagePrompt = lazy(() => import('../components/auth/HeritagePrompt').then(module => ({ default: module.HeritagePrompt })));
 const HeritageChallenge = lazy(() => import('../components/auth/HeritageChallenge').then(module => ({ default: module.HeritageChallenge })));
 
+// Centered Loading Fallback Component
+const CenteredLoader: React.FC = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-amber-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <Loader size="lg" text="Loading..." />
+    </div>
+  );
+};
+
 // === THE STORYTELLING JOURNEY HOME ===
 
 const SplashScreenWrapper = () => {
@@ -59,9 +68,11 @@ const PhoneWrapper = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const goToStep = (step: AuthStep) => navigate(`/auth/${step}`);
+  
   return (
     <PhoneVerification
       onNext={(phone: string) => {
+        console.log('📞 Phone number saved:', phone);
         dispatch(setPhoneNumber(phone));
         goToStep('otp');
       }}
@@ -76,25 +87,76 @@ const OTPWrapper = () => {
   const goToStep = (step: AuthStep) => navigate(`/auth/${step}`);
 
   const handleOTPSuccess = () => {
+    console.log('🎉 OTP Verification Success!');
+    console.log('📱 Phone Number:', phoneNumber);
+
     if (!phoneNumber) {
+      console.error('❌ No phone number found, redirecting to phone step');
       goToStep('phone');
       return;
     }
 
-    const countryCode = phoneNumber.split(' ')[0].substring(1); // e.g., "+234" -> "234"
-    let userLocation: AuthState['userLocation'] = 'other';
+    // Clean phone number - remove spaces, dashes, parentheses
+    const cleanNumber = phoneNumber.replace(/[\s\-\(\)]/g, '');
+    console.log('🧹 Cleaned Number:', cleanNumber);
 
-    if (['234', '254', '233'].includes(countryCode)) {
-      userLocation = 'africa';
-    } else if (['1', '44'].includes(countryCode)) {
-      userLocation = 'diaspora';
+    // Extract country code (first 1-3 digits after +)
+    let countryCode = '';
+    if (cleanNumber.startsWith('+')) {
+      countryCode = cleanNumber.substring(1, 4);
+    } else {
+      countryCode = cleanNumber.substring(0, 3);
     }
 
+    console.log('🔢 Extracted Country Code:', countryCode);
+
+    let userLocation: AuthState['userLocation'] = 'other';
+
+    // African country codes
+    const africanCodes = [
+      '234', // Nigeria
+      '254', // Kenya
+      '233', // Ghana
+      '27',  // South Africa
+      '256', // Uganda
+      '255', // Tanzania
+      '263', // Zimbabwe
+      '251', // Ethiopia
+      '20',  // Egypt
+    ];
+
+    // Check if country code starts with any African code
+    const isAfrican = africanCodes.some(code => countryCode.startsWith(code));
+
+    if (isAfrican) {
+      userLocation = 'africa';
+      console.log('🌍 Detected: African country');
+    }
+    // Diaspora - USA/Canada (country code starts with 1)
+    else if (countryCode.startsWith('1')) {
+      userLocation = 'diaspora';
+      console.log('🇺🇸 Detected: USA/Canada (Diaspora)');
+    }
+    // Diaspora - UK (country code starts with 44)
+    else if (countryCode.startsWith('44')) {
+      userLocation = 'diaspora';
+      console.log('🇬🇧 Detected: UK (Diaspora)');
+    }
+    else {
+      console.log('🌎 Detected: Other country');
+    }
+
+    console.log('🌍 Final User Location:', userLocation);
+
+    // Save location to Redux
     dispatch(setUserLocation(userLocation));
 
+    // Navigate based on location
     if (userLocation === 'africa' || userLocation === 'diaspora') {
+      console.log('✅ Showing ThreeCircles step');
       goToStep('three-circles');
     } else {
+      console.log('⏭️ Skipping ThreeCircles, going to Device Binding');
       goToStep('device');
     }
   };
@@ -107,11 +169,16 @@ const ThreeCirclesWrapper = () => {
   const userLocation = useAppSelector((state) => state.auth.userLocation);
   const goToStep = (step: AuthStep) => navigate(`/auth/${step}`);
 
+  console.log('🎯 ThreeCircles Wrapper - User Location:', userLocation);
+
   const handleContinue = (circle: 'C1' | 'C2' | 'C3') => {
-    // Future: API call to record circle selection can go here.
+    console.log('⭕ Circle Selected:', circle);
+    
     if (circle === 'C2') {
+      console.log('🌍 C2 Diaspora - Showing Heritage Challenge');
       goToStep('heritage');
     } else {
+      console.log('✅ C1/C3 - Going to Device Binding');
       goToStep('device');
     }
   };
@@ -119,7 +186,6 @@ const ThreeCirclesWrapper = () => {
   return <ThreeCircles detectedLocation={userLocation || 'other'} onContinue={handleContinue} />;
 };
 
-// HERITAGE PROMPT
 const HeritagePromptWrapper = () => {
   const navigate = useNavigate();
   const goToStep = (step: AuthStep) => navigate(`/auth/${step}`);
@@ -131,7 +197,6 @@ const HeritagePromptWrapper = () => {
   );
 };
 
-// HERITAGE CHALLENGE
 const HeritageChallengeWrapper = () => {
   const navigate = useNavigate();
   const goToStep = (step: AuthStep) => navigate(`/auth/${step}`);
@@ -196,9 +261,19 @@ const FamilyTreeWrapper = () => {
 
 const VillageWrapper = () => {
   const navigate = useNavigate();
+  
   const handleVillageSelect = (_village: string, _role: string) => {
-    // VillageSelection already dispatches setUserVillage and setUserRole
-    navigate('/dashboard');
+    console.log('🏘️ AuthRoutes: Village and Role callback received');
+    console.log('Village:', _village, 'Role:', _role);
+    
+    // VillageSelection component already dispatches:
+    // - setUserVillage(village)
+    // - setUserRole(role)
+    // - setAuthenticated(true)
+    
+    // Navigate directly to dashboard with replace to prevent back button issues
+    console.log('🚀 Navigating to dashboard...');
+    navigate('/dashboard', { replace: true });
   };
 
   return <VillageSelection onSelect={handleVillageSelect} />;
@@ -206,7 +281,7 @@ const VillageWrapper = () => {
 
 const AuthRoutes: React.FC = () => {
   return (
-    <Suspense fallback={<Loader size="lg" text="Loading..." />}>
+    <Suspense fallback={<CenteredLoader />}>
       <Routes>
         <Route path="/" element={<SplashScreenWrapper />} />
         <Route path="/greeting" element={<GreetingWrapper />} />
