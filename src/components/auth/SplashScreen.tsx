@@ -9,6 +9,7 @@ interface SplashScreenProps {
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(true);
   const theme = useAppSelector((state) => state.theme.theme);
 
   useEffect(() => {
@@ -85,24 +86,18 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                       : 'border-white bg-white'
                   }`}
                 >
-                  <img
-                    src="public/assets/vi.jpg"
-                    alt="ViewDicon Logo"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback if image doesn't load
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const parent = target.parentElement;
-                      if (parent) {
-                        parent.innerHTML = `
-                          <div class="w-full h-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                            <span class="text-5xl sm:text-6xl font-bold text-white">Vi</span>
-                          </div>
-                        `;
-                      }
-                    }}
-                  />
+                  {imageLoaded ? (
+                    <img
+                      src="/assets/vi.jpg"
+                      alt="ViewDicon Logo"
+                      className="w-full h-full object-cover"
+                      onError={() => setImageLoaded(false)}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                      <span className="text-5xl sm:text-6xl font-bold text-white">Vi</span>
+                    </div>
+                  )}
                 </motion.div>
               </div>
             </motion.div>
