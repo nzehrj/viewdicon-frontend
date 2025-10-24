@@ -312,7 +312,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
                   <div className="flex items-center justify-between gap-4">
                     {/* Code Display */}
                     <div className="flex-1 text-center">
-                      <p className={`text-4xl font-bold tracking-widest font-mono ${
+                      <p className={`text-3xl font-bold tracking-widest font-mono ${
                         theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}>
                         {currentOTP}
