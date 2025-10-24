@@ -333,7 +333,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
                     >
                       {copied ? (
                         <>
-                          <Check className="w-5 h-5" />
+                          <Check className="w-4 h-4" />
                           <span>Copied!</span>
                         </>
                       ) : (
