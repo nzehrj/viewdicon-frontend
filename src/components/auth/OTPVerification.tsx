@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Shield, AlertCircle, RefreshCw } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Shield, AlertCircle, RefreshCw, Copy, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { Button } from '@components/common/Button';
 import { useAppSelector } from '@store/hooks';
@@ -16,6 +16,9 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
+  const [showOTPModal, setShowOTPModal] = useState(false);
+  const [currentOTP, setCurrentOTP] = useState('');
+  const [copied, setCopied] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const theme = useAppSelector((state) => state.theme.theme);
 
@@ -30,7 +33,34 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
+    
+    // Show initial OTP when component mounts
+    const initialOTP = localStorage.getItem('mock_otp');
+    if (initialOTP) {
+      setCurrentOTP(initialOTP);
+      // Use setTimeout to show after component is mounted
+      setTimeout(() => {
+        setShowOTPModal(true);
+      }, 500);
+    }
   }, []);
+
+  const handleCopyOTP = async () => {
+    try {
+      await navigator.clipboard.writeText(currentOTP);
+      setCopied(true);
+      
+      // Close modal after showing success
+      setTimeout(() => {
+        setShowOTPModal(false);
+        setCopied(false);
+      }, 1000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      // Fallback: just close
+      setShowOTPModal(false);
+    }
+  };
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
@@ -104,15 +134,18 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
     setCanResend(false);
     setResendTimer(60);
     setError('');
+    setCopied(false);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const newOTP = Math.floor(100000 + Math.random() * 900000).toString();
       localStorage.setItem('mock_otp', newOTP);
+      setCurrentOTP(newOTP);
       console.log('📱 New Mock OTP sent:', newOTP);
 
-      alert(`New OTP sent: ${newOTP}\n(This is for testing only)`);
+      // Show modal with new OTP
+      setShowOTPModal(true);
     } catch (err) {
       setError('Failed to resend code. Please try again.');
       setCanResend(true);
@@ -156,7 +189,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
             </p>
 
             <div className="mb-6" onPaste={handlePaste}>
-              <div className="flex justify-between gap-2">
+              <div className="flex justify-between gap-1.5 sm:gap-3">
                 {otp.map((digit, index) => (
                   <input
                     key={index}
@@ -167,7 +200,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
                     value={digit}
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className={`w-10 h-10 text-center text-2xl font-bold rounded-xl border-2 transition-all ${
+                    className={`w-10 h-10 sm:w-14 sm:h-14 text-center text-base sm:text-2xl font-bold rounded-lg sm:rounded-xl border-2 transition-all ${
                       error
                         ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
                         : digit
@@ -230,6 +263,109 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
           </motion.div>
         </div>
       </div>
+
+      {/* OTP Modal with Copy Button */}
+      <AnimatePresence>
+        {showOTPModal && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            />
+            
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            >
+              <div className={`rounded-2xl shadow-2xl p-8 max-w-md w-full relative ${
+                theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+              }`}>
+                {/* Header */}
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-600 rounded-2xl mb-4">
+                    <Shield className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className={`text-xl font-bold mb-2 ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    Your Verification Code
+                  </h3>
+                  <p className={`text-sm ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }`}>
+                    Click the copy button to copy your code
+                  </p>
+                </div>
+
+                {/* OTP Code Display with Copy Button */}
+                <div className={`rounded-xl p-6 mb-6 ${
+                  theme === 'dark' 
+                    ? 'bg-gradient-to-br from-gray-700 to-gray-700' 
+                    : 'bg-gradient-to-br from-green-50 to-emerald-50'
+                }`}>
+                  <div className="flex items-center justify-between gap-4">
+                    {/* Code Display */}
+                    <div className="flex-1 text-center">
+                      <p className={`text-4xl font-bold tracking-widest font-mono ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        {currentOTP}
+                      </p>
+                    </div>
+
+                    {/* Copy Button */}
+                    <button
+                      onClick={handleCopyOTP}
+                      className={`
+                        flex items-center gap-2 px-4 py-3 rounded-lg
+                        font-medium text-sm transition-all duration-200
+                        ${copied 
+                          ? 'bg-green-600 text-white' 
+                          : 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg hover:scale-105'
+                        }
+                      `}
+                    >
+                      {copied ? (
+                        <>
+                          <Check className="w-5 h-5" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-5 h-5" />
+                          <span>Copy</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Warning */}
+                <div className={`flex items-start gap-3 p-4 rounded-lg ${
+                  theme === 'dark' 
+                    ? 'bg-amber-900/20' 
+                    : 'bg-amber-50'
+                }`}>
+                  <AlertCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                    theme === 'dark' ? 'text-amber-400' : 'text-amber-600'
+                  }`} />
+                  <p className={`text-sm ${
+                    theme === 'dark' ? 'text-amber-200' : 'text-amber-800'
+                  }`}>
+                    <strong>Important:</strong> Copy this code to verify your phone number. The modal will close automatically after copying.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </GradientBackground>
   );
 };
