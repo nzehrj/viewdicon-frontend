@@ -304,15 +304,15 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
                 </div>
 
                 {/* OTP Code Display with Copy Button */}
-                <div className={`rounded-xl p-6 mb-6 ${
+                <div className={`rounded-xl p-4 sm:p-6 mb-6 ${
                   theme === 'dark' 
                     ? 'bg-gradient-to-br from-gray-700 to-gray-700' 
                     : 'bg-gradient-to-br from-green-50 to-emerald-50'
                 }`}>
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
                     {/* Code Display */}
-                    <div className="flex-1 text-center">
-                      <p className={`text-2xl font-bold tracking-widest font-mono ${
+                    <div className="flex-1 text-center w-full sm:w-auto">
+                      <p className={`text-3xl sm:text-4xl font-bold tracking-widest font-mono ${
                         theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}>
                         {currentOTP}
@@ -323,8 +323,9 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
                     <button
                       onClick={handleCopyOTP}
                       className={`
-                        flex items-center gap-2 px-4 py-3 rounded-lg
-                        font-medium text-sm transition-all duration-200
+                        flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 rounded-lg
+                        font-medium text-sm transition-all duration-200 w-full sm:w-auto
+                        flex-shrink-0
                         ${copied 
                           ? 'bg-green-600 text-white' 
                           : 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg hover:scale-105'
@@ -333,13 +334,13 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ phone, onNext 
                     >
                       {copied ? (
                         <>
-                          <Check className="w-5 h-5" />
-                          <span>Copied!</span>
+                          <Check className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <span className="whitespace-nowrap">Copied!</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-5 h-5" />
-                          <span>Copy</span>
+                          <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <span className="whitespace-nowrap">Copy</span>
                         </>
                       )}
                     </button>

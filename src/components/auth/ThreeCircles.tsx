@@ -156,10 +156,10 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
                 >
                   {/* Recommended Badge */}
                   {isRecommended && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                      <div className={`px-4 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${circle.color} shadow-lg flex items-center gap-1`}>
+                    <div className="absolute -top-3 sm:-top-3 left-1/2 transform -translate-x-1/2 z-10">
+                      <div className={`px-3 py-1.5 sm:px-4 sm:py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${circle.color} shadow-lg flex items-center gap-1`}>
                         <Star className="w-3 h-3" />
-                        Recommended for You
+                        <span className="whitespace-nowrap">Recommended for You</span>
                       </div>
                     </div>
                   )}
@@ -168,7 +168,9 @@ export const ThreeCircles: React.FC<ThreeCirclesProps> = ({ detectedLocation, on
                     onClick={() => handleSelect(circleKey)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`w-full p-6 rounded-3xl border-4 transition-all ${
+                    className={`w-full rounded-3xl border-4 transition-all ${
+                      isRecommended ? 'pt-10 sm:pt-6 pb-6 px-6' : 'p-6'
+                    } ${
                       isSelected
                         ? `${circle.borderColor} ${circle.bgColor}`
                         : theme === 'dark'
