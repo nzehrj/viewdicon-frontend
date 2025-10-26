@@ -1,9 +1,9 @@
 {
-  "villageId": "traders",
-  "villageName": "Village of Traders",
-  "description": "Merchants and traders facilitating commerce",
+  "villageId": "business",
+  "villageName": "Business Village",
+  "description": "Business people - shop owners, traders, importers, and sales workers",
   "color": "#8b5cf6",
-  "icon": "TrendingUp",
+  "icon": "ShoppingCart",
   "roles": [
     {
       "roleId": "import_export",

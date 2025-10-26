@@ -1,7 +1,7 @@
 {
-  "villageId": "teachers",
-  "villageName": "Village of Scholars",
-  "description": "Educators shaping the next generation",
+  "villageId": "education",
+  "villageName": "Education Village",
+  "description": "Education workers - teachers, tutors, instructors, and trainers",
   "color": "#06b6d4",
   "icon": "GraduationCap",
   "roles": [

@@ -1,7 +1,7 @@
 {
-  "villageId": "builders",
-  "villageName": "Village of Master Builders",
-  "description": "Construction professionals building infrastructure",
+  "villageId": "construction",
+  "villageName": "Construction Village",
+  "description": "Construction workers - builders, engineers, architects, and contractors",
   "color": "#3b82f6",
   "icon": "HardHat",
   "roles": [

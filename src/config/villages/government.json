@@ -1,9 +1,9 @@
 {
-  "villageId": "civic",
-  "villageName": "Village of Leaders",
-  "description": "Community leaders and civic organizers",
+  "villageId": "government",
+  "villageName": "Government Village",
+  "description": "Government workers - civil servants, officials, law enforcement, and public service",
   "color": "#f97316",
-  "icon": "Flag",
+  "icon": "Building2",
   "roles": [
     {
       "roleId": "community_organizer",

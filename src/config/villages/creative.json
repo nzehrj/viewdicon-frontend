@@ -1,7 +1,7 @@
 {
-  "villageId": "artists",
-  "villageName": "Village of Creatives",
-  "description": "Artists and creators expressing African culture",
+  "villageId": "creative",
+  "villageName": "Creative Village",
+  "description": "Creative people - artists, musicians, designers, and content creators",
   "color": "#ec4899",
   "icon": "Palette",
   "roles": [

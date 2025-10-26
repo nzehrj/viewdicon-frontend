@@ -1,7 +1,7 @@
 {
   "villageId": "transport",
   "villageName": "Village of Movers",
-  "description": "Transportation and logistics professionals",
+  "description": "Transport workers - drivers, pilots, delivery workers, and logistics staff",
   "color": "#eab308",
   "icon": "Truck",
   "roles": [

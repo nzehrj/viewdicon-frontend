@@ -29,33 +29,33 @@ import * as Icons from 'lucide-react';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { toggleTheme } from '@store/slices/themeSlice';
 
-// Import all village configs
-import healersConfig from '@config/villages/healers.json';
-import farmersConfig from '@config/villages/farmers.json';
-import buildersConfig from '@config/villages/builders.json';
-import tradersConfig from '@config/villages/traders.json';
-import artistsConfig from '@config/villages/artists.json';
-import teachersConfig from '@config/villages/teachers.json';
-import civicConfig from '@config/villages/civic.json';
-import transportConfig from '@config/villages/transport.json';
-import techConfig from '@config/villages/tech.json';
-import hospitalityConfig from '@config/villages/hospitality.json';
-import financeConfig from '@config/villages/finance.json';
-import environmentConfig from '@config/villages/environment.json';
+// Import all village configsimport healthcareConfig from '../../config/villages/healthcare.json';
+import healthcareConfig from '../../config/villages/healthcare.json';
+import farmingConfig from '../../config/villages/farming.json';
+import constructionConfig from '../../config/villages/construction.json';
+import businessConfig from '../../config/villages/business.json';
+import creativeConfig from '../../config/villages/creative.json';
+import educationConfig from '../../config/villages/education.json';
+import governmentConfig from '../../config/villages/government.json';
+import transportConfig from '../../config/villages/transport.json';
+import technologyConfig from '../../config/villages/technology.json';
+import hospitalityConfig from '../../config/villages/hospitality.json';
+import financeConfig from '../../config/villages/finance.json';
+import environmentConfig from '../../config/villages/environment.json';
 
 const villageConfigs: Record<string, any> = {
-  healers: healersConfig,
-  farmers: farmersConfig,
-  builders: buildersConfig,
-  traders: tradersConfig,
-  artists: artistsConfig,
-  teachers: teachersConfig,
-  civic: civicConfig,
-  transport: transportConfig,
-  tech: techConfig,
-  hospitality: hospitalityConfig,
-  finance: financeConfig,
-  environment: environmentConfig,
+   healthcare: healthcareConfig,
+   farming: farmingConfig,
+   construction: constructionConfig,
+   business: businessConfig,
+   creative: creativeConfig,
+   education: educationConfig,
+   government: governmentConfig,
+   transport: transportConfig,
+   technology: technologyConfig,
+   hospitality: hospitalityConfig,
+   finance: financeConfig,
+   environment: environmentConfig,
 };
 
 interface Tool {

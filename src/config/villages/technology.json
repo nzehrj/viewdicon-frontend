@@ -1,9 +1,9 @@
 {
-  "villageId": "tech",
-  "villageName": "Village of Innovators",
-  "description": "Technology professionals driving innovation",
+  "villageId": "technology",
+  "villageName": "Technology Village",
+  "description": "Tech workers - developers, IT support, data analysts, and digital specialists",
   "color": "#6366f1",
-  "icon": "Code",
+  "icon": "Laptop",
   "roles": [
     {
       "roleId": "software_dev",

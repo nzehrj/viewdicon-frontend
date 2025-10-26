@@ -1,9 +1,9 @@
 {
   "villageId": "hospitality",
   "villageName": "Village of Hosts",
-  "description": "Hospitality professionals serving with excellence",
+  "description": "Service workers - hotel staff, chefs, waiters, tour guides, and event planners",
   "color": "#14b8a6",
-  "icon": "Utensils",
+  "icon": "UtensilsCrossed",
   "roles": [
     {
       "roleId": "chef",

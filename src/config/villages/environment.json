@@ -1,9 +1,9 @@
 {
   "villageId": "environment",
   "villageName": "Village of Earth Stewards",
-  "description": "Environmental professionals protecting our planet",
+  "description": "Environmental workers - conservationists, park rangers, recyclers, and sustainability experts",
   "color": "#22c55e",
-  "icon": "Leaf",
+  "icon": "Trees",
   "roles": [
     {
       "roleId": "conservationist",

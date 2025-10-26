@@ -1,9 +1,9 @@
 {
-  "villageId": "farmers",
-  "villageName": "Village of Harvesters",
-  "description": "Agricultural workers cultivating the land",
+  "villageId": "farming",
+  "villageName": "Farming Village",
+  "description": "Food growers - crop farmers, livestock farmers, and agricultural workers",
   "color": "#f59e0b",
-  "icon": "Sprout",
+  "icon": "Wheat",
   "roles": [
     {
       "roleId": "crop_farmer",

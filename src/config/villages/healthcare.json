@@ -1,9 +1,9 @@
 {
-  "villageId": "healers",
-  "villageName": "Village of Healers",
-  "description": "Healthcare professionals dedicated to healing and wellness",
+  "villageId": "healthcare",
+  "villageName": "Healthcare Village",
+  "description": "Healthcare workers - doctors, nurses, pharmacists, and medical staff",
   "color": "#10b981",
-  "icon": "Heart",
+  "icon": "Stethoscope",
   "roles": [
     {
       "roleId": "physician_general",

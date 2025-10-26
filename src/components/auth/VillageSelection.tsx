@@ -7,33 +7,33 @@ import { useNavigate } from 'react-router-dom';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { setUserRole, setUserVillage } from '@store/slices/userSlice';
-import { setAuthenticated } from '@store/slices/authSlice'; // ✅ ADDED: Import setAuthenticated
+import { setAuthenticated } from '@store/slices/authSlice';
 import { nextStep } from '@store/slices/authFlowSlice';
 
-// ✅ Village JSON imports
-import healersConfig from '../../config/villages/healers.json';
-import farmersConfig from '../../config/villages/farmers.json';
-import buildersConfig from '../../config/villages/builders.json';
-import tradersConfig from '../../config/villages/traders.json';
-import artistsConfig from '../../config/villages/artists.json';
-import teachersConfig from '../../config/villages/teachers.json';
-import civicConfig from '../../config/villages/civic.json';
+// ✅ Updated Village JSON imports with clear names
+import healthcareConfig from '../../config/villages/healthcare.json';
+import farmingConfig from '../../config/villages/farming.json';
+import constructionConfig from '../../config/villages/construction.json';
+import businessConfig from '../../config/villages/business.json';
+import creativeConfig from '../../config/villages/creative.json';
+import educationConfig from '../../config/villages/education.json';
+import governmentConfig from '../../config/villages/government.json';
 import transportConfig from '../../config/villages/transport.json';
-import techConfig from '../../config/villages/tech.json';
+import technologyConfig from '../../config/villages/technology.json';
 import hospitalityConfig from '../../config/villages/hospitality.json';
 import financeConfig from '../../config/villages/finance.json';
 import environmentConfig from '../../config/villages/environment.json';
 
 const villageConfigs: Record<string, any> = {
-  healers: healersConfig,
-  farmers: farmersConfig,
-  builders: buildersConfig,
-  traders: tradersConfig,
-  artists: artistsConfig,
-  teachers: teachersConfig,
-  civic: civicConfig,
+  healthcare: healthcareConfig,
+  farming: farmingConfig,
+  construction: constructionConfig,
+  business: businessConfig,
+  creative: creativeConfig,
+  education: educationConfig,
+  government: governmentConfig,
   transport: transportConfig,
-  tech: techConfig,
+  technology: technologyConfig,
   hospitality: hospitalityConfig,
   finance: financeConfig,
   environment: environmentConfig,
@@ -141,52 +141,52 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
 
   return (
     <GradientBackground>
-      <div className="min-h-screen p-6 flex flex-col items-center justify-center">
+      <div className="min-h-screen p-3 sm:p-6 flex flex-col items-center justify-center">
         <div className="w-full max-w-5xl">
-          {/* Header */}
+          {/* Header - Mobile Optimized */}
           <div
-            className={`mb-8 p-6 rounded-2xl border-l-4 ${
+            className={`mb-4 sm:mb-8 p-4 sm:p-6 rounded-xl sm:rounded-2xl border-l-4 ${
               theme === 'dark'
                 ? 'border-gray-700 bg-gray-800/50'
                 : 'border-green-600 bg-white shadow-lg'
             }`}
           >
             <h2
-              className={`text-2xl font-bold mb-2 ${
+              className={`text-lg sm:text-2xl font-bold mb-2 ${
                 theme === 'dark' ? 'text-white' : 'text-gray-900'
               } flex items-center gap-2`}
             >
-              <Globe className="w-6 h-6 text-green-600" />
+              <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
               Choose Your Village & Role
             </h2>
-            <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
-              Explore the village map and choose where your story begins.
+            <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+              Select the industry that matches your work, then choose your specific role.
             </p>
           </div>
 
-          {/* Progress indicator */}
+          {/* Progress indicator - Mobile Optimized */}
           {selectedVillageId && (
-            <div className="flex items-center justify-center gap-6 mb-8">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
-                  <Check className="w-4 h-4" />
+            <div className="flex items-center justify-center gap-3 sm:gap-6 mb-4 sm:mb-8 px-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
                 <span
-                  className={`text-sm ${
+                  className={`text-xs sm:text-sm ${
                     theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}
                 >
-                  Village Selected
+                  Village
                 </span>
               </div>
               <div
-                className={`w-24 h-1 ${
+                className={`w-12 sm:w-24 h-1 ${
                   selectedRoleId ? 'bg-green-500' : 'bg-gray-300'
                 }`}
               ></div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
                     selectedRoleId
                       ? 'bg-green-500 text-white'
                       : theme === 'dark'
@@ -194,66 +194,66 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                       : 'bg-gray-200 text-gray-600'
                   }`}
                 >
-                  {selectedRoleId ? <Check className="w-4 h-4" /> : <span>2</span>}
+                  {selectedRoleId ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <span className="text-xs sm:text-sm">2</span>}
                 </div>
                 <span
-                  className={`text-sm ${
+                  className={`text-xs sm:text-sm ${
                     theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}
                 >
-                  Role Selection
+                  Role
                 </span>
               </div>
             </div>
           )}
 
-          {/* Main area */}
           <AnimatePresence mode="wait">
+            {/* Village grid - Mobile Optimized */}
             {!selectedVillageId && (
               <motion.div
                 key="villages"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"
+                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"
               >
                 {villages.map((v) => {
                   const Icon = resolveIcon(v.iconName);
                   return (
                     <motion.button
                       key={v.id}
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                       onClick={() => handleVillageSelect(v.id)}
-                      className={`relative p-6 rounded-2xl border-2 transition-all group ${
+                      className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all group ${
                         theme === 'dark'
                           ? 'bg-gray-800/50 border-gray-700 hover:border-green-500'
                           : 'bg-white border-gray-200 hover:border-green-600 hover:shadow-md'
                       }`}
                     >
                       <div
-                        className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"
+                        className="w-12 h-12 sm:w-16 sm:h-16 mx-auto rounded-xl flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform"
                         style={{
                           background: `linear-gradient(135deg, ${v.color}20 0%, ${v.color}40 100%)`,
                           color: v.color,
                         }}
                       >
-                        <Icon className="w-7 h-7" />
+                        <Icon className="w-6 h-6 sm:w-8 sm:h-8" />
                       </div>
                       <h3
-                        className={`font-semibold text-center mb-1 ${
+                        className={`text-sm sm:text-base font-semibold text-center mb-1 sm:mb-2 ${
                           theme === 'dark' ? 'text-white' : 'text-gray-900'
                         }`}
                       >
                         {v.name}
                       </h3>
                       <p
-                        className={`text-xs text-center ${
+                        className={`text-xs leading-tight text-center line-clamp-2 ${
                           theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                         }`}
                       >
-                        {v.roles.length} roles
+                        {v.description}
                       </p>
                     </motion.button>
                   );
@@ -261,14 +261,14 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
               </motion.div>
             )}
 
-            {/* Role grid */}
+            {/* Role grid - Mobile Optimized */}
             {selectedVillageId && !selectedRoleId && (
               <motion.div
                 key="roles"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="space-y-6"
+                className="space-y-4 sm:space-y-6"
               >
                 <button
                   onClick={() => setSelectedVillageId(null)}
@@ -282,44 +282,44 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                 </button>
 
                 <div
-                  className={`p-4 rounded-2xl ${
+                  className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl ${
                     theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-lg'
                   }`}
                 >
                   <h2
-                    className={`text-xl font-bold mb-4 ${
+                    className={`text-base sm:text-xl font-bold mb-4 ${
                       theme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     Select Your Role in {selectedVillage?.villageName}
                   </h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6">
                     {availableRoles.map((r: any) => {
                       const Icon = resolveIcon(r.icon);
                       return (
                         <motion.button
                           key={r.roleId}
-                          whileHover={{ scale: 1.05 }}
+                          whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.97 }}
                           transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                           onClick={() => handleRoleSelect(r.roleId)}
-                          className={`p-6 rounded-2xl border-2 transition-all group ${
+                          className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all group ${
                             theme === 'dark'
                               ? 'bg-gray-800/50 border-gray-700 hover:border-green-500'
                               : 'bg-white border-gray-200 hover:border-green-600 hover:shadow-md'
                           }`}
                         >
                           <div
-                            className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"
+                            className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-xl flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform"
                             style={{
                               background: `linear-gradient(135deg, ${selectedVillage?.color}20 0%, ${selectedVillage?.color}40 100%)`,
                               color: selectedVillage?.color,
                             }}
                           >
-                            <Icon className="w-7 h-7" />
+                            <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                           </div>
                           <h3
-                            className={`font-semibold text-center ${
+                            className={`text-xs sm:text-sm font-semibold text-center ${
                               theme === 'dark' ? 'text-white' : 'text-gray-900'
                             }`}
                           >
@@ -333,40 +333,40 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
               </motion.div>
             )}
 
-            {/* Confirmation */}
+            {/* Confirmation - Mobile Optimized */}
             {selectedVillageId && selectedRoleId && (
               <motion.div
                 key="confirm"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className={`p-8 rounded-3xl ${
+                className={`p-4 sm:p-8 rounded-2xl sm:rounded-3xl ${
                   theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-xl'
                 }`}
               >
                 <h2
-                  className={`text-2xl font-bold mb-6 text-center ${
+                  className={`text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-center ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}
                 >
                   Confirm Your Selection
                 </h2>
 
-                <div className="flex items-center justify-center gap-8 mb-8">
+                <div className="flex items-center justify-center gap-4 sm:gap-8 mb-6 sm:mb-8">
                   <div className="text-center">
                     {(() => {
                       const Icon = resolveIcon(selectedVillage?.icon);
-                      return <Icon className="w-12 h-12 mx-auto mb-2" style={{ color: selectedVillage?.color }} />;
+                      return <Icon className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2" style={{ color: selectedVillage?.color }} />;
                     })()}
                     <h3
-                      className={`text-lg font-bold ${
+                      className={`text-sm sm:text-lg font-bold ${
                         theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}
                     >
                       {selectedVillage?.villageName}
                     </h3>
                     <p
-                      className={`text-sm ${
+                      className={`text-xs sm:text-sm ${
                         theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                       }`}
                     >
@@ -374,7 +374,7 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                     </p>
                   </div>
 
-                  <div className="text-4xl">→</div>
+                  <div className="text-2xl sm:text-4xl">→</div>
 
                   <div className="text-center">
                     {(() => {
@@ -384,13 +384,13 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                       const Icon = resolveIcon(role?.icon);
                       return (
                         <Icon
-                          className="w-12 h-12 mx-auto mb-2"
+                          className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2"
                           style={{ color: selectedVillage?.color }}
                         />
                       );
                     })()}
                     <h3
-                      className={`text-lg font-bold ${
+                      className={`text-sm sm:text-lg font-bold ${
                         theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}
                     >
@@ -401,7 +401,7 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                       }
                     </h3>
                     <p
-                      className={`text-sm ${
+                      className={`text-xs sm:text-sm ${
                         theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                       }`}
                     >
@@ -410,11 +410,11 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <button
                     onClick={() => setSelectedRoleId(null)}
                     disabled={isSubmitting}
-                    className={`w-full sm:flex-1 px-6 py-3 rounded-xl font-semibold transition-colors ${
+                    className={`w-full sm:flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold transition-colors ${
                       theme === 'dark'
                         ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -425,17 +425,19 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                   <button
                     onClick={handleComplete}
                     disabled={isSubmitting}
-                    className="w-full sm:flex-1 px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg flex items-center justify-center gap-2"
+                    className="w-full sm:flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Completing...
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                        <span className="hidden sm:inline">Completing...</span>
+                        <span className="sm:hidden">Loading...</span>
                       </>
                     ) : (
                       <>
-                        Complete & Go to Dashboard
-                        <ArrowRight className="w-5 h-5" />
+                        <span className="hidden sm:inline">Complete & Go to Dashboard</span>
+                        <span className="sm:hidden">Complete</span>
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                       </>
                     )}
                   </button>
