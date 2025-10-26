@@ -56,7 +56,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
               className="relative mb-12"
             >
               {/* Logo Image */}
-              <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 mx-auto">
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 mx-auto">
                 <motion.div
                   animate={{ 
                     y: [0, -15, 0],
