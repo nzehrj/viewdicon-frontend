@@ -44,7 +44,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             className="text-center"
           >
-            {/* Logo Container with Glow Effect */}
+            {/* Logo Container */}
             <motion.div
               initial={{ rotate: -180, scale: 0 }}
               animate={{ rotate: 0, scale: 1 }}
@@ -53,89 +53,37 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                 ease: 'easeOut',
                 delay: 0.2 
               }}
-              className="relative mb-8"
+              className="relative mb-12"
             >
-              {/* Glow Effect */}
-              <motion.div
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-                className="absolute inset-0 -m-8 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 blur-2xl"
-              />
-
               {/* Logo Image */}
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto">
+              <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 mx-auto">
                 <motion.div
                   animate={{ 
-                    y: [0, -10, 0],
+                    y: [0, -15, 0],
                   }}
                   transition={{
-                    duration: 2,
+                    duration: 2.5,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className={`w-full h-full rounded-3xl overflow-hidden shadow-2xl border-4 ${
-                    theme === 'dark' 
-                      ? 'border-gray-700 bg-gray-800' 
-                      : 'border-white bg-white'
-                  }`}
+                  className="w-full h-full flex items-center justify-center"
                 >
                   {imageLoaded ? (
                     <img
-                      src="/assets/vi.jpg"
+                      src="/assets/viewdicon.png"
                       alt="ViewDicon Logo"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                       onError={() => setImageLoaded(false)}
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                      <span className="text-5xl sm:text-6xl font-bold text-white">Vi</span>
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-7xl sm:text-8xl md:text-9xl font-bold bg-gradient-to-br from-green-500 to-emerald-600 bg-clip-text text-transparent">
+                        Vi
+                      </span>
                     </div>
                   )}
                 </motion.div>
               </div>
-            </motion.div>
-            
-            {/* App Name with Gradient */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-3">
-                <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 bg-clip-text text-transparent">
-                  ViewDicon
-                </span>
-              </h1>
-              
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.5 }}
-                className={`text-base sm:text-lg lg:text-xl mb-2 ${
-                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                }`}
-              >
-                The Digital Motherland
-              </motion.p>
-
-              {/* Ubuntu Quote */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.9, duration: 0.5 }}
-                className={`text-sm sm:text-base italic ${
-                  theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
-                }`}
-              >
-                "I am because we are"
-              </motion.p>
             </motion.div>
           </motion.div>
         </AnimatePresence>
@@ -145,57 +93,19 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.5 }}
-          className="mt-12 w-full max-w-xs"
+          className="w-full max-w-sm"
         >
           {/* Progress Bar */}
-          <div className={`h-2 rounded-full overflow-hidden mb-4 ${
-            theme === 'dark' ? 'bg-gray-800' : 'bg-gray-200'
+          <div className={`h-1.5 rounded-full overflow-hidden ${
+            theme === 'dark' ? 'bg-gray-800/50' : 'bg-gray-200/50'
           }`}>
             <motion.div
-              className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full"
+              className="h-full bg-gradient-to-r from-green-500 via-emerald-500 to-green-500 rounded-full"
               initial={{ width: '0%' }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.3 }}
             />
           </div>
-
-          {/* Loading Text */}
-          <div className="flex items-center justify-center">
-            <span className={`text-sm ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}>
-              Loading your experience...
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Decorative Elements */}
-        <motion.div
-          animate={{
-            rotate: 360,
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-          className="absolute top-20 right-20 w-32 h-32 opacity-10"
-        >
-          <div className="w-full h-full border-8 border-green-500 rounded-full border-t-transparent" />
-        </motion.div>
-
-        <motion.div
-          animate={{
-            rotate: -360,
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-          className="absolute bottom-20 left-20 w-24 h-24 opacity-10"
-        >
-          <div className="w-full h-full border-8 border-emerald-500 rounded-full border-b-transparent" />
         </motion.div>
       </div>
     </GradientBackground>
