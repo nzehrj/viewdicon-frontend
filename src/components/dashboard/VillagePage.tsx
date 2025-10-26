@@ -5,15 +5,15 @@ import { ArrowLeft, Users, Briefcase, Star, Clock, TrendingUp } from 'lucide-rea
 import * as Icons from 'lucide-react';
 import ToolCard from './ToolCard';
 import { useAppSelector } from '../../store/hooks';
-import healersManifest from '../../config/villages/healers.json';
-import farmersManifest from '../../config/villages/farmers.json';
-import buildersManifest from '../../config/villages/builders.json';
-import tradersManifest from '../../config/villages/traders.json';
-import artistsManifest from '../../config/villages/artists.json';
-import teachersManifest from '../../config/villages/teachers.json';
-import civicManifest from '../../config/villages/civic.json';
+import healthcareManifest from '../../config/villages/healthcare.json';
+import farmingManifest from '../../config/villages/farming.json';
+import constructionManifest from '../../config/villages/construction.json';
+import businessManifest from '../../config/villages/business.json';
+import creativeManifest from '../../config/villages/creative.json';
+import educationManifest from '../../config/villages/education.json';
+import governmentManifest from '../../config/villages/government.json';
 import transportManifest from '../../config/villages/transport.json';
-import techManifest from '../../config/villages/tech.json';
+import technologyManifest from '../../config/villages/technology.json';
 import hospitalityManifest from '../../config/villages/hospitality.json';
 import financeManifest from '../../config/villages/finance.json';
 import environmentManifest from '../../config/villages/environment.json';
@@ -56,15 +56,15 @@ interface VillageManifest {
 // ============================================================================
 
 const VILLAGE_MANIFESTS: Record<string, VillageManifest> = {
-  healers: healersManifest as any,
-  farmers: farmersManifest as any,
-  builders: buildersManifest as any,
-  traders: tradersManifest as any,
-  artists: artistsManifest as any,
-  teachers: teachersManifest as any,
-  civic: civicManifest as any,
+  healthcare: healthcareManifest as any,
+  farming: farmingManifest as any,
+  construction: constructionManifest as any,
+  business: businessManifest as any,
+  creative: creativeManifest as any,
+  education: educationManifest as any,
+  government: governmentManifest as any,
   transport: transportManifest as any,
-  tech: techManifest as any,
+  technology: technologyManifest as any,
   hospitality: hospitalityManifest as any,
   finance: financeManifest as any,
   environment: environmentManifest as any,
