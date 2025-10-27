@@ -12,6 +12,8 @@ export interface UserState {
     iwa_score: number | null;
     sankofa_totem: string | null;
     kinship_tier: 'continental_african' | 'african_diaspora' | 'global_partner' | null;
+    tribe: string | null;        // ← ADDED for heritage/ethnic group
+    country: string | null;      // ← ADDED for location/origin
   } | null;
   village: {
     villageId: string;
@@ -48,6 +50,8 @@ const userSlice = createSlice({
       iwa_score?: number;
       sankofa_totem?: string;
       kinship_tier?: 'continental_african' | 'african_diaspora' | 'global_partner';
+      tribe?: string;        // ← ADDED
+      country?: string;      // ← ADDED
     }>) => {
       state.user = {
         id: action.payload.id,
@@ -60,6 +64,8 @@ const userSlice = createSlice({
         iwa_score: action.payload.iwa_score || null,
         sankofa_totem: action.payload.sankofa_totem || null,
         kinship_tier: action.payload.kinship_tier || null,
+        tribe: action.payload.tribe || null,        // ← ADDED
+        country: action.payload.country || null,    // ← ADDED
       };
       state.error = null;
     },
@@ -81,6 +87,8 @@ const userSlice = createSlice({
       iwa_score: number;
       sankofa_totem: string;
       kinship_tier: 'continental_african' | 'african_diaspora' | 'global_partner';
+      tribe: string;       // ← ADDED
+      country: string;     // ← ADDED
     }>>) => {
       if (state.user) {
         state.user = {

@@ -337,7 +337,7 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ onComplete }) => {
             >
               {canProceed ? (
                 <>
-                  Continue to Dashboard
+                  Continue to Village Selection
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </>
               ) : (

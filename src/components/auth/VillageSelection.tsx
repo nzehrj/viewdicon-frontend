@@ -3,7 +3,6 @@ import React, { useMemo, useState } from 'react';
 import { ArrowRight, Check, Loader2, Globe } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { setUserRole, setUserVillage } from '@store/slices/userSlice';
@@ -44,7 +43,6 @@ interface VillageSelectionProps {
 }
 
 export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const theme = useAppSelector((s) => s.theme.theme);
 
@@ -128,15 +126,12 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
     dispatch(nextStep());
     console.log('✓ Next step dispatched');
 
-    // Call parent callback
+    // ✅ FIXED: Only call the callback, let parent handle navigation
     console.log('🎯 Calling onSelect callback...');
     onSelect(villageCfg.villageId, roleCfg.roleId);
-
-    // Navigate to dashboard
-    console.log('🚀 Navigating to dashboard...');
-    setTimeout(() => {
-      navigate('/dashboard', { replace: true });
-    }, 400);
+    
+    // ❌ REMOVED: Direct navigation to dashboard
+    // The parent component (AuthRoutes) will handle navigation to afro-id-welcome
   };
 
   return (
@@ -191,10 +186,14 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                       ? 'bg-green-500 text-white'
                       : theme === 'dark'
                       ? 'bg-gray-700 text-gray-400'
-                      : 'bg-gray-200 text-gray-600'
+                      : 'bg-gray-200 text-gray-500'
                   }`}
                 >
-                  {selectedRoleId ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <span className="text-xs sm:text-sm">2</span>}
+                  {selectedRoleId ? (
+                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  ) : (
+                    <span className="text-xs sm:text-sm font-bold">2</span>
+                  )}
                 </div>
                 <span
                   className={`text-xs sm:text-sm ${
@@ -229,11 +228,11 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                       className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all group ${
                         theme === 'dark'
                           ? 'bg-gray-800/50 border-gray-700 hover:border-green-500'
-                          : 'bg-white border-gray-200 hover:border-green-600 hover:shadow-md'
+                          : 'bg-white border-gray-200 hover:border-green-600 hover:shadow-xl'
                       }`}
                     >
                       <div
-                        className="w-12 h-12 sm:w-16 sm:h-16 mx-auto rounded-xl flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform"
+                        className="w-12 h-12 sm:w-16 sm:h-16 mx-auto rounded-xl flex items-center justify-center mb-2 sm:mb-4 group-hover:scale-110 transition-transform"
                         style={{
                           background: `linear-gradient(135deg, ${v.color}20 0%, ${v.color}40 100%)`,
                           color: v.color,
@@ -242,14 +241,14 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                         <Icon className="w-6 h-6 sm:w-8 sm:h-8" />
                       </div>
                       <h3
-                        className={`text-sm sm:text-base font-semibold text-center mb-1 sm:mb-2 ${
+                        className={`text-xs sm:text-base font-bold mb-1 sm:mb-2 text-center ${
                           theme === 'dark' ? 'text-white' : 'text-gray-900'
                         }`}
                       >
                         {v.name}
                       </h3>
                       <p
-                        className={`text-xs leading-tight text-center line-clamp-2 ${
+                        className={`text-[10px] sm:text-xs text-center line-clamp-2 ${
                           theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                         }`}
                       >
@@ -435,8 +434,8 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
                       </>
                     ) : (
                       <>
-                        <span className="hidden sm:inline">Complete & Go to Dashboard</span>
-                        <span className="sm:hidden">Complete</span>
+                        <span className="hidden sm:inline">Confirm Selection</span>
+                        <span className="sm:hidden">Confirm</span>
                         <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                       </>
                     )}

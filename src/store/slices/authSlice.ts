@@ -17,7 +17,8 @@ export type AuthStep =
   | 'voice-phrase'
   | 'voice-auth'
   | 'family-tree'
-  | 'village';
+  | 'village'
+  | 'afro-id-welcome';  // ← ADDED THIS
 
 export interface AuthState {
   isAuthenticated: boolean;

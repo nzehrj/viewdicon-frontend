@@ -23,18 +23,18 @@ import { cn } from '@utils/cn';
 import { useAppSelector } from '@store/hooks';
 
 const villages = [
-  { id: 'healers', name: 'Healers', icon: Heart, color: '#10b981', emoji: '🏥' },
-  { id: 'farmers', name: 'Harvesters', icon: Sprout, color: '#f59e0b', emoji: '🌾' },
-  { id: 'builders', name: 'Builders', icon: HardHat, color: '#3b82f6', emoji: '🏗️' },
-  { id: 'traders', name: 'Traders', icon: TrendingUp, color: '#8b5cf6', emoji: '🛒' },
-  { id: 'artists', name: 'Creatives', icon: Palette, color: '#ec4899', emoji: '🎨' },
-  { id: 'teachers', name: 'Scholars', icon: GraduationCap, color: '#06b6d4', emoji: '📚' },
-  { id: 'civic', name: 'Leaders', icon: Flag, color: '#f97316', emoji: '🏛️' },
-  { id: 'transport', name: 'Movers', icon: Truck, color: '#eab308', emoji: '🚚' },
-  { id: 'tech', name: 'Innovators', icon: Code, color: '#6366f1', emoji: '💻' },
-  { id: 'hospitality', name: 'Hosts', icon: Utensils, color: '#14b8a6', emoji: '🍽️' },
-  { id: 'finance', name: 'Wealth Keepers', icon: Coins, color: '#a855f7', emoji: '💰' },
-  { id: 'environment', name: 'Earth Stewards', icon: Leaf, color: '#22c55e', emoji: '🌳' },
+  { id: 'healthcare', name: 'Healthcare', icon: Heart, color: '#10b981', emoji: '🏥' },
+  { id: 'farming', name: 'Farming', icon: Sprout, color: '#f59e0b', emoji: '🌾' },
+  { id: 'construction', name: 'Construction', icon: HardHat, color: '#3b82f6', emoji: '🏗️' },
+  { id: 'business', name: 'Business', icon: TrendingUp, color: '#8b5cf6', emoji: '🛒' },
+  { id: 'creative', name: 'Creative', icon: Palette, color: '#ec4899', emoji: '🎨' },
+  { id: 'education', name: 'Education', icon: GraduationCap, color: '#06b6d4', emoji: '📚' },
+  { id: 'government', name: 'Government', icon: Flag, color: '#f97316', emoji: '🏛️' },
+  { id: 'transport', name: 'Transport', icon: Truck, color: '#eab308', emoji: '🚚' },
+  { id: 'technology', name: 'Technology', icon: Code, color: '#6366f1', emoji: '💻' },
+  { id: 'hospitality', name: 'Hospitality', icon: Utensils, color: '#14b8a6', emoji: '🍽️' },
+  { id: 'finance', name: 'Finance', icon: Coins, color: '#a855f7', emoji: '💰' },
+  { id: 'environment', name: 'Environment', icon: Leaf, color: '#22c55e', emoji: '🌳' },
 ];
 
 const Sidebar: React.FC = () => {

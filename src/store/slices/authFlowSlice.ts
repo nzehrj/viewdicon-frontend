@@ -1,6 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type AuthFlowStep = 'splash' | 'greeting' | 'terms' | 'consent' | 'phone' | 'otp' | 'fingerprint' | 'voice' | 'village' | 'circle_resolve' | 'dashboard';
+type AuthFlowStep = 
+  | 'splash' 
+  | 'greeting' 
+  | 'terms' 
+  | 'consent' 
+  | 'phone' 
+  | 'otp' 
+  | 'fingerprint' 
+  | 'voice' 
+  | 'village' 
+  | 'afro-id-welcome'    // ← ADDED THIS
+  | 'circle_resolve' 
+  | 'dashboard';
 
 interface AuthFlowState {
   currentStep: AuthFlowStep;
@@ -32,10 +44,23 @@ const authFlowSlice = createSlice({
       if (!state.completedSteps.includes(action.payload)) {
         state.completedSteps.push(action.payload);
       }
-      state.progress = Math.round((state.completedSteps.length / 9) * 100);
+      state.progress = Math.round((state.completedSteps.length / 11) * 100);  // ← UPDATED: 11 steps now
     },
     nextStep: (state) => {
-      const steps: AuthFlowStep[] = ['splash', 'greeting', 'terms', 'consent', 'phone', 'otp', 'fingerprint', 'voice', 'village', 'circle_resolve', 'dashboard'];
+      const steps: AuthFlowStep[] = [
+        'splash', 
+        'greeting', 
+        'terms', 
+        'consent', 
+        'phone', 
+        'otp', 
+        'fingerprint', 
+        'voice', 
+        'village', 
+        'afro-id-welcome',    // ← ADDED THIS
+        'circle_resolve', 
+        'dashboard'
+      ];
       const currentIndex = steps.indexOf(state.currentStep);
       if (currentIndex < steps.length - 1) {
         const nextStep = steps[currentIndex + 1];
@@ -43,11 +68,24 @@ const authFlowSlice = createSlice({
         if (!state.completedSteps.includes(nextStep)) {
           state.completedSteps.push(nextStep);
         }
-        state.progress = Math.round((state.completedSteps.length / 9) * 100);
+        state.progress = Math.round((state.completedSteps.length / 11) * 100);  // ← UPDATED: 11 steps now
       }
     },
     previousStep: (state) => {
-      const steps: AuthFlowStep[] = ['splash', 'greeting', 'terms', 'consent', 'phone', 'otp', 'fingerprint', 'voice', 'village', 'circle_resolve', 'dashboard'];
+      const steps: AuthFlowStep[] = [
+        'splash', 
+        'greeting', 
+        'terms', 
+        'consent', 
+        'phone', 
+        'otp', 
+        'fingerprint', 
+        'voice', 
+        'village', 
+        'afro-id-welcome',    // ← ADDED THIS
+        'circle_resolve', 
+        'dashboard'
+      ];
       const currentIndex = steps.indexOf(state.currentStep);
       if (currentIndex > 0) {
         state.currentStep = steps[currentIndex - 1];
@@ -81,5 +119,19 @@ const authFlowSlice = createSlice({
   },
 });
 
-export const { setCurrentStep, nextStep, previousStep, setConsentToken, setSessionId, setDeviceId, setVoiceNonceId, setSelectedVillage, setSelectedRole, setCircleGate, setCanProceed, resetAuthFlow } = authFlowSlice.actions;
+export const { 
+  setCurrentStep, 
+  nextStep, 
+  previousStep, 
+  setConsentToken, 
+  setSessionId, 
+  setDeviceId, 
+  setVoiceNonceId, 
+  setSelectedVillage, 
+  setSelectedRole, 
+  setCircleGate, 
+  setCanProceed, 
+  resetAuthFlow 
+} = authFlowSlice.actions;
+
 export default authFlowSlice.reducer;

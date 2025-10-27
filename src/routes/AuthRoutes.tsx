@@ -2,6 +2,8 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setPhoneNumber, setUserLocation } from '../store/slices/authSlice';
+import { updateUserProfile } from '../store/slices/userSlice';
+import { generateAfroID } from '../utils/afroIdGenerator';
 import { Loader } from '../components/common/Loader';
 import type { AuthState, AuthStep } from '@/types/auth.types';
 
@@ -23,6 +25,7 @@ const FamilyTree = lazy(() => import('../components/auth/FamilyTree').then(modul
 const VillageSelection = lazy(() => import('../components/auth/VillageSelection').then(module => ({ default: module.VillageSelection })));
 const HeritagePrompt = lazy(() => import('../components/auth/HeritagePrompt').then(module => ({ default: module.HeritagePrompt })));
 const HeritageChallenge = lazy(() => import('../components/auth/HeritageChallenge').then(module => ({ default: module.HeritageChallenge })));
+const AfroIDWelcome = lazy(() => import('../components/auth/AfroIDWelcome').then(module => ({ default: module.AfroIDWelcome })));
 
 // Centered Loading Fallback Component
 const CenteredLoader: React.FC = () => {
@@ -261,6 +264,7 @@ const FamilyTreeWrapper = () => {
 
 const VillageWrapper = () => {
   const navigate = useNavigate();
+  const goToStep = (step: AuthStep) => navigate(`/auth/${step}`);
   
   const handleVillageSelect = (_village: string, _role: string) => {
     console.log('🏘️ AuthRoutes: Village and Role callback received');
@@ -271,12 +275,53 @@ const VillageWrapper = () => {
     // - setUserRole(role)
     // - setAuthenticated(true)
     
-    // Navigate directly to dashboard with replace to prevent back button issues
-    console.log('🚀 Navigating to dashboard...');
-    navigate('/dashboard', { replace: true });
+    // Navigate to Afro-ID Welcome (Step 18)
+    console.log('🆔 Navigating to Afro-ID Welcome...');
+    goToStep('afro-id-welcome');
   };
 
   return <VillageSelection onSelect={handleVillageSelect} />;
+};
+
+const AfroIDWelcomeWrapper = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
+  
+  // Generate Afro-ID (in production, this should come from backend after saving)
+  const afroId = React.useMemo(() => {
+    if (user?.afro_id) {
+      return user.afro_id;
+    }
+    
+    // Generate new Afro-ID
+    return generateAfroID({
+      heritage: user?.tribe || 'African',     // From KYC "Your People" step
+      country: user?.country || 'Nigeria',    // From KYC "Your Origins" step
+      generation: 1,                          // Default to G1, or calculate from family tree
+    });
+  }, [user]);
+
+  const handleContinue = () => {
+    console.log('🎉 Afro-ID copied! Proceeding to dashboard...');
+    
+    // Update Redux with afro_id
+    dispatch(updateUserProfile({ afro_id: afroId }));
+    
+    // TODO: Save afroId to backend here
+    // await api.saveAfroID(afroId);
+    
+    navigate('/dashboard', { replace: true });
+  };
+
+  return (
+    <AfroIDWelcome
+      afroId={afroId}
+      userName={user?.full_name?.split(' ')[0] || user?.name || 'Friend'}
+      heritage={user?.tribe || 'African'}
+      onContinue={handleContinue}
+    />
+  );
 };
 
 const AuthRoutes: React.FC = () => {
@@ -300,6 +345,7 @@ const AuthRoutes: React.FC = () => {
         <Route path="/voice-auth" element={<VoiceAuthWrapper />} />
         <Route path="/family-tree" element={<FamilyTreeWrapper />} />
         <Route path="/village" element={<VillageWrapper />} />
+        <Route path="/afro-id-welcome" element={<AfroIDWelcomeWrapper />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

@@ -1,18 +1,18 @@
 // Role Manifest & Village Types
 
 export type VillageId = 
-  | 'healers'
-  | 'farmers'
-  | 'builders'
-  | 'traders'
-  | 'artists'
-  | 'teachers'
-  | 'civic'
-  | 'transport'
-  | 'tech'
-  | 'hospitality'
-  | 'finance'
-  | 'environment';
+  | 'healthcare'      // Updated from 'healers'
+  | 'farming'         // Updated from 'farmers'
+  | 'construction'    // Updated from 'builders'
+  | 'business'        // Updated from 'traders'
+  | 'creative'        // Updated from 'artists'
+  | 'education'       // Updated from 'teachers'
+  | 'government'      // Updated from 'civic'
+  | 'transport'       // No change
+  | 'technology'      // Updated from 'tech'
+  | 'hospitality'     // No change
+  | 'finance'         // No change
+  | 'environment';    // No change
 
 export interface Village {
   id: VillageId;

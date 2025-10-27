@@ -18,6 +18,7 @@ export type AuthStep =
   | 'voice-auth'
   | 'family-tree'
   | 'village'
+  | 'afro-id-welcome'    // ← ADDED THIS
   | 'circle_resolve'
   | 'dashboard';
 
