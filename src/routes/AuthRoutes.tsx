@@ -2,8 +2,8 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setPhoneNumber, setUserLocation } from '../store/slices/authSlice';
-import { updateUserProfile } from '../store/slices/userSlice';
-import { generateAfroID } from '../utils/afroIdGenerator';
+import { updateUserProfile, setUser } from '../store/slices/userSlice';
+import { generateAfroID } from '../utils/afroIdGenerator';  // ← FIXED: camelCase
 import { Loader } from '../components/common/Loader';
 import type { AuthState, AuthStep } from '@/types/auth.types';
 
@@ -98,6 +98,14 @@ const OTPWrapper = () => {
       goToStep('phone');
       return;
     }
+
+    // ✅ CRITICAL FIX: Initialize user object with phone number
+    console.log('🆕 Initializing user object in Redux...');
+    dispatch(setUser({
+      id: `temp_${Date.now()}`, // Temporary ID until backend assigns real one
+      phoneNumber: phoneNumber,
+    }));
+    console.log('✅ User object created with phone:', phoneNumber);
 
     // Clean phone number - remove spaces, dashes, parentheses
     const cleanNumber = phoneNumber.replace(/[\s\-\(\)]/g, '');
@@ -317,7 +325,7 @@ const AfroIDWelcomeWrapper = () => {
   return (
     <AfroIDWelcome
       afroId={afroId}
-      userName={user?.full_name?.split(' ')[0] || user?.name || 'Friend'}
+      userName={user?.full_name || user?.name || 'Friend'}
       heritage={user?.tribe || 'African'}
       onContinue={handleContinue}
     />

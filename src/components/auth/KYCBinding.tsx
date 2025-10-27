@@ -4,13 +4,14 @@ import { motion } from 'framer-motion';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { Button } from '@components/common/Button';
 import { Input } from '@components/common/Input';
-import { useAppSelector } from '@store/hooks';
+import { useAppSelector, useAppDispatch } from '@store/hooks';
+import { updateUserProfile } from '@store/slices/userSlice';
 
 interface KYCBindingProps {
   onComplete: () => void;
 }
 
-type Scene = 'naming' | 'origins' | 'seasons' | 'totem' | 'present' | 'complete';
+type Scene = 'naming' | 'origins' | 'seasons' | 'totem' | 'present';
 
 interface KYCData {
   fullName: string;
@@ -42,6 +43,7 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
     altPhone: '',
   });
   const theme = useAppSelector((state) => state.theme.theme);
+  const dispatch = useAppDispatch();
 
   const scenes = {
     naming: {
@@ -112,10 +114,21 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
     if (nextIndex < sceneKeys.length) {
       setScene(sceneKeys[nextIndex]);
     } else {
-      setScene('complete');
-      setTimeout(onComplete, 2000);
+      // ✅ Save KYC data to Redux before completing
+      dispatch(updateUserProfile({
+        full_name: kycData.fullName,
+        name: kycData.fullName.split(' ')[0], // First name
+        country: kycData.country,
+        tribe: kycData.tribe,
+        // Add other fields as needed
+      }));
+      
+      // ✅ Proceed directly to next step (no completion scene)
+      onComplete();
     }
   };
+
+  const isLastScene = currentIndex >= sceneKeys.length - 1;
 
   const handleBack = () => {
     const prevIndex = currentIndex - 1;
@@ -130,54 +143,6 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       .every((field) => kycData[field.key as keyof KYCData].trim() !== '');
     return requiredFields;
   };
-
-  if (scene === 'complete') {
-    return (
-      <GradientBackground>
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className={`max-w-2xl w-full p-8 sm:p-12 rounded-3xl text-center ${
-              theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm' : 'bg-white shadow-xl'
-            }`}
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center mx-auto mb-6"
-            >
-              <Feather className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
-            </motion.div>
-
-            <h2 className={`text-2xl sm:text-4xl font-bold mb-4 ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}>
-              Welcome Home, {kycData.fullName.split(' ')[0] || 'Friend'}
-            </h2>
-
-            <p className={`text-base sm:text-lg mb-8 ${
-              theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}>
-              Your story has been written into the fabric of our community. <br className="hidden sm:block" />
-              You are known. You are recognized. You belong.
-            </p>
-
-            <div className={`p-6 rounded-xl ${
-              theme === 'dark' ? 'bg-amber-900/20 border-2 border-amber-500/30' : 'bg-amber-50 border-2 border-amber-200'
-            }`}>
-              <p className={`italic text-sm sm:text-base ${
-                theme === 'dark' ? 'text-amber-300' : 'text-amber-700'
-              }`}>
-                "A person is a person through other persons." <br />
-                — Ubuntu Proverb
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </GradientBackground>
-    );
-  }
 
   const IconComponent = currentScene.icon;
 
@@ -267,7 +232,7 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
                 disabled={!canProceed()}
                 className="w-full sm:flex-1"
               >
-                Continue
+                {isLastScene ? 'Complete' : 'Continue'}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </div>
@@ -284,3 +249,5 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
     </GradientBackground>
   );
 };
+
+export default KYCBinding;
