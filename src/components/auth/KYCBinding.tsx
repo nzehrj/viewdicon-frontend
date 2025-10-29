@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { Button } from '@components/common/Button';
 import { Input } from '@components/common/Input';
+import { DatePicker } from '../common/DatePicker';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
-import { updateUserProfile } from '@store/slices/userSlice';
+import { setUser } from '@store/slices/userSlice';
 
 interface KYCBindingProps {
   onComplete: () => void;
@@ -25,6 +26,14 @@ interface KYCData {
   totem: string;
   currentAddress: string;
   altPhone: string;
+}
+
+interface FieldConfig {
+  key: string;
+  label: string;
+  placeholder: string;
+  required?: boolean;
+  type?: 'text' | 'date' | 'tel';
 }
 
 export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
@@ -53,8 +62,8 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       question: 'In the tongue of your people, speak the name you are called at home.',
       description: 'We honor all your names—the ones given at birth, those earned in life, and the names whispered by those who love you.',
       fields: [
-        { key: 'fullName', label: 'Full Name', placeholder: 'Adebayo Oluwaseun Johnson', required: true },
-        { key: 'aliases', label: 'Other Names or Aliases (optional)', placeholder: 'Seun, AJ, Chief' },
+        { key: 'fullName', label: 'Full Name', placeholder: 'Adebayo Oluwaseun Johnson', required: true, type: 'text' as const },
+        { key: 'aliases', label: 'Other Names or Aliases (optional)', placeholder: 'Seun, AJ, Chief', type: 'text' as const },
       ],
     },
     origins: {
@@ -64,9 +73,9 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       question: 'From which land and village did your line emerge?',
       description: 'Every river knows its source. Tell us of the soil that first held your ancestors\' footsteps.',
       fields: [
-        { key: 'country', label: 'Country', placeholder: 'Nigeria', required: true },
-        { key: 'state', label: 'State/Region', placeholder: 'Lagos, Oyo, Enugu', required: true },
-        { key: 'village', label: 'Village or Town', placeholder: 'Ibadan, Owerri, Kano' },
+        { key: 'country', label: 'Country', placeholder: 'Nigeria', required: true, type: 'text' as const },
+        { key: 'state', label: 'State/Region', placeholder: 'Lagos, Oyo, Enugu, Kano, Cross River', required: true, type: 'text' as const },
+        { key: 'village', label: 'Village or Town', placeholder: 'Ikeja, Ibadan, Enugu, Kano, Calabar', type: 'text' as const },
       ],
     },
     seasons: {
@@ -76,8 +85,8 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       question: 'Tell the season and year of your first cry.',
       description: 'Time is measured differently across our lands—by harvests, by rains, by festivals. Share what you remember.',
       fields: [
-        { key: 'birthDate', label: 'Birth Date (approximate is fine)', placeholder: 'DD/MM/YYYY or Year only', required: true },
-        { key: 'birthSeason', label: 'Season or Festival (optional)', placeholder: 'Harmattan, Planting season, After Eid' },
+        { key: 'birthDate', label: 'Birth Date', placeholder: 'Select your birth date', required: true, type: 'date' as const },
+        { key: 'birthSeason', label: 'Season or Festival (optional)', placeholder: 'Harmattan, Planting season, After Eid', type: 'text' as const },
       ],
     },
     totem: {
@@ -87,8 +96,8 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       question: 'Name your people and the mark that protects them.',
       description: 'Every clan carries symbols, every people hold sacred their totems. What is yours?',
       fields: [
-        { key: 'tribe', label: 'Tribe or Ethnic Group', placeholder: 'Yoruba, Igbo, Hausa, Zulu, Akan', required: true },
-        { key: 'totem', label: 'Totem or Clan Symbol (optional)', placeholder: 'Lion, Eagle, Baobab tree' },
+        { key: 'tribe', label: 'Tribe or Ethnic Group', placeholder: 'Yoruba, Igbo, Hausa, Zulu, Akan', required: true, type: 'text' as const },
+        { key: 'totem', label: 'Totem or Clan Symbol (optional)', placeholder: 'Lion, Eagle, Baobab tree', type: 'text' as const },
       ],
     },
     present: {
@@ -98,8 +107,8 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       question: 'Where do you lay your head today?',
       description: 'Home is where we return after the day\'s journey. Tell us where you dwell now.',
       fields: [
-        { key: 'currentAddress', label: 'Current Address', placeholder: '123 Lagos Street, Victoria Island', required: true },
-        { key: 'altPhone', label: 'Alternative Contact (optional)', placeholder: '+234 801 234 5678' },
+        { key: 'currentAddress', label: 'Current Address', placeholder: '123 Lagos Street, Victoria Island', required: true, type: 'text' as const },
+        { key: 'altPhone', label: 'Alternative Contact (optional)', placeholder: '+234 801 234 5678', type: 'tel' as const },
       ],
     },
   };
@@ -115,13 +124,23 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       setScene(sceneKeys[nextIndex]);
     } else {
       // ✅ Save KYC data to Redux before completing
-      dispatch(updateUserProfile({
+      console.log('📝 Saving KYC data to Redux...');
+      console.log('Full Name:', kycData.fullName);
+      console.log('Country:', kycData.country);
+      console.log('Tribe:', kycData.tribe);
+      console.log('Birth Date:', kycData.birthDate);
+      
+      // ✅ Use setUser to ensure user object is created with all KYC data
+      dispatch(setUser({
+        id: `temp_${Date.now()}`, // Temporary ID (backend will assign real one)
+        phoneNumber: '', // Will be set from auth state or already exists
         full_name: kycData.fullName,
         name: kycData.fullName.split(' ')[0], // First name
         country: kycData.country,
         tribe: kycData.tribe,
-        // Add other fields as needed
       }));
+      
+      console.log('✅ KYC data saved to Redux with setUser');
       
       // ✅ Proceed directly to next step (no completion scene)
       onComplete();
@@ -202,17 +221,32 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
 
             {/* Fields */}
             <div className="space-y-4 mb-6 sm:mb-8">
-              {currentScene.fields.map((field) => (
-                <Input
-                  key={field.key}
-                  label={field.label}
-                  value={kycData[field.key as keyof KYCData]}
-                  onChange={(e) =>
-                    setKYCData({ ...kycData, [field.key]: e.target.value })
-                  }
-                  placeholder={field.placeholder}
-                  required={field.required}
-                />
+              {currentScene.fields.map((field: FieldConfig) => (
+                <div key={field.key}>
+                  {field.type === 'date' ? (
+                    // Professional Custom DatePicker
+                    <DatePicker
+                      value={kycData[field.key as keyof KYCData]}
+                      onChange={(date: string) => setKYCData({ ...kycData, [field.key]: date })}
+                      label={field.label}
+                      required={field.required}
+                      theme={theme}
+                      maxDate={new Date()}
+                    />
+                  ) : (
+                    // Regular Input for other fields
+                    <Input
+                      label={field.label}
+                      type={field.type || 'text'}
+                      value={kycData[field.key as keyof KYCData]}
+                      onChange={(e) =>
+                        setKYCData({ ...kycData, [field.key]: e.target.value })
+                      }
+                      placeholder={field.placeholder}
+                      required={field.required}
+                    />
+                  )}
+                </div>
               ))}
             </div>
 
