@@ -32,33 +32,33 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
     <GradientBackground>
       <div className="min-h-screen flex flex-col p-4 sm:p-6">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className={`text-2xl sm:text-3xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+        <div className="mb-6 sm:mb-8">
+          <h1 className={`text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Account Security Binding
           </h1>
-          <div className="flex items-center gap-4">
-            <ProgressBar progress={50} size="lg" className="flex-1" />
-            <span className={`text-sm whitespace-nowrap ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+            <ProgressBar progress={50} size="lg" className="flex-1 w-full" />
+            <span className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               Step 1 of 2: Fingerprint Setup
             </span>
           </div>
         </div>
 
         {/* Content */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className={`w-full max-w-[380px] p-6 sm:p-8 rounded-3xl ${
+        <div className="flex-1 flex items-center justify-center px-2">
+          <div className={`w-full max-w-[380px] p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl ${
             theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm' : 'bg-gray-100'
           }`}>
-            <h2 className={`text-xl sm:text-2xl font-bold mb-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Secure with Fingerprint ID
             </h2>
-            <p className={`mb-8 text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            <p className={`mb-6 sm:mb-8 text-xs sm:text-sm md:text-base leading-relaxed ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               Place your registered finger on your device's sensor to bind it to your account.
             </p>
 
-            {/* Fingerprint Circle Container */}
-            <div className="flex items-center justify-center py-8 sm:py-12">
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+            {/* Fingerprint Circle Container - Responsive sizing */}
+            <div className="flex items-center justify-center py-6 sm:py-8 md:py-12">
+              <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 flex items-center justify-center">
                 
                 {/* Animated Rings - Expand outward from center */}
                 {step === 'scanning' && (
@@ -69,10 +69,10 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                       style={{
                         borderColor: 'rgba(16, 185, 129, 0.6)',
                       }}
-                      initial={{ width: 160, height: 160, opacity: 0 }}
+                      initial={{ width: 140, height: 140, opacity: 0 }}
                       animate={{
-                        width: [160, 180, 200, 220, 240, 260],
-                        height: [160, 180, 200, 220, 240, 260],
+                        width: [140, 160, 180, 200, 220, 240],
+                        height: [140, 160, 180, 200, 220, 240],
                         opacity: [0.8, 0.7, 0.5, 0.3, 0.1, 0],
                       }}
                       transition={{
@@ -88,10 +88,10 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                       style={{
                         borderColor: 'rgba(16, 185, 129, 0.6)',
                       }}
-                      initial={{ width: 160, height: 160, opacity: 0 }}
+                      initial={{ width: 140, height: 140, opacity: 0 }}
                       animate={{
-                        width: [160, 180, 200, 220, 240, 260],
-                        height: [160, 180, 200, 220, 240, 260],
+                        width: [140, 160, 180, 200, 220, 240],
+                        height: [140, 160, 180, 200, 220, 240],
                         opacity: [0.8, 0.7, 0.5, 0.3, 0.1, 0],
                       }}
                       transition={{
@@ -108,10 +108,10 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                       style={{
                         borderColor: 'rgba(16, 185, 129, 0.6)',
                       }}
-                      initial={{ width: 160, height: 160, opacity: 0 }}
+                      initial={{ width: 140, height: 140, opacity: 0 }}
                       animate={{
-                        width: [160, 180, 200, 220, 240, 260],
-                        height: [160, 180, 200, 220, 240, 260],
+                        width: [140, 160, 180, 200, 220, 240],
+                        height: [140, 160, 180, 200, 220, 240],
                         opacity: [0.8, 0.7, 0.5, 0.3, 0.1, 0],
                       }}
                       transition={{
@@ -128,10 +128,10 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                       style={{
                         borderColor: 'rgba(16, 185, 129, 0.6)',
                       }}
-                      initial={{ width: 160, height: 160, opacity: 0 }}
+                      initial={{ width: 140, height: 140, opacity: 0 }}
                       animate={{
-                        width: [160, 180, 200, 220, 240, 260],
-                        height: [160, 180, 200, 220, 240, 260],
+                        width: [140, 160, 180, 200, 220, 240],
+                        height: [140, 160, 180, 200, 220, 240],
                         opacity: [0.8, 0.7, 0.5, 0.3, 0.1, 0],
                       }}
                       transition={{
@@ -144,9 +144,9 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                   </>
                 )}
 
-                {/* Main Circle with Border */}
+                {/* Main Circle with Border - Responsive */}
                 <motion.div
-                  className={`relative w-52 h-52 sm:w-56 sm:h-56 rounded-full border-4 flex items-center justify-center shadow-2xl ${
+                  className={`relative w-44 h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-full border-4 flex items-center justify-center shadow-2xl ${
                     step === 'success'
                       ? 'border-green-500 bg-white dark:bg-gray-800'
                       : step === 'scanning'
@@ -167,7 +167,7 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                   }}
                 >
                   {step === 'success' ? (
-                    // Success Check Icon
+                    // Success Check Icon - Responsive
                     <motion.div
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
@@ -179,12 +179,12 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                       }}
                     >
                       <Check 
-                        className="w-28 h-28 sm:w-32 sm:h-32 text-green-500" 
+                        className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 text-green-500" 
                         strokeWidth={3} 
                       />
                     </motion.div>
                   ) : (
-                    // Fingerprint Icon
+                    // Fingerprint Icon - Responsive
                     <motion.div
                       animate={
                         step === 'scanning'
@@ -200,7 +200,7 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                       }}
                     >
                       <Fingerprint
-                        className={`w-28 h-28 sm:w-32 sm:h-32 ${
+                        className={`w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 ${
                           step === 'scanning'
                             ? 'text-green-500'
                             : theme === 'dark'
@@ -213,15 +213,15 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                   )}
                 </motion.div>
 
-                {/* Success expanding ring */}
+                {/* Success expanding ring - Responsive */}
                 {step === 'success' && (
                   <>
                     <motion.div
                       className="absolute rounded-full border-4 border-green-500"
-                      initial={{ width: 208, height: 208, opacity: 1 }}
+                      initial={{ width: 176, height: 176, opacity: 1 }}
                       animate={{
-                        width: 280,
-                        height: 280,
+                        width: 240,
+                        height: 240,
                         opacity: 0,
                       }}
                       transition={{
@@ -231,10 +231,10 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
                     />
                     <motion.div
                       className="absolute rounded-full border-4 border-green-400"
-                      initial={{ width: 208, height: 208, opacity: 0.8 }}
+                      initial={{ width: 176, height: 176, opacity: 0.8 }}
                       animate={{
-                        width: 300,
-                        height: 300,
+                        width: 260,
+                        height: 260,
                         opacity: 0,
                       }}
                       transition={{
@@ -248,9 +248,9 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
               </div>
             </div>
 
-            {/* Status Text */}
+            {/* Status Text - Responsive */}
             <p
-              className={`text-center font-medium text-base sm:text-lg ${
+              className={`text-center font-medium text-sm sm:text-base md:text-lg ${
                 step === 'success'
                   ? 'text-green-600 dark:text-green-400'
                   : theme === 'dark'
@@ -269,7 +269,7 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className={`text-center text-sm mt-2 ${
+                className={`text-center text-xs sm:text-sm mt-2 ${
                   theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
                 }`}
               >
@@ -284,76 +284,6 @@ export const FingerprintSetup: React.FC<FingerprintSetupProps> = ({ onNext }) =>
 };
 
 export default FingerprintSetup;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
