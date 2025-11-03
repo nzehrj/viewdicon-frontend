@@ -335,7 +335,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             transition={{ duration: 0.2 }}
             className={`
               absolute left-0 right-0 p-4 sm:p-6 rounded-2xl shadow-2xl z-50
-              max-h-[350px] overflow-y-auto overflow-x-hidden
+              max-h-[300px] overflow-y-auto overflow-x-hidden
               ${dropdownPosition === 'bottom' ? 'top-full mt-2' : 'bottom-full mb-2'}
               ${theme === 'dark'
                 ? 'bg-gray-800 border-2 border-gray-700'
