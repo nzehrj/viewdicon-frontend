@@ -16,47 +16,47 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
   return (
     <GradientBackground>
-      <div className="min-h-screen flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 py-8">
         <div className="w-full max-w-2xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`p-8 rounded-3xl ${
+            className={`p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl ${
               theme === 'dark' ? 'bg-gray-800/30 backdrop-blur-sm' : 'bg-white shadow-xl'
             }`}
           >
             {/* Header */}
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-white" />
+            <div className="flex items-center justify-center mb-4 sm:mb-6">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
               </div>
             </div>
 
-            <h2 className={`text-3xl font-bold text-center mb-3 ${
+            <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-2 sm:mb-3 ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
               Terms of Service
             </h2>
 
-            <p className={`text-center mb-8 ${
+            <p className={`text-sm sm:text-base text-center mb-6 sm:mb-8 ${
               theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
             }`}>
               Please read and accept our terms to continue
             </p>
 
-            {/* Terms Content - Scrollable */}
-            <div className={`max-h-96 overflow-y-auto rounded-xl p-6 mb-6 ${
+            {/* Terms Content - Scrollable with better mobile height */}
+            <div className={`max-h-64 sm:max-h-80 md:max-h-96 overflow-y-auto rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent ${
               theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50'
             }`}>
-              <div className={`space-y-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+              <div className={`space-y-4 sm:space-y-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 {/* Section 1 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     1. Acceptance of Terms
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     By accessing and using Viewdicon services, you accept and agree to be bound by the terms 
                     and provision of this agreement. If you do not agree to abide by the above, please do not 
                     use this service.
@@ -65,12 +65,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 2 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     2. Identity Verification
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     Viewdicon uses advanced identity verification methods including phone verification, 
                     voice biometrics, and device binding. You consent to providing accurate information 
                     and understand that false information may result in account suspension.
@@ -79,12 +79,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 3 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     3. Privacy and Data Protection
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     We are committed to protecting your privacy. Your personal data, including biometric 
                     information, will be encrypted and stored securely. We comply with GDPR, POPIA, and 
                     other applicable data protection regulations.
@@ -93,12 +93,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 4 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     4. Account Security
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     You are responsible for maintaining the confidentiality of your account. You may use 
                     up to 3 devices (or 4 for elders). Any unauthorized use must be reported immediately.
                   </p>
@@ -106,12 +106,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 5 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     5. Kinship Tiers and IWA Score
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     Your Kinship tier (Continental African, African Diaspora, or Global Partner) and IWA 
                     (Integrity, Wisdom, Action) score determine access to certain features and benefits. 
                     These are based on verifiable information and community attestations.
@@ -120,12 +120,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 6 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     6. Wari Transaction Protocol (WTP)
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     Financial transactions through Viewdicon use the Wari protocol. Fees vary by Kinship 
                     tier. All transactions are subject to verification and may be delayed for security reasons.
                   </p>
@@ -133,12 +133,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 7 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     7. Village Roles and Tools
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     Access to village-specific tools is granted based on your selected role and Kinship tier. 
                     Tool availability may change based on community needs and platform updates.
                   </p>
@@ -146,12 +146,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 8 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     8. Content and Intellectual Property
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     Content you create through Digital Griot Archive (DGA) remains your intellectual property. 
                     However, you grant Viewdicon a license to display and distribute this content through 
                     the platform.
@@ -160,12 +160,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 9 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     9. Moot and Dispute Resolution
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     Disputes within the platform may be resolved through the Moot system, which uses 
                     community-based adjudication. Decisions made through Moot are binding.
                   </p>
@@ -173,12 +173,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 10 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     10. Termination
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     Viewdicon reserves the right to terminate or suspend your account for violations of 
                     these terms, fraudulent activity, or upon your request. Upon termination, certain data 
                     may be retained as required by law.
@@ -187,12 +187,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 11 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     11. Changes to Terms
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     We reserve the right to modify these terms at any time. You will be notified of 
                     significant changes and may need to re-accept updated terms.
                   </p>
@@ -200,12 +200,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
                 {/* Section 12 */}
                 <div>
-                  <h3 className={`text-lg font-semibold mb-2 ${
+                  <h3 className={`text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 ${
                     theme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     12. Governing Law
                   </h3>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-xs sm:text-sm leading-relaxed">
                     These terms are governed by the laws of the Federal Republic of Nigeria and the 
                     African Union's data protection frameworks.
                   </p>
@@ -213,17 +213,17 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
               </div>
             </div>
 
-            {/* Acceptance Checkbox */}
-            <div className="mb-6">
+            {/* Acceptance Checkbox - Better mobile touch target */}
+            <div className="mb-4 sm:mb-6">
               <label className="flex items-start cursor-pointer group">
-                <div className="relative flex items-center">
+                <div className="relative flex items-center pt-0.5">
                   <input
                     type="checkbox"
                     checked={accepted}
                     onChange={(e) => setAccepted(e.target.checked)}
                     className="sr-only"
                   />
-                  <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${
+                  <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded border-2 flex items-center justify-center transition-all ${
                     accepted
                       ? 'bg-green-500 border-green-500'
                       : theme === 'dark'
@@ -236,12 +236,12 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                       >
-                        <CheckCircle className="w-4 h-4 text-white" />
+                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                       </motion.div>
                     )}
                   </div>
                 </div>
-                <span className={`ml-3 text-sm ${
+                <span className={`ml-3 text-xs sm:text-sm leading-relaxed ${
                   theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                 }`}>
                   I have read and agree to the{' '}
@@ -252,19 +252,21 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
               </label>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* Action Buttons - Stack on mobile, side-by-side on larger screens */}
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <Button
                 variant="outline"
                 onClick={onDecline}
-                className="flex-1"
+                className="flex-1 min-h-[44px]"
+                size="lg"
               >
                 Decline
               </Button>
               <Button
                 onClick={onAccept}
                 disabled={!accepted}
-                className="flex-1"
+                className="flex-1 min-h-[44px]"
+                size="lg"
               >
                 Accept & Continue
               </Button>
@@ -272,7 +274,7 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
 
             {/* Helper Text */}
             {!accepted && (
-              <p className={`text-xs text-center mt-4 ${
+              <p className={`text-xs sm:text-sm text-center mt-3 sm:mt-4 ${
                 theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
               }`}>
                 Please check the box above to accept the terms
@@ -284,3 +286,5 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ onAccept, onDecl
     </GradientBackground>
   );
 };
+
+export default TermsOfService;
