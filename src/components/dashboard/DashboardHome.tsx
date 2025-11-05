@@ -12,10 +12,12 @@ import {
   BarChart,
   Shield,
   Settings,
+  AlertTriangle,
   // Bottom Nav Icons
-  MessageCircle,
+  Share2,
   Building2,
   Bot,
+  Compass,
 } from 'lucide-react';
 import { GuardianDashboard } from './GuardianDashboard';
 import * as Icons from 'lucide-react';
@@ -88,7 +90,7 @@ interface Tool {
 const DashboardHome: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState<'home' | 'profile' | 'tools' | 'analytics' | 'security'>('home');
-  const [activeBottomTab, setActiveBottomTab] = useState<'home' | 'chat' | 'banking' | 'ai'>('home');
+  const [activeBottomTab, setActiveBottomTab] = useState<'home' | 'social' | 'discover' | 'banking' | 'ai'>('home');
   
   // Panel states
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -109,8 +111,8 @@ const DashboardHome: React.FC = () => {
   // Twin Presence state
   const [presenceMode, setPresenceMode] = useState<'spirit' | 'flesh'>('spirit');
   
-  // Protection Mode state
-  const [protectionMode] = useState<ProtectionMode | null>(null);
+  // Protection Mode state - WITH SETTER
+  const [protectionMode, setProtectionMode] = useState<ProtectionMode | null>(null);
   
   // Emergency Contacts state
   const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([
@@ -242,10 +244,21 @@ const DashboardHome: React.FC = () => {
     // TODO: API call
   };
 
+  // Demo: Trigger Protection Mode
+  const triggerProtectionMode = () => {
+    setProtectionMode({
+      active: true,
+      triggered_at: new Date(),
+      reason: 'face_mismatch',
+      restrictions: ['wallet_transfer', 'live_stream', 'whisper_strangers'],
+    });
+  };
+
   // Bottom navigation items
   const bottomNavItems = [
     { id: 'home', icon: HomeIcon, label: 'Home', color: '#10b981' },
-    { id: 'chat', icon: MessageCircle, label: 'Chat', color: '#3b82f6' },
+    { id: 'social', icon: Share2, label: 'Social', color: '#3b82f6' },
+    { id: 'discover', icon: Compass, label: 'Discover', color: '#ec4899' },
     { id: 'banking', icon: Building2, label: 'Banking', color: '#f59e0b' },
     { id: 'ai', icon: Bot, label: 'AI Agent', color: '#8b5cf6' },
   ];
@@ -363,6 +376,25 @@ const DashboardHome: React.FC = () => {
                   <BarChart className="w-5 h-5" />
                   <span className="font-medium">Analytics</span>
                 </button>
+
+                {/* Settings Button in Mobile Menu */}
+                <button
+                  onClick={() => { setIsSettingsOpen(true); setIsMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                    theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Settings className="w-5 h-5" />
+                  <span className="font-medium">Settings</span>
+                </button>
+
+                {/* Logout in Mobile Menu */}
+                <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
+                }`}>
+                  <LogOut className="w-5 h-5" />
+                  <span className="font-medium">Logout</span>
+                </button>
               </nav>
             </motion.div>
           )}
@@ -475,7 +507,7 @@ const DashboardHome: React.FC = () => {
               </button>
             </nav>
 
-            {/* Settings Button (NEW POSITION) */}
+            {/* Settings Button (Desktop) */}
             <div className="mb-6">
               <button
                 onClick={() => setIsSettingsOpen(true)}
@@ -504,8 +536,8 @@ const DashboardHome: React.FC = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
             <AnimatePresence mode="wait">
-              {/* HOME VIEW - Mobile-Friendly Grid */}
-              {activeView === 'home' && (
+              {/* HOME VIEW - Only show 7 sections when on Home tab */}
+              {activeView === 'home' && activeBottomTab === 'home' && (
                 <motion.div
                   key="home"
                   initial={{ opacity: 0, y: 20 }}
@@ -530,6 +562,19 @@ const DashboardHome: React.FC = () => {
                       <RoleIcon className="w-full h-full" />
                     </div>
                   </div>
+
+                  {/* ✅ Demo Protection Mode Trigger Button */}
+                  <button
+                    onClick={triggerProtectionMode}
+                    className={`w-full sm:w-auto px-4 py-3 rounded-xl text-sm font-medium flex items-center justify-center gap-2 transition-all ${
+                      theme === 'dark' 
+                        ? 'bg-amber-900/20 text-amber-400 hover:bg-amber-900/30 border border-amber-500/30' 
+                        : 'bg-amber-100 text-amber-700 hover:bg-amber-200 border border-amber-200'
+                    }`}
+                  >
+                    <AlertTriangle className="w-4 h-4" />
+                    Demo: Trigger Protection Mode
+                  </button>
 
                   {/* Main Grid - Mobile: 1 column, Tablet: 1-2 columns, Desktop: 2 columns */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -565,15 +610,34 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* CHAT VIEW */}
-              {activeView === 'home' && activeBottomTab === 'chat' && (
+              {/* SOCIAL VIEW */}
+              {activeView === 'home' && activeBottomTab === 'social' && (
                 <motion.div
-                  key="chat"
+                  key="social"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                 >
                   <FeedTimeline />
+                </motion.div>
+              )}
+
+              {/* DISCOVER VIEW */}
+              {activeView === 'home' && activeBottomTab === 'discover' && (
+                <motion.div
+                  key="discover"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
+                >
+                  <Compass className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Discover
+                  </h3>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Explore villages, find professionals, discover content
+                  </p>
                 </motion.div>
               )}
 
@@ -615,7 +679,7 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* Profile View - SAME AS BEFORE */}
+              {/* Profile View */}
               {activeView === 'profile' && (
                 <motion.div
                   key="profile"
@@ -686,7 +750,7 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* Security View - SAME AS BEFORE */}
+              {/* Security View */}
               {activeView === 'security' && (
                 <motion.div
                   key="security"
@@ -763,7 +827,7 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* Tools View - SAME AS BEFORE */}
+              {/* Tools View */}
               {activeView === 'tools' && (
                 <motion.div
                   key="tools"
@@ -820,7 +884,7 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* Analytics View - SAME AS BEFORE */}
+              {/* Analytics View */}
               {activeView === 'analytics' && (
                 <motion.div
                   key="analytics"
@@ -858,7 +922,7 @@ const DashboardHome: React.FC = () => {
       <nav className={`fixed bottom-0 left-0 right-0 z-50 ${
         theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
       } border-t`}>
-        <div className="flex items-center justify-around px-4 py-3 max-w-screen-xl mx-auto">
+        <div className="flex items-center justify-around px-2 py-3 max-w-screen-xl mx-auto">
           {bottomNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeBottomTab === item.id;
@@ -870,14 +934,14 @@ const DashboardHome: React.FC = () => {
                   setActiveBottomTab(item.id as any);
                   setActiveView('home');
                 }}
-                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all ${
+                className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${
                   isActive
                     ? 'scale-105'
                     : 'opacity-70 hover:opacity-100'
                 }`}
               >
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${
                     isActive ? 'scale-110' : ''
                   }`}
                   style={{
@@ -885,7 +949,7 @@ const DashboardHome: React.FC = () => {
                     color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280'
                   }}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <span
                   className={`text-xs font-medium transition-colors ${
@@ -934,7 +998,7 @@ const DashboardHome: React.FC = () => {
         />
       )}
 
-      {/* Protection Mode Overlay */}
+      {/* ✅ Protection Mode Overlay - RESTORED */}
       {protectionMode?.active && (
         <ProtectionModeScreen
           protectionMode={protectionMode}
