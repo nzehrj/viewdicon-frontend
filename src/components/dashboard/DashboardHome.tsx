@@ -1,36 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Home,
-  Settings,
+  Home as HomeIcon,
   Bell,
   Search,
   User,
   Menu,
   X,
   LogOut,
-  //ChevronRight,
   Grid,
   BarChart,
-  Calendar,
-  MessageSquare,
-  //FileText,
-  Users,
-  Sun,
-  Moon,
   Shield,
-  Heart,
+  Settings,
   // Bottom Nav Icons
-  Share2,
-  Compass,
-  Wallet,
+  MessageCircle,
+  Building2,
   Bot,
-  //TrendingUp
 } from 'lucide-react';
 import { GuardianDashboard } from './GuardianDashboard';
 import * as Icons from 'lucide-react';
-import { useAppSelector, useAppDispatch } from '@store/hooks';
-import { toggleTheme } from '@store/slices/themeSlice';
+import { useAppSelector } from '@store/hooks';
 
 // Import village configs
 import healthcareConfig from '../../config/villages/healthcare.json';
@@ -46,12 +35,32 @@ import hospitalityConfig from '../../config/villages/hospitality.json';
 import financeConfig from '../../config/villages/finance.json';
 import environmentConfig from '../../config/villages/environment.json';
 
-// Import new components
+// Import existing components
 import { FeedTimeline } from '@components/feed/FeedTimeline';
 import { ProfileCard } from './ProfileCard';
 import { AfroIDSection } from './AfroIDSection';
-import { MessageRequests } from '@components/messaging/MessageRequests';
-import { TrustedConnections } from '@components/messaging/TrustedConnections';
+
+// Import new components
+import { SettingsPanel } from '@components/settings/SettingsPanel';
+import { NotificationCenter } from '@components/notifications/NotificationCenter';
+import { EmergencyContactsManager } from '@components/security/EmergencyContactsManager';
+import { LocationTruthPanel } from '@components/dashboard/LocationTruthPanel';
+import { TwinPresenceToggle } from '@components/dashboard/TwinPresenceToggle';
+import { ProtectionModeScreen } from '@components/security/ProtectionModeScreen';
+
+// Import Home sections
+import { ToolsSection } from '@components/home/ToolsSection';
+import { RequestsSection } from '@components/home/RequestsSection';
+import { ConnectionsSection } from '@components/home/ConnectionsSection';
+import { CommunitySection } from '@components/home/CommunitySection';
+import { FamilyTreeSection } from '@components/home/FamilyTreeSection';
+import { ContentPreferencesSection } from '@components/home/ContentPreferencesSection';
+import { VillageChangeSection } from '@components/home/VillageChangeSection';
+import { VillageSelector } from '@components/village/VillageSelector';
+import { RoleChangeRequest } from '@components/village/RoleChangeRequest';
+
+import type { EmergencyContact, ProtectionMode } from '@/types/security.types';
+import type { LocationTruth } from '@/types/location.types';
 
 const villageConfigs: Record<string, any> = {
    healthcare: healthcareConfig,
@@ -78,10 +87,49 @@ interface Tool {
 
 const DashboardHome: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeView, setActiveView] = useState<'overview' | 'profile' | 'tools' | 'analytics'>('overview');
-  const [activeBottomTab, setActiveBottomTab] = useState<'social' | 'discover' | 'banking' | 'ai'>('social');
+  const [activeView, setActiveView] = useState<'home' | 'profile' | 'tools' | 'analytics' | 'security'>('home');
+  const [activeBottomTab, setActiveBottomTab] = useState<'home' | 'chat' | 'banking' | 'ai'>('home');
   
-  const dispatch = useAppDispatch();
+  // Panel states
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  
+  // Village selector states
+  const [isVillageSelectorOpen, setIsVillageSelectorOpen] = useState(false);
+  const [isRoleChangeRequestOpen, setIsRoleChangeRequestOpen] = useState(false);
+  const [selectedVillageForChange, setSelectedVillageForChange] = useState<{
+    villageId: string;
+    villageName: string;
+    villageColor: string;
+    roleId: string;
+    roleName: string;
+    roleIcon: string;
+  } | null>(null);
+  
+  // Twin Presence state
+  const [presenceMode, setPresenceMode] = useState<'spirit' | 'flesh'>('spirit');
+  
+  // Protection Mode state
+  const [protectionMode] = useState<ProtectionMode | null>(null);
+  
+  // Emergency Contacts state
+  const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([
+    {
+      afro_id: 'YRB-LION-95-HEAL-ELDER01',
+      display_name: 'Adebayo Johnson',
+      relationship: 'Brother',
+      phone: '8012345678',
+      last_confirmed: new Date('2024-01-15'),
+    },
+    {
+      afro_id: 'IGB-EAGLE-88-TEACH-KEEPER12',
+      display_name: 'Chiamaka Okonkwo',
+      relationship: 'Close Friend',
+      phone: '8087654321',
+      last_confirmed: new Date('2024-01-10'),
+    },
+  ]);
+  
   const theme = useAppSelector((state) => state.theme.theme);
   const user = useAppSelector((state) => state.user.user);
   const userVillage = useAppSelector((state) => state.user.village);
@@ -111,11 +159,94 @@ const DashboardHome: React.FC = () => {
   // Display name for user
   const displayName = user?.full_name || user?.name || phoneNumber || 'User';
 
+  // Mock data for security features
+  const spiritAvatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=spirit';
+  const fleshPhoto = 'https://api.dicebear.com/7.x/avataaars/svg?seed=real';
+  const photoStatus: 'verified_real' | 'flagged_filtered' | 'rejected_ai' | 'not_uploaded' = 'verified_real';
+  
+  const locationTruth: LocationTruth = {
+    network_region_guess: 'West Africa / NG',
+    spoken_declaration: 'I am in Lagos, Victoria Island, Nigeria',
+    clan_confirmations: [
+      {
+        afro_id: 'YRB-LION-95-HEAL-ELDER01',
+        display_name: 'Adebayo Johnson',
+        confirmed_at: new Date('2024-01-15'),
+        location_claimed: 'Lagos, Nigeria',
+      },
+    ],
+    last_verified_at: new Date(),
+    confidence_score: 85,
+  };
+
+  // Security handlers
+  const handlePresenceToggle = (mode: 'spirit' | 'flesh') => {
+    setPresenceMode(mode);
+    console.log('Switched to:', mode);
+  };
+
+  const handleAddContact = (contact: Omit<EmergencyContact, 'afro_id'>) => {
+    const newContact: EmergencyContact = {
+      ...contact,
+      afro_id: `TEMP-${Date.now()}`,
+    };
+    setEmergencyContacts([...emergencyContacts, newContact]);
+    console.log('Adding contact:', newContact);
+  };
+
+  const handleRemoveContact = (afroId: string) => {
+    setEmergencyContacts(emergencyContacts.filter(c => c.afro_id !== afroId));
+    console.log('Removing contact:', afroId);
+  };
+
+  const handleUpdateContact = (afroId: string, contact: Omit<EmergencyContact, 'afro_id'>) => {
+    setEmergencyContacts(emergencyContacts.map(c => 
+      c.afro_id === afroId ? { ...contact, afro_id: afroId } : c
+    ));
+    console.log('Updating contact:', afroId, contact);
+  };
+
+  const handleRequestCircle = () => {
+    console.log('Requesting circle verification...');
+  };
+
+  const handleContactSupport = () => {
+    console.log('Contacting support...');
+  };
+
+  // Village change handlers
+  const handleOpenVillageSelector = () => {
+    setIsVillageSelectorOpen(true);
+  };
+
+  const handleSelectVillage = (villageId: string, roleId: string) => {
+    const selectedVillage = villageConfigs[villageId];
+    const selectedRole = selectedVillage?.roles?.find((r: any) => r.roleId === roleId);
+    
+    if (selectedVillage && selectedRole) {
+      setSelectedVillageForChange({
+        villageId,
+        villageName: selectedVillage.villageName,
+        villageColor: selectedVillage.color,
+        roleId,
+        roleName: selectedRole.roleName,
+        roleIcon: selectedRole.icon,
+      });
+      setIsVillageSelectorOpen(false);
+      setIsRoleChangeRequestOpen(true);
+    }
+  };
+
+  const handleSubmitRoleChange = (data: any) => {
+    console.log('Submitting role change:', data);
+    // TODO: API call
+  };
+
   // Bottom navigation items
   const bottomNavItems = [
-    { id: 'social', icon: Share2, label: 'Social', color: '#3b82f6' },
-    { id: 'discover', icon: Compass, label: 'Discover', color: '#ec4899' },
-    { id: 'banking', icon: Wallet, label: 'Banking', color: '#10b981' },
+    { id: 'home', icon: HomeIcon, label: 'Home', color: '#10b981' },
+    { id: 'chat', icon: MessageCircle, label: 'Chat', color: '#3b82f6' },
+    { id: 'banking', icon: Building2, label: 'Banking', color: '#f59e0b' },
     { id: 'ai', icon: Bot, label: 'AI Agent', color: '#8b5cf6' },
   ];
 
@@ -150,33 +281,19 @@ const DashboardHome: React.FC = () => {
             </div>
           </div>
 
-          {/* Header Actions */}
+          {/* Header Actions - Only Search & Notification */}
           <div className="flex items-center gap-2">
             <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
               <Search className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
             </button>
             <button 
               className={`p-2 rounded-lg relative ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
-              onClick={() => setActiveView('overview')} // TODO: Open notifications panel
+              onClick={() => setIsNotificationOpen(true)}
             >
               <Bell className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
               {pendingRequestsCount > 0 && (
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               )}
-            </button>
-            <button 
-              onClick={() => dispatch(toggleTheme())}
-              className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-yellow-400" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-600" />
-              )}
-            </button>
-            <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
-              <Settings className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
             </button>
           </div>
         </div>
@@ -192,15 +309,15 @@ const DashboardHome: React.FC = () => {
             >
               <nav className="px-4 py-4 space-y-2">
                 <button
-                  onClick={() => { setActiveView('overview'); setIsMobileMenuOpen(false); }}
+                  onClick={() => { setActiveView('home'); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    activeView === 'overview'
+                    activeView === 'home'
                       ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                       : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <Home className="w-5 h-5" />
-                  <span className="font-medium">Overview</span>
+                  <HomeIcon className="w-5 h-5" />
+                  <span className="font-medium">Home</span>
                 </button>
                 <button
                   onClick={() => { setActiveView('profile'); setIsMobileMenuOpen(false); }}
@@ -212,6 +329,17 @@ const DashboardHome: React.FC = () => {
                 >
                   <User className="w-5 h-5" />
                   <span className="font-medium">Profile</span>
+                </button>
+                <button
+                  onClick={() => { setActiveView('security'); setIsMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                    activeView === 'security'
+                      ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                      : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <Shield className="w-5 h-5" />
+                  <span className="font-medium">Security</span>
                 </button>
                 <button
                   onClick={() => { setActiveView('tools'); setIsMobileMenuOpen(false); }}
@@ -250,10 +378,16 @@ const DashboardHome: React.FC = () => {
             {/* User Profile Mini Card */}
             <div className={`p-4 rounded-xl mb-6 ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
               <div className="flex items-center gap-3 mb-3">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                  theme === 'dark' ? 'bg-gray-600' : 'bg-gray-200'
-                }`}>
-                  <User className={`w-6 h-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                <div className="relative">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                    theme === 'dark' ? 'bg-gray-600' : 'bg-gray-200'
+                  }`}>
+                    <User className={`w-6 h-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                  </div>
+                  {/* Twin Presence indicator */}
+                  <div className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 ${
+                    theme === 'dark' ? 'border-gray-700' : 'border-gray-50'
+                  } ${presenceMode === 'spirit' ? 'bg-purple-500' : 'bg-green-500'}`} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className={`font-semibold text-sm truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -279,15 +413,15 @@ const DashboardHome: React.FC = () => {
             {/* Navigation */}
             <nav className="space-y-2 mb-6">
               <button
-                onClick={() => setActiveView('overview')}
+                onClick={() => setActiveView('home')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                  activeView === 'overview'
+                  activeView === 'home'
                     ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                     : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
               >
-                <Home className="w-5 h-5" />
-                <span className="font-medium">Overview</span>
+                <HomeIcon className="w-5 h-5" />
+                <span className="font-medium">Home</span>
               </button>
               <button
                 onClick={() => setActiveView('profile')}
@@ -299,6 +433,17 @@ const DashboardHome: React.FC = () => {
               >
                 <User className="w-5 h-5" />
                 <span className="font-medium">Profile</span>
+              </button>
+              <button
+                onClick={() => setActiveView('security')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'security'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <Shield className="w-5 h-5" />
+                <span className="font-medium">Security</span>
               </button>
               <button
                 onClick={() => setActiveView('tools')}
@@ -330,48 +475,21 @@ const DashboardHome: React.FC = () => {
               </button>
             </nav>
 
-            {/* Quick Links */}
-            <div>
-              <h3 className={`text-xs font-semibold uppercase tracking-wider mb-3 px-4 ${
-                theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
-              }`}>
-                Quick Links
-              </h3>
-              <div className="space-y-2">
-                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+            {/* Settings Button (NEW POSITION) */}
+            <div className="mb-6">
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}>
-                  <MessageSquare className="w-4 h-4" />
-                  <span className="text-sm">Whispers</span>
-                  {pendingRequestsCount > 0 && (
-                    <span className="ml-auto px-2 py-0.5 text-xs rounded-full bg-red-500 text-white">
-                      {pendingRequestsCount}
-                    </span>
-                  )}
-                </button>
-                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
-                  theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}>
-                  <Shield className="w-4 h-4" />
-                  <span className="text-sm">Trusted</span>
-                </button>
-                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
-                  theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}>
-                  <Users className="w-4 h-4" />
-                  <span className="text-sm">Community</span>
-                </button>
-                <button className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
-                  theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}>
-                  <Calendar className="w-4 h-4" />
-                  <span className="text-sm">Calendar</span>
-                </button>
-              </div>
+                }`}
+              >
+                <Settings className="w-5 h-5" />
+                <span className="font-medium">Settings</span>
+              </button>
             </div>
 
             {/* Logout */}
-            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
               <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
               }`}>
@@ -386,122 +504,118 @@ const DashboardHome: React.FC = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
             <AnimatePresence mode="wait">
-              {/* Overview / Social Feed */}
-              {activeView === 'overview' && (
+              {/* HOME VIEW - Mobile-Friendly Grid */}
+              {activeView === 'home' && (
                 <motion.div
-                  key="overview"
+                  key="home"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="space-y-6"
+                  className="space-y-4 sm:space-y-6"
                 >
-                  {/* Welcome Banner */}
+                  {/* Welcome Banner - Mobile Optimized */}
                   <div 
-                    className="p-6 sm:p-8 rounded-2xl text-white relative overflow-hidden"
+                    className="p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl text-white relative overflow-hidden"
                     style={{ background: `linear-gradient(135deg, ${villageColor} 0%, ${villageColor}dd 100%)` }}
                   >
                     <div className="relative z-10">
-                      <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
                         Welcome back, {displayName}! 👋
                       </h2>
-                      <p className="text-white/90 text-sm sm:text-base">
+                      <p className="text-white/90 text-xs sm:text-sm md:text-base">
                         Ready to connect with the Motherland today
                       </p>
                     </div>
-                    <div className="absolute right-0 top-0 w-32 h-32 sm:w-48 sm:h-48 opacity-10">
+                    <div className="absolute right-0 top-0 w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 opacity-10">
                       <RoleIcon className="w-full h-full" />
                     </div>
                   </div>
 
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <Grid className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        {tools.length}
-                      </p>
-                      <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Tools
-                      </p>
+                  {/* Main Grid - Mobile: 1 column, Tablet: 1-2 columns, Desktop: 2 columns */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    {/* Tools Section */}
+                    <ToolsSection 
+                      tools={tools} 
+                      villageColor={villageColor}
+                      onToolClick={(toolId) => console.log('Tool clicked:', toolId)}
+                    />
+
+                    {/* Requests Section */}
+                    <RequestsSection />
+
+                    {/* Connections Section */}
+                    <ConnectionsSection />
+
+                    {/* Community Section */}
+                    <CommunitySection />
+
+                    {/* Family Tree Section */}
+                    <FamilyTreeSection />
+
+                    {/* Content Preferences - Full Width on all screens */}
+                    <div className="md:col-span-2">
+                      <ContentPreferencesSection />
                     </div>
-                    <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <MessageSquare className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        {pendingRequestsCount}
-                      </p>
-                      <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Requests
-                      </p>
-                    </div>
-                    <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <Heart className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        0
-                      </p>
-                      <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Connections
-                      </p>
-                    </div>
-                    <div className={`p-4 sm:p-6 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <Users className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <p className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        248
-                      </p>
-                      <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Community
-                      </p>
+
+                    {/* Village Change Section - Full Width on all screens */}
+                    <div className="md:col-span-2">
+                      <VillageChangeSection onOpenVillageSelector={handleOpenVillageSelector} />
                     </div>
                   </div>
-
-                  {/* Render content based on active bottom tab */}
-                  {activeBottomTab === 'social' && (
-                    <div>
-                      <h3 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        Your Feed
-                      </h3>
-                      <FeedTimeline />
-                    </div>
-                  )}
-
-                  {activeBottomTab === 'discover' && (
-                    <div className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                      <Compass className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                      <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        Discover
-                      </h3>
-                      <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Explore villages, find professionals, discover content
-                      </p>
-                    </div>
-                  )}
-
-                  {activeBottomTab === 'banking' && (
-                    <div className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                      <Wallet className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                      <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        Cowrie Banking
-                      </h3>
-                      <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Send, receive, and manage your Cowries (Wari tokens)
-                      </p>
-                    </div>
-                  )}
-
-                  {activeBottomTab === 'ai' && (
-                    <div className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                      <Bot className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                      <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        AI Agent
-                      </h3>
-                      <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Your intelligent assistant for professional guidance
-                      </p>
-                    </div>
-                  )}
                 </motion.div>
               )}
 
-              {/* Profile View */}
+              {/* CHAT VIEW */}
+              {activeView === 'home' && activeBottomTab === 'chat' && (
+                <motion.div
+                  key="chat"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                >
+                  <FeedTimeline />
+                </motion.div>
+              )}
+
+              {/* BANKING VIEW */}
+              {activeView === 'home' && activeBottomTab === 'banking' && (
+                <motion.div
+                  key="banking"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
+                >
+                  <Building2 className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Cowrie Banking
+                  </h3>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Send, receive, and manage your Cowries (Wari tokens)
+                  </p>
+                </motion.div>
+              )}
+
+              {/* AI AGENT VIEW */}
+              {activeView === 'home' && activeBottomTab === 'ai' && (
+                <motion.div
+                  key="ai"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
+                >
+                  <Bot className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    AI Agent
+                  </h3>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Your intelligent assistant for professional guidance
+                  </p>
+                </motion.div>
+              )}
+
+              {/* Profile View - SAME AS BEFORE */}
               {activeView === 'profile' && (
                 <motion.div
                   key="profile"
@@ -510,12 +624,22 @@ const DashboardHome: React.FC = () => {
                   exit={{ opacity: 0, y: -20 }}
                   className="space-y-6 max-w-4xl mx-auto"
                 >
+                  <div className="flex justify-end mb-4">
+                    <TwinPresenceToggle
+                      spiritAvatar={spiritAvatar}
+                      fleshPhoto={fleshPhoto}
+                      hasFleshAccess={true}
+                      currentMode={presenceMode}
+                      onToggle={handlePresenceToggle}
+                      photoStatus={photoStatus}
+                    />
+                  </div>
+
                   <ProfileCard
                     viewType="self"
                     onEditProfile={() => console.log('Edit profile')}
                   />
                   
-                  {/* ✅ ADD Guardian Dashboard */}
                   <GuardianDashboard
                     shield={{
                       afro_id: user?.afro_id || '',
@@ -559,14 +683,87 @@ const DashboardHome: React.FC = () => {
                     allowDownload={true}
                     allowShare={true}
                   />
-
-                  <MessageRequests />
-                  
-                  <TrustedConnections />
                 </motion.div>
               )}
 
-              {/* Tools View */}
+              {/* Security View - SAME AS BEFORE */}
+              {activeView === 'security' && (
+                <motion.div
+                  key="security"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="space-y-6"
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+                      <Shield className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                    </div>
+                    <div>
+                      <h2 className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                        Security Dashboard
+                      </h2>
+                      <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Your protection and trusted circle
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <GuardianDashboard
+                      shield={{
+                        afro_id: user?.afro_id || '',
+                        overall_state: 'calm',
+                        last_updated: new Date(),
+                        guardians: {
+                          voice_spirit: {
+                            status: 'ok',
+                            last_check: new Date(),
+                            message: 'Voice pattern recognized',
+                            voiceprint_match_score: 92,
+                          },
+                          drum_binding: {
+                            status: 'ok',
+                            last_check: new Date(),
+                            message: 'Device blessed and recognized',
+                            registered_devices: 2,
+                            current_device_blessed: true,
+                          },
+                          footsteps: {
+                            status: 'ok',
+                            last_check: new Date(),
+                            message: 'Behavior pattern normal',
+                            anomaly_score: 5,
+                          },
+                          cultural_memory: {
+                            status: 'ok',
+                            last_check: new Date(),
+                            message: 'Identity consistent',
+                            consistency_score: 95,
+                          },
+                        },
+                        recommended_restrictions: [],
+                        requires_clan_blessing: false,
+                      }}
+                      showDetails={true}
+                    />
+
+                    <LocationTruthPanel locationTruth={locationTruth} isOwner={true} />
+
+                    <div className="lg:col-span-2">
+                      <EmergencyContactsManager
+                        contacts={emergencyContacts}
+                        maxContacts={5}
+                        onAdd={handleAddContact}
+                        onRemove={handleRemoveContact}
+                        onUpdate={handleUpdateContact}
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Tools View - SAME AS BEFORE */}
               {activeView === 'tools' && (
                 <motion.div
                   key="tools"
@@ -623,7 +820,7 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* Analytics View */}
+              {/* Analytics View - SAME AS BEFORE */}
               {activeView === 'analytics' && (
                 <motion.div
                   key="analytics"
@@ -671,7 +868,7 @@ const DashboardHome: React.FC = () => {
                 key={item.id}
                 onClick={() => {
                   setActiveBottomTab(item.id as any);
-                  setActiveView('overview'); // Always go to overview when switching bottom tabs
+                  setActiveView('home');
                 }}
                 className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all ${
                   isActive
@@ -705,6 +902,46 @@ const DashboardHome: React.FC = () => {
           })}
         </div>
       </nav>
+
+      {/* Settings Panel */}
+      <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+
+      {/* Notification Center */}
+      <NotificationCenter isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)} />
+
+      {/* Village Selector */}
+      <VillageSelector
+        isOpen={isVillageSelectorOpen}
+        onClose={() => setIsVillageSelectorOpen(false)}
+        onSelectVillage={handleSelectVillage}
+      />
+
+      {/* Role Change Request */}
+      {selectedVillageForChange && (
+        <RoleChangeRequest
+          isOpen={isRoleChangeRequestOpen}
+          onClose={() => {
+            setIsRoleChangeRequestOpen(false);
+            setSelectedVillageForChange(null);
+          }}
+          villageId={selectedVillageForChange.villageId}
+          villageName={selectedVillageForChange.villageName}
+          villageColor={selectedVillageForChange.villageColor}
+          roleId={selectedVillageForChange.roleId}
+          roleName={selectedVillageForChange.roleName}
+          roleIcon={selectedVillageForChange.roleIcon}
+          onSubmit={handleSubmitRoleChange}
+        />
+      )}
+
+      {/* Protection Mode Overlay */}
+      {protectionMode?.active && (
+        <ProtectionModeScreen
+          protectionMode={protectionMode}
+          onRequestCircle={handleRequestCircle}
+          onContactSupport={handleContactSupport}
+        />
+      )}
     </div>
   );
 };

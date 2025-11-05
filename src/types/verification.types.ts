@@ -1,3 +1,8 @@
+/**
+ * Verification & Nkisi Shield Type Definitions
+ * Track 1.3 + 1.4 Implementation + Upgrade 3 (African Names)
+ */
+
 // ===== VERIFICATION TIERS =====
 
 export type VerificationTier = 'bronze' | 'silver' | 'gold';
@@ -8,6 +13,32 @@ export interface VerificationLevel {
   achieved_at: Date;
   expires_at?: Date; // Some tiers may need renewal
   approved_by?: string[]; // Afro-IDs of approvers (for Silver/Gold)
+}
+
+// ===== AFRICAN TIER NAMES (UPGRADE 3) =====
+
+export type AfricanTierName = 'Village Witnessed' | 'Clan Backed' | 'Elder Standing';
+export type TierSymbol = 'calabash' | 'cowrie_shell' | 'council_staff';
+
+export interface AfricanVerificationTier {
+  internal_tier: VerificationTier; // 'bronze' | 'silver' | 'gold'
+  public_label: AfricanTierName;
+  symbol: TierSymbol;
+  aura_color: string;
+  description: string;
+  trust_capabilities: TierCapabilities;
+}
+
+export interface TierCapabilities {
+  can_post_public: boolean;
+  can_receive_whispers: boolean;
+  can_transfer_large_amounts: boolean;
+  can_be_listed_professionally: boolean;
+  can_mediate_disputes: boolean;
+  can_create_harambee: boolean;
+  can_broadcast_mass: boolean;
+  can_host_public_rooms: boolean;
+  can_receive_public_requests: boolean;
 }
 
 // ===== PROFESSIONAL BADGES =====
@@ -126,29 +157,92 @@ export interface VouchRequest {
 
 // ===== HELPER FUNCTIONS =====
 
+/**
+ * Get African tier information (Upgrade 3)
+ */
+export const getAfricanTierInfo = (tier: VerificationTier): AfricanVerificationTier => {
+  const tiers: Record<VerificationTier, AfricanVerificationTier> = {
+    bronze: {
+      internal_tier: 'bronze',
+      public_label: 'Village Witnessed',
+      symbol: 'calabash',
+      aura_color: '#8B4513', // Brown/ochre
+      description: 'The people around you know you. You\'re not a ghost.',
+      trust_capabilities: {
+        can_post_public: true,
+        can_receive_whispers: true,
+        can_transfer_large_amounts: false,
+        can_be_listed_professionally: false,
+        can_mediate_disputes: false,
+        can_create_harambee: false,
+        can_broadcast_mass: false,
+        can_host_public_rooms: false,
+        can_receive_public_requests: false,
+      },
+    },
+    silver: {
+      internal_tier: 'silver',
+      public_label: 'Clan Backed',
+      symbol: 'cowrie_shell',
+      aura_color: '#DAA520', // Warm gold/sand
+      description: 'Your blood, your craft, your work is known.',
+      trust_capabilities: {
+        can_post_public: true,
+        can_receive_whispers: true,
+        can_transfer_large_amounts: true,
+        can_be_listed_professionally: true,
+        can_mediate_disputes: false,
+        can_create_harambee: false,
+        can_broadcast_mass: false,
+        can_host_public_rooms: true,
+        can_receive_public_requests: true,
+      },
+    },
+    gold: {
+      internal_tier: 'gold',
+      public_label: 'Elder Standing',
+      symbol: 'council_staff',
+      aura_color: '#4B0082', // Deep indigo/purple
+      description: 'You carry responsibility, not just identity.',
+      trust_capabilities: {
+        can_post_public: true,
+        can_receive_whispers: true,
+        can_transfer_large_amounts: true,
+        can_be_listed_professionally: true,
+        can_mediate_disputes: true,
+        can_create_harambee: true,
+        can_broadcast_mass: true,
+        can_host_public_rooms: true,
+        can_receive_public_requests: true,
+      },
+    },
+  };
+  
+  return tiers[tier];
+};
+
+/**
+ * Get verification tier name (uses African names now)
+ */
 export const getVerificationTierName = (tier: VerificationTier): string => {
-  const names = {
-    bronze: 'Village Verified',
-    silver: 'Clan Verified',
-    gold: 'Ancestral Verified',
-  };
-  return names[tier];
+  return getAfricanTierInfo(tier).public_label;
 };
 
+/**
+ * Get verification tier color (uses African aura colors)
+ */
 export const getVerificationTierColor = (tier: VerificationTier): string => {
-  const colors = {
-    bronze: '#CD7F32',
-    silver: '#C0C0C0',
-    gold: '#FFD700',
-  };
-  return colors[tier];
+  return getAfricanTierInfo(tier).aura_color;
 };
 
+/**
+ * Get verification tier icon (uses African symbols)
+ */
 export const getVerificationTierIcon = (tier: VerificationTier): string => {
   const icons = {
-    bronze: 'Users', // Village
-    silver: 'Home', // Clan
-    gold: 'Crown', // Ancestral
+    bronze: 'Coffee', // Calabash (using Coffee as closest Lucide icon)
+    silver: 'Shell', // Cowrie shell (using Shell icon)
+    gold: 'Swords', // Council staff (using Swords as staff representation)
   };
   return icons[tier];
 };
