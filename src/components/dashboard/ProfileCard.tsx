@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   MapPin, 
-  //Shield, 
   Award, 
   Users, 
   MessageSquare,
@@ -41,7 +40,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const role = useAppSelector((state) => state.user.role);
   const showAfroId = useAppSelector((state) => state.user.showAfroId);
   const rank = useAppSelector((state) => state.user.rank);
-  // ❌ REMOVED: const badges = useAppSelector((state) => state.user.badges);
 
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -53,9 +51,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const avatarUrl = publicProfile?.avatar_url || '';
   const coverUrl = publicProfile?.cover_url || '';
 
-  // Stats (mock for now - replace with real data)
-  const followerCount = publicProfile?.follower_count || 0;
-  const followingCount = publicProfile?.following_count || 0;
+  // Stats (only Posts now)
   const postCount = publicProfile?.post_count || 0;
 
   // Village & role display
@@ -72,19 +68,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const showHeritage = publicProfile?.show_heritage || false;
   const heritage = user?.tribe || afroIdentity?.heritage || '';
 
-  // Verification & Nkisi data (mock for now - replace with real data from Redux)
-  const verificationTier: VerificationTier = 'bronze'; // TODO: Get from Redux
-  const shieldState: ShieldState = 'calm'; // TODO: Get from Redux
-  const professionalBadges: ProfessionalBadgeType[] = [
-    // TODO: Get from Redux - mock example:
-    // {
-    //   category: 'healer',
-    //   title: 'Herbal Healer',
-    //   verified_by: 'Local Council of Elders',
-    //   credential_type: 'endorsement',
-    //   issued_at: new Date(),
-    // }
-  ];
+  // Verification & Nkisi data
+  const verificationTier: VerificationTier = 'bronze';
+  const shieldState: ShieldState = 'calm';
+  const professionalBadges: ProfessionalBadgeType[] = [];
 
   const handleToggleAfroId = () => {
     dispatch(toggleAfroIdVisibility());
@@ -316,10 +303,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           </div>
         )}
 
-        {/* Stats */}
-        <div className="flex items-center gap-6 py-4 border-t border-b border-gray-200 dark:border-gray-700">
-          <div>
-            <p className={`text-xl font-bold ${
+        {/* Stats - ONLY POSTS NOW */}
+        <div className="py-4 border-t border-b border-gray-200 dark:border-gray-700">
+          <div className="text-center">
+            <p className={`text-2xl font-bold ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
               {postCount}
@@ -328,30 +315,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
             }`}>
               Posts
-            </p>
-          </div>
-          <div>
-            <p className={`text-xl font-bold ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}>
-              {followerCount}
-            </p>
-            <p className={`text-xs ${
-              theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
-            }`}>
-              Followers
-            </p>
-          </div>
-          <div>
-            <p className={`text-xl font-bold ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}>
-              {followingCount}
-            </p>
-            <p className={`text-xs ${
-              theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
-            }`}>
-              Following
             </p>
           </div>
         </div>

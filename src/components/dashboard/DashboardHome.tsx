@@ -12,18 +12,19 @@ import {
   BarChart,
   Shield,
   Settings,
-  AlertTriangle,
-  // Bottom Nav Icons
   Share2,
   Building2,
   Bot,
   Compass,
+  MessageSquare,
+  Heart,
+  Users,
+  RefreshCw,
 } from 'lucide-react';
 import { GuardianDashboard } from './GuardianDashboard';
 import * as Icons from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 
-// Import village configs
 import healthcareConfig from '../../config/villages/healthcare.json';
 import farmingConfig from '../../config/villages/farming.json';
 import constructionConfig from '../../config/villages/construction.json';
@@ -37,20 +38,15 @@ import hospitalityConfig from '../../config/villages/hospitality.json';
 import financeConfig from '../../config/villages/finance.json';
 import environmentConfig from '../../config/villages/environment.json';
 
-// Import existing components
 import { FeedTimeline } from '@components/feed/FeedTimeline';
 import { ProfileCard } from './ProfileCard';
 import { AfroIDSection } from './AfroIDSection';
-
-// Import new components
 import { SettingsPanel } from '@components/settings/SettingsPanel';
 import { NotificationCenter } from '@components/notifications/NotificationCenter';
 import { EmergencyContactsManager } from '@components/security/EmergencyContactsManager';
 import { LocationTruthPanel } from '@components/dashboard/LocationTruthPanel';
 import { TwinPresenceToggle } from '@components/dashboard/TwinPresenceToggle';
 import { ProtectionModeScreen } from '@components/security/ProtectionModeScreen';
-
-// Import Home sections
 import { ToolsSection } from '@components/home/ToolsSection';
 import { RequestsSection } from '@components/home/RequestsSection';
 import { ConnectionsSection } from '@components/home/ConnectionsSection';
@@ -91,12 +87,9 @@ const DashboardHome: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState<'home' | 'profile' | 'tools' | 'analytics' | 'security'>('home');
   const [activeBottomTab, setActiveBottomTab] = useState<'home' | 'social' | 'discover' | 'banking' | 'ai'>('home');
-  
-  // Panel states
+  const [activeHomeApp, setActiveHomeApp] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  
-  // Village selector states
   const [isVillageSelectorOpen, setIsVillageSelectorOpen] = useState(false);
   const [isRoleChangeRequestOpen, setIsRoleChangeRequestOpen] = useState(false);
   const [selectedVillageForChange, setSelectedVillageForChange] = useState<{
@@ -107,14 +100,8 @@ const DashboardHome: React.FC = () => {
     roleName: string;
     roleIcon: string;
   } | null>(null);
-  
-  // Twin Presence state
   const [presenceMode, setPresenceMode] = useState<'spirit' | 'flesh'>('spirit');
-  
-  // Protection Mode state - WITH SETTER
-  const [protectionMode, setProtectionMode] = useState<ProtectionMode | null>(null);
-  
-  // Emergency Contacts state
+  const [protectionMode] = useState<ProtectionMode | null>(null);
   const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([
     {
       afro_id: 'YRB-LION-95-HEAL-ELDER01',
@@ -139,29 +126,20 @@ const DashboardHome: React.FC = () => {
   const phoneNumber = useAppSelector((state) => state.auth.phoneNumber);
   const messageRequests = useAppSelector((state) => state.user.messageRequests);
 
-  // Get village config and role-specific tools
   const villageConfig = userVillage?.villageId ? villageConfigs[userVillage.villageId] : null;
   const roleConfig = villageConfig?.roles?.find((r: any) => r.roleId === userRole?.roleId);
   const tools: Tool[] = roleConfig?.tools || [];
   const villageColor = villageConfig?.color || '#10b981';
-
-  // Count pending message requests
   const pendingRequestsCount = messageRequests.filter(r => r.status === 'pending').length;
 
-  // Helper to resolve Lucide icons
   const resolveIcon = (iconName?: string) => {
     if (!iconName) return Grid;
     const IconComp = (Icons as any)[iconName];
     return IconComp || Grid;
   };
 
-  // Get role icon
   const RoleIcon = resolveIcon(roleConfig?.icon);
-
-  // Display name for user
   const displayName = user?.full_name || user?.name || phoneNumber || 'User';
-
-  // Mock data for security features
   const spiritAvatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=spirit';
   const fleshPhoto = 'https://api.dicebear.com/7.x/avataaars/svg?seed=real';
   const photoStatus: 'verified_real' | 'flagged_filtered' | 'rejected_ai' | 'not_uploaded' = 'verified_real';
@@ -181,31 +159,23 @@ const DashboardHome: React.FC = () => {
     confidence_score: 85,
   };
 
-  // Security handlers
   const handlePresenceToggle = (mode: 'spirit' | 'flesh') => {
     setPresenceMode(mode);
-    console.log('Switched to:', mode);
   };
 
   const handleAddContact = (contact: Omit<EmergencyContact, 'afro_id'>) => {
-    const newContact: EmergencyContact = {
-      ...contact,
-      afro_id: `TEMP-${Date.now()}`,
-    };
+    const newContact: EmergencyContact = { ...contact, afro_id: `TEMP-${Date.now()}` };
     setEmergencyContacts([...emergencyContacts, newContact]);
-    console.log('Adding contact:', newContact);
   };
 
   const handleRemoveContact = (afroId: string) => {
     setEmergencyContacts(emergencyContacts.filter(c => c.afro_id !== afroId));
-    console.log('Removing contact:', afroId);
   };
 
   const handleUpdateContact = (afroId: string, contact: Omit<EmergencyContact, 'afro_id'>) => {
     setEmergencyContacts(emergencyContacts.map(c => 
       c.afro_id === afroId ? { ...contact, afro_id: afroId } : c
     ));
-    console.log('Updating contact:', afroId, contact);
   };
 
   const handleRequestCircle = () => {
@@ -216,7 +186,6 @@ const DashboardHome: React.FC = () => {
     console.log('Contacting support...');
   };
 
-  // Village change handlers
   const handleOpenVillageSelector = () => {
     setIsVillageSelectorOpen(true);
   };
@@ -241,20 +210,8 @@ const DashboardHome: React.FC = () => {
 
   const handleSubmitRoleChange = (data: any) => {
     console.log('Submitting role change:', data);
-    // TODO: API call
   };
 
-  // Demo: Trigger Protection Mode
-  const triggerProtectionMode = () => {
-    setProtectionMode({
-      active: true,
-      triggered_at: new Date(),
-      reason: 'face_mismatch',
-      restrictions: ['wallet_transfer', 'live_stream', 'whisper_strangers'],
-    });
-  };
-
-  // Bottom navigation items
   const bottomNavItems = [
     { id: 'home', icon: HomeIcon, label: 'Home', color: '#10b981' },
     { id: 'social', icon: Share2, label: 'Social', color: '#3b82f6' },
@@ -268,7 +225,6 @@ const DashboardHome: React.FC = () => {
       {/* Mobile Header */}
       <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
         <div className="flex items-center justify-between px-4 py-3">
-          {/* Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`lg:hidden p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
@@ -276,7 +232,6 @@ const DashboardHome: React.FC = () => {
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
 
-          {/* Logo/Title */}
           <div className="flex items-center gap-3">
             <div 
               className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -294,7 +249,6 @@ const DashboardHome: React.FC = () => {
             </div>
           </div>
 
-          {/* Header Actions - Only Search & Notification */}
           <div className="flex items-center gap-2">
             <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
               <Search className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
@@ -376,8 +330,6 @@ const DashboardHome: React.FC = () => {
                   <BarChart className="w-5 h-5" />
                   <span className="font-medium">Analytics</span>
                 </button>
-
-                {/* Settings Button in Mobile Menu */}
                 <button
                   onClick={() => { setIsSettingsOpen(true); setIsMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
@@ -387,8 +339,6 @@ const DashboardHome: React.FC = () => {
                   <Settings className="w-5 h-5" />
                   <span className="font-medium">Settings</span>
                 </button>
-
-                {/* Logout in Mobile Menu */}
                 <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
                 }`}>
@@ -407,7 +357,6 @@ const DashboardHome: React.FC = () => {
           theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
         } border-r`}>
           <div className="p-6">
-            {/* User Profile Mini Card */}
             <div className={`p-4 rounded-xl mb-6 ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="relative">
@@ -416,7 +365,6 @@ const DashboardHome: React.FC = () => {
                   }`}>
                     <User className={`w-6 h-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
                   </div>
-                  {/* Twin Presence indicator */}
                   <div className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 ${
                     theme === 'dark' ? 'border-gray-700' : 'border-gray-50'
                   } ${presenceMode === 'spirit' ? 'bg-purple-500' : 'bg-green-500'}`} />
@@ -433,16 +381,12 @@ const DashboardHome: React.FC = () => {
               <button
                 onClick={() => setActiveView('profile')}
                 className="w-full text-xs font-semibold text-center py-2 rounded-lg transition-colors"
-                style={{ 
-                  backgroundColor: `${villageColor}20`, 
-                  color: villageColor 
-                }}
+                style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
               >
                 View Profile
               </button>
             </div>
 
-            {/* Navigation */}
             <nav className="space-y-2 mb-6">
               <button
                 onClick={() => setActiveView('home')}
@@ -507,7 +451,6 @@ const DashboardHome: React.FC = () => {
               </button>
             </nav>
 
-            {/* Settings Button (Desktop) */}
             <div className="mb-6">
               <button
                 onClick={() => setIsSettingsOpen(true)}
@@ -520,7 +463,6 @@ const DashboardHome: React.FC = () => {
               </button>
             </div>
 
-            {/* Logout */}
             <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
               <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
@@ -536,75 +478,197 @@ const DashboardHome: React.FC = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
             <AnimatePresence mode="wait">
-              {/* HOME VIEW - Only show 7 sections when on Home tab */}
+              {/* HOME VIEW - PHONE APP GRID */}
               {activeView === 'home' && activeBottomTab === 'home' && (
                 <motion.div
                   key="home"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="space-y-4 sm:space-y-6"
+                  className="space-y-6"
                 >
-                  {/* Welcome Banner - Mobile Optimized */}
+                  {/* Welcome Banner */}
                   <div 
-                    className="p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl text-white relative overflow-hidden"
+                    className="p-6 sm:p-8 rounded-2xl text-white relative overflow-hidden"
                     style={{ background: `linear-gradient(135deg, ${villageColor} 0%, ${villageColor}dd 100%)` }}
                   >
                     <div className="relative z-10">
-                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
+                      <h2 className="text-2xl sm:text-3xl font-bold mb-2">
                         Welcome back, {displayName}! 👋
                       </h2>
-                      <p className="text-white/90 text-xs sm:text-sm md:text-base">
+                      <p className="text-white/90 text-sm sm:text-base">
                         Ready to connect with the Motherland today
                       </p>
                     </div>
-                    <div className="absolute right-0 top-0 w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 opacity-10">
+                    <div className="absolute right-0 top-0 w-32 h-32 sm:w-48 sm:h-48 opacity-10">
                       <RoleIcon className="w-full h-full" />
                     </div>
                   </div>
 
-                  {/* ✅ Demo Protection Mode Trigger Button */}
-                  <button
-                    onClick={triggerProtectionMode}
-                    className={`w-full sm:w-auto px-4 py-3 rounded-xl text-sm font-medium flex items-center justify-center gap-2 transition-all ${
-                      theme === 'dark' 
-                        ? 'bg-amber-900/20 text-amber-400 hover:bg-amber-900/30 border border-amber-500/30' 
-                        : 'bg-amber-100 text-amber-700 hover:bg-amber-200 border border-amber-200'
-                    }`}
-                  >
-                    <AlertTriangle className="w-4 h-4" />
-                    Demo: Trigger Protection Mode
-                  </button>
+                  {/* App Grid - Phone Style */}
+                  <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+                    {/* Tools App */}
+                    <motion.button
+                      onClick={() => setActiveHomeApp('tools')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                        <Grid className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        My Tools
+                      </span>
+                    </motion.button>
 
-                  {/* Main Grid - Mobile: 1 column, Tablet: 1-2 columns, Desktop: 2 columns */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                    {/* Tools Section */}
-                    <ToolsSection 
-                      tools={tools} 
-                      villageColor={villageColor}
-                      onToolClick={(toolId) => console.log('Tool clicked:', toolId)}
-                    />
+                    {/* Requests App */}
+                    <motion.button
+                      onClick={() => setActiveHomeApp('requests')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow relative">
+                        <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                        {pendingRequestsCount > 0 && (
+                          <span className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                            {pendingRequestsCount}
+                          </span>
+                        )}
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Requests
+                      </span>
+                    </motion.button>
 
-                    {/* Requests Section */}
-                    <RequestsSection />
+                    {/* Connections App */}
+                    <motion.button
+                      onClick={() => setActiveHomeApp('connections')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                        <Heart className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Connections
+                      </span>
+                    </motion.button>
 
-                    {/* Connections Section */}
-                    <ConnectionsSection />
+                    {/* Community App */}
+                    <motion.button
+                      onClick={() => setActiveHomeApp('community')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                        <Users className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Community
+                      </span>
+                    </motion.button>
 
-                    {/* Community Section */}
-                    <CommunitySection />
+                    {/* Family Tree App */}
+                    <motion.button
+                      onClick={() => setActiveHomeApp('familytree')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                        <span className="text-3xl sm:text-4xl">🌳</span>
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Family Tree
+                      </span>
+                    </motion.button>
 
-                    {/* Family Tree Section */}
-                    <FamilyTreeSection />
+                    {/* Preferences App */}
+                    <motion.button
+                      onClick={() => setActiveHomeApp('preferences')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                        <span className="text-3xl sm:text-4xl">🎨</span>
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Preferences
+                      </span>
+                    </motion.button>
 
-                    {/* Content Preferences - Full Width on all screens */}
-                    <div className="md:col-span-2">
-                      <ContentPreferencesSection />
+                    {/* Village Change App */}
+                    <motion.button
+                      onClick={() => setActiveHomeApp('village')}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                        <RefreshCw className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Change Village
+                      </span>
+                    </motion.button>
+                  </div>
+
+                  {/* Quick Stats */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                      <Grid className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`} />
+                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                        {tools.length}
+                      </p>
+                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Tools
+                      </p>
                     </div>
-
-                    {/* Village Change Section - Full Width on all screens */}
-                    <div className="md:col-span-2">
-                      <VillageChangeSection onOpenVillageSelector={handleOpenVillageSelector} />
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                      <MessageSquare className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'}`} />
+                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                        {pendingRequestsCount}
+                      </p>
+                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Requests
+                      </p>
+                    </div>
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                      <Heart className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-pink-400' : 'text-pink-600'}`} />
+                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                        0
+                      </p>
+                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Connections
+                      </p>
+                    </div>
+                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                      <Users className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} />
+                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                        248
+                      </p>
+                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Community
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -612,167 +676,77 @@ const DashboardHome: React.FC = () => {
 
               {/* SOCIAL VIEW */}
               {activeView === 'home' && activeBottomTab === 'social' && (
-                <motion.div
-                  key="social"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                >
+                <motion.div key="social" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                   <FeedTimeline />
                 </motion.div>
               )}
 
               {/* DISCOVER VIEW */}
               {activeView === 'home' && activeBottomTab === 'discover' && (
-                <motion.div
-                  key="discover"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
-                >
+                <motion.div key="discover" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                   <Compass className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    Discover
-                  </h3>
-                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Explore villages, find professionals, discover content
-                  </p>
+                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Discover</h3>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Explore villages, find professionals, discover content</p>
                 </motion.div>
               )}
 
               {/* BANKING VIEW */}
               {activeView === 'home' && activeBottomTab === 'banking' && (
-                <motion.div
-                  key="banking"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
-                >
+                <motion.div key="banking" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                   <Building2 className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    Cowrie Banking
-                  </h3>
-                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Send, receive, and manage your Cowries (Wari tokens)
-                  </p>
+                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Cowrie Banking</h3>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Send, receive, and manage your Cowries (Wari tokens)</p>
                 </motion.div>
               )}
 
               {/* AI AGENT VIEW */}
               {activeView === 'home' && activeBottomTab === 'ai' && (
-                <motion.div
-                  key="ai"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
-                >
+                <motion.div key="ai" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                   <Bot className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    AI Agent
-                  </h3>
-                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Your intelligent assistant for professional guidance
-                  </p>
+                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>AI Agent</h3>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Your intelligent assistant for professional guidance</p>
                 </motion.div>
               )}
 
-              {/* Profile View */}
+              {/* PROFILE VIEW */}
               {activeView === 'profile' && (
-                <motion.div
-                  key="profile"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="space-y-6 max-w-4xl mx-auto"
-                >
+                <motion.div key="profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 max-w-4xl mx-auto">
                   <div className="flex justify-end mb-4">
-                    <TwinPresenceToggle
-                      spiritAvatar={spiritAvatar}
-                      fleshPhoto={fleshPhoto}
-                      hasFleshAccess={true}
-                      currentMode={presenceMode}
-                      onToggle={handlePresenceToggle}
-                      photoStatus={photoStatus}
-                    />
+                    <TwinPresenceToggle spiritAvatar={spiritAvatar} fleshPhoto={fleshPhoto} hasFleshAccess={true} currentMode={presenceMode} onToggle={handlePresenceToggle} photoStatus={photoStatus} />
                   </div>
-
-                  <ProfileCard
-                    viewType="self"
-                    onEditProfile={() => console.log('Edit profile')}
-                  />
-                  
+                  <ProfileCard viewType="self" onEditProfile={() => console.log('Edit profile')} />
                   <GuardianDashboard
                     shield={{
                       afro_id: user?.afro_id || '',
                       overall_state: 'calm',
                       last_updated: new Date(),
                       guardians: {
-                        voice_spirit: {
-                          status: 'ok',
-                          last_check: new Date(),
-                          message: 'Voice pattern matches your blessing',
-                          voiceprint_match_score: 95,
-                        },
-                        drum_binding: {
-                          status: 'ok',
-                          last_check: new Date(),
-                          message: 'This device is blessed and recognized',
-                          registered_devices: 2,
-                          current_device_blessed: true,
-                        },
-                        footsteps: {
-                          status: 'ok',
-                          last_check: new Date(),
-                          message: 'Your movements are consistent and familiar',
-                          anomaly_score: 5,
-                        },
-                        cultural_memory: {
-                          status: 'ok',
-                          last_check: new Date(),
-                          message: 'Your identity remains true to your oath',
-                          consistency_score: 92,
-                        },
+                        voice_spirit: { status: 'ok', last_check: new Date(), message: 'Voice pattern matches your blessing', voiceprint_match_score: 95 },
+                        drum_binding: { status: 'ok', last_check: new Date(), message: 'This device is blessed and recognized', registered_devices: 2, current_device_blessed: true },
+                        footsteps: { status: 'ok', last_check: new Date(), message: 'Your movements are consistent and familiar', anomaly_score: 5 },
+                        cultural_memory: { status: 'ok', last_check: new Date(), message: 'Your identity remains true to your oath', consistency_score: 92 },
                       },
                       recommended_restrictions: [],
                       requires_clan_blessing: false,
                     }}
                     showDetails={true}
                   />
-                  
-                  <AfroIDSection
-                    showWarning={true}
-                    allowDownload={true}
-                    allowShare={true}
-                  />
+                  <AfroIDSection showWarning={true} allowDownload={true} allowShare={true} />
                 </motion.div>
               )}
 
-              {/* Security View */}
+              {/* SECURITY VIEW */}
               {activeView === 'security' && (
-                <motion.div
-                  key="security"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="space-y-6"
-                >
+                <motion.div key="security" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
-                      <Shield className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+                      <Shield className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h2 className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        Security Dashboard
-                      </h2>
-                      <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Your protection and trusted circle
-                      </p>
+                      <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Security Dashboard</h2>
+                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Your protection and trusted circle</p>
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <GuardianDashboard
                       shield={{
@@ -780,102 +754,43 @@ const DashboardHome: React.FC = () => {
                         overall_state: 'calm',
                         last_updated: new Date(),
                         guardians: {
-                          voice_spirit: {
-                            status: 'ok',
-                            last_check: new Date(),
-                            message: 'Voice pattern recognized',
-                            voiceprint_match_score: 92,
-                          },
-                          drum_binding: {
-                            status: 'ok',
-                            last_check: new Date(),
-                            message: 'Device blessed and recognized',
-                            registered_devices: 2,
-                            current_device_blessed: true,
-                          },
-                          footsteps: {
-                            status: 'ok',
-                            last_check: new Date(),
-                            message: 'Behavior pattern normal',
-                            anomaly_score: 5,
-                          },
-                          cultural_memory: {
-                            status: 'ok',
-                            last_check: new Date(),
-                            message: 'Identity consistent',
-                            consistency_score: 95,
-                          },
+                          voice_spirit: { status: 'ok', last_check: new Date(), message: 'Voice pattern recognized', voiceprint_match_score: 92 },
+                          drum_binding: { status: 'ok', last_check: new Date(), message: 'Device blessed and recognized', registered_devices: 2, current_device_blessed: true },
+                          footsteps: { status: 'ok', last_check: new Date(), message: 'Behavior pattern normal', anomaly_score: 5 },
+                          cultural_memory: { status: 'ok', last_check: new Date(), message: 'Identity consistent', consistency_score: 95 },
                         },
                         recommended_restrictions: [],
                         requires_clan_blessing: false,
                       }}
                       showDetails={true}
                     />
-
                     <LocationTruthPanel locationTruth={locationTruth} isOwner={true} />
-
                     <div className="lg:col-span-2">
-                      <EmergencyContactsManager
-                        contacts={emergencyContacts}
-                        maxContacts={5}
-                        onAdd={handleAddContact}
-                        onRemove={handleRemoveContact}
-                        onUpdate={handleUpdateContact}
-                      />
+                      <EmergencyContactsManager contacts={emergencyContacts} maxContacts={5} onAdd={handleAddContact} onRemove={handleRemoveContact} onUpdate={handleUpdateContact} />
                     </div>
                   </div>
                 </motion.div>
               )}
 
-              {/* Tools View */}
+              {/* TOOLS VIEW */}
               {activeView === 'tools' && (
-                <motion.div
-                  key="tools"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="space-y-6"
-                >
+                <motion.div key="tools" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
                   <div>
-                    <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      My Tools
-                    </h2>
-                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {tools.length} tools available for {roleConfig?.roleName}
-                    </p>
+                    <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>My Tools</h2>
+                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tools.length} tools available for {roleConfig?.roleName}</p>
                   </div>
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {tools.map((tool) => {
                       const ToolIcon = resolveIcon(tool.icon);
                       return (
-                        <motion.button
-                          key={tool.toolId}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className={`p-6 rounded-xl text-left transition-all ${
-                            theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-lg'
-                          }`}
-                        >
-                          <div 
-                            className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                            style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
-                          >
+                        <motion.button key={tool.toolId} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className={`p-6 rounded-xl text-left transition-all ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-lg'}`}>
+                          <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${villageColor}20`, color: villageColor }}>
                             <ToolIcon className="w-7 h-7" />
                           </div>
-                          <h4 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                            {tool.toolName}
-                          </h4>
-                          <p className={`text-sm line-clamp-2 mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                            {tool.description}
-                          </p>
+                          <h4 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{tool.toolName}</h4>
+                          <p className={`text-sm line-clamp-2 mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tool.description}</p>
                           {tool.category && (
-                            <span 
-                              className="inline-block px-2 py-1 text-xs rounded-full"
-                              style={{ backgroundColor: `${villageColor}15`, color: villageColor }}
-                            >
-                              {tool.category}
-                            </span>
+                            <span className="inline-block px-2 py-1 text-xs rounded-full" style={{ backgroundColor: `${villageColor}15`, color: villageColor }}>{tool.category}</span>
                           )}
                         </motion.button>
                       );
@@ -884,32 +799,17 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* Analytics View */}
+              {/* ANALYTICS VIEW */}
               {activeView === 'analytics' && (
-                <motion.div
-                  key="analytics"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="space-y-6"
-                >
+                <motion.div key="analytics" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
                   <div>
-                    <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      Analytics
-                    </h2>
-                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                      Track your progress and performance
-                    </p>
+                    <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Analytics</h2>
+                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Track your progress and performance</p>
                   </div>
-
                   <div className={`p-12 rounded-xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                     <BarChart className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                    <p className={`text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      Analytics Coming Soon
-                    </p>
-                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                      Track your activity and see detailed insights
-                    </p>
+                    <p className={`text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Analytics Coming Soon</p>
+                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Track your activity and see detailed insights</p>
                   </div>
                 </motion.div>
               )}
@@ -919,14 +819,11 @@ const DashboardHome: React.FC = () => {
       </div>
 
       {/* Bottom Navigation Bar */}
-      <nav className={`fixed bottom-0 left-0 right-0 z-50 ${
-        theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-      } border-t`}>
+      <nav className={`fixed bottom-0 left-0 right-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="flex items-center justify-around px-2 py-3 max-w-screen-xl mx-auto">
           {bottomNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeBottomTab === item.id;
-            
             return (
               <button
                 key={item.id}
@@ -934,31 +831,12 @@ const DashboardHome: React.FC = () => {
                   setActiveBottomTab(item.id as any);
                   setActiveView('home');
                 }}
-                className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${
-                  isActive
-                    ? 'scale-105'
-                    : 'opacity-70 hover:opacity-100'
-                }`}
+                className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'scale-105' : 'opacity-70 hover:opacity-100'}`}
               >
-                <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${
-                    isActive ? 'scale-110' : ''
-                  }`}
-                  style={{
-                    backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6',
-                    color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280'
-                  }}
-                >
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${isActive ? 'scale-110' : ''}`} style={{ backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6', color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280' }}>
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <span
-                  className={`text-xs font-medium transition-colors ${
-                    isActive
-                      ? theme === 'dark' ? 'text-white' : 'text-gray-900'
-                      : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                  }`}
-                  style={{ color: isActive ? item.color : undefined }}
-                >
+                <span className={`text-xs font-medium transition-colors ${isActive ? theme === 'dark' ? 'text-white' : 'text-gray-900' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} style={{ color: isActive ? item.color : undefined }}>
                   {item.label}
                 </span>
               </button>
@@ -967,19 +845,51 @@ const DashboardHome: React.FC = () => {
         </div>
       </nav>
 
+      {/* App Modals */}
+      <AnimatePresence>
+        {activeHomeApp && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveHomeApp(null)} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" />
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className={`w-full max-w-4xl max-h-[90vh] overflow-y-auto ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-2xl`}>
+                <div className={`sticky top-0 z-10 flex items-center justify-between p-6 border-b ${theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
+                  <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    {activeHomeApp === 'tools' && 'My Tools'}
+                    {activeHomeApp === 'requests' && 'Message Requests'}
+                    {activeHomeApp === 'connections' && 'My Connections'}
+                    {activeHomeApp === 'community' && 'Community'}
+                    {activeHomeApp === 'familytree' && 'Family Tree'}
+                    {activeHomeApp === 'preferences' && 'Content Preferences'}
+                    {activeHomeApp === 'village' && 'Change Village or Role'}
+                  </h2>
+                  <button onClick={() => setActiveHomeApp(null)} className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+                <div className="p-6">
+                  {activeHomeApp === 'tools' && <ToolsSection tools={tools} villageColor={villageColor} onToolClick={(toolId) => console.log('Tool clicked:', toolId)} />}
+                  {activeHomeApp === 'requests' && <RequestsSection />}
+                  {activeHomeApp === 'connections' && <ConnectionsSection />}
+                  {activeHomeApp === 'community' && <CommunitySection />}
+                  {activeHomeApp === 'familytree' && <FamilyTreeSection />}
+                  {activeHomeApp === 'preferences' && <ContentPreferencesSection />}
+                  {activeHomeApp === 'village' && <VillageChangeSection onOpenVillageSelector={handleOpenVillageSelector} />}
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Settings Panel */}
       <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-
+      
       {/* Notification Center */}
       <NotificationCenter isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)} />
-
+      
       {/* Village Selector */}
-      <VillageSelector
-        isOpen={isVillageSelectorOpen}
-        onClose={() => setIsVillageSelectorOpen(false)}
-        onSelectVillage={handleSelectVillage}
-      />
-
+      <VillageSelector isOpen={isVillageSelectorOpen} onClose={() => setIsVillageSelectorOpen(false)} onSelectVillage={handleSelectVillage} />
+      
       {/* Role Change Request */}
       {selectedVillageForChange && (
         <RoleChangeRequest
@@ -997,14 +907,10 @@ const DashboardHome: React.FC = () => {
           onSubmit={handleSubmitRoleChange}
         />
       )}
-
-      {/* ✅ Protection Mode Overlay - RESTORED */}
+      
+      {/* Protection Mode Overlay */}
       {protectionMode?.active && (
-        <ProtectionModeScreen
-          protectionMode={protectionMode}
-          onRequestCircle={handleRequestCircle}
-          onContactSupport={handleContactSupport}
-        />
+        <ProtectionModeScreen protectionMode={protectionMode} onRequestCircle={handleRequestCircle} onContactSupport={handleContactSupport} />
       )}
     </div>
   );

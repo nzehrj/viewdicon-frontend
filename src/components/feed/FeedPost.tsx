@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  MessageSquare, 
-  Share2, 
   Bookmark, 
   MoreHorizontal,
   MapPin,
@@ -28,8 +26,6 @@ interface FeedPostProps {
 export const FeedPost: React.FC<FeedPostProps> = ({
   post,
   onPot,
-  onComment,
-  onShare,
   onBookmark,
 }) => {
   const [hasStirred, setHasStirred] = useState(false);
@@ -46,9 +42,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({
     ? post.content.substring(0, 280) + '...'
     : post.content;
 
-  // ✅ NEW: Mock verification data (TODO: Get from post author data)
-  const authorVerificationTier: VerificationTier = 'silver'; // TODO: Get from post.author_verification_tier
-  const authorShieldState: ShieldState = 'calm'; // TODO: Get from post.author_shield_state
+  // Mock verification data (TODO: Get from post author data)
+  const authorVerificationTier: VerificationTier = 'silver';
+  const authorShieldState: ShieldState = 'calm';
 
   return (
     <motion.article
@@ -96,7 +92,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               {post.author_display_name}
             </h3>
             
-            {/* ✅ Verification Badge */}
+            {/* Verification Badge */}
             <VerificationBadge tier={authorVerificationTier} size="sm" showTooltip />
           </div>
 
@@ -207,64 +203,16 @@ export const FeedPost: React.FC<FeedPostProps> = ({
         />
       </div>
 
-      {/* Engagement Actions */}
+      {/* Engagement Actions - ONLY POT BUTTON & BOOKMARK */}
       <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Pot Button */}
-          <PotButton
-            potStatus={post.pot_status}
-            hasUserStirred={hasStirred}
-            onPot={handlePot}
-            size="md"
-            showLabel={false}
-          />
-
-          {/* Comment */}
-          <button
-            onClick={() => onComment(post.post_id)}
-            className={`
-              flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-semibold
-              transition-all
-              ${theme === 'dark'
-                ? 'hover:bg-gray-700 text-gray-300'
-                : 'hover:bg-gray-100 text-gray-700'
-              }
-            `}
-          >
-            <MessageSquare className="w-4 h-4" />
-            <span className="hidden sm:inline">Comment</span>
-            {post.comment_count > 0 && (
-              <span className={`text-xs ${
-                theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
-              }`}>
-                {post.comment_count}
-              </span>
-            )}
-          </button>
-
-          {/* Share */}
-          <button
-            onClick={() => onShare(post.post_id)}
-            className={`
-              flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-semibold
-              transition-all
-              ${theme === 'dark'
-                ? 'hover:bg-gray-700 text-gray-300'
-                : 'hover:bg-gray-100 text-gray-700'
-              }
-            `}
-          >
-            <Share2 className="w-4 h-4" />
-            <span className="hidden sm:inline">Share</span>
-            {post.share_count > 0 && (
-              <span className={`text-xs ${
-                theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
-              }`}>
-                {post.share_count}
-              </span>
-            )}
-          </button>
-        </div>
+        {/* Pot Button */}
+        <PotButton
+          potStatus={post.pot_status}
+          hasUserStirred={hasStirred}
+          onPot={handlePot}
+          size="md"
+          showLabel={true}
+        />
 
         {/* Bookmark */}
         <button
@@ -272,12 +220,13 @@ export const FeedPost: React.FC<FeedPostProps> = ({
           className={`
             p-2 rounded-xl transition-all
             ${theme === 'dark'
-              ? 'hover:bg-gray-700 text-gray-400'
-              : 'hover:bg-gray-100 text-gray-600'
+              ? 'hover:bg-gray-700 text-gray-400 hover:text-white'
+              : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
             }
           `}
+          title="Bookmark"
         >
-          <Bookmark className="w-4 h-4" />
+          <Bookmark className="w-5 h-5" />
         </button>
       </div>
 
