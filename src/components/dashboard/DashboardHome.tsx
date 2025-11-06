@@ -478,7 +478,7 @@ const DashboardHome: React.FC = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
             <AnimatePresence mode="wait">
-              {/* HOME VIEW - PHONE APP GRID */}
+              {/* HOME VIEW - PHONE APP GRID (NO STATS) */}
               {activeView === 'home' && activeBottomTab === 'home' && (
                 <motion.div
                   key="home"
@@ -505,7 +505,7 @@ const DashboardHome: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* App Grid - Phone Style */}
+                  {/* App Grid - Phone Style (7 Icons Only) */}
                   <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
                     {/* Tools App */}
                     <motion.button
@@ -630,46 +630,6 @@ const DashboardHome: React.FC = () => {
                         Change Village
                       </span>
                     </motion.button>
-                  </div>
-
-                  {/* Quick Stats */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <Grid className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`} />
-                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        {tools.length}
-                      </p>
-                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Tools
-                      </p>
-                    </div>
-                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <MessageSquare className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'}`} />
-                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        {pendingRequestsCount}
-                      </p>
-                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Requests
-                      </p>
-                    </div>
-                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <Heart className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-pink-400' : 'text-pink-600'}`} />
-                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        0
-                      </p>
-                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Connections
-                      </p>
-                    </div>
-                    <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                      <Users className={`w-5 h-5 mb-2 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} />
-                      <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                        248
-                      </p>
-                      <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Community
-                      </p>
-                    </div>
                   </div>
                 </motion.div>
               )}
