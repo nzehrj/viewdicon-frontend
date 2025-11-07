@@ -1,4 +1,4 @@
-﻿import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+﻿﻿import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { PublicProfile, AfroIdentity, UserBadge, RankRegalia } from '@/types/profile.types';
 import type { ConnectionGraph, MessageRequest } from '@/types/connection.types';
 
