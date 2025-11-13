@@ -1,5 +1,5 @@
 import { Village, VillageId } from '@/types/village.types';
-import holdingVillageConfig from '@/config/villages/holding_village.json';
+import holdingVillageConfig from '@/config/villages/getting_started.json';
 
 /**
  * Village Registry Service
@@ -16,7 +16,7 @@ class VillageRegistryService {
 
   private loadVillages() {
     // Load Village 0 (Holding Village / The Gate)
-    this.villages.set('holding_village', holdingVillageConfig as Village);
+    this.villages.set('getting_started', holdingVillageConfig as Village);
 
     // Villages 1-12 will be loaded here as they are defined
     // Example:
@@ -50,7 +50,7 @@ class VillageRegistryService {
    * Get the Holding Village (Village 0)
    */
   getHoldingVillage(): Village | undefined {
-    return this.villages.get('holding_village');
+    return this.villages.get('getting_started');
   }
 
   /**
