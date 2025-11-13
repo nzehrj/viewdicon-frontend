@@ -1,20 +1,480 @@
 {
   "villageId": "technology",
   "villageName": "Technology Village",
-  "description": "Tech workers - developers, IT support, data analysts, and digital specialists",
-  "color": "#6366f1",
-  "icon": "Laptop",
+  "description": "Technology workers - device repairers, solar installers, network fixers, coders, POS technicians, drone pilots, developers, IT support, data analysts, and all who hack reality when the system refuses them",
+  "color": "#06b6d4",
+  "icon": "Cpu",
+  "englishName": "The Village of Makers of Tomorrow",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#06b6d4",
+    "colorSecondary": "#0e7490",
+    "iconSet": ["cpu", "zap", "wifi", "wrench"],
+    "backgroundTexture": "electric_teal_charcoal_circuit_adire",
+    "symbols": ["circuit_lines", "adire_geometry", "neon_threads", "spark_wire"]
+  },
+  
+  "promiseTagline": "We bend the future to our will. We make the impossible work today, with what we have right now.",
+  
+  "defaultTools": [
+    "tech_session",
+    "repair_proofer",
+    "parts_advance",
+    "live_fix_stream",
+    "device_custody_log",
+    "earnings_wallet"
+  ],
+  
   "roles": [
+    {
+      "roleId": "phone_repair_tech",
+      "roleName": "Phone / Tablet Repair Tech",
+      "description": "Fix screens, charging ports, water damage, board-level repairs",
+      "icon": "Smartphone",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show device repair process and finished work",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Document broken to working device transformation",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "claim_job",
+          "name": "Claim Job",
+          "icon": "CheckCircle",
+          "description": "Accept device repair request",
+          "component": "ClaimJob"
+        },
+        {
+          "id": "diagnostic_video",
+          "name": "Diagnostic Video",
+          "icon": "Video",
+          "description": "Record initial device state and IMEI",
+          "component": "DiagnosticVideo"
+        },
+        {
+          "id": "request_parts_advance",
+          "name": "Request Parts Advance",
+          "icon": "DollarSign",
+          "description": "Get funds for screen, battery, or components",
+          "component": "RequestPartsAdvance"
+        },
+        {
+          "id": "proof_of_fix",
+          "name": "Proof of Fix",
+          "icon": "Camera",
+          "description": "Show device working with same IMEI",
+          "component": "ProofOfFix"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "fixesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "fixesCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "fixesCompleted": 5,
+            "zeroPartSwaps": true,
+            "zeroDataTheft": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "fixesCompleted": 30,
+            "councilApproval": true,
+            "communityTrust": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["TECH-01", "TECH-02", "TECH-03", "TECH-08", "TECH-15"]
+    },
+    {
+      "roleId": "solar_power_installer",
+      "roleName": "Solar Installer / Off-Grid Power Hacker",
+      "description": "Build neighborhood solar and inverter micro-systems from scrap",
+      "icon": "Sun",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show solar installation or inverter setup work",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "new_install_request",
+          "name": "New Install Request",
+          "icon": "Plus",
+          "description": "Accept solar/inverter installation job",
+          "component": "NewInstallRequest"
+        },
+        {
+          "id": "site_assessment",
+          "name": "Site Assessment",
+          "icon": "MapPin",
+          "description": "Survey location and power requirements",
+          "component": "SiteAssessment"
+        },
+        {
+          "id": "power_output_proof",
+          "name": "Power Output Proof",
+          "icon": "Zap",
+          "description": "Show voltage and uptime after installation",
+          "component": "PowerOutputProof"
+        },
+        {
+          "id": "maintenance_scheduler",
+          "name": "Maintenance Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule battery checks and system tune-ups",
+          "component": "MaintenanceScheduler"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "installsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "installsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "installsCompleted": 5,
+            "zeroUnsafeSetups": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "installsCompleted": 20,
+            "neighborhoodPowered": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["TECH-05", "TECH-10", "TECH-15"]
+    },
+    {
+      "roleId": "network_wifi_tech",
+      "roleName": "Router / Wi-Fi / Network Tech",
+      "description": "Bring internet to apartments, hostels, kiosks, and neighborhoods",
+      "icon": "Wifi",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show network setup and speed test results",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "network_setup",
+          "name": "Network Setup",
+          "icon": "Wifi",
+          "description": "Configure router, hotspot, or mesh network",
+          "component": "NetworkSetup"
+        },
+        {
+          "id": "speed_test_proof",
+          "name": "Speed Test Proof",
+          "icon": "Activity",
+          "description": "Show connection working after setup",
+          "component": "SpeedTestProof"
+        },
+        {
+          "id": "cable_run_tracker",
+          "name": "Cable Run Tracker",
+          "icon": "GitBranch",
+          "description": "Document network cable installation",
+          "component": "CableRunTracker"
+        },
+        {
+          "id": "troubleshoot_outage",
+          "name": "Troubleshoot Outage",
+          "icon": "AlertCircle",
+          "description": "Diagnose and fix connection problems",
+          "component": "TroubleshootOutage"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "setupsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "setupsCompleted": 1,
+            "connectionStable": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "setupsCompleted": 8,
+            "uptimeReliable": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "setupsCompleted": 40,
+            "meshNetworkBuilt": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["TECH-05", "TECH-15"]
+    },
+    {
+      "roleId": "pos_payment_tech",
+      "roleName": "POS / Payment Device Technician",
+      "description": "Fix and maintain POS terminals and cashout machines",
+      "icon": "CreditCard",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show POS repair or configuration work",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: No fraud, no skimming, honest service",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "pos_diagnostic",
+          "name": "POS Diagnostic",
+          "icon": "Search",
+          "description": "Test terminal for card rejection issues",
+          "component": "POSDiagnostic"
+        },
+        {
+          "id": "terminal_config",
+          "name": "Terminal Configuration",
+          "icon": "Settings",
+          "description": "Set up POS for agent or merchant",
+          "component": "TerminalConfiguration"
+        },
+        {
+          "id": "transaction_test",
+          "name": "Transaction Test",
+          "icon": "CheckCircle",
+          "description": "Verify POS processing payments correctly",
+          "component": "TransactionTest"
+        },
+        {
+          "id": "fraud_alert",
+          "name": "Fraud Alert",
+          "icon": "AlertTriangle",
+          "description": "Report suspected skimming or tampering",
+          "component": "FraudAlert"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "fixesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "fixesCompleted": 2,
+            "zeroFraudFlags": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "fixesCompleted": 10,
+            "zeroSkimmingReports": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "fixesCompleted": 50,
+            "areaAgentsTrust": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["TECH-04", "TECH-11", "TECH-15"]
+    },
     {
       "roleId": "software_dev",
       "roleName": "Software Developer",
-      "description": "Build software applications and systems",
+      "description": "Build software applications, systems, and custom solutions",
       "icon": "Code",
       "theme": {
-        "primary": "#6366f1",
-        "secondary": "#4f46e5",
-        "accent": "#818cf8"
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
       },
+      "verificationRequired": [
+        {
+          "type": "portfolio",
+          "description": "Show apps or code projects you've built",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "project_board",
@@ -36,19 +496,89 @@
           "icon": "Rocket",
           "description": "CI/CD deployment pipeline",
           "component": "DeployPipeline"
+        },
+        {
+          "id": "prototype_demo",
+          "name": "Prototype Demo",
+          "icon": "Eye",
+          "description": "Show working version for feedback",
+          "component": "PrototypeDemo"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "projectsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "projectsCompleted": 1,
+            "appWorks": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "projectsCompleted": 8,
+            "zeroAbandonedProjects": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "projectsCompleted": 30,
+            "communityImpact": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["TECH-12", "TECH-13"]
     },
     {
       "roleId": "it_support",
       "roleName": "IT Support Specialist",
-      "description": "Provide technical support and troubleshooting",
+      "description": "Provide technical support, troubleshooting, and system maintenance",
       "icon": "Headset",
       "theme": {
-        "primary": "#6366f1",
-        "secondary": "#4f46e5",
-        "accent": "#818cf8"
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
       },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show technical support or system maintenance work",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "ticket_system",
@@ -70,19 +600,89 @@
           "icon": "Database",
           "description": "Track IT assets",
           "component": "AssetInventory"
+        },
+        {
+          "id": "troubleshoot_guide",
+          "name": "Troubleshoot Guide",
+          "icon": "BookOpen",
+          "description": "Step-by-step problem solving",
+          "component": "TroubleshootGuide"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "ticketsResolved": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "ticketsResolved": 5,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "ticketsResolved": 30,
+            "avgResponseTime": "fast"
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "ticketsResolved": 150,
+            "councilApproval": true,
+            "systemsManaged": 10
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["TECH-01", "TECH-03", "TECH-06"]
     },
     {
       "roleId": "data_analyst",
       "roleName": "Data Analyst",
-      "description": "Analyze data and generate insights",
+      "description": "Analyze data, generate insights, and build dashboards",
       "icon": "BarChart",
       "theme": {
-        "primary": "#6366f1",
-        "secondary": "#4f46e5",
-        "accent": "#818cf8"
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
       },
+      "verificationRequired": [
+        {
+          "type": "portfolio",
+          "description": "Show dashboards, reports, or analysis work",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "dashboard_builder",
@@ -104,8 +704,531 @@
           "icon": "FileSpreadsheet",
           "description": "Generate analytics reports",
           "component": "ReportGenerator"
+        },
+        {
+          "id": "data_visualization",
+          "name": "Data Visualization",
+          "icon": "PieChart",
+          "description": "Create charts and visual insights",
+          "component": "DataVisualization"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "reportsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "reportsCompleted": 3,
+            "accuracyRate": 0.9
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "reportsCompleted": 15,
+            "insightsActionable": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "reportsCompleted": 60,
+            "councilApproval": true,
+            "businessImpact": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["TECH-01", "TECH-06"]
+    },
+    {
+      "roleId": "data_recovery_specialist",
+      "roleName": "Data Recovery Specialist",
+      "description": "Recover photos, files, and data from dead devices and drives",
+      "icon": "HardDrive",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show data recovery process and success stories",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: No data theft, no leaking files",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "recovery_assessment",
+          "name": "Recovery Assessment",
+          "icon": "Search",
+          "description": "Evaluate data loss and recovery chances",
+          "component": "RecoveryAssessment"
+        },
+        {
+          "id": "extraction_proof",
+          "name": "Extraction Proof",
+          "icon": "Download",
+          "description": "Show recovered files to client",
+          "component": "ExtractionProof"
+        },
+        {
+          "id": "secure_transfer",
+          "name": "Secure Transfer",
+          "icon": "Lock",
+          "description": "Return data to client safely",
+          "component": "SecureTransfer"
+        },
+        {
+          "id": "privacy_guarantee",
+          "name": "Privacy Guarantee",
+          "icon": "ShieldCheck",
+          "description": "Confirm data deletion after transfer",
+          "component": "PrivacyGuarantee"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "recoveriesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "recoveriesCompleted": 1,
+            "zeroDataLeaks": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "recoveriesCompleted": 10,
+            "zeroPrivacyViolations": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "recoveriesCompleted": 50,
+            "councilApproval": true,
+            "trustedWithSensitiveData": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["TECH-01", "TECH-03", "TECH-08", "TECH-15"]
+    },
+    {
+      "roleId": "cctv_security_installer",
+      "roleName": "CCTV / Security System Installer",
+      "description": "Install cameras, motion alerts, and security systems",
+      "icon": "Camera",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show security installation and camera setup",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Camera feeds are sacred, no blackmail or leaking",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "site_survey",
+          "name": "Site Survey",
+          "icon": "Map",
+          "description": "Plan camera placement and coverage",
+          "component": "SiteSurvey"
+        },
+        {
+          "id": "camera_install_proof",
+          "name": "Camera Install Proof",
+          "icon": "Video",
+          "description": "Show live feed after installation",
+          "component": "CameraInstallProof"
+        },
+        {
+          "id": "remote_access_setup",
+          "name": "Remote Access Setup",
+          "icon": "Smartphone",
+          "description": "Configure client's phone to view cameras",
+          "component": "RemoteAccessSetup"
+        },
+        {
+          "id": "privacy_controls",
+          "name": "Privacy Controls",
+          "icon": "Lock",
+          "description": "Ensure only client has footage access",
+          "component": "PrivacyControls"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "installsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "installsCompleted": 1,
+            "zeroPrivacyViolations": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "installsCompleted": 10,
+            "zeroFootageLeaks": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "installsCompleted": 40,
+            "neighborhoodSecured": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["TECH-03", "TECH-14", "TECH-15"]
+    },
+    {
+      "roleId": "drone_technician",
+      "roleName": "Drone Technician / Pilot",
+      "description": "Operate drones for camera work, farm surveys, and rescue scouting",
+      "icon": "Radio",
+      "theme": {
+        "primary": "#06b6d4",
+        "secondary": "#0891b2",
+        "accent": "#22d3ee"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show drone flight and footage quality",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "flight_mission",
+          "name": "Flight Mission",
+          "icon": "MapPin",
+          "description": "Plan and execute drone survey or shoot",
+          "component": "FlightMission"
+        },
+        {
+          "id": "footage_delivery",
+          "name": "Footage Delivery",
+          "icon": "Upload",
+          "description": "Upload captured video and photos",
+          "component": "FootageDelivery"
+        },
+        {
+          "id": "maintenance_log",
+          "name": "Maintenance Log",
+          "icon": "Wrench",
+          "description": "Track drone repairs and battery health",
+          "component": "MaintenanceLog"
+        },
+        {
+          "id": "safety_compliance",
+          "name": "Safety Compliance",
+          "icon": "ShieldCheck",
+          "description": "Confirm flight follows local regulations",
+          "component": "SafetyCompliance"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Cold Wire",
+          "icon": "circle",
+          "requirements": {
+            "missionsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Live Current",
+          "icon": "spark-single",
+          "requirements": {
+            "missionsCompleted": 1,
+            "zeroAccidents": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Power",
+          "icon": "spark-triple",
+          "requirements": {
+            "missionsCompleted": 10,
+            "qualityFootage": true
+          },
+          "visual": {
+            "color": "#06b6d4",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Grid Maker",
+          "icon": "spark-five",
+          "requirements": {
+            "missionsCompleted": 50,
+            "emergencyRescues": 2,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0891b2",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["TECH-14", "TECH-15"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "tech_council",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Device repairs, installations, and technical services with escrow",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Respect Cowries for excellent tech work",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Recurring maintenance plans for power, network, security",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Iron", "Thunder", "Creator"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "TECH-01",
+      "ruleText": "You do not steal data (no copying client photos, chats, bank info)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-02",
+      "ruleText": "You do not switch parts and return fake",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-03",
+      "ruleText": "You do not plant spyware, trackers, or blackmail tools",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-04",
+      "ruleText": "No SIM cloning, identity theft, or fraudulent registrations",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-05",
+      "ruleText": "You must explain cost before you start",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TECH-06",
+      "ruleText": "If you say 'I can fix,' you must try with honesty",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TECH-07",
+      "ruleText": "No extortion (no threatening to leak files or keep devices)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-08",
+      "ruleText": "Never demand romance, nudes, or personal favors for tech help",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-09",
+      "ruleText": "No sabotage to create future business",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-10",
+      "ruleText": "Neighborhood power grids are sacred (no deadly unsafe setups)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-11",
+      "ruleText": "POS fraud = exile (no skimming or card duplication)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-12",
+      "ruleText": "No mass spam bots to scam elders",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TECH-13",
+      "ruleText": "Do not sell fake hope as product launch",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TECH-14",
+      "ruleText": "Community camera feeds are sacred (no leaked footage)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TECH-15",
+      "ruleText": "You must return what is not yours (no ghosting with client devices)",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Genius, {jobsWaiting} people need you. {devicesWaiting} phones dead, {invertersDown} inverters crying, {hotspotsOffline} hotspots offline. Cowrie Pool: ₵{cowriesWaiting}.",
+    "statusTiles": [
+      "devices_waiting",
+      "parts_approval_needed",
+      "cowries_held_for_you",
+      "urgent_outages"
+    ],
+    "quickActions": [
+      "claim_job",
+      "send_my_price",
+      "show_proof_its_fixed",
+      "request_parts_advance",
+      "go_live_fix_stream"
+    ]
+  }
 }

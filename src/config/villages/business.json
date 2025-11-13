@@ -1,111 +1,1060 @@
 {
   "villageId": "business",
   "villageName": "Business Village",
-  "description": "Business people - shop owners, traders, importers, and sales workers",
-  "color": "#8b5cf6",
-  "icon": "ShoppingCart",
+  "description": "Business people - shop owners, traders, importers, merchants, market sellers, street vendors, wholesalers, and all who buy and sell goods",
+  "color": "#f59e0b",
+  "icon": "Store",
+  "englishName": "The Village of Merchants",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#f59e0b",
+    "colorSecondary": "#92400e",
+    "iconSet": ["store", "shopping-bag", "scale", "coins"],
+    "backgroundTexture": "market_stall_cowrie_shells",
+    "symbols": ["cowrie_shells", "hand_scale", "market_canopy", "fabric_rolls"]
+  },
+  
+  "promiseTagline": "Your hustle will not be cheated. Your stock will not disappear. Your name will not be dragged. Your money will be protected.",
+  
+  "defaultTools": [
+    "inventory_manager",
+    "trade_room",
+    "dispatch_coordinator",
+    "earnings_wallet",
+    "market_square_promo",
+    "live_selling"
+  ],
+  
   "roles": [
-    {
-      "roleId": "import_export",
-      "roleName": "Import/Export Trader",
-      "description": "Trade goods across international borders",
-      "icon": "Ship",
-      "theme": {
-        "primary": "#8b5cf6",
-        "secondary": "#7c3aed",
-        "accent": "#a78bfa"
-      },
-      "tools": [
-        {
-          "id": "shipment_tracker",
-          "name": "Shipment Tracker",
-          "icon": "Package",
-          "description": "Track international shipments",
-          "component": "ShipmentTracker"
-        },
-        {
-          "id": "customs_docs",
-          "name": "Customs Docs",
-          "icon": "FileText",
-          "description": "Manage customs paperwork",
-          "component": "CustomsDocs"
-        },
-        {
-          "id": "currency_converter",
-          "name": "Currency Converter",
-          "icon": "DollarSign",
-          "description": "Real-time exchange rates",
-          "component": "CurrencyConverter"
-        }
-      ]
-    },
     {
       "roleId": "market_vendor",
       "roleName": "Market Vendor",
-      "description": "Sell goods at local markets",
-      "icon": "Store",
+      "description": "Sell foodstuff, pepper, onions, yam, plantain, palm oil at market",
+      "icon": "ShoppingBasket",
       "theme": {
-        "primary": "#8b5cf6",
-        "secondary": "#7c3aed",
-        "accent": "#a78bfa"
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
       },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your stall or table and explain what you sell",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Photo of your stock or voice intro from your market",
+          "required": false
+        }
+      ],
       "tools": [
         {
-          "id": "inventory_mgmt",
-          "name": "Inventory",
-          "icon": "BarChart",
-          "description": "Stock management system",
-          "component": "InventoryMgmt"
+          "id": "add_item",
+          "name": "Add New Item",
+          "icon": "Plus",
+          "description": "Snap photo, set price, list for sale",
+          "component": "AddItem"
         },
         {
-          "id": "sales_tracker",
-          "name": "Sales Tracker",
-          "icon": "DollarSign",
-          "description": "Daily sales records",
-          "component": "SalesTracker"
+          "id": "pending_orders",
+          "name": "Pending Orders",
+          "icon": "ClipboardList",
+          "description": "View orders waiting for pickup or delivery",
+          "component": "PendingOrders"
         },
         {
-          "id": "supplier_connect",
-          "name": "Supplier Connect",
-          "icon": "Handshake",
-          "description": "Connect with suppliers",
-          "component": "SupplierConnect"
+          "id": "call_rider",
+          "name": "Call Dispatch Rider",
+          "icon": "Bike",
+          "description": "Request delivery for customer order",
+          "component": "CallRider"
+        },
+        {
+          "id": "stock_tracker",
+          "name": "Stock Tracker",
+          "icon": "Package",
+          "description": "Track inventory levels automatically",
+          "component": "StockTracker"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["MR-01", "MR-07", "MR-08", "MR-18"]
+    },
+    {
+      "roleId": "food_seller",
+      "roleName": "Cooked Food Seller",
+      "description": "Sell suya, shawarma, street snacks, or cooked meals",
+      "icon": "UtensilsCrossed",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your cooking setup and menu",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "menu_board",
+          "name": "Menu Board",
+          "icon": "ScrollText",
+          "description": "Display available food and prices",
+          "component": "MenuBoard"
+        },
+        {
+          "id": "hot_orders",
+          "name": "Hot Orders",
+          "icon": "Flame",
+          "description": "Fresh orders waiting for preparation",
+          "component": "HotOrders"
+        },
+        {
+          "id": "pickup_timer",
+          "name": "Pickup Timer",
+          "icon": "Clock",
+          "description": "Set pickup deadline before food spoils",
+          "component": "PickupTimer"
+        },
+        {
+          "id": "call_rider",
+          "name": "Call Rider",
+          "icon": "Bike",
+          "description": "Request delivery for hot meals",
+          "component": "CallRider"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["MR-01", "MR-08", "MR-10", "MR-18"]
+    },
+    {
+      "roleId": "fashion_seller",
+      "roleName": "Fashion & Beauty Seller",
+      "description": "Sell hair, wigs, weaves, fabric, clothes, cosmetics, jewelry",
+      "icon": "Sparkles",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your products - hair, fabric, clothes, or cosmetics",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "catalog",
+          "name": "Product Catalog",
+          "icon": "Images",
+          "description": "Upload photos and videos of your items",
+          "component": "ProductCatalog"
+        },
+        {
+          "id": "tryon_video",
+          "name": "Try-On Video Call",
+          "icon": "Video",
+          "description": "Let customers see hair/fabric before buying",
+          "component": "TryonVideo"
+        },
+        {
+          "id": "color_size_options",
+          "name": "Color & Size Options",
+          "icon": "Palette",
+          "description": "Manage product variations",
+          "component": "ColorSizeOptions"
+        },
+        {
+          "id": "bargain_mode",
+          "name": "Bargain Mode",
+          "icon": "HandCoins",
+          "description": "Allow customers to negotiate price",
+          "component": "BargainMode"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["MR-01", "MR-04", "MR-05", "MR-07"]
+    },
+    {
+      "roleId": "phone_tech_seller",
+      "roleName": "Phone & Tech Seller",
+      "description": "Sell phones, laptops, gadgets, accessories, power banks",
+      "icon": "Smartphone",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your tech inventory and explain authenticity",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: No stolen devices, no fake 'UK used'",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "device_catalog",
+          "name": "Device Catalog",
+          "icon": "Laptop",
+          "description": "List phones, laptops, and gadgets with specs",
+          "component": "DeviceCatalog"
+        },
+        {
+          "id": "imei_registry",
+          "name": "IMEI Registry",
+          "icon": "Hash",
+          "description": "Register device serial numbers for protection",
+          "component": "IMEIRegistry"
+        },
+        {
+          "id": "condition_grading",
+          "name": "Condition Grading",
+          "icon": "Star",
+          "description": "Mark as Brand New, UK Used Grade A/B, or Local",
+          "component": "ConditionGrading"
+        },
+        {
+          "id": "warranty_tracker",
+          "name": "Warranty Tracker",
+          "icon": "ShieldCheck",
+          "description": "Track device warranties and claims",
+          "component": "WarrantyTracker"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 70,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["MR-01", "MR-02", "MR-06", "MR-07", "MR-15"]
     },
     {
       "roleId": "wholesaler",
-      "roleName": "Wholesaler",
-      "description": "Buy and sell goods in bulk quantities",
-      "icon": "Warehouse",
+      "roleName": "Wholesaler / Bulk Supplier",
+      "description": "Sell rice, beans, cement, appliances, furniture in bulk",
+      "icon": "PackageOpen",
       "theme": {
-        "primary": "#8b5cf6",
-        "secondary": "#7c3aed",
-        "accent": "#a78bfa"
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
       },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your warehouse or bulk storage",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Past wholesale transactions or supplier license",
+          "required": false
+        }
+      ],
       "tools": [
         {
-          "id": "bulk_orders",
-          "name": "Bulk Orders",
-          "icon": "ClipboardList",
-          "description": "Manage large orders",
-          "component": "BulkOrders"
+          "id": "bulk_catalog",
+          "name": "Bulk Catalog",
+          "icon": "Boxes",
+          "description": "List cartons, bags, and wholesale quantities",
+          "component": "BulkCatalog"
         },
         {
-          "id": "warehouse_mgmt",
-          "name": "Warehouse",
-          "icon": "Building2",
-          "description": "Warehouse management",
-          "component": "WarehouseMgmt"
+          "id": "bulk_bidding",
+          "name": "Bulk Bidding",
+          "icon": "Gavel",
+          "description": "Respond to large order requests",
+          "component": "BulkBidding"
         },
         {
-          "id": "pricing_tool",
-          "name": "Pricing Tool",
+          "id": "truck_coordinator",
+          "name": "Truck Coordinator",
+          "icon": "Truck",
+          "description": "Arrange bulk delivery logistics",
+          "component": "TruckCoordinator"
+        },
+        {
+          "id": "price_tiers",
+          "name": "Price Tiers",
           "icon": "DollarSign",
-          "description": "Dynamic pricing engine",
-          "component": "PricingTool"
+          "description": "Set bulk pricing (1 bag vs 10 bags vs 50 bags)",
+          "component": "PriceTiers"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["MR-01", "MR-03", "MR-07", "MR-13"]
+    },
+    {
+      "roleId": "reseller",
+      "roleName": "Reseller / Personal Shopper",
+      "description": "Source and resell items without holding stock",
+      "icon": "ShoppingCart",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Explain your sourcing process and networks",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "source_finder",
+          "name": "Source Finder",
+          "icon": "Search",
+          "description": "Find products from other merchants",
+          "component": "SourceFinder"
+        },
+        {
+          "id": "client_requests",
+          "name": "Client Requests",
+          "icon": "MessageSquare",
+          "description": "Manage 'Can you find this?' requests",
+          "component": "ClientRequests"
+        },
+        {
+          "id": "markup_calculator",
+          "name": "Markup Calculator",
+          "icon": "Calculator",
+          "description": "Calculate your commission on items",
+          "component": "MarkupCalculator"
+        },
+        {
+          "id": "supplier_network",
+          "name": "Supplier Network",
+          "icon": "Users",
+          "description": "Your trusted seller connections",
+          "component": "SupplierNetwork"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["MR-01", "MR-03", "MR-07", "MR-14"]
+    },
+    {
+      "roleId": "second_hand_seller",
+      "roleName": "Second-Hand Seller",
+      "description": "Sell used clothes, shoes, bags (okrika, bend down select)",
+      "icon": "Shirt",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your bales or items and explain grading",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "bale_inventory",
+          "name": "Bale Inventory",
+          "icon": "Package",
+          "description": "Track bales and sorting progress",
+          "component": "BaleInventory"
+        },
+        {
+          "id": "condition_sorter",
+          "name": "Condition Sorter",
+          "icon": "Filter",
+          "description": "Grade items as Grade A, B, or C quality",
+          "component": "ConditionSorter"
+        },
+        {
+          "id": "size_tracker",
+          "name": "Size Tracker",
+          "icon": "Ruler",
+          "description": "Organize by UK/US/EU sizes",
+          "component": "SizeTracker"
+        },
+        {
+          "id": "live_sorting",
+          "name": "Live Sorting Stream",
+          "icon": "Video",
+          "description": "Stream bale opening for customers",
+          "component": "LiveSorting"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["MR-01", "MR-02", "MR-07", "MR-08"]
+    },
+    {
+      "roleId": "pos_agent",
+      "roleName": "POS Agent / Cash Services",
+      "description": "Provide cash-in, cash-out, and mobile money services",
+      "icon": "CreditCard",
+      "theme": {
+        "primary": "#f59e0b",
+        "secondary": "#d97706",
+        "accent": "#fbbf24"
+      },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "POS agent license or bank authorization",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your POS setup and explain your services",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: No fraud, no card skimming, honest cash service",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "transaction_log",
+          "name": "Transaction Log",
+          "icon": "Receipt",
+          "description": "Record all cash-in and cash-out transactions",
+          "component": "TransactionLog"
+        },
+        {
+          "id": "daily_float",
+          "name": "Daily Float Tracker",
+          "icon": "Wallet",
+          "description": "Track available cash for services",
+          "component": "DailyFloat"
+        },
+        {
+          "id": "fraud_alert",
+          "name": "Fraud Alert",
+          "icon": "AlertTriangle",
+          "description": "Report suspicious cards or transactions",
+          "component": "FraudAlert"
+        },
+        {
+          "id": "rate_board",
+          "name": "Rate Board",
+          "icon": "DollarSign",
+          "description": "Display your service charges transparently",
+          "component": "RateBoard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Stall",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Open Bowl",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 5,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Full Tray",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#f59e0b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Market Mother/Father",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["MR-01", "MR-03", "MR-04", "MR-06", "MR-11"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Product sales with escrow protection and delivery",
+      "enabled": true
+    },
+    {
+      "type": "commission",
+      "description": "Commission on Community Tray sales",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Customer blessings and tips for excellent service",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Iron", "Thunder", "Mother", "Oracle"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "MR-01",
+      "ruleText": "Do not collect cowries and vanish",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-02",
+      "ruleText": "Do not call fake 'original' what is China copy",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-03",
+      "ruleText": "Do not change price after buyer has locked coin",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-04",
+      "ruleText": "Do not insult buyer's body, tribe, or status",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-05",
+      "ruleText": "No threat for romance",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-06",
+      "ruleText": "Do not sell stolen goods here",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-07",
+      "ruleText": "Keep your stock truth",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "MR-08",
+      "ruleText": "Do not swap clean for rotten",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-09",
+      "ruleText": "No intimidation of rider",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-10",
+      "ruleText": "Respect fasting, diet, and allergy declarations",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-11",
+      "ruleText": "Protect buyer's address",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-12",
+      "ruleText": "Do not give out fake dispatch code",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-13",
+      "ruleText": "No fake scarcity drama",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "MR-14",
+      "ruleText": "Do not shame a buyer publicly",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-15",
+      "ruleText": "Return claim must be true",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-16",
+      "ruleText": "No fake rider ID outside system",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-17",
+      "ruleText": "You must mark 'Out of Stock' honestly",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "MR-18",
+      "ruleText": "Food is sacred—no spoiled or unsafe food",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "MR-19",
+      "ruleText": "No force buying with spiritual threats",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "MR-20",
+      "ruleText": "You must answer Council call",
+      "severity": "high",
+      "action": "amber_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Daughter/Son of Profit, {itemsViewed} buyers looking at your stock. {cowriesInEscrow} Cowrie Coins waiting for delivery. Do you answer this morning call?",
+    "statusTiles": [
+      "pending_orders",
+      "stock_levels",
+      "cowries_in_escrow",
+      "deliveries_today"
+    ],
+    "quickActions": [
+      "add_new_item",
+      "call_dispatch_rider",
+      "mark_item_sold",
+      "post_promo_video",
+      "go_live_selling"
+    ]
+  }
 }

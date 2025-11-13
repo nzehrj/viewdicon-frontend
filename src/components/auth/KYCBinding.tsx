@@ -53,6 +53,10 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
   });
   const theme = useAppSelector((state) => state.theme.theme);
   const dispatch = useAppDispatch();
+  
+  // ✅ Get existing user data and phone number from Redux
+  const existingUser = useAppSelector((state) => state.user.user);
+  const phoneNumber = useAppSelector((state) => state.auth.phoneNumber);
 
   const scenes = {
     naming: {
@@ -129,18 +133,27 @@ export const KYCBinding: React.FC<KYCBindingProps> = ({ onComplete }) => {
       console.log('Country:', kycData.country);
       console.log('Tribe:', kycData.tribe);
       console.log('Birth Date:', kycData.birthDate);
+      console.log('Phone Number (preserved):', phoneNumber || existingUser?.phoneNumber);
       
-      // ✅ Use setUser to ensure user object is created with all KYC data
+      // ✅ Use setUser to update user object while preserving existing data
       dispatch(setUser({
-        id: `temp_${Date.now()}`, // Temporary ID (backend will assign real one)
-        phoneNumber: '', // Will be set from auth state or already exists
+        id: existingUser?.id || `temp_${Date.now()}`, // Keep existing ID if present
+        phoneNumber: phoneNumber || existingUser?.phoneNumber || '', // ✅ PRESERVE PHONE!
         full_name: kycData.fullName,
         name: kycData.fullName.split(' ')[0], // First name
         country: kycData.country,
-        tribe: kycData.tribe,
+        tribe: kycData.tribe, // ✅ THIS IS YOUR HERITAGE!
+        // Preserve other existing data - convert null to undefined
+        afro_id: existingUser?.afro_id || undefined,
+        kinship_tier: existingUser?.kinship_tier || undefined,
+        sankofa_totem: kycData.totem || existingUser?.sankofa_totem || undefined, // Use totem if provided
+        iwa_score: existingUser?.iwa_score || undefined,
+        role_id: existingUser?.role_id || undefined,
+        role_name: existingUser?.role_name || undefined,
       }));
       
       console.log('✅ KYC data saved to Redux with setUser');
+      console.log('✅ User tribe (heritage) set to:', kycData.tribe);
       
       // ✅ Proceed directly to next step (no completion scene)
       onComplete();

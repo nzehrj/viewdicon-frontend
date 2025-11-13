@@ -6,32 +6,42 @@ import * as Icons from 'lucide-react';
 import { Button } from '@components/common/Button';
 
 // Import village configs
-import healthcareConfig from '../../config/villages/healthcare.json';
-import farmingConfig from '../../config/villages/farming.json';
-import constructionConfig from '../../config/villages/construction.json';
+import agricultureConfig from '../../config/villages/agriculture.json';
 import businessConfig from '../../config/villages/business.json';
+import constructionConfig from '../../config/villages/construction.json';
+import craftsConfig from '../../config/villages/crafts.json';
 import creativeConfig from '../../config/villages/creative.json';
 import educationConfig from '../../config/villages/education.json';
-import governmentConfig from '../../config/villages/government.json';
-import transportConfig from '../../config/villages/transport.json';
-import technologyConfig from '../../config/villages/technology.json';
-import hospitalityConfig from '../../config/villages/hospitality.json';
 import financeConfig from '../../config/villages/finance.json';
-import environmentConfig from '../../config/villages/environment.json';
+import governanceConfig from '../../config/villages/governance.json';
+import governmentConfig from '../../config/villages/government.json';
+import healthcareConfig from '../../config/villages/healthcare.json';
+import gettingStartedConfig from '../../config/villages/getting_started.json';
+import hospitalityConfig from '../../config/villages/hospitality.json';
+import mediaConfig from '../../config/villages/media.json';
+import securityConfig from '../../config/villages/security.json';
+import spiritualConfig from '../../config/villages/spiritual.json';
+import technologyConfig from '../../config/villages/technology.json';
+import transportConfig from '../../config/villages/transport.json';
 
 const villageConfigs: Record<string, any> = {
-  healthcare: healthcareConfig,
-  farming: farmingConfig,
-  construction: constructionConfig,
+  agriculture: agricultureConfig,
   business: businessConfig,
+  construction: constructionConfig,
+  crafts: craftsConfig,
   creative: creativeConfig,
   education: educationConfig,
-  government: governmentConfig,
-  transport: transportConfig,
-  technology: technologyConfig,
-  hospitality: hospitalityConfig,
   finance: financeConfig,
-  environment: environmentConfig,
+  governance: governanceConfig,
+  government: governmentConfig,
+  healthcare: healthcareConfig,
+  getting_started: gettingStartedConfig,
+  hospitality: hospitalityConfig,
+  media: mediaConfig,
+  security: securityConfig,
+  spiritual: spiritualConfig,
+  technology: technologyConfig,
+  transport: transportConfig,
 };
 
 interface VillageSelectorProps {
@@ -48,18 +58,20 @@ export const VillageSelector: React.FC<VillageSelectorProps> = ({ isOpen, onClos
   const [selectedVillage, setSelectedVillage] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
+  // ✅ FIXED: Handle both villageName and displayName, with fallbacks
   const villages = Object.entries(villageConfigs).map(([id, config]) => ({
     id,
-    name: config.villageName,
-    description: config.description,
-    icon: config.icon,
-    color: config.color,
-    roles: config.roles || [],
+    name: config.villageName || config.displayName || 'Unknown Village',
+    description: config.description || 'No description available',
+    icon: config.icon || config.visual?.iconSet?.[0] || 'Shield',
+    color: config.color || config.visual?.colorPrimary || '#6366f1',
+    roles: config.roles || config.guilds || [],
   }));
 
+  // ✅ FIXED: Safe null checks in filter
   const filteredVillages = villages.filter(v => 
-    v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    v.description.toLowerCase().includes(searchQuery.toLowerCase())
+    (v.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (v.description || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const resolveIcon = (iconName: string) => {
@@ -272,13 +284,17 @@ export const VillageSelector: React.FC<VillageSelectorProps> = ({ isOpen, onClos
                     {/* Roles Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {selectedVillageData.roles.map((role: any) => {
-                        const RoleIcon = resolveIcon(role.icon);
-                        const isSelected = selectedRole === role.roleId;
+                        const RoleIcon = resolveIcon(role.icon || 'User');
+                        const isSelected = selectedRole === (role.roleId || role.guildId);
+                        const roleId = role.roleId || role.guildId;
+                        const roleName = role.roleName || role.guildName || 'Unknown Role';
+                        const roleDescription = role.description || 'No description available';
+                        const toolsCount = role.tools?.length || role.extraTools?.length || 0;
                         
                         return (
                           <motion.button
-                            key={role.roleId}
-                            onClick={() => handleSelectRole(role.roleId)}
+                            key={roleId}
+                            onClick={() => handleSelectRole(roleId)}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             className={`p-4 rounded-xl text-left transition-all border-2 ${
@@ -304,17 +320,17 @@ export const VillageSelector: React.FC<VillageSelectorProps> = ({ isOpen, onClos
                                 <h4 className={`font-bold text-base mb-1 ${
                                   theme === 'dark' ? 'text-white' : 'text-gray-900'
                                 }`}>
-                                  {role.roleName}
+                                  {roleName}
                                 </h4>
                                 <p className={`text-sm mb-2 line-clamp-2 ${
                                   theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                                 }`}>
-                                  {role.description}
+                                  {roleDescription}
                                 </p>
                                 <div className="flex items-center gap-1 text-xs">
                                   <Shield className="w-3.5 h-3.5" style={{ color: selectedVillageData.color }} />
                                   <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
-                                    {role.tools?.length || 0} tools
+                                    {toolsCount} tools
                                   </span>
                                 </div>
                               </div>

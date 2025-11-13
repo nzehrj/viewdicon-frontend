@@ -1,111 +1,6272 @@
 {
   "villageId": "education",
-  "villageName": "Education Village",
-  "description": "Education workers - teachers, tutors, instructors, and trainers",
-  "color": "#06b6d4",
+  "villageName": "SANKOFA · Village of Learning",
+  "description": "Education workers - teachers, tutors, instructors, mentors, coaches, researchers, scholars, librarians, and all who carry knowledge and pass it on",
+  "color": "#6366f1",
   "icon": "GraduationCap",
+  "englishName": "The Village of Scholars, Teachers, and Mind Builders",
+  "panAfricanName": "SANKOFA",
+  "panAfricanMeaning": "Retrieve what is valuable from the past to guide the future",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#6366f1",
+    "colorSecondary": "#78716c",
+    "iconSet": ["graduation-cap", "book-open", "lightbulb", "scroll"],
+    "backgroundTexture": "baobab_learning_tree_manuscript",
+    "symbols": ["learning_tree", "manuscript", "chalk", "wisdom_mask"]
+  },
+  
+  "promiseTagline": "Your mind is wealth. Your voice will not be ignored. Your guidance will not be abused. If you teach, they will see you. If you learn, you will be protected.",
+  
+  "defaultTools": [
+    "teaching_room",
+    "study_vault",
+    "learner_endorsement",
+    "protected_whisper",
+    "earnings_wallet",
+    "knowledge_circle"
+  ],
+  
   "roles": [
     {
+      "roleId": "early_childhood_teacher",
+      "roleName": "Early Childhood Teacher",
+      "description": "Build foundational literacy and learning for young children",
+      "icon": "Baby",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Early childhood education credentials",
+          "required": false
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Nurture young minds with patience and care",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create structured lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "teaching_portfolio",
+          "name": "Teaching Portfolio",
+          "icon": "FolderOpen",
+          "description": "Display qualifications and achievements",
+          "component": "TeachingPortfolio"
+        },
+        {
+          "id": "student_progress",
+          "name": "Student Progress Tracker",
+          "icon": "TrendingUp",
+          "description": "Track learner improvement",
+          "component": "StudentProgress"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Upload notes and study materials",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-09", "OMO-11"]
+    },
+    {
+      "roleId": "foundational_numeracy",
+      "roleName": "Foundational Numeracy Instructor",
+      "description": "Teach basic mathematics and numeracy skills",
+      "icon": "Calculator",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate teaching approach for basic math",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create math lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "student_progress",
+          "name": "Student Progress Tracker",
+          "icon": "TrendingUp",
+          "description": "Track math skill development",
+          "component": "StudentProgress"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-03", "OMO-04"]
+    },
+    {
+      "roleId": "literacy_coach",
+      "roleName": "Basic Literacy Coach",
+      "description": "Teach reading and writing fundamentals",
+      "icon": "BookA",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show literacy teaching methods",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create reading/writing lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Share reading materials",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04"]
+    },
+    {
       "roleId": "primary_teacher",
-      "roleName": "Primary School Teacher",
-      "description": "Educate young children (ages 6-12)",
+      "roleName": "Primary Class Teacher",
+      "description": "Teach general foundational knowledge to primary school students",
       "icon": "School",
       "theme": {
-        "primary": "#06b6d4",
-        "secondary": "#0891b2",
-        "accent": "#22d3ee"
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
       },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Teaching certificate or credentials",
+          "required": false
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Guide young learners with wisdom",
+          "required": true
+        }
+      ],
       "tools": [
         {
-          "id": "lesson_planner",
-          "name": "Lesson Planner",
+          "id": "classroom_scheduler",
+          "name": "Classroom Scheduler",
+          "icon": "Calendar",
+          "description": "Set class dates and sessions",
+          "component": "ClassroomScheduler"
+        },
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
           "icon": "BookOpen",
-          "description": "Plan and organize lessons",
-          "component": "LessonPlanner"
+          "description": "Create lessons",
+          "component": "LessonBuilder"
         },
         {
-          "id": "student_tracker",
-          "name": "Student Tracker",
-          "icon": "BarChart",
-          "description": "Track student progress",
-          "component": "StudentTracker"
-        },
-        {
-          "id": "parent_connect",
-          "name": "Parent Connect",
-          "icon": "Users",
-          "description": "Communicate with parents",
-          "component": "ParentConnect"
+          "id": "assessment_board",
+          "name": "Assessment Board",
+          "icon": "ClipboardCheck",
+          "description": "Submit tests and grades",
+          "component": "AssessmentBoard"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-07", "OMO-11"]
     },
     {
-      "roleId": "secondary_teacher",
-      "roleName": "Secondary School Teacher",
-      "description": "Teach secondary school subjects",
+      "roleId": "educational_play",
+      "roleName": "Educational Play Facilitator",
+      "description": "Facilitate cognitive development through play",
+      "icon": "Blocks",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show play-based learning approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Design play-based activities",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-11"]
+    },
+    {
+      "roleId": "special_needs_educator",
+      "roleName": "Special Needs Support Educator",
+      "description": "Provide adaptive learning paths for students with special needs",
+      "icon": "Heart",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Special education training or credentials",
+          "required": false
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Patient, adaptive, respectful support",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create adaptive lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "student_progress",
+          "name": "Student Progress Tracker",
+          "icon": "TrendingUp",
+          "description": "Track individual progress",
+          "component": "StudentProgress"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-09"]
+    },
+    {
+      "roleId": "classroom_coordinator",
+      "roleName": "Classroom Coordinator",
+      "description": "Organize schedules, materials, and classroom logistics",
+      "icon": "CalendarCheck",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "School employment confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "classroom_scheduler",
+          "name": "Classroom Scheduler",
+          "icon": "Calendar",
+          "description": "Manage class schedules",
+          "component": "ClassroomScheduler"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Organize teaching materials",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-03", "OMO-14"]
+    },
+    {
+      "roleId": "parent_teacher_liaison",
+      "roleName": "Parent–Teacher Liaison",
+      "description": "Facilitate communication between parents/guardians and teachers",
+      "icon": "MessageSquare",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "School employment confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "communication_hub",
+          "name": "Communication Hub",
+          "icon": "MessageCircle",
+          "description": "Manage parent-teacher communications",
+          "component": "CommunicationHub"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-11", "OMO-14"]
+    },
+    {
+      "roleId": "math_teacher",
+      "roleName": "Math Teacher",
+      "description": "Teach mathematics at primary and secondary levels",
+      "icon": "Calculator",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate math teaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create math lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "assessment_board",
+          "name": "Assessment Board",
+          "icon": "ClipboardCheck",
+          "description": "Grade assignments and tests",
+          "component": "AssessmentBoard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-03", "OMO-04"]
+    },
+    {
+      "roleId": "english_teacher",
+      "roleName": "English Language Teacher",
+      "description": "Teach English language and literature",
+      "icon": "BookA",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate English teaching",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create English lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Share reading materials",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04"]
+    },
+    {
+      "roleId": "science_teacher",
+      "roleName": "Science Teacher",
+      "description": "Teach biology, chemistry, physics, and general science",
+      "icon": "Atom",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate science teaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create science lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "assessment_board",
+          "name": "Assessment Board",
+          "icon": "ClipboardCheck",
+          "description": "Grade lab work and tests",
+          "component": "AssessmentBoard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04"]
+    },
+    {
+      "roleId": "history_heritage_teacher",
+      "roleName": "History & Heritage Teacher",
+      "description": "Teach history with African-centered perspective",
+      "icon": "Landmark",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show history teaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create history lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Store cultural knowledge",
+          "component": "HeritageArchive"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "civic_education_teacher",
+      "roleName": "Civic Education Teacher",
+      "description": "Teach citizenship, governance, and social responsibility",
+      "icon": "Flag",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show civic education approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create civic lessons",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-13"]
+    },
+    {
+      "roleId": "literature_teacher",
+      "roleName": "Literature Teacher",
+      "description": "Teach literature, poetry, and creative writing",
+      "icon": "BookOpen",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show literature teaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create literature lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Share texts and analysis",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-05"]
+    },
+    {
+      "roleId": "ict_teacher",
+      "roleName": "ICT / Computer Studies Teacher",
+      "description": "Teach computer skills, coding, and digital literacy",
+      "icon": "Monitor",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show computer teaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create ICT lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "skill_certification",
+          "name": "Skill Certification",
+          "icon": "Award",
+          "description": "Certify digital skills",
+          "component": "SkillCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04", "OMO-12"]
+    },
+    {
+      "roleId": "arts_drama_teacher",
+      "roleName": "Arts & Drama Teacher",
+      "description": "Teach visual arts, performance, and creative expression",
+      "icon": "Palette",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show arts teaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create arts lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "creator_studio",
+          "name": "Creator Studio",
+          "icon": "Video",
+          "description": "Record and publish content",
+          "component": "CreatorStudio"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-05"]
+    },
+    {
+      "roleId": "music_instructor",
+      "roleName": "Music Instructor",
+      "description": "Teach music theory, instruments, and performance",
+      "icon": "Music",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate musical teaching",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create music lessons",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02"]
+    },
+    {
+      "roleId": "physical_education",
+      "roleName": "Health & Physical Education Coach",
+      "description": "Teach fitness, sports, and health education",
+      "icon": "HeartPulse",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show physical education approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create PE lessons",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-01", "OMO-02"]
+    },
+    {
+      "roleId": "guidance_counselor",
+      "roleName": "School Guidance Counselor",
+      "description": "Provide academic and personal guidance to students",
+      "icon": "MessageCircleHeart",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Counseling credentials",
+          "required": false
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Protect student confidentiality and wellbeing",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "protected_whisper",
+          "name": "Protected Whisper",
+          "icon": "Lock",
+          "description": "Private counseling sessions",
+          "component": "ProtectedWhisper"
+        },
+        {
+          "id": "student_progress",
+          "name": "Student Progress Tracker",
+          "icon": "TrendingUp",
+          "description": "Track student development",
+          "component": "StudentProgress"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["OMO-01", "OMO-06", "OMO-09", "OMO-11"]
+    },
+    {
+      "roleId": "exam_coach",
+      "roleName": "Exam Preparation Instructor",
+      "description": "Prepare students for WAEC, NECO, JAMB, and other exams",
+      "icon": "FileCheck",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show sample teaching and exam prep approach",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Past student results or teaching credentials",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "start_class",
+          "name": "Start Class",
+          "icon": "Video",
+          "description": "Begin live teaching session",
+          "component": "StartClass"
+        },
+        {
+          "id": "study_pack_vault",
+          "name": "Study Pack Vault",
+          "icon": "Package",
+          "description": "Upload past questions and materials",
+          "component": "StudyPackVault"
+        },
+        {
+          "id": "student_progress",
+          "name": "Student Progress",
+          "icon": "TrendingUp",
+          "description": "Track exam readiness",
+          "component": "StudentProgress"
+        },
+        {
+          "id": "bless_learner",
+          "name": "Bless Learner",
+          "icon": "Award",
+          "description": "Endorse as exam-ready",
+          "component": "BlessLearner"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-03", "OMO-04"]
+    },
+    {
+      "roleId": "debate_coach",
+      "roleName": "Debate & Public Speaking Coach",
+      "description": "Train students in argumentation and presentation",
+      "icon": "MessageSquare",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate coaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create debate lessons",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02"]
+    },
+    {
+      "roleId": "lecturer",
+      "roleName": "Lecturer",
+      "description": "Teach undergraduate courses at university level",
+      "icon": "School",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "University teaching qualification",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "classroom_scheduler",
+          "name": "Classroom Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule lectures",
+          "component": "ClassroomScheduler"
+        },
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create course content",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "assessment_board",
+          "name": "Assessment Board",
+          "icon": "ClipboardCheck",
+          "description": "Grade assignments",
+          "component": "AssessmentBoard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-04"]
+    },
+    {
+      "roleId": "senior_lecturer",
+      "roleName": "Senior Lecturer",
+      "description": "Lead courses and mentor junior academic staff",
       "icon": "GraduationCap",
       "theme": {
-        "primary": "#06b6d4",
-        "secondary": "#0891b2",
-        "accent": "#22d3ee"
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
       },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Senior academic credentials",
+          "required": true
+        }
+      ],
       "tools": [
         {
-          "id": "grading_system",
-          "name": "Grading System",
-          "icon": "CheckCircle",
-          "description": "Grade assignments and exams",
-          "component": "GradingSystem"
-        },
-        {
-          "id": "exam_creator",
-          "name": "Exam Creator",
-          "icon": "FileText",
-          "description": "Create and manage exams",
-          "component": "ExamCreator"
-        },
-        {
-          "id": "class_schedule",
-          "name": "Class Schedule",
+          "id": "classroom_scheduler",
+          "name": "Classroom Scheduler",
           "icon": "Calendar",
-          "description": "Manage class timetable",
-          "component": "ClassSchedule"
+          "description": "Schedule advanced courses",
+          "component": "ClassroomScheduler"
+        },
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create specialized content",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "mentorship_program",
+          "name": "Mentorship Program",
+          "icon": "Users",
+          "description": "Mentor junior lecturers",
+          "component": "MentorshipProgram"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-15"]
     },
     {
-      "roleId": "tutor",
-      "roleName": "Private Tutor",
-      "description": "Provide one-on-one tutoring services",
-      "icon": "UserCheck",
+      "roleId": "professor",
+      "roleName": "Professor",
+      "description": "Lead research, teach graduate courses, and shape academic direction",
+      "icon": "Award",
       "theme": {
-        "primary": "#06b6d4",
-        "secondary": "#0891b2",
-        "accent": "#22d3ee"
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
       },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Professorial appointment documentation",
+          "required": true
+        }
+      ],
       "tools": [
         {
-          "id": "session_scheduler",
-          "name": "Session Scheduler",
-          "icon": "CalendarDays",
-          "description": "Schedule tutoring sessions",
-          "component": "SessionScheduler"
+          "id": "classroom_scheduler",
+          "name": "Classroom Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule research seminars",
+          "component": "ClassroomScheduler"
         },
         {
-          "id": "progress_reports",
-          "name": "Progress Reports",
-          "icon": "TrendingUp",
-          "description": "Student progress tracking",
-          "component": "ProgressReports"
-        },
-        {
-          "id": "payment_tracker",
-          "name": "Payment Tracker",
-          "icon": "CreditCard",
-          "description": "Track session payments",
-          "component": "PaymentTracker"
+          "id": "research_library",
+          "name": "Research Library",
+          "icon": "Database",
+          "description": "Share research materials",
+          "component": "ResearchLibrary"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-05"]
+    },
+    {
+      "roleId": "department_head",
+      "roleName": "Department Head",
+      "description": "Lead academic department operations and strategy",
+      "icon": "Users",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "appointment_letter",
+          "description": "Official department head appointment",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "department_dashboard",
+          "name": "Department Dashboard",
+          "icon": "LayoutDashboard",
+          "description": "Manage department activities",
+          "component": "DepartmentDashboard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-14"]
+    },
+    {
+      "roleId": "academic_registrar",
+      "roleName": "Academic Registrar",
+      "description": "Manage student records, enrollment, and academic administration",
+      "icon": "FileText",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "University employment confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "student_records",
+          "name": "Student Records",
+          "icon": "Database",
+          "description": "Manage academic records",
+          "component": "StudentRecords"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-12"]
+    },
+    {
+      "roleId": "research_assistant",
+      "roleName": "Research Assistant",
+      "description": "Support academic research projects and data collection",
+      "icon": "Search",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "Research position confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "research_library",
+          "name": "Research Library",
+          "icon": "Database",
+          "description": "Manage research materials",
+          "component": "ResearchLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05"]
+    },
+    {
+      "roleId": "research_fellow",
+      "roleName": "Research Fellow",
+      "description": "Conduct independent research and publish findings",
+      "icon": "Microscope",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Research fellowship credentials",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "research_library",
+          "name": "Research Library",
+          "icon": "Database",
+          "description": "Store research outputs",
+          "component": "ResearchLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05"]
+    },
+    {
+      "roleId": "academic_librarian",
+      "roleName": "Academic Librarian",
+      "description": "Manage library resources and research support services",
+      "icon": "Library",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "Library employment confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Organize library collections",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": []
+    },
+    {
+      "roleId": "conference_curator",
+      "roleName": "Conference / Academic Events Curator",
+      "description": "Organize academic conferences and knowledge-sharing events",
+      "icon": "Calendar",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Past event organization experience",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "classroom_scheduler",
+          "name": "Event Scheduler",
+          "icon": "Calendar",
+          "description": "Plan academic events",
+          "component": "ClassroomScheduler"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-03"]
+    },
+    {
+      "roleId": "journal_reviewer",
+      "roleName": "Publication & Journal Reviewer",
+      "description": "Review academic papers and maintain publication standards",
+      "icon": "FileCheck",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Academic qualifications for peer review",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "review_board",
+          "name": "Review Board",
+          "icon": "ClipboardCheck",
+          "description": "Manage paper reviews",
+          "component": "ReviewBoard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05"]
+    },
+    {
+      "roleId": "vocational_instructor",
+      "roleName": "Vocational Skills Instructor",
+      "description": "Teach practical vocational skills for employment",
+      "icon": "Wrench",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate vocational skill and teaching",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create vocational lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "skill_certification",
+          "name": "Skill Certification",
+          "icon": "Award",
+          "description": "Certify skill competency",
+          "component": "SkillCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04", "OMO-12"]
+    },
+    {
+      "roleId": "digital_skills_trainer",
+      "roleName": "Digital Skills Trainer",
+      "description": "Train in computer literacy and digital tools",
+      "icon": "Monitor",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show digital skills training approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create digital skills lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "skill_certification",
+          "name": "Skill Certification",
+          "icon": "Award",
+          "description": "Certify digital competency",
+          "component": "SkillCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04", "OMO-12"]
+    },
+    {
+      "roleId": "agricultural_extension",
+      "roleName": "Agricultural Extension Trainer",
+      "description": "Train farmers in modern agricultural techniques",
+      "icon": "Tractor",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Agricultural training credentials",
+          "required": false
+        },
+        {
+          "type": "video_demo",
+          "description": "Show agricultural training methods",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create agricultural training",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04"]
+    },
+    {
+      "roleId": "artisan_master",
+      "roleName": "Artisan Master",
+      "description": "Master craftsperson teaching tailoring, welding, carpentry, and trades",
+      "icon": "Hammer",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate craft mastery and teaching",
+          "required": true
+        },
+        {
+          "type": "work_portfolio",
+          "description": "Portfolio of completed work",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "hands_on_tutorial",
+          "name": "Hands-On Tutorial",
+          "icon": "Hand",
+          "description": "Practical demonstration",
+          "component": "HandsOnTutorial"
+        },
+        {
+          "id": "apprentice_tracker",
+          "name": "Apprentice Tracker",
+          "icon": "UserCheck",
+          "description": "Track apprentice progress",
+          "component": "ApprenticeTracker"
+        },
+        {
+          "id": "skill_certification",
+          "name": "Skill Certification",
+          "icon": "Award",
+          "description": "Certify trade competency",
+          "component": "SkillCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04", "OMO-12"]
+    },
+    {
+      "roleId": "trade_apprentice_supervisor",
+      "roleName": "Trade Apprentice Supervisor",
+      "description": "Oversee and mentor apprentices learning trades",
+      "icon": "Users",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Trade experience and supervision credentials",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "apprentice_tracker",
+          "name": "Apprentice Tracker",
+          "icon": "UserCheck",
+          "description": "Monitor apprentice development",
+          "component": "ApprenticeTracker"
+        },
+        {
+          "id": "skill_certification",
+          "name": "Skill Certification",
+          "icon": "Award",
+          "description": "Certify trade completion",
+          "component": "SkillCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-15"]
+    },
+    {
+      "roleId": "corporate_trainer",
+      "roleName": "Corporate Learning Trainer",
+      "description": "Provide professional development and workplace training",
+      "icon": "Briefcase",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Corporate training experience",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create corporate training",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "classroom_scheduler",
+          "name": "Training Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule training sessions",
+          "component": "ClassroomScheduler"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-03", "OMO-04"]
+    },
+    {
+      "roleId": "entrepreneurship_coach",
+      "roleName": "Entrepreneurship Development Coach",
+      "description": "Teach business skills and entrepreneurial thinking",
+      "icon": "Rocket",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Business experience or entrepreneurship credentials",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create business lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "career_pathway",
+          "name": "Business Pathway",
+          "icon": "Map",
+          "description": "Map entrepreneurial journey",
+          "component": "CareerPathway"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 80,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-03", "OMO-04", "OMO-08"]
+    },
+    {
+      "roleId": "workforce_facilitator",
+      "roleName": "Workforce Skill-Up Facilitator",
+      "description": "Help workers upgrade skills for employment opportunities",
+      "icon": "TrendingUp",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Workforce development experience",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create skill-up programs",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "skill_certification",
+          "name": "Skill Certification",
+          "icon": "Award",
+          "description": "Certify workforce skills",
+          "component": "SkillCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04", "OMO-08"]
+    },
+    {
+      "roleId": "cultural_historian",
+      "roleName": "Cultural Historian",
+      "description": "Research, document, and teach cultural heritage",
+      "icon": "Scroll",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "History or cultural studies credentials",
+          "required": false
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition as cultural keeper",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Store cultural documentation",
+          "component": "HeritageArchive"
+        },
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create cultural lessons",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "oral_tradition_archivist",
+      "roleName": "Oral Tradition Archivist",
+      "description": "Record and preserve oral histories and traditions",
+      "icon": "Mic",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition as tradition keeper",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Archive oral recordings",
+          "component": "HeritageArchive"
+        },
+        {
+          "id": "story_circle",
+          "name": "Story Circle",
+          "icon": "Users",
+          "description": "Host storytelling sessions",
+          "component": "StoryCircle"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "language_preservationist",
+      "roleName": "Language Preservationist",
+      "description": "Document and teach endangered or minority languages",
+      "icon": "Languages",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate language fluency",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition as language keeper",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "language_class",
+          "name": "Language Class",
+          "icon": "MessageCircle",
+          "description": "Teach endangered language",
+          "component": "LanguageClass"
+        },
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Archive language materials",
+          "component": "HeritageArchive"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "manuscript_curator",
+      "roleName": "Document & Manuscript Curator",
+      "description": "Preserve and catalog historical documents and manuscripts",
+      "icon": "FileText",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Archival or library science credentials",
+          "required": false
+        },
+        {
+          "type": "employer_verification",
+          "description": "Museum or archive employment confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Catalog manuscripts",
+          "component": "HeritageArchive"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Organize document collections",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05"]
+    },
+    {
+      "roleId": "museum_guide",
+      "roleName": "Museum Knowledge Guide",
+      "description": "Educate visitors about cultural artifacts and heritage",
+      "icon": "Building",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "Museum employment confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Tour Builder",
+          "icon": "BookOpen",
+          "description": "Create guided tours",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Access artifact information",
+          "component": "HeritageArchive"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "cultural_practices_analyst",
+      "roleName": "Cultural Practices Analyst",
+      "description": "Study and teach traditional cultural practices",
+      "icon": "Sparkles",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Cultural studies or anthropology credentials",
+          "required": false
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Lesson Builder",
+          "icon": "BookOpen",
+          "description": "Create cultural lessons",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Document cultural practices",
+          "component": "HeritageArchive"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "community_storyteller",
+      "roleName": "Community Storytelling Custodian",
+      "description": "Preserve and share community stories and narratives",
+      "icon": "BookHeart",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition as storyteller",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Share a traditional story",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "story_circle",
+          "name": "Story Circle",
+          "icon": "Users",
+          "description": "Host storytelling sessions",
+          "component": "StoryCircle"
+        },
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Archive",
+          "description": "Archive community stories",
+          "component": "HeritageArchive"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 25,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "school_principal",
+      "roleName": "Principal / School Head",
+      "description": "Lead school administration and educational vision",
+      "icon": "Crown",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "appointment_letter",
+          "description": "School leadership appointment",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "school_dashboard",
+          "name": "School Dashboard",
+          "icon": "LayoutDashboard",
+          "description": "Manage school operations",
+          "component": "SchoolDashboard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-14", "OMO-15"]
+    },
+    {
+      "roleId": "academic_director",
+      "roleName": "Academic Director",
+      "description": "Oversee academic programs and educational quality",
+      "icon": "Target",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "appointment_letter",
+          "description": "Academic director appointment",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "academic_dashboard",
+          "name": "Academic Dashboard",
+          "icon": "LayoutDashboard",
+          "description": "Monitor academic programs",
+          "component": "AcademicDashboard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-14"]
+    },
+    {
+      "roleId": "curriculum_designer",
+      "roleName": "Curriculum Designer",
+      "description": "Design and develop educational curricula and programs",
+      "icon": "FileStack",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Curriculum development credentials",
+          "required": false
+        },
+        {
+          "type": "experience_proof",
+          "description": "Curriculum design portfolio",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Curriculum Builder",
+          "icon": "BookOpen",
+          "description": "Design curriculum frameworks",
+          "component": "LessonBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-04", "OMO-14"]
+    },
+    {
+      "roleId": "assessment_board_member",
+      "roleName": "Standard & Assessment Board Member",
+      "description": "Set educational standards and assessment criteria",
+      "icon": "ClipboardCheck",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "appointment_letter",
+          "description": "Board appointment documentation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "assessment_board",
+          "name": "Assessment Board",
+          "icon": "ClipboardCheck",
+          "description": "Develop assessment standards",
+          "component": "AssessmentBoard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-12", "OMO-14"]
+    },
+    {
+      "roleId": "education_policy_advisor",
+      "roleName": "National Education Policy Advisor",
+      "description": "Advise on national education policy and reform",
+      "icon": "Scale",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "appointment_letter",
+          "description": "Policy advisory appointment",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "policy_dashboard",
+          "name": "Policy Dashboard",
+          "icon": "LayoutDashboard",
+          "description": "Track policy initiatives",
+          "component": "PolicyDashboard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-14"]
+    },
+    {
+      "roleId": "learning_outcomes_auditor",
+      "roleName": "Learning Outcomes Auditor",
+      "description": "Evaluate and audit educational outcomes and quality",
+      "icon": "BarChart",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Educational assessment credentials",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "assessment_board",
+          "name": "Audit Dashboard",
+          "icon": "ClipboardCheck",
+          "description": "Conduct quality audits",
+          "component": "AssessmentBoard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-14"]
+    },
+    {
+      "roleId": "education_strategy_planner",
+      "roleName": "Education Strategy Planner",
+      "description": "Develop strategic education plans and initiatives",
+      "icon": "Map",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Strategic planning experience",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "strategy_dashboard",
+          "name": "Strategy Dashboard",
+          "icon": "LayoutDashboard",
+          "description": "Plan educational initiatives",
+          "component": "StrategyDashboard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-14"]
+    },
+    {
+      "roleId": "mentorship_coordinator",
+      "roleName": "Mentorship Program Coordinator",
+      "description": "Coordinate and oversee mentorship programs",
+      "icon": "Users",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Program coordination experience",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "mentorship_program",
+          "name": "Mentorship Program",
+          "icon": "Users",
+          "description": "Manage mentorship matching",
+          "component": "MentorshipProgram"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OMO-01", "OMO-06", "OMO-14", "OMO-15"]
+    },
+    {
+      "roleId": "teacher_training_supervisor",
+      "roleName": "Teacher Training Supervisor",
+      "description": "Train and supervise new teachers",
+      "icon": "UserCheck",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Teacher training credentials",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Training Builder",
+          "icon": "BookOpen",
+          "description": "Create teacher training",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "mentorship_program",
+          "name": "Teacher Mentorship",
+          "icon": "Users",
+          "description": "Mentor new teachers",
+          "component": "MentorshipProgram"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-14", "OMO-15"]
+    },
+    {
+      "roleId": "continuing_education_lead",
+      "roleName": "Continuing Education Lead",
+      "description": "Develop and manage adult learning and continuing education programs",
+      "icon": "Repeat",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Adult education experience",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson_builder",
+          "name": "Program Builder",
+          "icon": "BookOpen",
+          "description": "Create continuing education programs",
+          "component": "LessonBuilder"
+        },
+        {
+          "id": "classroom_scheduler",
+          "name": "Program Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule adult learning programs",
+          "component": "ClassroomScheduler"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-03", "OMO-04"]
+    },
+    {
+      "roleId": "online_tutor",
+      "roleName": "Online Tutor",
+      "description": "Provide one-on-one or group tutoring online",
+      "icon": "Video",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate online teaching approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "start_class",
+          "name": "Start Class",
+          "icon": "Video",
+          "description": "Begin live tutoring session",
+          "component": "StartClass"
+        },
+        {
+          "id": "study_pack_vault",
+          "name": "Study Pack Vault",
+          "icon": "Package",
+          "description": "Upload teaching materials",
+          "component": "StudyPackVault"
+        },
+        {
+          "id": "student_progress",
+          "name": "Student Progress",
+          "icon": "TrendingUp",
+          "description": "Track student improvement",
+          "component": "StudentProgress"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-03", "OMO-04"]
+    },
+    {
+      "roleId": "study_group_moderator",
+      "roleName": "Study Group Moderator",
+      "description": "Facilitate peer learning and study groups",
+      "icon": "Users",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Explain study group facilitation approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "knowledge_circle",
+          "name": "Knowledge Circle",
+          "icon": "Users",
+          "description": "Host study group sessions",
+          "component": "KnowledgeCircle"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Share study materials",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02"]
+    },
+    {
+      "roleId": "educational_content_creator",
+      "roleName": "Educational Content Creator",
+      "description": "Create educational videos, courses, and digital content",
+      "icon": "Video",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "portfolio",
+          "description": "Educational content portfolio",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "creator_studio",
+          "name": "Creator Studio",
+          "icon": "Video",
+          "description": "Record and publish educational content",
+          "component": "CreatorStudio"
+        },
+        {
+          "id": "resource_library",
+          "name": "Resource Library",
+          "icon": "Library",
+          "description": "Organize content library",
+          "component": "ResourceLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04", "OMO-05"]
+    },
+    {
+      "roleId": "youth_mentor",
+      "roleName": "Youth Development Mentor",
+      "description": "Mentor and guide young people in personal and career development",
+      "icon": "Heart",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "council_oath",
+          "description": "Sacred oath: Protector, not predator",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Multiple strong community recommendations",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Explain mentorship philosophy and boundaries",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "protected_whisper",
+          "name": "Protected Whisper",
+          "icon": "Lock",
+          "description": "Monitored mentorship sessions",
+          "component": "ProtectedWhisper"
+        },
+        {
+          "id": "career_pathway",
+          "name": "Career Pathway",
+          "icon": "Map",
+          "description": "Map youth development journey",
+          "component": "CareerPathway"
+        },
+        {
+          "id": "boundary_check",
+          "name": "Boundary Self-Check",
+          "icon": "CheckCircle",
+          "description": "Regular reminder to stay respectful",
+          "component": "BoundaryCheck"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-06", "OMO-07", "OMO-09", "OMO-10", "OMO-11"]
+    },
+    {
+      "roleId": "language_teacher",
+      "roleName": "Language Teacher",
+      "description": "Teach English, French, Hausa, Yoruba, Igbo, Swahili, Arabic, and other languages",
+      "icon": "Languages",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate teaching in target language",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "language_class",
+          "name": "Language Class",
+          "icon": "MessageCircle",
+          "description": "Start interactive language lesson",
+          "component": "LanguageClass"
+        },
+        {
+          "id": "pronunciation_guide",
+          "name": "Pronunciation Guide",
+          "icon": "Mic",
+          "description": "Record pronunciation lessons",
+          "component": "PronunciationGuide"
+        },
+        {
+          "id": "conversation_practice",
+          "name": "Conversation Practice",
+          "icon": "Users",
+          "description": "Practice conversations",
+          "component": "ConversationPractice"
+        },
+        {
+          "id": "cultural_context",
+          "name": "Cultural Context",
+          "icon": "Globe",
+          "description": "Teach language with cultural understanding",
+          "component": "CulturalContext"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04"]
+    },
+    {
+      "roleId": "skill_trainer",
+      "roleName": "Skill Trainer",
+      "description": "Teach practical skills like tailoring, braiding, makeup, phone repair, coding",
+      "icon": "Wrench",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate skill and teaching method",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Show student results",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "hands_on_tutorial",
+          "name": "Hands-On Tutorial",
+          "icon": "Hand",
+          "description": "Step-by-step practical demonstration",
+          "component": "HandsOnTutorial"
+        },
+        {
+          "id": "pattern_library",
+          "name": "Pattern Library",
+          "icon": "Layout",
+          "description": "Share templates and guides",
+          "component": "PatternLibrary"
+        },
+        {
+          "id": "apprentice_tracker",
+          "name": "Apprentice Tracker",
+          "icon": "UserCheck",
+          "description": "Track skill progression",
+          "component": "ApprenticeTracker"
+        },
+        {
+          "id": "skill_certification",
+          "name": "Skill Certification",
+          "icon": "Award",
+          "description": "Certify students as competent",
+          "component": "SkillCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-02", "OMO-04", "OMO-12"]
+    },
+    {
+      "roleId": "career_coach",
+      "roleName": "Career Coach / Interview Prep",
+      "description": "Help with CVs, interviews, job applications, and career guidance",
+      "icon": "Briefcase",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Show CV templates, interview success stories, or credentials",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "cv_workshop",
+          "name": "CV Workshop",
+          "icon": "FileText",
+          "description": "Review and improve CVs",
+          "component": "CVWorkshop"
+        },
+        {
+          "id": "interview_simulation",
+          "name": "Interview Simulation",
+          "icon": "Video",
+          "description": "Practice interview questions",
+          "component": "InterviewSimulation"
+        },
+        {
+          "id": "career_pathway",
+          "name": "Career Pathway",
+          "icon": "Map",
+          "description": "Map career progression",
+          "component": "CareerPathway"
+        },
+        {
+          "id": "job_ready_endorsement",
+          "name": "Job-Ready Endorsement",
+          "icon": "BadgeCheck",
+          "description": "Certify as interview-ready",
+          "component": "JobReadyEndorsement"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 80,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-03", "OMO-04", "OMO-08"]
+    },
+    {
+      "roleId": "city_survival_coach",
+      "roleName": "City Survival Coach",
+      "description": "Guide newcomers on navigating city life safely",
+      "icon": "MapPin",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Community recommendation as trustworthy guide",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Explain city knowledge and safety approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "safety_bulletins",
+          "name": "Safety Bulletins",
+          "icon": "AlertTriangle",
+          "description": "Send location-specific safety alerts",
+          "component": "SafetyBulletins"
+        },
+        {
+          "id": "area_guide",
+          "name": "Area Guide",
+          "icon": "Map",
+          "description": "Map safe vs dangerous neighborhoods",
+          "component": "AreaGuide"
+        },
+        {
+          "id": "survival_checklist",
+          "name": "Survival Checklist",
+          "icon": "CheckSquare",
+          "description": "Essential first-week survival tips",
+          "component": "SurvivalChecklist"
+        },
+        {
+          "id": "protected_whisper",
+          "name": "Protected Whisper",
+          "icon": "MessageSquare",
+          "description": "Private guidance for sensitive situations",
+          "component": "ProtectedWhisper"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["OMO-01", "OMO-06", "OMO-08", "OMO-11"]
+    },
+    {
+      "roleId": "big_sibling_mentor",
+      "roleName": "Big Sister / Big Brother Mentor",
+      "description": "Protect and guide youth from exploitation, scams, and danger",
+      "icon": "Heart",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "council_oath",
+          "description": "Sacred oath: Protector, not predator",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Multiple strong community recommendations",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Explain protection philosophy and boundaries",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "protected_youth",
+          "name": "Protected Youth",
+          "icon": "ShieldCheck",
+          "description": "Track youth under guidance (anonymous count)",
+          "component": "ProtectedYouth"
+        },
+        {
+          "id": "danger_alerts",
+          "name": "Danger Alerts",
+          "icon": "AlertOctagon",
+          "description": "Send warnings about scams, predators, cults",
+          "component": "DangerAlerts"
+        },
+        {
+          "id": "safe_whisper",
+          "name": "Safe Whisper Room",
+          "icon": "Lock",
+          "description": "Heavily monitored 1-on-1 guidance",
+          "component": "SafeWhisper"
+        },
+        {
+          "id": "boundary_check",
+          "name": "Boundary Self-Check",
+          "icon": "CheckCircle",
+          "description": "Regular reminder to stay respectful",
+          "component": "BoundaryCheck"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["OMO-01", "OMO-02", "OMO-06", "OMO-07", "OMO-09", "OMO-10", "OMO-11"]
+    },
+    {
+      "roleId": "elder_storyteller",
+      "roleName": "Elder Storyteller / Oral Historian",
+      "description": "Keep and share cultural stories, proverbs, and heritage",
+      "icon": "BookOpen",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Recognition as keeper of stories",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Share a story or proverb in your tradition",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "story_circle",
+          "name": "Story Circle",
+          "icon": "Users",
+          "description": "Host live storytelling sessions",
+          "component": "StoryCircle"
+        },
+        {
+          "id": "proverb_vault",
+          "name": "Proverb Vault",
+          "icon": "Archive",
+          "description": "Record and preserve traditional sayings",
+          "component": "ProverbVault"
+        },
+        {
+          "id": "heritage_archive",
+          "name": "Heritage Archive",
+          "icon": "Database",
+          "description": "Permanent cultural memory storage",
+          "component": "HeritageArchive"
+        },
+        {
+          "id": "cultural_blessing",
+          "name": "Cultural Blessing",
+          "icon": "Sparkles",
+          "description": "Bless listeners with traditional wisdom",
+          "component": "CulturalBlessing"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Voice-in-Training",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Explainer",
+          "icon": "scroll-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guide of Many",
+          "icon": "scroll-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6366f1",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of Minds",
+          "icon": "scroll-five",
+          "requirements": {
+            "jobsCompleted": 25,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#4f46e5",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OMO-05", "OMO-13"]
+    },
+    {
+      "roleId": "learner",
+      "roleName": "Learner / Student",
+      "description": "Receive knowledge, training, and guidance",
+      "icon": "UserPlus",
+      "theme": {
+        "primary": "#6366f1",
+        "secondary": "#4f46e5",
+        "accent": "#818cf8"
+      },
+      "verificationRequired": [],
+      "tools": [
+        {
+          "id": "my_classes",
+          "name": "My Classes",
+          "icon": "BookOpen",
+          "description": "View enrolled classes",
+          "component": "MyClasses"
+        },
+        {
+          "id": "study_materials",
+          "name": "Study Materials",
+          "icon": "FolderOpen",
+          "description": "Access study packs offline",
+          "component": "StudyMaterials"
+        },
+        {
+          "id": "my_endorsements",
+          "name": "My Endorsements",
+          "icon": "Award",
+          "description": "View skills certified by mentors",
+          "component": "MyEndorsements"
+        },
+        {
+          "id": "find_mentor",
+          "name": "Find Mentor",
+          "icon": "Search",
+          "description": "Search for teachers and guides",
+          "component": "FindMentor"
+        }
+      ],
+      "crestPath": [],
+      "riskClass": "low",
+      "specialRules": []
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "1-on-1 and group classes with escrow payment",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Study Pack sales and downloadable materials",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Blessing Cowries for excellent teaching",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Mother", "Oracle", "Creator", "Thunder"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "OMO-01",
+      "ruleText": "Do not harvest the student's body (no sexual pressure)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OMO-02",
+      "ruleText": "Your mouth must lift, not break (no humiliation)",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OMO-03",
+      "ruleText": "No promise you cannot carry",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OMO-04",
+      "ruleText": "You must say when you don't know",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "OMO-05",
+      "ruleText": "Do not steal teaching from another",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OMO-06",
+      "ruleText": "No grooming under 'mentorship'",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OMO-07",
+      "ruleText": "Do not threaten a learner's future",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OMO-08",
+      "ruleText": "Speak truth about opportunity cost and dangers",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OMO-09",
+      "ruleText": "Do not expose private pain in public class",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OMO-10",
+      "ruleText": "No 'cult' lock (mentorship is not prison)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OMO-11",
+      "ruleText": "Respect parent/guardian boundary",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OMO-12",
+      "ruleText": "Do not sell fake certificates",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OMO-13",
+      "ruleText": "No tribal hate teaching",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OMO-14",
+      "ruleText": "Answer when council calls you",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OMO-15",
+      "ruleText": "Bless the ones you raise (knowledge must travel)",
+      "severity": "low",
+      "action": "warn"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Teacher of Minds, {studentsWaiting} youths wait for you before exam. {privateRequests} asked for safe advice. Your voice is needed. Guard it with honor.",
+    "statusTiles": [
+      "todays_classes",
+      "students_waiting",
+      "study_packs_sold",
+      "cowries_pending"
+    ],
+    "quickActions": [
+      "start_class",
+      "answer_question_publicly",
+      "send_study_pack",
+      "bless_learner",
+      "raise_safety_flag"
+    ]
+  }
 }

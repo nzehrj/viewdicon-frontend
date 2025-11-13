@@ -1,20 +1,56 @@
 {
   "villageId": "finance",
-  "villageName": "Village of Wealth Keepers",
-  "description": "Money workers - bankers, accountants, insurance agents, and financial advisors",
+  "villageName": "Finance Village",
+  "description": "Finance workers - accountants, bankers, insurance agents, financial advisors, and all who manage wealth and protect money",
   "color": "#a855f7",
   "icon": "Coins",
+  "englishName": "The Village of Wealth Keepers",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#a855f7",
+    "colorSecondary": "#9333ea",
+    "iconSet": ["coins", "calculator", "shield", "trending-up"],
+    "backgroundTexture": "purple_gold_ledger_cowrie",
+    "symbols": ["cowrie_stack", "ledger_book", "balance_scale", "vault_door"]
+  },
+  
+  "promiseTagline": "Your money is sacred. We count what matters. We guard what you earn. No disappearing funds. No cooked books.",
+  
+  "defaultTools": [
+    "ledger_manager",
+    "transaction_processor",
+    "financial_reports",
+    "compliance_tracker",
+    "earnings_wallet",
+    "audit_trail"
+  ],
+  
   "roles": [
     {
       "roleId": "accountant",
-      "roleName": "Accountant",
-      "description": "Manage financial records and reporting",
+      "roleName": "Accountant / Bookkeeper",
+      "description": "Manage financial records, reporting, and tax calculations",
       "icon": "Calculator",
       "theme": {
         "primary": "#a855f7",
         "secondary": "#9333ea",
         "accent": "#c084fc"
       },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Accounting certification or training credentials",
+          "required": false
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Handle money with honesty, no cooking books",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "ledger",
@@ -36,25 +72,101 @@
           "icon": "FileBarChart",
           "description": "Generate financial statements",
           "component": "FinancialReports"
+        },
+        {
+          "id": "reconciliation",
+          "name": "Account Reconciliation",
+          "icon": "GitCompare",
+          "description": "Match records and find discrepancies",
+          "component": "Reconciliation"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Uncounted Hand",
+          "icon": "circle",
+          "requirements": {
+            "accountsManaged": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Keeper of Numbers",
+          "icon": "coin-single",
+          "requirements": {
+            "accountsManaged": 1,
+            "zeroFraudFlags": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guardian of Balance",
+          "icon": "coin-triple",
+          "requirements": {
+            "accountsManaged": 10,
+            "accurateReports": 8,
+            "zeroMissingMoney": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Ledger",
+          "icon": "coin-five",
+          "requirements": {
+            "accountsManaged": 50,
+            "councilApproval": true,
+            "zeroEmbezzlement": true
+          },
+          "visual": {
+            "color": "#9333ea",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["FIN-01", "FIN-02", "FIN-03", "FIN-06"]
     },
     {
       "roleId": "bank_teller",
-      "roleName": "Bank Teller",
-      "description": "Process banking transactions for customers",
+      "roleName": "Bank Teller / Agent",
+      "description": "Process banking transactions, deposits, withdrawals, and transfers",
       "icon": "Building2",
       "theme": {
         "primary": "#a855f7",
         "secondary": "#9333ea",
         "accent": "#c084fc"
       },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "Bank or financial institution employment confirmation",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: No theft, no insider fraud, serve with integrity",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "transaction_processor",
           "name": "Transaction Processor",
           "icon": "CreditCard",
-          "description": "Process deposits/withdrawals",
+          "description": "Process deposits and withdrawals",
           "component": "TransactionProcessor"
         },
         {
@@ -70,19 +182,95 @@
           "icon": "Search",
           "description": "Find customer accounts",
           "component": "CustomerLookup"
+        },
+        {
+          "id": "fraud_alert",
+          "name": "Fraud Alert",
+          "icon": "AlertTriangle",
+          "description": "Report suspicious transactions",
+          "component": "FraudAlert"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Uncounted Hand",
+          "icon": "circle",
+          "requirements": {
+            "transactionsProcessed": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Keeper of Numbers",
+          "icon": "coin-single",
+          "requirements": {
+            "transactionsProcessed": 50,
+            "zeroShortages": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guardian of Balance",
+          "icon": "coin-triple",
+          "requirements": {
+            "transactionsProcessed": 500,
+            "balancedDrawer": 95,
+            "zeroTheftFlags": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Ledger",
+          "icon": "coin-five",
+          "requirements": {
+            "transactionsProcessed": 3000,
+            "councilApproval": true,
+            "trustedWithVault": true
+          },
+          "visual": {
+            "color": "#9333ea",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["FIN-01", "FIN-04", "FIN-05", "FIN-07"]
     },
     {
       "roleId": "insurance_agent",
       "roleName": "Insurance Agent",
-      "description": "Sell and manage insurance policies",
+      "description": "Sell and manage insurance policies and claims",
       "icon": "Shield",
       "theme": {
         "primary": "#a855f7",
         "secondary": "#9333ea",
         "accent": "#c084fc"
       },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Insurance agent license or registration",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: No fake policies, honest premiums, honor claims",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "policy_mgmt",
@@ -104,8 +292,430 @@
           "icon": "ClipboardList",
           "description": "Track insurance claims",
           "component": "ClaimsTracker"
+        },
+        {
+          "id": "premium_calculator",
+          "name": "Premium Calculator",
+          "icon": "Calculator",
+          "description": "Calculate policy premiums",
+          "component": "PremiumCalculator"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Uncounted Hand",
+          "icon": "circle",
+          "requirements": {
+            "policiesSold": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Keeper of Numbers",
+          "icon": "coin-single",
+          "requirements": {
+            "policiesSold": 3,
+            "zeroFakePolicies": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guardian of Balance",
+          "icon": "coin-triple",
+          "requirements": {
+            "policiesSold": 20,
+            "claimsHonored": 15,
+            "zeroScamReports": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Ledger",
+          "icon": "coin-five",
+          "requirements": {
+            "policiesSold": 100,
+            "councilApproval": true,
+            "clientSatisfaction": 0.9
+          },
+          "visual": {
+            "color": "#9333ea",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["FIN-08", "FIN-09", "FIN-10"]
+    },
+    {
+      "roleId": "financial_advisor",
+      "roleName": "Financial Advisor / Planner",
+      "description": "Provide investment advice and financial planning services",
+      "icon": "TrendingUp",
+      "theme": {
+        "primary": "#a855f7",
+        "secondary": "#9333ea",
+        "accent": "#c084fc"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Financial planning certification or credentials",
+          "required": false
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Give honest advice, no Ponzi schemes",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "portfolio_builder",
+          "name": "Portfolio Builder",
+          "icon": "PieChart",
+          "description": "Build investment portfolios",
+          "component": "PortfolioBuilder"
+        },
+        {
+          "id": "retirement_planner",
+          "name": "Retirement Planner",
+          "icon": "Calendar",
+          "description": "Plan for retirement savings",
+          "component": "RetirementPlanner"
+        },
+        {
+          "id": "risk_assessment",
+          "name": "Risk Assessment",
+          "icon": "AlertTriangle",
+          "description": "Assess investment risk tolerance",
+          "component": "RiskAssessment"
+        },
+        {
+          "id": "investment_tracker",
+          "name": "Investment Tracker",
+          "icon": "TrendingUp",
+          "description": "Track investment performance",
+          "component": "InvestmentTracker"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Uncounted Hand",
+          "icon": "circle",
+          "requirements": {
+            "clientsAdvised": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Keeper of Numbers",
+          "icon": "coin-single",
+          "requirements": {
+            "clientsAdvised": 2,
+            "zeroScamFlags": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guardian of Balance",
+          "icon": "coin-triple",
+          "requirements": {
+            "clientsAdvised": 15,
+            "clientSuccessRate": 0.8,
+            "zeroPonziSchemes": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Ledger",
+          "icon": "coin-five",
+          "requirements": {
+            "clientsAdvised": 75,
+            "councilApproval": true,
+            "wealthProtected": true
+          },
+          "visual": {
+            "color": "#9333ea",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["FIN-11", "FIN-12", "FIN-13"]
+    },
+    {
+      "roleId": "loan_officer",
+      "roleName": "Loan Officer / Credit Analyst",
+      "description": "Process loans, assess creditworthiness, and manage repayment",
+      "icon": "FileCheck",
+      "theme": {
+        "primary": "#a855f7",
+        "secondary": "#9333ea",
+        "accent": "#c084fc"
+      },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "Financial institution employment confirmation",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Fair lending, no predatory practices",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "loan_application",
+          "name": "Loan Application",
+          "icon": "FileText",
+          "description": "Process loan applications",
+          "component": "LoanApplication"
+        },
+        {
+          "id": "credit_assessment",
+          "name": "Credit Assessment",
+          "icon": "BarChart",
+          "description": "Assess borrower creditworthiness",
+          "component": "CreditAssessment"
+        },
+        {
+          "id": "repayment_tracker",
+          "name": "Repayment Tracker",
+          "icon": "Calendar",
+          "description": "Track loan repayments",
+          "component": "RepaymentTracker"
+        },
+        {
+          "id": "collateral_registry",
+          "name": "Collateral Registry",
+          "icon": "Lock",
+          "description": "Document loan collateral",
+          "component": "CollateralRegistry"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Uncounted Hand",
+          "icon": "circle",
+          "requirements": {
+            "loansProcessed": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Keeper of Numbers",
+          "icon": "coin-single",
+          "requirements": {
+            "loansProcessed": 3,
+            "fairLending": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Guardian of Balance",
+          "icon": "coin-triple",
+          "requirements": {
+            "loansProcessed": 20,
+            "repaymentRate": 0.8,
+            "zeroPredatory": true
+          },
+          "visual": {
+            "color": "#a855f7",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Ledger",
+          "icon": "coin-five",
+          "requirements": {
+            "loansProcessed": 100,
+            "councilApproval": true,
+            "communityTrust": true
+          },
+          "visual": {
+            "color": "#9333ea",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["FIN-14", "FIN-15"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "financial_council",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Financial services with transparent fees",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Blessing Cowries for excellent financial service",
+      "enabled": true
+    },
+    {
+      "type": "commission",
+      "description": "Transparent commissions on policies and investments",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Oracle", "Thunder", "Iron"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "FIN-01",
+      "ruleText": "You do not steal money (no embezzlement, no missing funds)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "FIN-02",
+      "ruleText": "You do not cook the books (no false records)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "FIN-03",
+      "ruleText": "You must balance accounts honestly",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "FIN-04",
+      "ruleText": "No insider theft or fraud",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "FIN-05",
+      "ruleText": "Cash drawer shortages must be explained",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "FIN-06",
+      "ruleText": "Tax calculations must be accurate",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "FIN-07",
+      "ruleText": "No helping customers commit fraud",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "FIN-08",
+      "ruleText": "No fake insurance policies",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "FIN-09",
+      "ruleText": "Honor legitimate claims (no denying valid insurance claims)",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "FIN-10",
+      "ruleText": "Premiums must be explained clearly",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "FIN-11",
+      "ruleText": "No Ponzi schemes or pyramid schemes",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "FIN-12",
+      "ruleText": "Investment advice must be honest, not guaranteed riches",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "FIN-13",
+      "ruleText": "Disclose conflicts of interest",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "FIN-14",
+      "ruleText": "No predatory lending (interest rates must be fair)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "FIN-15",
+      "ruleText": "Loan terms must be explained clearly before signing",
+      "severity": "high",
+      "action": "amber_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Keeper of Numbers, {accountsManaged} accounts trust you. {transactionsPending} transactions await. {fundsInEscrow} Cowries held in trust. Count with honor.",
+    "statusTiles": [
+      "accounts_managed",
+      "transactions_pending",
+      "funds_in_escrow",
+      "compliance_status"
+    ],
+    "quickActions": [
+      "process_transaction",
+      "generate_report",
+      "update_ledger",
+      "calculate_tax",
+      "reconcile_accounts"
+    ]
+  }
 }

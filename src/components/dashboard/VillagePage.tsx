@@ -5,18 +5,23 @@ import { ArrowLeft, Users, Briefcase, Star, Clock, TrendingUp } from 'lucide-rea
 import * as Icons from 'lucide-react';
 import ToolCard from './ToolCard';
 import { useAppSelector } from '../../store/hooks';
-import healthcareManifest from '../../config/villages/healthcare.json';
-import farmingManifest from '../../config/villages/farming.json';
-import constructionManifest from '../../config/villages/construction.json';
+import agricultureManifest from '../../config/villages/agriculture.json';
 import businessManifest from '../../config/villages/business.json';
+import constructionManifest from '../../config/villages/construction.json';
+import craftsManifest from '../../config/villages/crafts.json';
 import creativeManifest from '../../config/villages/creative.json';
 import educationManifest from '../../config/villages/education.json';
-import governmentManifest from '../../config/villages/government.json';
-import transportManifest from '../../config/villages/transport.json';
-import technologyManifest from '../../config/villages/technology.json';
-import hospitalityManifest from '../../config/villages/hospitality.json';
 import financeManifest from '../../config/villages/finance.json';
-import environmentManifest from '../../config/villages/environment.json';
+import governanceManifest from '../../config/villages/governance.json';
+import governmentManifest from '../../config/villages/government.json';
+import healthcareManifest from '../../config/villages/healthcare.json';
+import gettingStartedManifest from '../../config/villages/getting_started.json';
+import hospitalityManifest from '../../config/villages/hospitality.json';
+import mediaManifest from '../../config/villages/media.json';
+import securityManifest from '../../config/villages/security.json';
+import spiritualManifest from '../../config/villages/spiritual.json';
+import technologyManifest from '../../config/villages/technology.json';
+import transportManifest from '../../config/villages/transport.json';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -56,18 +61,23 @@ interface VillageManifest {
 // ============================================================================
 
 const VILLAGE_MANIFESTS: Record<string, VillageManifest> = {
-  healthcare: healthcareManifest as any,
-  farming: farmingManifest as any,
-  construction: constructionManifest as any,
+  agriculture: agricultureManifest as any,
   business: businessManifest as any,
+  construction: constructionManifest as any,
+  crafts: craftsManifest as any,
   creative: creativeManifest as any,
   education: educationManifest as any,
-  government: governmentManifest as any,
-  transport: transportManifest as any,
-  technology: technologyManifest as any,
-  hospitality: hospitalityManifest as any,
   finance: financeManifest as any,
-  environment: environmentManifest as any,
+  governance: governanceManifest as any,
+  government: governmentManifest as any,
+  healthcare: healthcareManifest as any,
+  getting_started: gettingStartedManifest as any,
+  hospitality: hospitalityManifest as any,
+  media: mediaManifest as any,
+  security: securityManifest as any,
+  spiritual: spiritualManifest as any,
+  technology: technologyManifest as any,
+  transport: transportManifest as any,
 };
 
 // ============================================================================

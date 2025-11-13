@@ -1,9 +1,32 @@
 {
   "villageId": "healthcare",
   "villageName": "Healthcare Village",
-  "description": "Healthcare workers - doctors, nurses, pharmacists, and medical staff",
+  "description": "Healthcare workers - doctors, nurses, pharmacists, traditional healers, midwives, and medical staff providing care and healing",
   "color": "#10b981",
   "icon": "Stethoscope",
+  "englishName": "The Healing Village",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#10b981",
+    "colorSecondary": "#8b7355",
+    "iconSet": ["heart-pulse", "stethoscope", "hand-heart", "droplet"],
+    "backgroundTexture": "raffia_mat_healing_spring",
+    "symbols": ["calabash", "herbs", "carved_spoon", "water_ripple"]
+  },
+  
+  "promiseTagline": "Your hands protect life. We protect you.",
+  
+  "defaultTools": [
+    "healing_hut",
+    "patient_queue",
+    "record_book",
+    "earnings_wallet",
+    "emergency_flag"
+  ],
+  
   "roles": [
     {
       "roleId": "physician_general",
@@ -15,6 +38,23 @@
         "secondary": "#059669",
         "accent": "#34d399"
       },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Medical council license or hospital ID",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Short video showing your clinical environment",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Healing Council oath: 'I serve with clean hands'",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "patient_queue",
@@ -36,8 +76,72 @@
           "icon": "Pill",
           "description": "Write and manage prescriptions",
           "component": "Prescription"
+        },
+        {
+          "id": "referral_notes",
+          "name": "Referral Notes",
+          "icon": "FileText",
+          "description": "Generate referral notes for specialists",
+          "component": "ReferralNotes"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true,
+            "councilApproval": false
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["H-01", "H-02", "H-06", "H-10", "H-13"]
     },
     {
       "roleId": "nurse",
@@ -49,6 +153,18 @@
         "secondary": "#059669",
         "accent": "#34d399"
       },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Nursing council registration or hospital badge",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your work environment and basic skills",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "patient_vitals",
@@ -70,8 +186,71 @@
           "icon": "RefreshCw",
           "description": "Handover notes between shifts",
           "component": "ShiftHandover"
+        },
+        {
+          "id": "patient_monitoring",
+          "name": "Patient Monitoring",
+          "icon": "Monitor",
+          "description": "Continuous patient health monitoring",
+          "component": "PatientMonitoring"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["H-01", "H-02", "H-05", "H-06"]
     },
     {
       "roleId": "pharmacist",
@@ -83,6 +262,18 @@
         "secondary": "#059669",
         "accent": "#34d399"
       },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Pharmacy council registration",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your pharmacy and explain your practice",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "prescription_fill",
@@ -104,8 +295,858 @@
           "icon": "AlertTriangle",
           "description": "Check for drug interactions",
           "component": "InteractionChecker"
+        },
+        {
+          "id": "medication_counseling",
+          "name": "Medication Counseling",
+          "icon": "MessageCircle",
+          "description": "Provide drug information to patients",
+          "component": "MedicationCounseling"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 25,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["H-01", "H-07", "H-10"]
+    },
+    {
+      "roleId": "midwife_certified",
+      "roleName": "Certified Midwife",
+      "description": "Hospital-trained or certified midwife for childbirth care",
+      "icon": "Baby",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Midwifery certification or hospital training certificate",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Recommendation from senior midwife or hospital matron",
+          "required": false
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your delivery kit and explain your process",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "mothers_under_watch",
+          "name": "Mothers Under Watch",
+          "icon": "Eye",
+          "description": "Track expecting mothers and their progress",
+          "component": "MothersTracker"
+        },
+        {
+          "id": "due_soon_tracker",
+          "name": "Due Soon",
+          "icon": "Calendar",
+          "description": "Monitor mothers approaching delivery date",
+          "component": "DueSoonTracker"
+        },
+        {
+          "id": "delivery_records",
+          "name": "Delivery Records",
+          "icon": "FileCheck",
+          "description": "Record safe deliveries and birth details",
+          "component": "DeliveryRecords"
+        },
+        {
+          "id": "naming_pathway",
+          "name": "Naming Pathway",
+          "icon": "Award",
+          "description": "Start baby naming and blessing ceremony",
+          "component": "NamingPathway"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["H-02", "H-06", "H-09", "H-14"]
+    },
+    {
+      "roleId": "traditional_birth_companion",
+      "roleName": "Traditional Birth Companion",
+      "description": "Community midwife with traditional experience",
+      "icon": "HandHeart",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Testimony from families you've helped",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Voice notes from mothers you've delivered",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your tools and explain your tradition",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "mothers_under_watch",
+          "name": "Mothers Under Watch",
+          "icon": "Eye",
+          "description": "Track expecting mothers in your care",
+          "component": "MothersTracker"
+        },
+        {
+          "id": "postpartum_care",
+          "name": "Postpartum Care",
+          "icon": "HeartHandshake",
+          "description": "Support mothers after delivery",
+          "component": "PostpartumCare"
+        },
+        {
+          "id": "blessing_gifts",
+          "name": "Blessing Gifts",
+          "icon": "Gift",
+          "description": "Receive blessings from grateful families",
+          "component": "BlessingGifts"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["H-02", "H-06", "H-09", "H-14"]
+    },
+    {
+      "roleId": "herbal_healer",
+      "roleName": "Herbal Roots Healer",
+      "description": "Traditional healer using plants, roots, leaves, and massage",
+      "icon": "Leaf",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Recommendation from community elders",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your herbs and explain your practice",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "remedy_library",
+          "name": "Remedy Library",
+          "icon": "Book",
+          "description": "Catalog of herbal remedies and treatments",
+          "component": "RemedyLibrary"
+        },
+        {
+          "id": "consultation_room",
+          "name": "Consultation Room",
+          "icon": "MessageSquare",
+          "description": "Private consultations with patients",
+          "component": "ConsultationRoom"
+        },
+        {
+          "id": "herb_preparation",
+          "name": "Herb Preparation",
+          "icon": "Beaker",
+          "description": "Guide for preparing herbal medicines",
+          "component": "HerbPreparation"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["H-01", "H-07", "H-11"]
+    },
+    {
+      "roleId": "mental_support_elder",
+      "roleName": "Mental Support Elder",
+      "description": "Counselor providing emotional support and guidance",
+      "icon": "Brain",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Community testimony of your listening work",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Examples of people you've helped (anonymous)",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "crisis_calls",
+          "name": "Crisis Calls",
+          "icon": "Phone",
+          "description": "Urgent support calls tracker",
+          "component": "CrisisCalls"
+        },
+        {
+          "id": "checkin_reminders",
+          "name": "Check-in Reminders",
+          "icon": "Bell",
+          "description": "Schedule follow-ups with those you support",
+          "component": "CheckinReminders"
+        },
+        {
+          "id": "harmony_score",
+          "name": "Harmony Score",
+          "icon": "Heart",
+          "description": "Your respect and effectiveness rating",
+          "component": "HarmonyScore"
+        },
+        {
+          "id": "safe_listening_room",
+          "name": "Safe Listening Room",
+          "icon": "Ear",
+          "description": "Private, secure space for counseling",
+          "component": "SafeListeningRoom"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["H-03", "H-05", "H-14", "H-15"]
+    },
+    {
+      "roleId": "trauma_listener",
+      "roleName": "Trauma Listener",
+      "description": "Safe listener for abuse survivors and trauma recovery",
+      "icon": "Ear",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "verificationRequired": [
+        {
+          "type": "council_oath",
+          "description": "Sacred oath to protect pain stories",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Recommendation from trusted community elder",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "night_safe_room",
+          "name": "Night Safe Room",
+          "icon": "Moon",
+          "description": "Anonymous late-night trauma support space",
+          "component": "NightSafeRoom"
+        },
+        {
+          "id": "warrior_escort_request",
+          "name": "Warrior Escort Request",
+          "icon": "Shield",
+          "description": "Request protection escort if needed",
+          "component": "WarriorEscortRequest"
+        },
+        {
+          "id": "council_support",
+          "name": "Council Support",
+          "icon": "Users",
+          "description": "Alert council for additional help",
+          "component": "CouncilSupport"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["H-02", "H-03", "H-05", "H-08", "H-14", "H-15"]
+    },
+    {
+      "roleId": "safehouse_guardian",
+      "roleName": "Safe-house Guardian",
+      "description": "Provides temporary shelter for people fleeing danger",
+      "icon": "ShieldCheck",
+      "theme": {
+        "primary": "#10b981",
+        "secondary": "#059669",
+        "accent": "#34d399"
+      },
+      "verificationRequired": [
+        {
+          "type": "council_oath",
+          "description": "Sacred oath: Protection, not prison",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Multiple testimonies from community leaders",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your safe space (without revealing location)",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "shelter_tracker",
+          "name": "Shelter Tracker",
+          "icon": "Home",
+          "description": "Track people currently under your protection",
+          "component": "ShelterTracker"
+        },
+        {
+          "id": "supplies_needed",
+          "name": "Supplies Needed",
+          "icon": "ShoppingCart",
+          "description": "Request food, medicine, and supplies",
+          "component": "SuppliesNeeded"
+        },
+        {
+          "id": "danger_reports",
+          "name": "Danger Reports",
+          "icon": "AlertTriangle",
+          "description": "Log and report threats",
+          "component": "DangerReports"
+        },
+        {
+          "id": "council_backup",
+          "name": "Council Backup",
+          "icon": "Users",
+          "description": "Request council or warrior support",
+          "component": "CouncilBackup"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Care",
+          "icon": "circle-dot",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Healing",
+          "icon": "circles-three",
+          "requirements": {
+            "jobsCompleted": 5,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#10b981",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Life",
+          "icon": "circles-five",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#059669",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["H-02", "H-08", "H-14"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "1-on-1 healing consultations with escrow payment",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Blessing Cowries after successful care",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Long-term patient care plans",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Mother", "Thunder", "Oracle"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "H-01",
+      "ruleText": "You must not promise cure you cannot give",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "H-02",
+      "ruleText": "You must not touch body or demand body without consent",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "H-03",
+      "ruleText": "The pain story of the patient is sacred",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "H-04",
+      "ruleText": "Do not collect cowries and vanish",
+      "severity": "high",
+      "action": "delay_payout"
+    },
+    {
+      "ruleId": "H-05",
+      "ruleText": "Your mouth must carry comfort, not blade",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "H-06",
+      "ruleText": "You must say 'go to hospital' when it is time",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "H-07",
+      "ruleText": "You must not give poison",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "H-08",
+      "ruleText": "Safe-house is protection, not prison",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "H-09",
+      "ruleText": "Birth is holy—no shaming, no extortion",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "H-10",
+      "ruleText": "Blood talk stays clean—no false lab results",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "H-11",
+      "ruleText": "No curse-for-fee",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "H-12",
+      "ruleText": "Do not record patient pain to embarrass",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "H-13",
+      "ruleText": "Do not steal hospital authority",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "H-14",
+      "ruleText": "When danger is here, you must call for eyes",
+      "severity": "high",
+      "action": "warn"
+    },
+    {
+      "ruleId": "H-15",
+      "ruleText": "You must not break the trust of the hut",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Blessings, {honorTitle}. {patientsWaiting} people are waiting by your fire. Cowrie Coins are ready. Your care brings calm.",
+    "statusTiles": [
+      "patients_waiting",
+      "consults_today",
+      "escrow_held",
+      "harmony_score"
+    ],
+    "quickActions": [
+      "open_healing_hut",
+      "call_next_person",
+      "record_care_note",
+      "mark_session_finished",
+      "emergency_flag"
+    ]
+  }
 }

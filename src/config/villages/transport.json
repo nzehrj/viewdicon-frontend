@@ -1,20 +1,56 @@
 {
   "villageId": "transport",
-  "villageName": "Village of Movers",
-  "description": "Transport workers - drivers, pilots, delivery workers, and logistics staff",
+  "villageName": "Transport Village",
+  "description": "Transport workers - drivers, pilots, delivery workers, logistics staff, and all who move people and goods across land, water, and air",
   "color": "#eab308",
   "icon": "Truck",
+  "englishName": "The Village of Movers",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#eab308",
+    "colorSecondary": "#ca8a04",
+    "iconSet": ["truck", "car", "plane", "ship"],
+    "backgroundTexture": "yellow_road_wheels_compass",
+    "symbols": ["steering_wheel", "road_path", "compass_rose", "cargo_box"]
+  },
+  
+  "promiseTagline": "We carry the world safely. Every passenger matters. Every package arrives. We drive with honor.",
+  
+  "defaultTools": [
+    "ride_log",
+    "earnings_tracker",
+    "vehicle_maintenance",
+    "route_optimizer",
+    "safety_checklist",
+    "cowrie_wallet"
+  ],
+  
   "roles": [
     {
       "roleId": "taxi_driver",
-      "roleName": "Taxi/Ride-share Driver",
-      "description": "Transport passengers safely",
+      "roleName": "Taxi / Ride-Share Driver",
+      "description": "Transport passengers safely in personal vehicles",
       "icon": "Car",
       "theme": {
         "primary": "#eab308",
         "secondary": "#ca8a04",
         "accent": "#fde047"
       },
+      "verificationRequired": [
+        {
+          "type": "drivers_license",
+          "description": "Valid driver's license and vehicle registration",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Safe driving, no harassment, honest fares",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "ride_log",
@@ -27,28 +63,104 @@
           "id": "earnings_tracker",
           "name": "Earnings Tracker",
           "icon": "DollarSign",
-          "description": "Track daily/weekly earnings",
+          "description": "Track daily and weekly earnings",
           "component": "EarningsTracker"
         },
         {
           "id": "vehicle_maintenance",
           "name": "Vehicle Maintenance",
           "icon": "Wrench",
-          "description": "Maintenance schedule and logs",
+          "description": "Schedule and log maintenance",
           "component": "VehicleMaintenance"
+        },
+        {
+          "id": "passenger_rating",
+          "name": "Passenger Rating",
+          "icon": "Star",
+          "description": "Rate passengers after trip",
+          "component": "PassengerRating"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Driver",
+          "icon": "circle",
+          "requirements": {
+            "tripsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Road Apprentice",
+          "icon": "wheel-single",
+          "requirements": {
+            "tripsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Navigator",
+          "icon": "wheel-triple",
+          "requirements": {
+            "tripsCompleted": 100,
+            "safetyRating": 0.9,
+            "zeroAccidents": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Road",
+          "icon": "wheel-five",
+          "requirements": {
+            "tripsCompleted": 1000,
+            "councilApproval": true,
+            "passengersServed": 500
+          },
+          "visual": {
+            "color": "#ca8a04",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["TRANS-01", "TRANS-02", "TRANS-03", "TRANS-04", "TRANS-05"]
     },
     {
       "roleId": "bus_driver",
-      "roleName": "Bus Driver",
-      "description": "Drive buses on designated routes",
+      "roleName": "Bus Driver / Public Transport Operator",
+      "description": "Drive buses on designated routes and ensure passenger safety",
       "icon": "Bus",
       "theme": {
         "primary": "#eab308",
         "secondary": "#ca8a04",
         "accent": "#fde047"
       },
+      "verificationRequired": [
+        {
+          "type": "commercial_license",
+          "description": "Commercial driver's license",
+          "required": true
+        },
+        {
+          "type": "employer_verification",
+          "description": "Transport company employment confirmation",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "route_schedule",
@@ -70,25 +182,316 @@
           "icon": "Fuel",
           "description": "Track fuel consumption",
           "component": "FuelTracker"
+        },
+        {
+          "id": "incident_logger",
+          "name": "Incident Logger",
+          "icon": "AlertTriangle",
+          "description": "Report route incidents",
+          "component": "IncidentLogger"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Driver",
+          "icon": "circle",
+          "requirements": {
+            "shiftsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Road Apprentice",
+          "icon": "wheel-single",
+          "requirements": {
+            "shiftsCompleted": 20,
+            "onTimeRate": 0.8
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Navigator",
+          "icon": "wheel-triple",
+          "requirements": {
+            "shiftsCompleted": 150,
+            "zeroAccidents": true,
+            "passengerSafety": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Road",
+          "icon": "wheel-five",
+          "requirements": {
+            "shiftsCompleted": 800,
+            "councilApproval": true,
+            "communityRespect": true
+          },
+          "visual": {
+            "color": "#ca8a04",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["TRANS-01", "TRANS-06", "TRANS-07", "TRANS-08"]
     },
     {
-      "roleId": "logistics",
-      "roleName": "Logistics Coordinator",
-      "description": "Coordinate deliveries and shipments",
+      "roleId": "truck_driver",
+      "roleName": "Truck Driver / Heavy Vehicle Operator",
+      "description": "Transport goods and cargo across long distances",
+      "icon": "Truck",
+      "theme": {
+        "primary": "#eab308",
+        "secondary": "#ca8a04",
+        "accent": "#fde047"
+      },
+      "verificationRequired": [
+        {
+          "type": "commercial_license",
+          "description": "Heavy vehicle driver's license",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Safe cargo transport, no overloading, honest delivery",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "cargo_manifest",
+          "name": "Cargo Manifest",
+          "icon": "Package",
+          "description": "Document cargo loaded and delivered",
+          "component": "CargoManifest"
+        },
+        {
+          "id": "delivery_proof",
+          "name": "Delivery Proof",
+          "icon": "Camera",
+          "description": "Photo proof of delivery",
+          "component": "DeliveryProof"
+        },
+        {
+          "id": "route_tracker",
+          "name": "Route Tracker",
+          "icon": "MapPin",
+          "description": "GPS route tracking",
+          "component": "RouteTracker"
+        },
+        {
+          "id": "vehicle_inspection",
+          "name": "Vehicle Inspection",
+          "icon": "ClipboardCheck",
+          "description": "Pre-trip vehicle checks",
+          "component": "VehicleInspection"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Driver",
+          "icon": "circle",
+          "requirements": {
+            "deliveriesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Road Apprentice",
+          "icon": "wheel-single",
+          "requirements": {
+            "deliveriesCompleted": 10,
+            "zeroLostCargo": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Navigator",
+          "icon": "wheel-triple",
+          "requirements": {
+            "deliveriesCompleted": 80,
+            "onTimeDelivery": 0.85,
+            "zeroAccidents": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Road",
+          "icon": "wheel-five",
+          "requirements": {
+            "deliveriesCompleted": 500,
+            "councilApproval": true,
+            "longDistanceMaster": true
+          },
+          "visual": {
+            "color": "#ca8a04",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["TRANS-01", "TRANS-09", "TRANS-10", "TRANS-11"]
+    },
+    {
+      "roleId": "delivery_rider",
+      "roleName": "Delivery Rider / Dispatch Rider",
+      "description": "Deliver packages and goods on motorcycle or bicycle",
+      "icon": "Bike",
+      "theme": {
+        "primary": "#eab308",
+        "secondary": "#ca8a04",
+        "accent": "#fde047"
+      },
+      "verificationRequired": [
+        {
+          "type": "drivers_license",
+          "description": "Valid motorcycle/bicycle permit",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Safe delivery, handle packages with care, honest service",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "delivery_queue",
+          "name": "Delivery Queue",
+          "icon": "List",
+          "description": "View pending deliveries",
+          "component": "DeliveryQueue"
+        },
+        {
+          "id": "package_scanner",
+          "name": "Package Scanner",
+          "icon": "QrCode",
+          "description": "Scan and confirm packages",
+          "component": "PackageScanner"
+        },
+        {
+          "id": "delivery_proof",
+          "name": "Delivery Proof",
+          "icon": "Camera",
+          "description": "Photo confirmation of delivery",
+          "component": "DeliveryProof"
+        },
+        {
+          "id": "earnings_dashboard",
+          "name": "Earnings Dashboard",
+          "icon": "DollarSign",
+          "description": "Track daily earnings",
+          "component": "EarningsDashboard"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Driver",
+          "icon": "circle",
+          "requirements": {
+            "deliveriesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Road Apprentice",
+          "icon": "wheel-single",
+          "requirements": {
+            "deliveriesCompleted": 20,
+            "customerSatisfaction": 0.8
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Navigator",
+          "icon": "wheel-triple",
+          "requirements": {
+            "deliveriesCompleted": 200,
+            "onTimeRate": 0.9,
+            "zeroDamagedPackages": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Road",
+          "icon": "wheel-five",
+          "requirements": {
+            "deliveriesCompleted": 1500,
+            "councilApproval": true,
+            "speedAndSafety": true
+          },
+          "visual": {
+            "color": "#ca8a04",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["TRANS-01", "TRANS-12", "TRANS-13"]
+    },
+    {
+      "roleId": "logistics_coordinator",
+      "roleName": "Logistics Coordinator / Dispatcher",
+      "description": "Coordinate deliveries, shipments, and fleet operations",
       "icon": "Package",
       "theme": {
         "primary": "#eab308",
         "secondary": "#ca8a04",
         "accent": "#fde047"
       },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "Logistics company employment confirmation",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "delivery_tracker",
           "name": "Delivery Tracker",
           "icon": "Truck",
-          "description": "Track all deliveries",
+          "description": "Track all active deliveries",
           "component": "DeliveryTracker"
         },
         {
@@ -104,8 +507,460 @@
           "icon": "Truck",
           "description": "Manage vehicle fleet",
           "component": "FleetMgmt"
+        },
+        {
+          "id": "dispatch_console",
+          "name": "Dispatch Console",
+          "icon": "Radio",
+          "description": "Communicate with drivers",
+          "component": "DispatchConsole"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Driver",
+          "icon": "circle",
+          "requirements": {
+            "shipmentsCoordinated": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Road Apprentice",
+          "icon": "wheel-single",
+          "requirements": {
+            "shipmentsCoordinated": 50,
+            "onTimeRate": 0.8
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Navigator",
+          "icon": "wheel-triple",
+          "requirements": {
+            "shipmentsCoordinated": 500,
+            "efficiencyRate": 0.85,
+            "zeroMajorDelays": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Road",
+          "icon": "wheel-five",
+          "requirements": {
+            "shipmentsCoordinated": 3000,
+            "councilApproval": true,
+            "fleetExcellence": true
+          },
+          "visual": {
+            "color": "#ca8a04",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["TRANS-14", "TRANS-15"]
+    },
+    {
+      "roleId": "boat_captain",
+      "roleName": "Boat Captain / Ferry Operator",
+      "description": "Operate water transport for passengers and cargo",
+      "icon": "Ship",
+      "theme": {
+        "primary": "#eab308",
+        "secondary": "#ca8a04",
+        "accent": "#fde047"
+      },
+      "verificationRequired": [
+        {
+          "type": "maritime_license",
+          "description": "Valid boat operator's license",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Safe passage, life jackets for all, no overloading",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "passenger_manifest",
+          "name": "Passenger Manifest",
+          "icon": "Users",
+          "description": "Log passengers per trip",
+          "component": "PassengerManifest"
+        },
+        {
+          "id": "weather_monitor",
+          "name": "Weather Monitor",
+          "icon": "Cloud",
+          "description": "Check weather conditions",
+          "component": "WeatherMonitor"
+        },
+        {
+          "id": "safety_checklist",
+          "name": "Safety Checklist",
+          "icon": "ClipboardCheck",
+          "description": "Pre-departure safety checks",
+          "component": "SafetyChecklist"
+        },
+        {
+          "id": "route_logger",
+          "name": "Route Logger",
+          "icon": "MapPin",
+          "description": "Log routes and timing",
+          "component": "RouteLogger"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Driver",
+          "icon": "circle",
+          "requirements": {
+            "tripsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Road Apprentice",
+          "icon": "wheel-single",
+          "requirements": {
+            "tripsCompleted": 30,
+            "safetyCompliance": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Navigator",
+          "icon": "wheel-triple",
+          "requirements": {
+            "tripsCompleted": 200,
+            "zeroAccidents": true,
+            "lifeJacketsProvided": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Road",
+          "icon": "wheel-five",
+          "requirements": {
+            "tripsCompleted": 1000,
+            "councilApproval": true,
+            "waterSafety": true
+          },
+          "visual": {
+            "color": "#ca8a04",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["TRANS-16", "TRANS-17", "TRANS-18"]
+    },
+    {
+      "roleId": "airline_pilot",
+      "roleName": "Airline Pilot / Aviation Professional",
+      "description": "Fly aircraft for passenger or cargo transport",
+      "icon": "Plane",
+      "theme": {
+        "primary": "#eab308",
+        "secondary": "#ca8a04",
+        "accent": "#fde047"
+      },
+      "verificationRequired": [
+        {
+          "type": "pilot_license",
+          "description": "Valid commercial pilot license",
+          "required": true
+        },
+        {
+          "type": "employer_verification",
+          "description": "Airline employment confirmation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "flight_log",
+          "name": "Flight Log",
+          "icon": "FileText",
+          "description": "Log flight hours and routes",
+          "component": "FlightLog"
+        },
+        {
+          "id": "preflight_checklist",
+          "name": "Pre-Flight Checklist",
+          "icon": "ClipboardCheck",
+          "description": "Complete pre-flight checks",
+          "component": "PreFlightChecklist"
+        },
+        {
+          "id": "weather_briefing",
+          "name": "Weather Briefing",
+          "icon": "Cloud",
+          "description": "Review weather and flight conditions",
+          "component": "WeatherBriefing"
+        },
+        {
+          "id": "passenger_safety",
+          "name": "Passenger Safety",
+          "icon": "Shield",
+          "description": "Ensure passenger safety protocols",
+          "component": "PassengerSafety"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Driver",
+          "icon": "circle",
+          "requirements": {
+            "flightsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Road Apprentice",
+          "icon": "wheel-single",
+          "requirements": {
+            "flightsCompleted": 20,
+            "safetyCompliance": true
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Navigator",
+          "icon": "wheel-triple",
+          "requirements": {
+            "flightsCompleted": 150,
+            "zeroIncidents": true,
+            "onTimeRate": 0.9
+          },
+          "visual": {
+            "color": "#eab308",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of the Road",
+          "icon": "wheel-five",
+          "requirements": {
+            "flightsCompleted": 1000,
+            "councilApproval": true,
+            "aviationExcellence": true
+          },
+          "visual": {
+            "color": "#ca8a04",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["TRANS-01", "TRANS-19", "TRANS-20"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "transport_council",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Transport services with transparent fares",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Appreciation Cowries for excellent service",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Regular route subscriptions",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Iron", "Oracle", "Thunder"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "TRANS-01",
+      "ruleText": "Safety first always (no reckless driving)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-02",
+      "ruleText": "No sexual harassment of passengers",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-03",
+      "ruleText": "No kidnapping or route diversion",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-04",
+      "ruleText": "Fares must be agreed upfront (no price extortion)",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TRANS-05",
+      "ruleText": "Vehicle must be roadworthy (working brakes, lights)",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TRANS-06",
+      "ruleText": "No overloading passengers beyond capacity",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-07",
+      "ruleText": "Follow designated routes and schedules",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "TRANS-08",
+      "ruleText": "No drunk or drugged driving",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-09",
+      "ruleText": "Cargo must be secured properly",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TRANS-10",
+      "ruleText": "No transporting illegal goods or contraband",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-11",
+      "ruleText": "Rest breaks required for long-distance drivers",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TRANS-12",
+      "ruleText": "Packages must be handled with care",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "TRANS-13",
+      "ruleText": "No opening customer packages",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-14",
+      "ruleText": "Dispatch must communicate delays honestly",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "TRANS-15",
+      "ruleText": "Fleet maintenance records must be accurate",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "TRANS-16",
+      "ruleText": "Life jackets must be provided to all passengers",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-17",
+      "ruleText": "No sailing in dangerous weather conditions",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-18",
+      "ruleText": "Boat capacity limits must be respected",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-19",
+      "ruleText": "Pre-flight safety checks are mandatory",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "TRANS-20",
+      "ruleText": "Flight hours regulations must be followed",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Master of the Road, {tripsToday} trips completed today. {earningsToday} Cowries earned. {maintenanceDue} vehicle check due soon. Drive safe, arrive safe.",
+    "statusTiles": [
+      "trips_completed_today",
+      "earnings_today",
+      "vehicle_health",
+      "safety_rating"
+    ],
+    "quickActions": [
+      "start_trip",
+      "log_delivery",
+      "check_maintenance",
+      "view_earnings",
+      "report_incident"
+    ]
+  }
 }

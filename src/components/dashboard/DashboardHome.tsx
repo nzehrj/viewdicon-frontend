@@ -27,18 +27,24 @@ import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { logout as authLogout } from '@store/slices/authSlice';
 import { clearUser } from '@store/slices/userSlice';
 
-import healthcareConfig from '../../config/villages/healthcare.json';
-import farmingConfig from '../../config/villages/farming.json';
-import constructionConfig from '../../config/villages/construction.json';
+import agricultureConfig from '../../config/villages/agriculture.json';
 import businessConfig from '../../config/villages/business.json';
+import constructionConfig from '../../config/villages/construction.json';
+import craftsConfig from '../../config/villages/crafts.json';
 import creativeConfig from '../../config/villages/creative.json';
 import educationConfig from '../../config/villages/education.json';
-import governmentConfig from '../../config/villages/government.json';
-import transportConfig from '../../config/villages/transport.json';
-import technologyConfig from '../../config/villages/technology.json';
-import hospitalityConfig from '../../config/villages/hospitality.json';
 import financeConfig from '../../config/villages/finance.json';
-import environmentConfig from '../../config/villages/environment.json';
+import governanceConfig from '../../config/villages/governance.json';
+import governmentConfig from '../../config/villages/government.json';
+import healthcareConfig from '../../config/villages/healthcare.json';
+import gettingStartedConfig from '../../config/villages/getting_started.json';
+import hospitalityConfig from '../../config/villages/hospitality.json';
+import mediaConfig from '../../config/villages/media.json';
+import securityConfig from '../../config/villages/security.json';
+import spiritualConfig from '../../config/villages/spiritual.json';
+import technologyConfig from '../../config/villages/technology.json';
+import transportConfig from '../../config/villages/transport.json';
+
 
 import { FeedTimeline } from '@components/feed/FeedTimeline';
 import { ProfileCard } from './ProfileCard';
@@ -62,18 +68,23 @@ import type { EmergencyContact, ProtectionMode } from '@/types/security.types';
 import type { LocationTruth } from '@/types/location.types';
 
 const villageConfigs: Record<string, any> = {
-   healthcare: healthcareConfig,
-   farming: farmingConfig,
-   construction: constructionConfig,
-   business: businessConfig,
-   creative: creativeConfig,
-   education: educationConfig,
-   government: governmentConfig,
-   transport: transportConfig,
-   technology: technologyConfig,
-   hospitality: hospitalityConfig,
-   finance: financeConfig,
-   environment: environmentConfig,
+  agriculture: agricultureConfig,
+  business: businessConfig,
+  construction: constructionConfig,
+  crafts: craftsConfig,
+  creative: creativeConfig,
+  education: educationConfig,
+  finance: financeConfig,
+  governance: governanceConfig,
+  government: governmentConfig,
+  healthcare: healthcareConfig,
+  getting_started: gettingStartedConfig,
+  hospitality: hospitalityConfig,
+  media: mediaConfig,
+  security: securityConfig,
+  spiritual: spiritualConfig,
+  technology: technologyConfig,
+  transport: transportConfig,
 };
 
 interface Tool {
@@ -131,9 +142,19 @@ const DashboardHome: React.FC = () => {
   const messageRequests = useAppSelector((state) => state.user.messageRequests);
 
   const villageConfig = userVillage?.villageId ? villageConfigs[userVillage.villageId] : null;
-  const roleConfig = villageConfig?.roles?.find((r: any) => r.roleId === userRole?.roleId);
-  const tools: Tool[] = roleConfig?.tools || [];
-  const villageColor = villageConfig?.color || '#10b981';
+  
+  // ✅ FIXED: Support both "roles" and "guilds" structure (getting_started uses guilds)
+  const rolesOrGuilds = villageConfig?.roles || villageConfig?.guilds || [];
+  const roleConfig = rolesOrGuilds.find((r: any) => 
+    r.roleId === userRole?.roleId || r.guildId === userRole?.roleId
+  );
+  
+  // ✅ FIXED: Support both tools and extraTools
+  const tools: Tool[] = roleConfig?.tools || roleConfig?.extraTools || [];
+  
+  // ✅ FIXED: Support both color formats
+  const villageColor = villageConfig?.color || villageConfig?.visual?.colorPrimary || '#10b981';
+  
   const pendingRequestsCount = messageRequests.filter(r => r.status === 'pending').length;
 
   const resolveIcon = (iconName?: string) => {
@@ -144,6 +165,11 @@ const DashboardHome: React.FC = () => {
 
   const RoleIcon = resolveIcon(roleConfig?.icon);
   const displayName = user?.full_name || user?.name || phoneNumber || 'User';
+  
+  // ✅ FIXED: Get village name from multiple possible fields
+  const villageName = villageConfig?.villageName || villageConfig?.displayName || 'Dashboard';
+  const roleName = roleConfig?.roleName || roleConfig?.guildName || 'User';
+  
   const spiritAvatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=spirit';
   const fleshPhoto = 'https://api.dicebear.com/7.x/avataaars/svg?seed=real';
   const photoStatus: 'verified_real' | 'flagged_filtered' | 'rejected_ai' | 'not_uploaded' = 'verified_real';
@@ -252,10 +278,10 @@ const DashboardHome: React.FC = () => {
             </div>
             <div className="hidden sm:block">
               <h1 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                {roleConfig?.roleName || 'Dashboard'}
+                {roleName}
               </h1>
               <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                {villageConfig?.villageName}
+                {villageName}
               </p>
             </div>
           </div>
@@ -404,7 +430,7 @@ const DashboardHome: React.FC = () => {
                     {displayName}
                   </p>
                   <p className={`text-xs truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {roleConfig?.roleName}
+                    {roleName}
                   </p>
                 </div>
               </div>
@@ -515,11 +541,16 @@ const DashboardHome: React.FC = () => {
                   >
                     <div className="relative z-10">
                       <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-                        Welcome back, {displayName}! 👋
+                        Welcome Home, {displayName}!
                       </h2>
-                      <p className="text-white/90 text-sm sm:text-base">
-                        Ready to connect with the Motherland today
+                      <p className="text-white/90 text-sm sm:text-base mb-1">
+                        You are now part of the digital Motherland
                       </p>
+                      {user?.tribe && (
+                        <p className="text-white font-semibold text-base sm:text-lg">
+                          {user.tribe}
+                        </p>
+                      )}
                     </div>
                     <div className="absolute right-0 top-0 w-32 h-32 sm:w-48 sm:h-48 opacity-10">
                       <RoleIcon className="w-full h-full" />
@@ -760,25 +791,37 @@ const DashboardHome: React.FC = () => {
                 <motion.div key="tools" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
                   <div>
                     <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>My Tools</h2>
-                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tools.length} tools available for {roleConfig?.roleName}</p>
+                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tools.length} tools available for {roleName}</p>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {tools.map((tool) => {
-                      const ToolIcon = resolveIcon(tool.icon);
-                      return (
-                        <motion.button key={tool.toolId} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className={`p-6 rounded-xl text-left transition-all ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-lg'}`}>
-                          <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${villageColor}20`, color: villageColor }}>
-                            <ToolIcon className="w-7 h-7" />
-                          </div>
-                          <h4 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{tool.toolName}</h4>
-                          <p className={`text-sm line-clamp-2 mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tool.description}</p>
-                          {tool.category && (
-                            <span className="inline-block px-2 py-1 text-xs rounded-full" style={{ backgroundColor: `${villageColor}15`, color: villageColor }}>{tool.category}</span>
-                          )}
-                        </motion.button>
-                      );
-                    })}
-                  </div>
+                  
+                  {/* ✅ Show message if no tools available (for getting_started village) */}
+                  {tools.length === 0 ? (
+                    <div className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+                      <Grid className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                      <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>No Tools Available Yet</h3>
+                      <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Complete your profile verification to access your professional tools
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                      {tools.map((tool) => {
+                        const ToolIcon = resolveIcon(tool.icon);
+                        return (
+                          <motion.button key={tool.toolId} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className={`p-6 rounded-xl text-left transition-all ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-lg'}`}>
+                            <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${villageColor}20`, color: villageColor }}>
+                              <ToolIcon className="w-7 h-7" />
+                            </div>
+                            <h4 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{tool.toolName}</h4>
+                            <p className={`text-sm line-clamp-2 mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tool.description}</p>
+                            {tool.category && (
+                              <span className="inline-block px-2 py-1 text-xs rounded-full" style={{ backgroundColor: `${villageColor}15`, color: villageColor }}>{tool.category}</span>
+                            )}
+                          </motion.button>
+                        );
+                      })}
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

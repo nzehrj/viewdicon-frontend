@@ -1,0 +1,1021 @@
+{
+  "villageId": "crafts",
+  "villageName": "Crafts Village",
+  "description": "Craft workers - tailors, shoemakers, carpenters, jewelers, sculptors, and all who create beauty and wealth with their hands",
+  "color": "#f97316",
+  "icon": "Scissors",
+  "englishName": "The Village of Makers, Hands of Beauty, Hands of Wealth",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#f97316",
+    "colorSecondary": "#78350f",
+    "iconSet": ["scissors", "hammer", "palette", "ruler"],
+    "backgroundTexture": "loom_threads_molten_brass_carved_wood",
+    "symbols": ["loom_threads", "molten_brass", "carved_wood", "pattern_cloth"]
+  },
+  
+  "promiseTagline": "Your hand creates wealth. Your design is not free. Your time is not begging. Your style is culture. We make the world recognize it and pay for it honorably.",
+  
+  "defaultTools": [
+    "craft_session",
+    "measurement_capture",
+    "progress_tracker",
+    "style_portfolio",
+    "earnings_wallet",
+    "apprentice_registry"
+  ],
+  
+  "roles": [
+    {
+      "roleId": "tailor_fashion_designer",
+      "roleName": "Tailor / Fashion Designer",
+      "description": "Sew custom clothing, wedding dresses, aso-ebi, and traditional wear",
+      "icon": "Scissors",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your sewing setup and finished work examples",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Show measurement-to-finished garment examples",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "take_measurement",
+          "name": "Take Measurement",
+          "icon": "Ruler",
+          "description": "Capture client body measurements",
+          "component": "TakeMeasurement"
+        },
+        {
+          "id": "fabric_confirmation",
+          "name": "Fabric Confirmation",
+          "icon": "Image",
+          "description": "Upload fabric photo to confirm color and type",
+          "component": "FabricConfirmation"
+        },
+        {
+          "id": "work_in_progress",
+          "name": "Work In Progress",
+          "icon": "Eye",
+          "description": "Show cutting, halfway, and finished stages",
+          "component": "WorkInProgress"
+        },
+        {
+          "id": "fitting_scheduler",
+          "name": "Fitting Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule fittings and adjustments",
+          "component": "FittingScheduler"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 80,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OWO-01", "OWO-02", "OWO-03", "OWO-06", "OWO-09"]
+    },
+    {
+      "roleId": "shoemaker_cobbler",
+      "roleName": "Shoemaker / Cobbler",
+      "description": "Make and repair custom shoes, sandals, and leather footwear",
+      "icon": "ShoppingBag",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your shoemaking process and finished shoes",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "foot_measurement",
+          "name": "Foot Measurement",
+          "icon": "Footprints",
+          "description": "Capture foot size and shape",
+          "component": "FootMeasurement"
+        },
+        {
+          "id": "leather_selection",
+          "name": "Leather Selection",
+          "icon": "Palette",
+          "description": "Confirm leather type and color",
+          "component": "LeatherSelection"
+        },
+        {
+          "id": "sole_tracker",
+          "name": "Sole & Material Tracker",
+          "icon": "Package",
+          "description": "Track materials needed and used",
+          "component": "SoleTracker"
+        },
+        {
+          "id": "repair_log",
+          "name": "Repair Log",
+          "icon": "Wrench",
+          "description": "Document shoe repairs and refurbishments",
+          "component": "RepairLog"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OWO-01", "OWO-06", "OWO-10", "OWO-12"]
+    },
+    {
+      "roleId": "leather_worker",
+      "roleName": "Leather Worker / Bag Maker",
+      "description": "Create custom leather bags, belts, and accessories",
+      "icon": "Briefcase",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show leather working process and finished pieces",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "design_sketch",
+          "name": "Design Sketch",
+          "icon": "PenTool",
+          "description": "Share design concept with client",
+          "component": "DesignSketch"
+        },
+        {
+          "id": "leather_quality_proof",
+          "name": "Leather Quality Proof",
+          "icon": "Award",
+          "description": "Document genuine leather vs synthetic",
+          "component": "LeatherQualityProof"
+        },
+        {
+          "id": "custom_engraving",
+          "name": "Custom Engraving",
+          "icon": "Type",
+          "description": "Add personalized initials or patterns",
+          "component": "CustomEngraving"
+        },
+        {
+          "id": "restoration_service",
+          "name": "Restoration Service",
+          "icon": "RefreshCw",
+          "description": "Restore and refresh old leather items",
+          "component": "RestorationService"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OWO-01", "OWO-06", "OWO-12"]
+    },
+    {
+      "roleId": "furniture_carpenter",
+      "roleName": "Furniture Carpenter",
+      "description": "Build custom furniture, chairs, tables, beds, and cabinets",
+      "icon": "Armchair",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show carpentry work and finished furniture",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "space_measurement",
+          "name": "Space Measurement",
+          "icon": "Maximize",
+          "description": "Measure room dimensions for custom fit",
+          "component": "SpaceMeasurement"
+        },
+        {
+          "id": "wood_type_selector",
+          "name": "Wood Type Selector",
+          "icon": "Trees",
+          "description": "Confirm wood species and finish",
+          "component": "WoodTypeSelector"
+        },
+        {
+          "id": "build_progress",
+          "name": "Build Progress",
+          "icon": "Construction",
+          "description": "Show frame, assembly, and finish stages",
+          "component": "BuildProgress"
+        },
+        {
+          "id": "delivery_scheduler",
+          "name": "Delivery Scheduler",
+          "icon": "Truck",
+          "description": "Coordinate furniture delivery and assembly",
+          "component": "DeliveryScheduler"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["OWO-01", "OWO-02", "OWO-06"]
+    },
+    {
+      "roleId": "bead_jewelry_maker",
+      "roleName": "Bead & Jewelry Maker",
+      "description": "Create custom beaded jewelry, bridal accessories, and adornments",
+      "icon": "Gem",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show beadwork process and finished pieces",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "bead_palette",
+          "name": "Bead Palette",
+          "icon": "Palette",
+          "description": "Show color and pattern options",
+          "component": "BeadPalette"
+        },
+        {
+          "id": "sizing_guide",
+          "name": "Sizing Guide",
+          "icon": "Ruler",
+          "description": "Measure for necklaces, bracelets, waist beads",
+          "component": "SizingGuide"
+        },
+        {
+          "id": "ceremonial_orders",
+          "name": "Ceremonial Orders",
+          "icon": "Crown",
+          "description": "Track wedding, naming, coronation orders",
+          "component": "CeremonialOrders"
+        },
+        {
+          "id": "pattern_library",
+          "name": "Pattern Library",
+          "icon": "Grid",
+          "description": "Store and protect signature bead patterns",
+          "component": "PatternLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OWO-01", "OWO-03", "OWO-05", "OWO-08"]
+    },
+    {
+      "roleId": "wood_carver_sculptor",
+      "roleName": "Wood Carver / Sculptor",
+      "description": "Carve masks, stools, drums, statues, and cultural artifacts",
+      "icon": "Flame",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show carving process and completed sculptures",
+          "required": true
+        },
+        {
+          "type": "cultural_knowledge",
+          "description": "Explain cultural significance of your work",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "carving_progress",
+          "name": "Carving Progress",
+          "icon": "Activity",
+          "description": "Show rough, detailed, and finished stages",
+          "component": "CarvingProgress"
+        },
+        {
+          "id": "wood_selection",
+          "name": "Wood Selection",
+          "icon": "Tree",
+          "description": "Confirm wood type for spiritual/cultural use",
+          "component": "WoodSelection"
+        },
+        {
+          "id": "sacred_registry",
+          "name": "Sacred Item Registry",
+          "icon": "ShieldCheck",
+          "description": "Mark culturally significant pieces",
+          "component": "SacredRegistry"
+        },
+        {
+          "id": "heritage_tag",
+          "name": "Heritage Tag",
+          "icon": "Award",
+          "description": "Mark as traditional cultural artwork",
+          "component": "HeritageTag"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OWO-05", "OWO-08", "OWO-13", "OWO-15"]
+    },
+    {
+      "roleId": "traditional_regalia_maker",
+      "roleName": "Traditional Regalia Maker",
+      "description": "Create crowns, staffs, ceremonial beads, and chieftaincy items",
+      "icon": "Crown",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition of cultural knowledge",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show regalia creation and explain cultural protocols",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Respect sacred symbols and traditions",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "ceremonial_calendar",
+          "name": "Ceremonial Calendar",
+          "icon": "Calendar",
+          "description": "Track coronations, burials, weddings deadlines",
+          "component": "CeremonialCalendar"
+        },
+        {
+          "id": "sacred_pattern_vault",
+          "name": "Sacred Pattern Vault",
+          "icon": "Lock",
+          "description": "Protected storage of traditional designs",
+          "component": "SacredPatternVault"
+        },
+        {
+          "id": "authenticity_certification",
+          "name": "Authenticity Certification",
+          "icon": "BadgeCheck",
+          "description": "Verify genuine traditional craftsmanship",
+          "component": "AuthenticityCertification"
+        },
+        {
+          "id": "council_approval",
+          "name": "Council Approval Request",
+          "icon": "Users",
+          "description": "Request blessing for sensitive cultural items",
+          "component": "CouncilApproval"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 5,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["OWO-03", "OWO-05", "OWO-08", "OWO-13", "OWO-15"]
+    },
+    {
+      "roleId": "upholsterer",
+      "roleName": "Upholsterer / Cushion Specialist",
+      "description": "Recover furniture, create custom cushions and soft furnishings",
+      "icon": "Sofa",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show upholstery work and finished pieces",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "fabric_swatches",
+          "name": "Fabric Swatches",
+          "icon": "Palette",
+          "description": "Share fabric options with client",
+          "component": "FabricSwatches"
+        },
+        {
+          "id": "foam_density_guide",
+          "name": "Foam Density Guide",
+          "icon": "Info",
+          "description": "Explain firmness and comfort options",
+          "component": "FoamDensityGuide"
+        },
+        {
+          "id": "restoration_tracker",
+          "name": "Restoration Tracker",
+          "icon": "RotateCcw",
+          "description": "Track furniture refurbishment progress",
+          "component": "RestorationTracker"
+        },
+        {
+          "id": "pickup_delivery",
+          "name": "Pickup & Delivery",
+          "icon": "Truck",
+          "description": "Coordinate furniture collection and return",
+          "component": "PickupDelivery"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Hand",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hand of Pattern",
+          "icon": "stitch-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fit",
+          "icon": "stitch-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hand of Royal Cloth",
+          "icon": "stitch-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["OWO-01", "OWO-06", "OWO-10"]
+    }
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Custom craft commissions with deposit and escrow",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Blessing Cowries for excellent craftsmanship",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Iron", "Creator", "Thunder"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "OWO-01",
+      "ruleText": "Deposit must serve the work, not disappear",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OWO-02",
+      "ruleText": "You must show your hand before you ask for balance",
+      "severity": "high",
+      "action": "delay_payout"
+    },
+    {
+      "ruleId": "OWO-03",
+      "ruleText": "Bride must not be disgraced (ceremonial work is sacred)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OWO-04",
+      "ruleText": "No insult war with clients",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OWO-05",
+      "ruleText": "Do not steal design from others",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OWO-06",
+      "ruleText": "You must say true delivery date",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OWO-07",
+      "ruleText": "Buyer must respect time and craft (no constant changes)",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "OWO-08",
+      "ruleText": "Sacred regalia is not for play",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OWO-09",
+      "ruleText": "No expose body without consent (no leaked fitting photos)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OWO-10",
+      "ruleText": "You must correct your mistake with grace",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "OWO-11",
+      "ruleText": "No 'pay or I destroy your outfit' blackmail",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "OWO-12",
+      "ruleText": "Do not lie about material quality",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OWO-13",
+      "ruleText": "Do not claim cultural origin you don't have",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OWO-14",
+      "ruleText": "Answer council call",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "OWO-15",
+      "ruleText": "Honor the event (ceremonial work is ritual duty)",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Hands of Pattern, {ordersThisWeek} outfits must be ready before Saturday naming. {fittingsWaiting} are waiting for fitting. {cowriesInEscrow} Cowrie Coins held for you. Guard your timing. Honor brings more.",
+    "statusTiles": [
+      "orders_due_this_week",
+      "measurements_collected",
+      "material_ready",
+      "cowries_in_escrow"
+    ],
+    "quickActions": [
+      "take_customer_measurement",
+      "upload_fabric_confirmation",
+      "show_work_in_progress",
+      "mark_ready_for_fitting",
+      "request_cowrie_release"
+    ]
+  }
+}

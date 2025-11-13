@@ -1,0 +1,939 @@
+{
+  "villageId": "spiritual",
+  "villageName": "Spiritual Village",
+  "description": "Spiritual workers - faith leaders, counselors, crisis listeners, safe shelter providers, and all who guide hearts through fear, grief, crisis, and questions of meaning",
+  "color": "#1e3a8a",
+  "icon": "Heart",
+  "englishName": "The Village of Guidance, Spirit, and Safe Heart",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#1e3a8a",
+    "colorSecondary": "#1e40af",
+    "iconSet": ["heart", "moon", "shield-heart", "droplet"],
+    "backgroundTexture": "midnight_blue_white_glow_moon_calabash",
+    "symbols": ["calabash_water", "crescent_moon", "palm_leaves", "white_cloth"]
+  },
+  
+  "promiseTagline": "Your heart will not walk alone in the night.",
+  
+  "defaultTools": [
+    "sanctuary_channel",
+    "safe_house_network",
+    "crisis_responder",
+    "warrior_escort_caller",
+    "healing_circle",
+    "rest_mode"
+  ],
+  
+  "roles": [
+    {
+      "roleId": "crisis_listener",
+      "roleName": "Crisis Listener",
+      "description": "Listen to panic, heartbreak, self-harm thoughts, and urgent emotional pain",
+      "icon": "Ear",
+      "theme": {
+        "primary": "#1e3a8a",
+        "secondary": "#1e40af",
+        "accent": "#3b82f6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_oath",
+          "description": "Promise to listen without judgment or exploitation",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community recommendation as safe listener",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "open_safe_ear",
+          "name": "Open Safe Ear",
+          "icon": "Ear",
+          "description": "Start confidential listening session",
+          "component": "OpenSafeEar"
+        },
+        {
+          "id": "panic_response",
+          "name": "Panic Response",
+          "icon": "AlertCircle",
+          "description": "Respond to immediate emotional crisis",
+          "component": "PanicResponse"
+        },
+        {
+          "id": "mark_safe",
+          "name": "Mark Someone Safe",
+          "icon": "ShieldCheck",
+          "description": "Confirm person is out of danger",
+          "component": "MarkSafe"
+        },
+        {
+          "id": "request_warrior_escort",
+          "name": "Request Warrior Escort",
+          "icon": "Shield",
+          "description": "Call protection for physical danger",
+          "component": "RequestWarriorEscort"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "sessionsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Ear",
+          "icon": "lamp-single",
+          "requirements": {
+            "sessionsCompleted": 1,
+            "zeroAbuseReports": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Safety",
+          "icon": "lamp-triple",
+          "requirements": {
+            "sessionsCompleted": 10,
+            "successfulInterventions": 3,
+            "zeroExploitation": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Bearer of White Cloth",
+          "icon": "lamp-five",
+          "requirements": {
+            "sessionsCompleted": 50,
+            "councilApproval": true,
+            "zeroGrooming": true
+          },
+          "visual": {
+            "color": "#1e40af",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["AMO-01", "AMO-02", "AMO-03", "AMO-06", "AMO-14"]
+    },
+    {
+      "roleId": "safe_auntie_uncle",
+      "roleName": "Safe Auntie / Safe Uncle",
+      "description": "Provide emergency shelter and refuge for those fleeing danger",
+      "icon": "Home",
+      "theme": {
+        "primary": "#1e3a8a",
+        "secondary": "#1e40af",
+        "accent": "#3b82f6"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Strong community recommendation for shelter provision",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Provide safety without trapping or exploiting",
+          "required": true
+        },
+        {
+          "type": "home_verification",
+          "description": "Confirm safe shelter environment",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "shelter_availability",
+          "name": "Shelter Availability",
+          "icon": "Bed",
+          "description": "Mark if you can shelter someone tonight",
+          "component": "ShelterAvailability"
+        },
+        {
+          "id": "emergency_pickup",
+          "name": "Emergency Pickup",
+          "icon": "MapPin",
+          "description": "Accept location for person needing refuge",
+          "component": "EmergencyPickup"
+        },
+        {
+          "id": "safety_check_in",
+          "name": "Safety Check-In",
+          "icon": "CheckCircle",
+          "description": "Log that person is safe with you",
+          "component": "SafetyCheckIn"
+        },
+        {
+          "id": "request_cowrie_transport",
+          "name": "Request Cowrie Transport",
+          "icon": "DollarSign",
+          "description": "Request emergency funds for survivor travel",
+          "component": "RequestCowrieTransport"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "shelteredPersons": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Ear",
+          "icon": "lamp-single",
+          "requirements": {
+            "shelteredPersons": 1,
+            "zeroTrappingReports": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Safety",
+          "icon": "lamp-triple",
+          "requirements": {
+            "shelteredPersons": 5,
+            "allSafeReleases": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Bearer of White Cloth",
+          "icon": "lamp-five",
+          "requirements": {
+            "shelteredPersons": 20,
+            "councilApproval": true,
+            "communityTrust": true
+          },
+          "visual": {
+            "color": "#1e40af",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["AMO-02", "AMO-03", "AMO-06", "AMO-10"]
+    },
+    {
+      "roleId": "marriage_counselor",
+      "roleName": "Marriage Counselor / Union Restorer",
+      "description": "Mediate marriage conflicts, restore relationships, guide couples",
+      "icon": "Heart",
+      "theme": {
+        "primary": "#1e3a8a",
+        "secondary": "#1e40af",
+        "accent": "#3b82f6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_oath",
+          "description": "Promise to restore, not destroy unions",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition as fair mediator",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "couple_session",
+          "name": "Couple Session",
+          "icon": "Users",
+          "description": "Mediate between husband and wife",
+          "component": "CoupleSession"
+        },
+        {
+          "id": "peace_agreement",
+          "name": "Peace Agreement",
+          "icon": "FileCheck",
+          "description": "Draft resolution both parties accept",
+          "component": "PeaceAgreement"
+        },
+        {
+          "id": "escalate_to_elders",
+          "name": "Escalate to Elders",
+          "icon": "Users",
+          "description": "Request elder council involvement",
+          "component": "EscalateToElders"
+        },
+        {
+          "id": "domestic_violence_alert",
+          "name": "Domestic Violence Alert",
+          "icon": "AlertTriangle",
+          "description": "Flag physical danger immediately",
+          "component": "DomesticViolenceAlert"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "couplesHelped": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Ear",
+          "icon": "lamp-single",
+          "requirements": {
+            "couplesHelped": 1,
+            "zeroAbuseReports": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Safety",
+          "icon": "lamp-triple",
+          "requirements": {
+            "couplesHelped": 8,
+            "successfulRestorations": 5,
+            "zeroHumiliation": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Bearer of White Cloth",
+          "icon": "lamp-five",
+          "requirements": {
+            "couplesHelped": 40,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e40af",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["AMO-01", "AMO-02", "AMO-03", "AMO-05", "AMO-09"]
+    },
+    {
+      "roleId": "faith_guide",
+      "roleName": "Faith Guide (Imam/Pastor/Priestess)",
+      "description": "Provide spiritual guidance, prayer, faith-based counseling",
+      "icon": "Book",
+      "theme": {
+        "primary": "#1e3a8a",
+        "secondary": "#1e40af",
+        "accent": "#3b82f6"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Religious community recognition",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Serve without exploitation or harm",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "confession_session",
+          "name": "Confession Session",
+          "icon": "Lock",
+          "description": "Private spiritual guidance and prayer",
+          "component": "ConfessionSession"
+        },
+        {
+          "id": "blessing_request",
+          "name": "Blessing Request",
+          "icon": "Sparkles",
+          "description": "Respond to prayer and blessing needs",
+          "component": "BlessingRequest"
+        },
+        {
+          "id": "spiritual_boundary_check",
+          "name": "Spiritual Boundary Check",
+          "icon": "ShieldCheck",
+          "description": "Self-assess your guidance stays ethical",
+          "component": "SpiritualBoundaryCheck"
+        },
+        {
+          "id": "night_vigil_stream",
+          "name": "Night Vigil Stream",
+          "icon": "Moon",
+          "description": "Lead live prayer or worship on Jollof TV",
+          "component": "NightVigilStream"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "sessionsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Ear",
+          "icon": "lamp-single",
+          "requirements": {
+            "sessionsCompleted": 2,
+            "zeroMoneyDemands": true,
+            "zeroSexualApproaches": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Safety",
+          "icon": "lamp-triple",
+          "requirements": {
+            "sessionsCompleted": 15,
+            "zeroManipulation": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Bearer of White Cloth",
+          "icon": "lamp-five",
+          "requirements": {
+            "sessionsCompleted": 60,
+            "councilApproval": true,
+            "zeroGrooming": true
+          },
+          "visual": {
+            "color": "#1e40af",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["AMO-02", "AMO-03", "AMO-04", "AMO-05", "AMO-07", "AMO-13"]
+    },
+    {
+      "roleId": "grief_guide",
+      "roleName": "Grief Guide / Burial Companion",
+      "description": "Walk families through death, burial, mourning, and inheritance",
+      "icon": "Flower",
+      "theme": {
+        "primary": "#1e3a8a",
+        "secondary": "#1e40af",
+        "accent": "#3b82f6"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition as compassionate death guide",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Honor the dead, protect the living",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "mourning_session",
+          "name": "Mourning Session",
+          "icon": "Heart",
+          "description": "Support family through fresh grief",
+          "component": "MourningSession"
+        },
+        {
+          "id": "burial_guidance",
+          "name": "Burial Guidance",
+          "icon": "MapPin",
+          "description": "Guide burial arrangements and traditions",
+          "component": "BurialGuidance"
+        },
+        {
+          "id": "inheritance_mediation",
+          "name": "Inheritance Mediation",
+          "icon": "Scale",
+          "description": "Mediate family property disputes",
+          "component": "InheritanceMediation"
+        },
+        {
+          "id": "memorial_coordinator",
+          "name": "Memorial Coordinator",
+          "icon": "Calendar",
+          "description": "Help organize remembrance ceremonies",
+          "component": "MemorialCoordinator"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "familiesHelped": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Ear",
+          "icon": "lamp-single",
+          "requirements": {
+            "familiesHelped": 1,
+            "zeroExploitation": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Safety",
+          "icon": "lamp-triple",
+          "requirements": {
+            "familiesHelped": 8,
+            "peacefulResolutions": 5
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Bearer of White Cloth",
+          "icon": "lamp-five",
+          "requirements": {
+            "familiesHelped": 30,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e40af",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["AMO-01", "AMO-04", "AMO-08", "AMO-14", "AMO-15"]
+    },
+    {
+      "roleId": "youth_mentor",
+      "roleName": "Youth Mentor / Big Sister/Brother",
+      "description": "Guide young people through pressure, shame, and life transitions",
+      "icon": "Users",
+      "theme": {
+        "primary": "#1e3a8a",
+        "secondary": "#1e40af",
+        "accent": "#3b82f6"
+      },
+      "verificationRequired": [
+        {
+          "type": "council_oath",
+          "description": "Sacred oath: Protect, don't exploit youth",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community trust as safe youth mentor",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "youth_guidance",
+          "name": "Youth Guidance",
+          "icon": "MessageCircle",
+          "description": "Private mentorship for teens and young adults",
+          "component": "YouthGuidance"
+        },
+        {
+          "id": "peer_pressure_support",
+          "name": "Peer Pressure Support",
+          "icon": "Shield",
+          "description": "Help youth resist gangs, drugs, exploitation",
+          "component": "PeerPressureSupport"
+        },
+        {
+          "id": "parent_mediation",
+          "name": "Parent Mediation",
+          "icon": "Users",
+          "description": "Bridge communication between youth and parents",
+          "component": "ParentMediation"
+        },
+        {
+          "id": "safe_space_circle",
+          "name": "Safe Space Circle",
+          "icon": "Circle",
+          "description": "Group support for youth facing similar struggles",
+          "component": "SafeSpaceCircle"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "youthHelped": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Ear",
+          "icon": "lamp-single",
+          "requirements": {
+            "youthHelped": 2,
+            "zeroGrooming": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Safety",
+          "icon": "lamp-triple",
+          "requirements": {
+            "youthHelped": 10,
+            "zeroExploitation": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Bearer of White Cloth",
+          "icon": "lamp-five",
+          "requirements": {
+            "youthHelped": 40,
+            "councilApproval": true,
+            "zeroBoundaryViolations": true
+          },
+          "visual": {
+            "color": "#1e40af",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["AMO-01", "AMO-02", "AMO-03", "AMO-05", "AMO-08"]
+    },
+    {
+      "roleId": "addiction_recovery_companion",
+      "roleName": "Addiction / Recovery Companion",
+      "description": "Walk with those recovering from alcohol, substances, gambling, debt",
+      "icon": "HeartHandshake",
+      "theme": {
+        "primary": "#1e3a8a",
+        "secondary": "#1e40af",
+        "accent": "#3b82f6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_oath",
+          "description": "Oath: Accompany without judgment or exploitation",
+          "required": true
+        },
+        {
+          "type": "recovery_experience",
+          "description": "Personal recovery story or training credentials",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "daily_check_in",
+          "name": "Daily Check-In",
+          "icon": "CheckCircle",
+          "description": "Support daily sobriety and recovery",
+          "component": "DailyCheckIn"
+        },
+        {
+          "id": "trigger_alert",
+          "name": "Trigger Alert",
+          "icon": "AlertTriangle",
+          "description": "Respond when person feels tempted to relapse",
+          "component": "TriggerAlert"
+        },
+        {
+          "id": "recovery_milestones",
+          "name": "Recovery Milestones",
+          "icon": "Award",
+          "description": "Celebrate sobriety achievements",
+          "component": "RecoveryMilestones"
+        },
+        {
+          "id": "connect_to_healer",
+          "name": "Connect to Healer",
+          "icon": "Heart",
+          "description": "Link to medical support when needed",
+          "component": "ConnectToHealer"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "companionsSupported": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Trusted Ear",
+          "icon": "lamp-single",
+          "requirements": {
+            "companionsSupported": 1,
+            "zeroJudgment": true
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Safety",
+          "icon": "lamp-triple",
+          "requirements": {
+            "companionsSupported": 8,
+            "milestonesReached": 5
+          },
+          "visual": {
+            "color": "#1e3a8a",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Bearer of White Cloth",
+          "icon": "lamp-five",
+          "requirements": {
+            "companionsSupported": 30,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1e40af",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["AMO-01", "AMO-04", "AMO-05", "AMO-07", "AMO-15"]
+    }
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "multi_faith_council",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "tipping",
+      "description": "Blessing Cowries gifted after sessions (never demanded)",
+      "enabled": true
+    },
+    {
+      "type": "community_funding",
+      "description": "Emergency pool for survivor transport and shelter",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Mother", "Thunder", "Oracle"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "AMO-01",
+      "ruleText": "You do not buy someone's pain. You do not sell someone's shame.",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-02",
+      "ruleText": "No touching without full clear consent, and minor = never",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-03",
+      "ruleText": "No sex, nude, or romance in exchange for help, deliverance, or covering",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-04",
+      "ruleText": "Money is blessing, not ransom (no advance payment demands)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-05",
+      "ruleText": "Do not use fear to control",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-06",
+      "ruleText": "If someone says they are in danger, you must act",
+      "severity": "critical",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AMO-07",
+      "ruleText": "No forced spiritual practice that endangers health",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-08",
+      "ruleText": "Guard the dignity of widows, orphans, daughters, sons, everyone",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-09",
+      "ruleText": "No public humiliation in the name of correction",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AMO-10",
+      "ruleText": "If you offer shelter, you must not trap",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-11",
+      "ruleText": "You cannot accuse publicly without evidence",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AMO-12",
+      "ruleText": "You cannot expose confession details to gain followers",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-13",
+      "ruleText": "No political agenda disguised as prophecy without stating it's opinion",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AMO-14",
+      "ruleText": "Your mouth must not incite suicide, murder, or revenge violence",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AMO-15",
+      "ruleText": "Every spirit call must end in protection, not in fear",
+      "severity": "high",
+      "action": "amber_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Child of Light, {emergencyRequests} daughters/sons are seeking safety. {immediateRequests} person is afraid they will not wake up tomorrow. Your voice is needed — drink water first.",
+    "statusTiles": [
+      "emergency_shelter_requests",
+      "live_panic_sessions",
+      "repeat_seekers_check_ins",
+      "rest_status"
+    ],
+    "quickActions": [
+      "open_safe_ear",
+      "mark_someone_safe",
+      "request_warrior_escort",
+      "send_blessing_voice_note",
+      "enter_rest_mode"
+    ]
+  }
+}

@@ -1,111 +1,1153 @@
 {
   "villageId": "creative",
   "villageName": "Creative Village",
-  "description": "Creative people - artists, musicians, designers, and content creators",
+  "description": "Creative people - artists, musicians, designers, content creators, filmmakers, podcasters, dancers, comedians, and all whose weapon is voice, face, rhythm, story, and presence",
   "color": "#ec4899",
   "icon": "Palette",
+  "englishName": "The Village of Griots",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#ec4899",
+    "colorSecondary": "#f59e0b",
+    "iconSet": ["palette", "music", "video", "mic"],
+    "backgroundTexture": "talking_drum_kora_strings",
+    "symbols": ["talking_drum", "kora", "flame_ring", "mask"]
+  },
+  
+  "promiseTagline": "Your voice will not be stolen. Your face will not be silenced. Your work will feed you and your people.",
+  
+  "defaultTools": [
+    "sound_vault",
+    "story_channel",
+    "live_room",
+    "cowrie_stage",
+    "collab_room",
+    "cultural_archive"
+  ],
+  
   "roles": [
     {
-      "roleId": "musician",
-      "roleName": "Musician",
-      "description": "Create and perform music",
-      "icon": "Music",
+      "roleId": "singer_vocalist",
+      "roleName": "Singer / Vocalist",
+      "description": "Professional singer and vocal performer",
+      "icon": "Mic2",
       "theme": {
         "primary": "#ec4899",
         "secondary": "#db2777",
         "accent": "#f472b6"
       },
-      "tools": [
+      "verificationRequired": [
         {
-          "id": "dga_upload",
-          "name": "DGA Upload",
-          "icon": "Upload",
-          "description": "Upload music to Digital Griot Archive",
-          "component": "DGAUpload"
+          "type": "video_demo",
+          "description": "Upload a video of you singing live",
+          "required": true
         },
         {
-          "id": "royalty_tracker",
-          "name": "Royalty Tracker",
-          "icon": "DollarSign",
-          "description": "Track KSE earnings",
-          "component": "RoyaltyTracker"
-        },
-        {
-          "id": "collab_studio",
-          "name": "Collab Studio",
-          "icon": "Headphones",
-          "description": "Collaborate with other artists",
-          "component": "CollabStudio"
+          "type": "experience_proof",
+          "description": "Link to past performances or recordings",
+          "required": false
         }
-      ]
-    },
-    {
-      "roleId": "visual_artist",
-      "roleName": "Visual Artist",
-      "description": "Create visual art and designs",
-      "icon": "Palette",
-      "theme": {
-        "primary": "#ec4899",
-        "secondary": "#db2777",
-        "accent": "#f472b6"
-      },
+      ],
       "tools": [
         {
-          "id": "portfolio",
-          "name": "Portfolio",
-          "icon": "Image",
-          "description": "Showcase your artwork",
-          "component": "Portfolio"
+          "id": "sound_vault",
+          "name": "Sound Vault",
+          "icon": "Music",
+          "description": "Upload and protect your songs with blockchain",
+          "component": "SoundVault"
         },
         {
-          "id": "commission_mgmt",
-          "name": "Commissions",
-          "icon": "Briefcase",
-          "description": "Manage art commissions",
-          "component": "CommissionMgmt"
-        },
-        {
-          "id": "art_marketplace",
-          "name": "Art Marketplace",
-          "icon": "ShoppingBag",
-          "description": "Sell artwork online",
-          "component": "ArtMarketplace"
-        }
-      ]
-    },
-    {
-      "roleId": "writer",
-      "roleName": "Writer/Author",
-      "description": "Write books, articles, and content",
-      "icon": "PenTool",
-      "theme": {
-        "primary": "#ec4899",
-        "secondary": "#db2777",
-        "accent": "#f472b6"
-      },
-      "tools": [
-        {
-          "id": "writing_studio",
-          "name": "Writing Studio",
-          "icon": "FileText",
-          "description": "Distraction-free writing workspace",
-          "component": "WritingStudio"
-        },
-        {
-          "id": "publishing",
-          "name": "Publishing",
-          "icon": "Book",
-          "description": "Publish your works",
-          "component": "Publishing"
-        },
-        {
-          "id": "reader_connect",
-          "name": "Reader Connect",
+          "id": "fan_listening_session",
+          "name": "Fan Listening Session",
           "icon": "Users",
-          "description": "Engage with your readers",
-          "component": "ReaderConnect"
+          "description": "Private premiere for your fans",
+          "component": "FanListeningSession"
+        },
+        {
+          "id": "booking_requests",
+          "name": "Booking Requests",
+          "icon": "Calendar",
+          "description": "Manage performance booking offers",
+          "component": "BookingRequests"
+        },
+        {
+          "id": "cowrie_stage",
+          "name": "Cowrie Stage",
+          "icon": "Coins",
+          "description": "Go live and receive tips from fans",
+          "component": "CowrieStage"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["GR-01", "GR-08", "GR-19"]
+    },
+    {
+      "roleId": "rapper_spoken_word",
+      "roleName": "Rapper / Spoken Word Artist",
+      "description": "Hip-hop artist and spoken word performer",
+      "icon": "MicVocal",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Upload a video of your rap or spoken word performance",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "sound_vault",
+          "name": "Sound Vault",
+          "icon": "Music",
+          "description": "Upload and protect your tracks",
+          "component": "SoundVault"
+        },
+        {
+          "id": "lyric_chain_lock",
+          "name": "Lyric Chain Lock",
+          "icon": "Lock",
+          "description": "Register your lyrics on blockchain",
+          "component": "LyricChainLock"
+        },
+        {
+          "id": "battle_challenge",
+          "name": "Battle Challenge",
+          "icon": "Swords",
+          "description": "Challenge other rappers to battle",
+          "component": "BattleChallenge"
+        },
+        {
+          "id": "cowrie_stage",
+          "name": "Cowrie Stage",
+          "icon": "Coins",
+          "description": "Freestyle live and earn tips",
+          "component": "CowrieStage"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["GR-01", "GR-06", "GR-08", "GR-20"]
+    },
+    {
+      "roleId": "producer_beatmaker",
+      "roleName": "Producer / Beatmaker",
+      "description": "Music producer and beat creator",
+      "icon": "AudioWaveform",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Upload sample beats or production portfolio",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "sound_vault",
+          "name": "Sound Vault",
+          "icon": "Music",
+          "description": "Store and license your beats",
+          "component": "SoundVault"
+        },
+        {
+          "id": "beat_marketplace",
+          "name": "Beat Marketplace",
+          "icon": "ShoppingCart",
+          "description": "Sell or lease your beats",
+          "component": "BeatMarketplace"
+        },
+        {
+          "id": "smart_split_contract",
+          "name": "Smart Split Contract",
+          "icon": "FileSignature",
+          "description": "Auto-split royalties with collaborators",
+          "component": "SmartSplitContract"
+        },
+        {
+          "id": "collab_room",
+          "name": "Collab Room",
+          "icon": "Users",
+          "description": "Work with artists on tracks",
+          "component": "CollabRoom"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 3,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 25,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 100,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["GR-01", "GR-08", "GR-19"]
+    },
+    {
+      "roleId": "comedian_skit_maker",
+      "roleName": "Comedian / Skit Maker",
+      "description": "Comedian and short-form content creator",
+      "icon": "Laugh",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Upload a sample of your comedy content",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "skit_recorder",
+          "name": "Skit Recorder",
+          "icon": "Video",
+          "description": "Record skits with effects and captions",
+          "component": "SkitRecorder"
+        },
+        {
+          "id": "discover_push",
+          "name": "Push to Discover",
+          "icon": "TrendingUp",
+          "description": "Publish your content to the feed",
+          "component": "DiscoverPush"
+        },
+        {
+          "id": "challenge_mode",
+          "name": "Challenge Mode",
+          "icon": "Zap",
+          "description": "Create or respond to comedy challenges",
+          "component": "ChallengeMode"
+        },
+        {
+          "id": "brand_deals",
+          "name": "Brand Deals",
+          "icon": "Briefcase",
+          "description": "Manage sponsored content offers",
+          "component": "BrandDeals"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["GR-02", "GR-06", "GR-09", "GR-18"]
+    },
+    {
+      "roleId": "podcaster",
+      "roleName": "Podcaster",
+      "description": "Podcast host and audio content creator",
+      "icon": "Podcast",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Link to existing podcast episodes or demo episode",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "live_room_callin",
+          "name": "Live Room with Call-ins",
+          "icon": "PhoneCall",
+          "description": "Host live podcast with audience participation",
+          "component": "LiveRoomCallIn"
+        },
+        {
+          "id": "episode_scheduler",
+          "name": "Episode Scheduler",
+          "icon": "CalendarClock",
+          "description": "Schedule and publish episodes",
+          "component": "EpisodeScheduler"
+        },
+        {
+          "id": "guest_invites",
+          "name": "Guest Invites",
+          "icon": "UserPlus",
+          "description": "Invite guests to your podcast",
+          "component": "GuestInvites"
+        },
+        {
+          "id": "soro_soke_pipeline",
+          "name": "Sòrò Sókè Pipeline",
+          "icon": "Megaphone",
+          "description": "Enable paid audience messages",
+          "component": "SoroSokePipeline"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 75,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["GR-03", "GR-06", "GR-07", "GR-12", "GR-14"]
+    },
+    {
+      "roleId": "filmmaker_director",
+      "roleName": "Filmmaker / Director",
+      "description": "Film director and video content creator",
+      "icon": "Clapperboard",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Upload a short film, trailer, or portfolio reel",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "story_channel",
+          "name": "Story Channel",
+          "icon": "Tv",
+          "description": "Create episodic content and series",
+          "component": "StoryChannel"
+        },
+        {
+          "id": "premiere_window",
+          "name": "Premiere Window",
+          "icon": "PlaySquare",
+          "description": "Host exclusive film premieres",
+          "component": "PremiereWindow"
+        },
+        {
+          "id": "festival_submission",
+          "name": "Festival Submission",
+          "icon": "Award",
+          "description": "Submit to platform film festivals",
+          "component": "FestivalSubmission"
+        },
+        {
+          "id": "collab_room",
+          "name": "Collab Room",
+          "icon": "Users",
+          "description": "Work with actors, editors, and crew",
+          "component": "CollabRoom"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["GR-01", "GR-04", "GR-08", "GR-18"]
+    },
+    {
+      "roleId": "dancer_choreographer",
+      "roleName": "Dancer / Choreographer",
+      "description": "Professional dancer and choreography creator",
+      "icon": "PersonStanding",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Upload a video of your dance or choreography",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "dance_challenge",
+          "name": "Dance Challenge",
+          "icon": "Music",
+          "description": "Start dance challenges for the community",
+          "component": "DanceChallenge"
+        },
+        {
+          "id": "slow_motion_tutorial",
+          "name": "Slow Motion Tutorial",
+          "icon": "Rewind",
+          "description": "Teach moves in slow motion",
+          "component": "SlowMotionTutorial"
+        },
+        {
+          "id": "duet_feature",
+          "name": "Duet Feature",
+          "icon": "Split",
+          "description": "Let fans dance alongside you",
+          "component": "DuetFeature"
+        },
+        {
+          "id": "choreo_licensing",
+          "name": "Choreography Licensing",
+          "icon": "FileContract",
+          "description": "License your choreography with revenue split",
+          "component": "ChoreoLicensing"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["GR-01", "GR-08", "GR-11"]
+    },
+    {
+      "roleId": "content_creator_streamer",
+      "roleName": "Content Creator / Streamer",
+      "description": "Live streamer and social content creator",
+      "icon": "Radio",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Upload sample of your streaming or content",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "go_live",
+          "name": "Go Live",
+          "icon": "Video",
+          "description": "Start live streaming instantly",
+          "component": "GoLive"
+        },
+        {
+          "id": "guest_seat",
+          "name": "Guest Seat",
+          "icon": "Users",
+          "description": "Bring viewers into your stream",
+          "component": "GuestSeat"
+        },
+        {
+          "id": "cowrie_stage",
+          "name": "Cowrie Stage",
+          "icon": "Coins",
+          "description": "Receive live tips from viewers",
+          "component": "CowrieStage"
+        },
+        {
+          "id": "soro_soke",
+          "name": "Sòrò Sókè Boost",
+          "icon": "Megaphone",
+          "description": "Let viewers pay to highlight messages",
+          "component": "SoroSoke"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GR-02", "GR-06", "GR-07", "GR-09", "GR-12", "GR-18", "GR-20"]
+    },
+    {
+      "roleId": "cultural_storyteller",
+      "roleName": "Cultural Storyteller / Historian",
+      "description": "Keeper of folktales, oral history, and cultural memory",
+      "icon": "BookOpen",
+      "theme": {
+        "primary": "#ec4899",
+        "secondary": "#db2777",
+        "accent": "#f472b6"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Recommendation from cultural elders or community",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Share a story or historical account",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "cultural_archive",
+          "name": "Cultural Archive",
+          "icon": "Archive",
+          "description": "Store stories permanently on blockchain",
+          "component": "CulturalArchive"
+        },
+        {
+          "id": "story_circle",
+          "name": "Story Circle",
+          "icon": "Users",
+          "description": "Host storytelling sessions",
+          "component": "StoryCircle"
+        },
+        {
+          "id": "translation_service",
+          "name": "Spirit Voice Translation",
+          "icon": "Languages",
+          "description": "Auto-translate stories across languages",
+          "component": "TranslationService"
+        },
+        {
+          "id": "heritage_certification",
+          "name": "Heritage Certification",
+          "icon": "Award",
+          "description": "Get council blessing for sacred content",
+          "component": "HeritageCertification"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Voice",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of Dawn",
+          "icon": "calabash-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Fire",
+          "icon": "calabash-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#ec4899",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Spirit of Rhythm",
+          "icon": "calabash-five",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#db2777",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["GR-03", "GR-04", "GR-05", "GR-16"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "tipping",
+      "description": "Cowrie Coins tips during live streams and content",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Fan subscriptions for exclusive content",
+      "enabled": true
+    },
+    {
+      "type": "licensing",
+      "description": "License music, choreography, and content",
+      "enabled": true
+    },
+    {
+      "type": "sponsored_listing",
+      "description": "Brand deals and sponsored content",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Messenger", "Oracle", "Harmony", "Wind", "Thunder"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "GR-01",
+      "ruleText": "Your tongue must not steal another's melody",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GR-02",
+      "ruleText": "Do not force shame for laughs",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GR-03",
+      "ruleText": "When you claim a story, say the source",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "GR-04",
+      "ruleText": "You cannot sell what we call sacred without blessing",
+      "severity": "critical",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "GR-05",
+      "ruleText": "Spirit is not clickbait",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GR-06",
+      "ruleText": "No hate against a people",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GR-07",
+      "ruleText": "No false doom for attention",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GR-08",
+      "ruleText": "Honor your split-blood (collaboration contracts)",
+      "severity": "high",
+      "action": "delay_payout"
+    },
+    {
+      "ruleId": "GR-09",
+      "ruleText": "Do not use love to trap",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GR-10",
+      "ruleText": "No stolen face (deepfakes banned)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GR-11",
+      "ruleText": "No fake outrage farm",
+      "severity": "medium",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GR-12",
+      "ruleText": "Respect the circle when invited",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "GR-13",
+      "ruleText": "Do not bury another's bread with false accusations",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GR-14",
+      "ruleText": "If the people cry, carry their cry well",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "GR-15",
+      "ruleText": "Do not fake your wound",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GR-16",
+      "ruleText": "You must answer if Council calls",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "GR-17",
+      "ruleText": "Bless before you boast (uplift others)",
+      "severity": "low",
+      "action": "warn"
+    },
+    {
+      "ruleId": "GR-18",
+      "ruleText": "Youth ears are sacred",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GR-19",
+      "ruleText": "No buyer trapping (deliver what you promise)",
+      "severity": "high",
+      "action": "delay_payout"
+    },
+    {
+      "ruleId": "GR-20",
+      "ruleText": "Your mouth is drum, not gun (no violence incitement)",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Your tongue is moving the crowd today. {audienceReached} hearts watched you. Your voice earned {cowriesEarned} Cowrie Coins.",
+    "statusTiles": [
+      "streams_this_moon",
+      "views_in_discover",
+      "tips_received",
+      "collab_requests"
+    ],
+    "quickActions": [
+      "upload_to_sound_vault",
+      "go_live_now",
+      "push_to_discover",
+      "start_cowrie_stage",
+      "open_collab_room"
+    ]
+  }
 }

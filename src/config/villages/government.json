@@ -1,20 +1,56 @@
 {
   "villageId": "government",
   "villageName": "Government Village",
-  "description": "Government workers - civil servants, officials, law enforcement, and public service",
+  "description": "Government workers - civil servants, community organizers, NGO workers, local officials, law enforcement, military, legal professionals, and all who serve the public",
   "color": "#f97316",
   "icon": "Building2",
+  "englishName": "The Village of Public Servants",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#f97316",
+    "colorSecondary": "#ea580c",
+    "iconSet": ["building-2", "landmark", "users", "heart"],
+    "backgroundTexture": "orange_government_seal_people",
+    "symbols": ["government_seal", "handshake", "people_circle", "service_badge"]
+  },
+  
+  "promiseTagline": "Public service is sacred duty. Community funds are transparent. We serve without stealing. We organize without disappearing.",
+  
+  "defaultTools": [
+    "citizen_portal",
+    "project_manager",
+    "budget_tracker",
+    "transparency_dashboard",
+    "service_monitor",
+    "impact_tracker"
+  ],
+  
   "roles": [
     {
       "roleId": "community_organizer",
-      "roleName": "Community Organizer",
-      "description": "Organize community initiatives and events",
+      "roleName": "Community Organizer / Activist",
+      "description": "Organize community initiatives, events, and grassroots movements",
       "icon": "Users",
       "theme": {
         "primary": "#f97316",
         "secondary": "#ea580c",
         "accent": "#fb923c"
       },
+      "verificationRequired": [
+        {
+          "type": "video_oath",
+          "description": "Oath: Serve the community, transparent with funds",
+          "required": true
+        },
+        {
+          "type": "community_vouch",
+          "description": "Community members confirm your organizing work",
+          "required": false
+        }
+      ],
       "tools": [
         {
           "id": "event_planner",
@@ -27,28 +63,104 @@
           "id": "volunteer_mgmt",
           "name": "Volunteer Management",
           "icon": "Users",
-          "description": "Manage volunteers",
+          "description": "Coordinate volunteers",
           "component": "VolunteerMgmt"
         },
         {
           "id": "moot_creator",
           "name": "Moot Creator",
           "icon": "Scale",
-          "description": "Create Moot resolutions",
+          "description": "Create community resolutions",
           "component": "MootCreator"
+        },
+        {
+          "id": "fundraising_tracker",
+          "name": "Fundraising Tracker",
+          "icon": "DollarSign",
+          "description": "Track community fundraising transparently",
+          "component": "FundraisingTracker"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "eventsOrganized": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "eventsOrganized": 1,
+            "communityConfirmation": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "eventsOrganized": 10,
+            "transparentFunds": true,
+            "zeroMisuse": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "eventsOrganized": 50,
+            "councilApproval": true,
+            "communityImpact": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["GOV-01", "GOV-02", "GOV-03"]
     },
     {
       "roleId": "ngo_worker",
-      "roleName": "NGO Worker",
-      "description": "Work for non-profit organizations",
+      "roleName": "NGO Worker / Development Officer",
+      "description": "Work for non-profit organizations on social development projects",
       "icon": "Heart",
       "theme": {
         "primary": "#f97316",
         "secondary": "#ea580c",
         "accent": "#fb923c"
       },
+      "verificationRequired": [
+        {
+          "type": "employer_verification",
+          "description": "NGO employment confirmation",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Serve beneficiaries, no fund diversion",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "project_mgmt",
@@ -70,42 +182,1854 @@
           "icon": "TrendingUp",
           "description": "Track social impact metrics",
           "component": "ImpactTracker"
+        },
+        {
+          "id": "beneficiary_registry",
+          "name": "Beneficiary Registry",
+          "icon": "Users",
+          "description": "Track program beneficiaries",
+          "component": "BeneficiaryRegistry"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "projectsManaged": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "projectsManaged": 1,
+            "transparentReporting": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "projectsManaged": 8,
+            "beneficiariesHelped": 50,
+            "zeroFundMisuse": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "projectsManaged": 30,
+            "councilApproval": true,
+            "sustainableImpact": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GOV-01", "GOV-04", "GOV-05"]
     },
     {
       "roleId": "local_govt",
-      "roleName": "Local Government Official",
-      "description": "Serve in local government positions",
+      "roleName": "Local Government Official / Civil Servant",
+      "description": "Serve in local government positions and public administration",
       "icon": "Landmark",
       "theme": {
         "primary": "#f97316",
         "secondary": "#ea580c",
         "accent": "#fb923c"
       },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Government employment verification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Serve the public, no bribery, transparency in budgets",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "citizen_portal",
           "name": "Citizen Portal",
           "icon": "Users",
-          "description": "Handle citizen requests",
+          "description": "Handle citizen requests and complaints",
           "component": "CitizenPortal"
         },
         {
           "id": "budget_tracker",
           "name": "Budget Tracker",
           "icon": "DollarSign",
-          "description": "Track budget allocation",
+          "description": "Track budget allocation transparently",
           "component": "BudgetTracker"
         },
         {
           "id": "service_monitor",
           "name": "Service Monitor",
           "icon": "BarChart3",
-          "description": "Monitor public services",
+          "description": "Monitor public services delivery",
           "component": "ServiceMonitor"
+        },
+        {
+          "id": "transparency_report",
+          "name": "Transparency Report",
+          "icon": "FileText",
+          "description": "Publish public spending reports",
+          "component": "TransparencyReport"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "requestsHandled": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "requestsHandled": 10,
+            "publiclyAccountable": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "requestsHandled": 100,
+            "servicesImproved": 5,
+            "zeroBriberyFlags": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "requestsHandled": 500,
+            "councilApproval": true,
+            "budgetTransparency": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["GOV-06", "GOV-07", "GOV-08", "GOV-09"]
+    },
+    {
+      "roleId": "police_officer",
+      "roleName": "Police Officer / Law Enforcement",
+      "description": "Maintain law and order, protect citizens, and enforce regulations",
+      "icon": "ShieldCheck",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Police force employment verification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Protect and serve, no harassment, no bribery",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "incident_report",
+          "name": "Incident Report",
+          "icon": "FileText",
+          "description": "File incident and crime reports",
+          "component": "IncidentReport"
+        },
+        {
+          "id": "patrol_logger",
+          "name": "Patrol Logger",
+          "icon": "MapPin",
+          "description": "Log patrol routes and activities",
+          "component": "PatrolLogger"
+        },
+        {
+          "id": "evidence_tracker",
+          "name": "Evidence Tracker",
+          "icon": "Camera",
+          "description": "Document evidence and chain of custody",
+          "component": "EvidenceTracker"
+        },
+        {
+          "id": "community_policing",
+          "name": "Community Policing",
+          "icon": "Users",
+          "description": "Coordinate community safety programs",
+          "component": "CommunityPolicing"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "incidentsHandled": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "incidentsHandled": 5,
+            "zeroHarassment": true,
+            "zeroBribery": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "incidentsHandled": 30,
+            "communityTrust": 0.8,
+            "zeroExcessiveForce": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "incidentsHandled": 150,
+            "councilApproval": true,
+            "commendations": 3
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["GOV-14", "GOV-15", "GOV-16", "GOV-17"]
+    },
+    {
+      "roleId": "fire_service",
+      "roleName": "Fire Service Officer",
+      "description": "Respond to fires, rescue operations, and emergency situations",
+      "icon": "Flame",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Fire service employment verification",
+          "required": true
+        },
+        {
+          "type": "certification",
+          "description": "Fire safety training credentials",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "emergency_response",
+          "name": "Emergency Response",
+          "icon": "Siren",
+          "description": "Log emergency call responses",
+          "component": "EmergencyResponse"
+        },
+        {
+          "id": "fire_inspection",
+          "name": "Fire Inspection",
+          "icon": "ClipboardCheck",
+          "description": "Conduct fire safety inspections",
+          "component": "FireInspection"
+        },
+        {
+          "id": "rescue_log",
+          "name": "Rescue Log",
+          "icon": "Heart",
+          "description": "Document rescue operations",
+          "component": "RescueLog"
+        },
+        {
+          "id": "safety_education",
+          "name": "Safety Education",
+          "icon": "BookOpen",
+          "description": "Conduct fire safety education",
+          "component": "SafetyEducation"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "emergenciesResponded": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "emergenciesResponded": 3,
+            "responseTime": "fast"
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "emergenciesResponded": 20,
+            "livesSaved": 5,
+            "zeroNeglect": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "emergenciesResponded": 100,
+            "councilApproval": true,
+            "heroicActions": 2
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GOV-07", "GOV-08", "GOV-18"]
+    },
+    {
+      "roleId": "public_health_officer",
+      "roleName": "Public Health Officer",
+      "description": "Coordinate public health programs and community health initiatives",
+      "icon": "Heart",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Public health department verification",
+          "required": true
+        },
+        {
+          "type": "certification",
+          "description": "Public health training or credentials",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "vaccination_tracker",
+          "name": "Vaccination Tracker",
+          "icon": "Syringe",
+          "description": "Track vaccination campaigns",
+          "component": "VaccinationTracker"
+        },
+        {
+          "id": "outbreak_monitor",
+          "name": "Outbreak Monitor",
+          "icon": "AlertTriangle",
+          "description": "Monitor disease outbreaks",
+          "component": "OutbreakMonitor"
+        },
+        {
+          "id": "health_education",
+          "name": "Health Education",
+          "icon": "BookOpen",
+          "description": "Organize health education programs",
+          "component": "HealthEducation"
+        },
+        {
+          "id": "sanitation_inspector",
+          "name": "Sanitation Inspector",
+          "icon": "ClipboardCheck",
+          "description": "Conduct sanitation inspections",
+          "component": "SanitationInspector"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "programsManaged": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "programsManaged": 1,
+            "communityReach": 50
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "programsManaged": 10,
+            "diseasePrevention": 3,
+            "zeroNeglect": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "programsManaged": 40,
+            "councilApproval": true,
+            "healthImprovements": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GOV-07", "GOV-08", "GOV-10"]
+    },
+    {
+      "roleId": "social_worker",
+      "roleName": "Social Worker / Welfare Officer",
+      "description": "Support vulnerable populations and coordinate social services",
+      "icon": "Users",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Social services department verification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Protect vulnerable populations with dignity",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "case_management",
+          "name": "Case Management",
+          "icon": "FolderOpen",
+          "description": "Manage individual cases",
+          "component": "CaseManagement"
+        },
+        {
+          "id": "welfare_benefits",
+          "name": "Welfare Benefits",
+          "icon": "DollarSign",
+          "description": "Process welfare benefit applications",
+          "component": "WelfareBenefits"
+        },
+        {
+          "id": "family_support",
+          "name": "Family Support",
+          "icon": "Home",
+          "description": "Coordinate family support services",
+          "component": "FamilySupport"
+        },
+        {
+          "id": "child_protection",
+          "name": "Child Protection",
+          "icon": "Shield",
+          "description": "Handle child protection cases",
+          "component": "ChildProtection"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "casesManaged": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "casesManaged": 3,
+            "dignifiedService": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "casesManaged": 20,
+            "familiesSupported": 15,
+            "zeroNeglect": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "casesManaged": 100,
+            "councilApproval": true,
+            "livesTransformed": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GOV-07", "GOV-11", "GOV-12"]
+    },
+    {
+      "roleId": "environmental_officer",
+      "roleName": "Environmental Officer",
+      "description": "Manage environmental programs, waste management, and sustainability",
+      "icon": "Leaf",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Environmental department verification",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "waste_management",
+          "name": "Waste Management",
+          "icon": "Trash",
+          "description": "Coordinate waste collection and disposal",
+          "component": "WasteManagement"
+        },
+        {
+          "id": "pollution_monitor",
+          "name": "Pollution Monitor",
+          "icon": "AlertTriangle",
+          "description": "Monitor environmental pollution",
+          "component": "PollutionMonitor"
+        },
+        {
+          "id": "tree_planting",
+          "name": "Tree Planting Programs",
+          "icon": "Trees",
+          "description": "Organize reforestation initiatives",
+          "component": "TreePlanting"
+        },
+        {
+          "id": "recycling_coordinator",
+          "name": "Recycling Coordinator",
+          "icon": "Recycle",
+          "description": "Manage recycling programs",
+          "component": "RecyclingCoordinator"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "programsManaged": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "programsManaged": 1,
+            "communityEngagement": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "programsManaged": 8,
+            "environmentImproved": 3,
+            "zeroNeglect": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "programsManaged": 30,
+            "councilApproval": true,
+            "sustainableFuture": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["GOV-07", "GOV-08", "GOV-13"]
+    },
+    {
+      "roleId": "traffic_warden",
+      "roleName": "Traffic Warden / Road Safety Officer",
+      "description": "Manage traffic flow, enforce road safety, and assist motorists",
+      "icon": "TrafficCone",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Traffic management authority verification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Enforce fairly, no bribery, prioritize safety",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "traffic_violation",
+          "name": "Traffic Violation Log",
+          "icon": "FileWarning",
+          "description": "Document traffic violations",
+          "component": "TrafficViolation"
+        },
+        {
+          "id": "accident_report",
+          "name": "Accident Report",
+          "icon": "AlertCircle",
+          "description": "File accident reports",
+          "component": "AccidentReport"
+        },
+        {
+          "id": "road_safety_campaign",
+          "name": "Road Safety Campaign",
+          "icon": "AlertTriangle",
+          "description": "Organize safety awareness programs",
+          "component": "RoadSafetyCampaign"
+        },
+        {
+          "id": "congestion_monitor",
+          "name": "Congestion Monitor",
+          "icon": "MapPin",
+          "description": "Track and report traffic congestion",
+          "component": "CongestionMonitor"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "shiftsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "shiftsCompleted": 10,
+            "zeroBribery": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "shiftsCompleted": 50,
+            "trafficFlowImproved": true,
+            "zeroHarassment": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "shiftsCompleted": 200,
+            "councilApproval": true,
+            "safetyRecordExcellent": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GOV-14", "GOV-15", "GOV-19"]
+    },
+    {
+      "roleId": "immigration_officer",
+      "roleName": "Immigration Officer / Border Control",
+      "description": "Process immigration documents and manage border security",
+      "icon": "Passport",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Immigration service employment verification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Fair processing, no bribery, protect borders",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "document_verification",
+          "name": "Document Verification",
+          "icon": "FileCheck",
+          "description": "Verify passports and travel documents",
+          "component": "DocumentVerification"
+        },
+        {
+          "id": "visa_processing",
+          "name": "Visa Processing",
+          "icon": "FileText",
+          "description": "Process visa applications",
+          "component": "VisaProcessing"
+        },
+        {
+          "id": "border_screening",
+          "name": "Border Screening",
+          "icon": "Search",
+          "description": "Conduct security screenings",
+          "component": "BorderScreening"
+        },
+        {
+          "id": "deportation_log",
+          "name": "Deportation Log",
+          "icon": "AlertTriangle",
+          "description": "Document deportation cases",
+          "component": "DeportationLog"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "casesProcessed": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "casesProcessed": 20,
+            "zeroBribery": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "casesProcessed": 150,
+            "fairProcessing": true,
+            "zeroAbuse": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "casesProcessed": 800,
+            "councilApproval": true,
+            "securityExcellence": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["GOV-14", "GOV-15", "GOV-20"]
+    },
+    {
+      "roleId": "lawyer",
+      "roleName": "Lawyer / Legal Practitioner",
+      "description": "Provide legal representation, advice, and court services",
+      "icon": "Scale",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "bar_license",
+          "description": "Valid bar association license",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Uphold justice, no bribery of judges, honest representation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "case_manager",
+          "name": "Case Manager",
+          "icon": "Briefcase",
+          "description": "Manage legal cases and deadlines",
+          "component": "CaseManager"
+        },
+        {
+          "id": "court_filing",
+          "name": "Court Filing",
+          "icon": "FileText",
+          "description": "File court documents and motions",
+          "component": "CourtFiling"
+        },
+        {
+          "id": "client_consultation",
+          "name": "Client Consultation",
+          "icon": "Users",
+          "description": "Schedule and conduct client meetings",
+          "component": "ClientConsultation"
+        },
+        {
+          "id": "legal_research",
+          "name": "Legal Research",
+          "icon": "BookOpen",
+          "description": "Research case law and precedents",
+          "component": "LegalResearch"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "casesHandled": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "casesHandled": 3,
+            "zeroEthicsViolations": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "casesHandled": 20,
+            "casesWon": 10,
+            "zeroClientAbandonment": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "casesHandled": 100,
+            "councilApproval": true,
+            "justiceServed": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GOV-21", "GOV-22", "GOV-23"]
+    },
+    {
+      "roleId": "judge_magistrate",
+      "roleName": "Judge / Magistrate",
+      "description": "Preside over court proceedings and deliver justice",
+      "icon": "Gavel",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "judicial_appointment",
+          "description": "Official judicial appointment documentation",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Impartial justice, no bribery, fair rulings",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "case_docket",
+          "name": "Case Docket",
+          "icon": "Calendar",
+          "description": "Manage court calendar and hearings",
+          "component": "CaseDocket"
+        },
+        {
+          "id": "judgment_writer",
+          "name": "Judgment Writer",
+          "icon": "FileText",
+          "description": "Draft and publish court rulings",
+          "component": "JudgmentWriter"
+        },
+        {
+          "id": "court_recording",
+          "name": "Court Recording",
+          "icon": "Mic",
+          "description": "Record proceedings and testimonies",
+          "component": "CourtRecording"
+        },
+        {
+          "id": "precedent_library",
+          "name": "Precedent Library",
+          "icon": "BookOpen",
+          "description": "Access legal precedents and case law",
+          "component": "PrecedentLibrary"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "casesPresided": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "casesPresided": 10,
+            "zeroBriberyAllegations": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "casesPresided": 100,
+            "fairRulings": true,
+            "zeroImproperConduct": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "casesPresided": 500,
+            "councilApproval": true,
+            "judicialExcellence": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["GOV-21", "GOV-24", "GOV-25"]
+    },
+    {
+      "roleId": "army_military",
+      "roleName": "Army / Military Personnel",
+      "description": "Serve in armed forces, national defense, and peacekeeping",
+      "icon": "Shield",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "military_id",
+          "description": "Military service identification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Protect nation, no abuse of civilians, follow rules of engagement",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "deployment_tracker",
+          "name": "Deployment Tracker",
+          "icon": "MapPin",
+          "description": "Track deployment locations and missions",
+          "component": "DeploymentTracker"
+        },
+        {
+          "id": "operations_log",
+          "name": "Operations Log",
+          "icon": "FileText",
+          "description": "Document military operations",
+          "component": "OperationsLog"
+        },
+        {
+          "id": "peacekeeping_monitor",
+          "name": "Peacekeeping Monitor",
+          "icon": "Users",
+          "description": "Coordinate peacekeeping activities",
+          "component": "PeacekeepingMonitor"
+        },
+        {
+          "id": "civilian_protection",
+          "name": "Civilian Protection",
+          "icon": "Shield",
+          "description": "Log civilian protection measures",
+          "component": "CivilianProtection"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "missionsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "missionsCompleted": 3,
+            "zeroCivilianAbuse": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "missionsCompleted": 15,
+            "communityProtected": true,
+            "zeroWarCrimes": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "missionsCompleted": 50,
+            "councilApproval": true,
+            "heroicService": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["GOV-26", "GOV-27", "GOV-28"]
+    },
+    {
+      "roleId": "customs_officer",
+      "roleName": "Customs Officer",
+      "description": "Inspect goods, collect duties, and prevent smuggling at borders",
+      "icon": "Package",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Customs service employment verification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Fair inspection, no bribery, protect borders",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "cargo_inspection",
+          "name": "Cargo Inspection",
+          "icon": "Search",
+          "description": "Inspect imported and exported goods",
+          "component": "CargoInspection"
+        },
+        {
+          "id": "duty_calculator",
+          "name": "Duty Calculator",
+          "icon": "Calculator",
+          "description": "Calculate customs duties and taxes",
+          "component": "DutyCalculator"
+        },
+        {
+          "id": "contraband_logger",
+          "name": "Contraband Logger",
+          "icon": "AlertTriangle",
+          "description": "Document seized contraband",
+          "component": "ContrabandLogger"
+        },
+        {
+          "id": "clearance_processor",
+          "name": "Clearance Processor",
+          "icon": "CheckCircle",
+          "description": "Process customs clearance documents",
+          "component": "ClearanceProcessor"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "inspectionsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "inspectionsCompleted": 50,
+            "zeroBribery": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "inspectionsCompleted": 300,
+            "contrabandSeized": 10,
+            "zeroCorruption": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "inspectionsCompleted": 1500,
+            "councilApproval": true,
+            "borderSecurityExcellence": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["GOV-14", "GOV-15", "GOV-29"]
+    },
+    {
+      "roleId": "prison_officer",
+      "roleName": "Prison Officer / Correctional Officer",
+      "description": "Manage correctional facilities and oversee inmates",
+      "icon": "Lock",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "government_id",
+          "description": "Correctional service employment verification",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Humane treatment, no torture, maintain security",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "inmate_registry",
+          "name": "Inmate Registry",
+          "icon": "Users",
+          "description": "Manage inmate records and status",
+          "component": "InmateRegistry"
+        },
+        {
+          "id": "incident_report",
+          "name": "Incident Report",
+          "icon": "FileWarning",
+          "description": "Document facility incidents",
+          "component": "IncidentReport"
+        },
+        {
+          "id": "rehabilitation_tracker",
+          "name": "Rehabilitation Tracker",
+          "icon": "TrendingUp",
+          "description": "Track inmate rehabilitation programs",
+          "component": "RehabilitationTracker"
+        },
+        {
+          "id": "visitation_scheduler",
+          "name": "Visitation Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule and manage family visits",
+          "component": "VisitationScheduler"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "shiftsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "shiftsCompleted": 20,
+            "zeroAbuseReports": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "shiftsCompleted": 150,
+            "humaneTreatment": true,
+            "zeroTorture": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "shiftsCompleted": 600,
+            "councilApproval": true,
+            "rehabilitationSuccess": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["GOV-30", "GOV-31", "GOV-32"]
+    },
+    {
+      "roleId": "prosecutor",
+      "roleName": "Prosecutor / State Attorney",
+      "description": "Represent the government in criminal prosecutions",
+      "icon": "Gavel",
+      "theme": {
+        "primary": "#f97316",
+        "secondary": "#ea580c",
+        "accent": "#fb923c"
+      },
+      "verificationRequired": [
+        {
+          "type": "bar_license",
+          "description": "Valid prosecutorial license",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Seek justice not convictions, no malicious prosecution",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "case_builder",
+          "name": "Case Builder",
+          "icon": "FolderOpen",
+          "description": "Build prosecution cases",
+          "component": "CaseBuilder"
+        },
+        {
+          "id": "evidence_manager",
+          "name": "Evidence Manager",
+          "icon": "Package",
+          "description": "Manage evidence for prosecution",
+          "component": "EvidenceManager"
+        },
+        {
+          "id": "witness_coordinator",
+          "name": "Witness Coordinator",
+          "icon": "Users",
+          "description": "Coordinate witness testimonies",
+          "component": "WitnessCoordinator"
+        },
+        {
+          "id": "plea_negotiator",
+          "name": "Plea Negotiator",
+          "icon": "Handshake",
+          "description": "Negotiate plea agreements",
+          "component": "PleaNegotiator"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Servant",
+          "icon": "circle",
+          "requirements": {
+            "casesProsecuted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Voice of the People",
+          "icon": "badge-single",
+          "requirements": {
+            "casesProsecuted": 5,
+            "zeroMaliciousProsecution": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Builder of Unity",
+          "icon": "badge-triple",
+          "requirements": {
+            "casesProsecuted": 30,
+            "convictionRate": 0.7,
+            "zeroEthicsViolations": true
+          },
+          "visual": {
+            "color": "#f97316",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Pillar of the Community",
+          "icon": "badge-five",
+          "requirements": {
+            "casesProsecuted": 150,
+            "councilApproval": true,
+            "justiceServed": true
+          },
+          "visual": {
+            "color": "#ea580c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["GOV-21", "GOV-22", "GOV-33"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "public_council",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "government_salary",
+      "description": "Regular government employment compensation",
+      "enabled": true
+    },
+    {
+      "type": "project_funding",
+      "description": "Transparent project and program funding",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Community appreciation Cowries for excellent service",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Oracle", "Thunder", "Mother"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "GOV-01",
+      "ruleText": "Community funds must be transparent",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-02",
+      "ruleText": "No diverting donations for personal use",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-03",
+      "ruleText": "Events must actually happen as promised",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-04",
+      "ruleText": "Beneficiaries must be real, not ghost names",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-05",
+      "ruleText": "Impact reports must be truthful",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-06",
+      "ruleText": "No bribery or corruption",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-07",
+      "ruleText": "Public budgets must be published",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-08",
+      "ruleText": "Services promised must be delivered",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-09",
+      "ruleText": "No using office for personal enrichment",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-10",
+      "ruleText": "Health data must be protected",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-11",
+      "ruleText": "Vulnerable populations must be protected with dignity",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-12",
+      "ruleText": "Case files are confidential",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-13",
+      "ruleText": "Environmental violations must be reported",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-14",
+      "ruleText": "No extortion or harassment of citizens",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-15",
+      "ruleText": "No checkpoint bribery or illegal roadblocks",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-16",
+      "ruleText": "Use of force must be proportional and justified",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-17",
+      "ruleText": "Evidence must be handled with integrity",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-18",
+      "ruleText": "Emergency response must be swift and professional",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-19",
+      "ruleText": "Traffic enforcement must be fair, not selective",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-20",
+      "ruleText": "Immigration processing must be fair and humane",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-21",
+      "ruleText": "Client confidentiality is sacred (lawyer-client privilege)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-22",
+      "ruleText": "No abandoning clients mid-case for non-payment",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-23",
+      "ruleText": "No bribing judges or falsifying evidence",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-24",
+      "ruleText": "Judges must remain impartial (no accepting bribes)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-25",
+      "ruleText": "Judgments must be based on law and evidence, not bias",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-26",
+      "ruleText": "Military must protect civilians, not harm them",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-27",
+      "ruleText": "No looting or theft during military operations",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-28",
+      "ruleText": "Follow rules of engagement and international law",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-29",
+      "ruleText": "Customs officers must not facilitate smuggling",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-30",
+      "ruleText": "No torture or inhumane treatment of inmates",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GOV-31",
+      "ruleText": "Inmates have right to medical care and family visits",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-32",
+      "ruleText": "Prison conditions must meet minimum human standards",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "GOV-33",
+      "ruleText": "No malicious prosecution or withholding exonerating evidence",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Voice of the People, {requestsWaiting} citizens need your service. {projectsActive} programs running. {budgetTransparency} public funds tracked. Serve with honor.",
+    "statusTiles": [
+      "citizen_requests_waiting",
+      "projects_active",
+      "budget_transparency_score",
+      "service_delivery_metrics"
+    ],
+    "quickActions": [
+      "respond_to_citizen",
+      "update_project_status",
+      "publish_budget_report",
+      "log_incident",
+      "track_service_delivery"
+    ]
+  }
 }

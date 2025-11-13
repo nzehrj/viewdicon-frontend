@@ -1,20 +1,61 @@
 {
   "villageId": "construction",
   "villageName": "Construction Village",
-  "description": "Construction workers - builders, engineers, architects, and contractors",
+  "description": "Construction workers - builders, engineers, architects, contractors, masons, electricians, plumbers, welders, and all who shape physical reality",
   "color": "#3b82f6",
   "icon": "HardHat",
+  "englishName": "The Village of Builders",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#3b82f6",
+    "colorSecondary": "#d97706",
+    "iconSet": ["hard-hat", "hammer", "wrench", "blueprint"],
+    "backgroundTexture": "stone_blocks_pyramids",
+    "symbols": ["pyramid", "great_zimbabwe_walls", "compass", "chalk_line"]
+  },
+  
+  "promiseTagline": "We raise nations from red earth. You build. We protect your payment, your proof, and your name.",
+  
+  "defaultTools": [
+    "work_board",
+    "bid_fire",
+    "onaascope_site_scan",
+    "blueprint_room",
+    "earnings_wallet",
+    "portfolio_vault"
+  ],
+  
   "roles": [
     {
       "roleId": "civil_engineer",
       "roleName": "Civil Engineer",
-      "description": "Design and oversee construction projects",
+      "description": "Design and oversee construction projects with structural expertise",
       "icon": "Building2",
       "theme": {
         "primary": "#3b82f6",
         "secondary": "#2563eb",
         "accent": "#60a5fa"
       },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Engineering council license or university certification",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Show completed projects and explain your design process",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Portfolio of projects from foundation to completion",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "project_tracker",
@@ -27,85 +68,1099 @@
           "id": "material_calc",
           "name": "Material Calculator",
           "icon": "Calculator",
-          "description": "Calculate materials needed",
+          "description": "Calculate materials needed for projects",
           "component": "MaterialCalculator"
         },
         {
           "id": "site_inspection",
           "name": "Site Inspection",
           "icon": "Search",
-          "description": "Log site inspections and issues",
+          "description": "Log site inspections and structural issues",
           "component": "SiteInspection"
+        },
+        {
+          "id": "onaascope",
+          "name": "ÒnàScope Site Scan",
+          "icon": "Scan",
+          "description": "AI-powered site analysis and report generation",
+          "component": "OnaaScope"
+        },
+        {
+          "id": "blueprint_room",
+          "name": "Blueprint Room",
+          "icon": "FileStack",
+          "description": "Upload CAD drawings and sketches with version control",
+          "component": "BlueprintRoom"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Submission",
+          "icon": "DollarSign",
+          "description": "Submit competitive bids for projects",
+          "component": "BidSubmission"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 3,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true,
+            "councilApproval": false
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["B-06", "B-08", "B-12", "B-13"]
     },
     {
       "roleId": "mason",
       "roleName": "Mason/Bricklayer",
-      "description": "Build structures with bricks and blocks",
+      "description": "Build structures with bricks, blocks, and mortar",
       "icon": "Brick",
       "theme": {
         "primary": "#3b82f6",
         "secondary": "#2563eb",
         "accent": "#60a5fa"
       },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your current work and explain your technique",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of walls, foundations, or structures you built",
+          "required": true
+        },
+        {
+          "type": "client_voice",
+          "description": "Voice note from a satisfied client",
+          "required": false
+        }
+      ],
       "tools": [
         {
           "id": "daily_work_log",
           "name": "Daily Work Log",
           "icon": "FileText",
-          "description": "Log daily tasks and progress",
+          "description": "Log daily tasks and progress photos",
           "component": "WorkLog"
         },
         {
           "id": "material_request",
           "name": "Material Request",
           "icon": "Package",
-          "description": "Request building materials",
+          "description": "Request blocks, cement, and building materials",
           "component": "MaterialRequest"
         },
         {
           "id": "safety_checklist",
           "name": "Safety Checklist",
           "icon": "CheckSquare",
-          "description": "Daily safety checks",
+          "description": "Daily safety checks and scaffold inspection",
           "component": "SafetyChecklist"
+        },
+        {
+          "id": "onaascope",
+          "name": "ÒnàScope Site Scan",
+          "icon": "Scan",
+          "description": "Scan walls for cracks, moisture, and structural issues",
+          "component": "OnaaScope"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit competitive bids for masonry jobs",
+          "component": "BidSubmission"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["B-08", "B-09", "B-13", "B-15"]
     },
     {
       "roleId": "electrician",
       "roleName": "Electrician",
-      "description": "Install and maintain electrical systems",
+      "description": "Install and maintain electrical systems safely",
       "icon": "Zap",
       "theme": {
         "primary": "#3b82f6",
         "secondary": "#2563eb",
         "accent": "#60a5fa"
       },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Electrician certification or trade test certificate",
+          "required": false
+        },
+        {
+          "type": "video_demo",
+          "description": "Show wiring work and explain safety practices",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of electrical installations you completed",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "circuit_calculator",
           "name": "Circuit Calculator",
           "icon": "Zap",
-          "description": "Calculate electrical load and wiring",
+          "description": "Calculate electrical load and proper wiring size",
           "component": "CircuitCalculator"
         },
         {
           "id": "job_scheduler",
           "name": "Job Scheduler",
           "icon": "CalendarDays",
-          "description": "Schedule installation jobs",
+          "description": "Schedule installation and maintenance jobs",
           "component": "JobScheduler"
         },
         {
           "id": "equipment_inventory",
           "name": "Equipment Inventory",
           "icon": "Wrench",
-          "description": "Track tools and parts",
+          "description": "Track tools, cables, and electrical parts",
           "component": "EquipmentInventory"
+        },
+        {
+          "id": "onaascope",
+          "name": "ÒnàScope Electrical Scan",
+          "icon": "Scan",
+          "description": "Detect exposed wires, overload risks, and safety hazards",
+          "component": "OnaaScope"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit bids for wiring and electrical projects",
+          "component": "BidSubmission"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 3,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["B-06", "B-08", "B-13", "B-14"]
+    },
+    {
+      "roleId": "plumber",
+      "roleName": "Plumber",
+      "description": "Install and repair water, drainage, and gas systems",
+      "icon": "Droplet",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show piping work and leak repair",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of plumbing fixes before and after",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "leak_tracker",
+          "name": "Leak Tracker",
+          "icon": "Droplets",
+          "description": "Log leak locations and repair history",
+          "component": "LeakTracker"
+        },
+        {
+          "id": "pipe_calculator",
+          "name": "Pipe Size Calculator",
+          "icon": "Ruler",
+          "description": "Calculate proper pipe sizing for water flow",
+          "component": "PipeCalculator"
+        },
+        {
+          "id": "onaascope",
+          "name": "ÒnàScope Plumbing Scan",
+          "icon": "Scan",
+          "description": "Detect moisture, pipe stress, and drainage issues",
+          "component": "OnaaScope"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit bids for plumbing projects",
+          "component": "BidSubmission"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 35,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["B-06", "B-08", "B-09", "B-15"]
+    },
+    {
+      "roleId": "welder",
+      "roleName": "Welder/Metalworker",
+      "description": "Weld metal structures, gates, railings, and frames",
+      "icon": "Flame",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show welding work and finished metal structures",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of gates, railings, or structures you welded",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "metal_calculator",
+          "name": "Metal Calculator",
+          "icon": "Calculator",
+          "description": "Calculate steel and iron requirements",
+          "component": "MetalCalculator"
+        },
+        {
+          "id": "safety_gear_check",
+          "name": "Safety Gear Check",
+          "icon": "Shield",
+          "description": "Track welding safety equipment status",
+          "component": "SafetyGearCheck"
+        },
+        {
+          "id": "onaascope",
+          "name": "ÒnàScope Metal Scan",
+          "icon": "Scan",
+          "description": "Check for rust, weak joints, and structural integrity",
+          "component": "OnaaScope"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit bids for welding and metalwork projects",
+          "component": "BidSubmission"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["B-08", "B-09", "B-13", "B-15"]
+    },
+    {
+      "roleId": "carpenter",
+      "roleName": "Carpenter",
+      "description": "Build with wood - doors, roofs, furniture, and frames",
+      "icon": "Hammer",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your woodwork and explain your techniques",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of furniture, doors, or roofs you built",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "wood_calculator",
+          "name": "Wood Calculator",
+          "icon": "Layers",
+          "description": "Calculate timber and plywood requirements",
+          "component": "WoodCalculator"
+        },
+        {
+          "id": "design_sketcher",
+          "name": "Design Sketcher",
+          "icon": "Pencil",
+          "description": "Sketch furniture and carpentry designs",
+          "component": "DesignSketcher"
+        },
+        {
+          "id": "onaascope",
+          "name": "ÒnàScope Wood Scan",
+          "icon": "Scan",
+          "description": "Check for termites, rot, and structural soundness",
+          "component": "OnaaScope"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit bids for carpentry projects",
+          "component": "BidSubmission"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 35,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["B-08", "B-09", "B-15"]
+    },
+    {
+      "roleId": "painter",
+      "roleName": "Painter",
+      "description": "Paint buildings, walls, and surfaces professionally",
+      "icon": "Paintbrush",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your painting work and color mixing",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of walls before and after painting",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "paint_calculator",
+          "name": "Paint Calculator",
+          "icon": "Droplet",
+          "description": "Calculate paint quantity needed for surface area",
+          "component": "PaintCalculator"
+        },
+        {
+          "id": "color_mixer",
+          "name": "Color Mixer",
+          "icon": "Palette",
+          "description": "Mix and match paint colors digitally",
+          "component": "ColorMixer"
+        },
+        {
+          "id": "surface_prep_guide",
+          "name": "Surface Prep Guide",
+          "icon": "FileCheck",
+          "description": "Checklist for proper wall preparation",
+          "component": "SurfacePrepGuide"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit bids for painting projects",
+          "component": "BidSubmission"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["B-08", "B-09", "B-15"]
+    },
+    {
+      "roleId": "mechanic",
+      "roleName": "Mechanic",
+      "description": "Repair vehicles, generators, and machines",
+      "icon": "Wrench",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show engine repair or diagnostic work",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of vehicles or machines you fixed",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "diagnostic_tracker",
+          "name": "Diagnostic Tracker",
+          "icon": "Stethoscope",
+          "description": "Log vehicle problems and solutions",
+          "component": "DiagnosticTracker"
+        },
+        {
+          "id": "parts_inventory",
+          "name": "Parts Inventory",
+          "icon": "Package",
+          "description": "Track spare parts and tools",
+          "component": "PartsInventory"
+        },
+        {
+          "id": "service_reminder",
+          "name": "Service Reminder",
+          "icon": "Bell",
+          "description": "Schedule customer service reminders",
+          "component": "ServiceReminder"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit bids for repair jobs",
+          "component": "BidSubmission"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 3,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["B-06", "B-08", "B-09", "B-15"]
+    },
+    {
+      "roleId": "solar_installer",
+      "roleName": "Solar Installer",
+      "description": "Install and maintain solar power systems",
+      "icon": "Sun",
+      "theme": {
+        "primary": "#3b82f6",
+        "secondary": "#2563eb",
+        "accent": "#60a5fa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show solar panel installation and wiring",
+          "required": true
+        },
+        {
+          "type": "before_after",
+          "description": "Photos of solar systems you installed",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "solar_calculator",
+          "name": "Solar Calculator",
+          "icon": "Calculator",
+          "description": "Calculate solar panel requirements",
+          "component": "SolarCalculator"
+        },
+        {
+          "id": "battery_monitor",
+          "name": "Battery Monitor",
+          "icon": "Battery",
+          "description": "Track battery health and performance",
+          "component": "BatteryMonitor"
+        },
+        {
+          "id": "system_designer",
+          "name": "System Designer",
+          "icon": "Layout",
+          "description": "Design solar system layouts",
+          "component": "SystemDesigner"
+        },
+        {
+          "id": "bid_submission",
+          "name": "Bid Fire Offers",
+          "icon": "Flame",
+          "description": "Submit bids for solar projects",
+          "component": "BidSubmission"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Hands of Clay",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Hands of Stone",
+          "icon": "triangle",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#78716c",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Hands of Iron",
+          "icon": "hexagon",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Hands of Bronze",
+          "icon": "star",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["B-06", "B-08", "B-13", "B-14"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Project work with escrow payment and proof timeline",
+      "enabled": true
+    },
+    {
+      "type": "commission",
+      "description": "Commission on Bid Fire project wins",
+      "enabled": true
+    },
+    {
+      "type": "sponsored_listing",
+      "description": "Premium listing in Discover for top builders",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Iron", "Thunder", "Oracle", "Earth"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "B-06",
+      "ruleText": "Do not poison the ground with lies about structural safety",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "B-07",
+      "ruleText": "Do not steal jobs from council by dodging escrow",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "B-08",
+      "ruleText": "You must stand by your word in the circle (no bid switching)",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "B-09",
+      "ruleText": "Do not insult your client's dignity",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "B-10",
+      "ruleText": "Do not threaten harm to get payment",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "B-11",
+      "ruleText": "You will teach the young with patience, not exploitation",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "B-12",
+      "ruleText": "You will not steal another builder's blueprint",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "B-13",
+      "ruleText": "You will alert danger when you see structural risk",
+      "severity": "high",
+      "action": "warn"
+    },
+    {
+      "ruleId": "B-14",
+      "ruleText": "No unapproved strangers for cash pickup",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "B-15",
+      "ruleText": "Your mouth will match your receipt",
+      "severity": "medium",
+      "action": "delay_payout"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Blessings, {honorTitle}. {projectsWaiting} projects are waiting for your hands. Your proof builds trust.",
+    "statusTiles": [
+      "active_projects",
+      "bid_fire_offers",
+      "escrow_held",
+      "portfolio_views"
+    ],
+    "quickActions": [
+      "view_bid_fire",
+      "start_onaascope_scan",
+      "upload_work_proof",
+      "open_blueprint_room",
+      "request_materials"
+    ]
+  }
 }

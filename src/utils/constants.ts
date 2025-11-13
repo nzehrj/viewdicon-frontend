@@ -74,21 +74,25 @@ export type AuthState = typeof AUTH_STATES[keyof typeof AUTH_STATES];
 
 // Villages
 export const VILLAGES = [
-  { id: 'healers', name: 'Village of Healers', icon: '🏥', color: 'from-green-400 to-emerald-600' },
-  { id: 'farmers', name: 'Village of Harvesters', icon: '🌾', color: 'from-amber-400 to-orange-600' },
-  { id: 'builders', name: 'Village of Master Builders', icon: '🏗️', color: 'from-blue-400 to-indigo-600' },
-  { id: 'traders', name: 'Village of Merchants', icon: '🏪', color: 'from-purple-400 to-pink-600' },
-  { id: 'artists', name: 'Village of Griots', icon: '🎨', color: 'from-red-400 to-rose-600' },
-  { id: 'teachers', name: 'Village of Knowledge', icon: '📚', color: 'from-cyan-400 to-teal-600' },
-  { id: 'civic', name: 'Village of Justice', icon: '⚖️', color: 'from-gray-400 to-slate-600' },
-  { id: 'transport', name: 'Village of Pathfinders', icon: '🚗', color: 'from-yellow-400 to-amber-600' },
-  { id: 'tech', name: 'Village of Innovators', icon: '💻', color: 'from-violet-400 to-purple-600' },
-  { id: 'hospitality', name: 'Village of Welcome', icon: '🏨', color: 'from-pink-400 to-fuchsia-600' },
+  { id: 'agriculture', name: 'Village of Farmers', icon: '🌾', color: 'from-green-400 to-emerald-600' },
+  { id: 'business', name: 'Village of Merchants', icon: '🏪', color: 'from-purple-400 to-pink-600' },
+  { id: 'construction', name: 'Village of Builders', icon: '🏗️', color: 'from-blue-400 to-indigo-600' },
+  { id: 'crafts', name: 'Village of Artisans', icon: '🔨', color: 'from-amber-400 to-orange-600' },
+  { id: 'creative', name: 'Village of Griots', icon: '🎨', color: 'from-red-400 to-rose-600' },
+  { id: 'education', name: 'Village of Knowledge', icon: '📚', color: 'from-cyan-400 to-teal-600' },
   { id: 'finance', name: 'Village of Prosperity', icon: '💰', color: 'from-emerald-400 to-green-600' },
-  { id: 'environment', name: 'Village of Earth Keepers', icon: '🌍', color: 'from-lime-400 to-green-600' },
+  { id: 'governance', name: 'Village of Elders', icon: '👥', color: 'from-indigo-400 to-purple-600' },
+  { id: 'government', name: 'Village of Justice', icon: '⚖️', color: 'from-gray-400 to-slate-600' },
+  { id: 'healthcare', name: 'Village of Healers', icon: '🏥', color: 'from-green-400 to-emerald-600' },
+  { id: 'hospitality', name: 'Village of Welcome', icon: '🏨', color: 'from-pink-400 to-fuchsia-600' },
+  { id: 'media', name: 'Village of Storytellers', icon: '📱', color: 'from-violet-400 to-purple-600' },
+  { id: 'security', name: 'Village of Protectors', icon: '🛡️', color: 'from-red-400 to-orange-600' },
+  { id: 'spiritual', name: 'Village of Spirit Keepers', icon: '✨', color: 'from-purple-400 to-indigo-600' },
+  { id: 'technology', name: 'Village of Innovators', icon: '💻', color: 'from-violet-400 to-purple-600' },
+  { id: 'transport', name: 'Village of Pathfinders', icon: '🚗', color: 'from-yellow-400 to-amber-600' },
 ] as const;
 
-export type VillageId = typeof VILLAGES[number]['id'];
+export type VillageId = typeof VILLAGES[number]['id'] | 'getting_started';
 
 // API Response Codes
 export const API_CODES = {

@@ -1,0 +1,849 @@
+{
+  "villageId": "governance",
+  "villageName": "Governance Village",
+  "description": "Governance workers - elected officials, traditional rulers, union leaders, paralegals, youth leaders, and all who hold civic power and speak for the people",
+  "color": "#7c3aed",
+  "icon": "Scale",
+  "englishName": "The Village of Authority, Voice, and Civic Power",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#7c3aed",
+    "colorSecondary": "#581c87",
+    "iconSet": ["scale", "gavel", "users", "megaphone"],
+    "backgroundTexture": "carved_staff_royal_stool_talking_staff",
+    "symbols": ["carved_staff", "stool", "talking_staff", "royal_seal"]
+  },
+  
+  "promiseTagline": "If you speak for us, speak with your face. A promise spoken to the people is an oath. Your word does not disappear.",
+  
+  "defaultTools": [
+    "town_hall",
+    "promise_ledger",
+    "petition_handler",
+    "community_pot",
+    "crisis_room",
+    "emergency_broadcast"
+  ],
+  
+  "roles": [
+    {
+      "roleId": "elected_official",
+      "roleName": "Elected Official / Councillor",
+      "description": "Ward councillor, local government representative, elected leader",
+      "icon": "Vote",
+      "theme": {
+        "primary": "#7c3aed",
+        "secondary": "#6d28d9",
+        "accent": "#a78bfa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_oath",
+          "description": "Record oath: 'I serve [Ward/Constituency] with my face shown'",
+          "required": true
+        },
+        {
+          "type": "territory_binding",
+          "description": "Specify exact ward, constituency, or local government area",
+          "required": true
+        },
+        {
+          "type": "community_confirmation",
+          "description": "Residents in your territory confirm you as their representative",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "open_town_hall",
+          "name": "Open Town Hall",
+          "icon": "Radio",
+          "description": "Go live - constituency questions you directly",
+          "component": "OpenTownHall"
+        },
+        {
+          "id": "respond_to_complaint",
+          "name": "Respond to Petition",
+          "icon": "MessageSquare",
+          "description": "Answer citizen complaints publicly",
+          "component": "RespondToComplaint"
+        },
+        {
+          "id": "mark_promise_delivered",
+          "name": "Mark Promise Delivered",
+          "icon": "CheckCircle",
+          "description": "Upload proof of completed promise",
+          "component": "MarkPromiseDelivered"
+        },
+        {
+          "id": "community_pot_manager",
+          "name": "Community Pot Manager",
+          "icon": "Wallet",
+          "description": "Transparent fund management for projects",
+          "component": "CommunityPotManager"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unproven Mouth",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Bearer of Oath",
+          "icon": "staff-single",
+          "requirements": {
+            "townHallsHeld": 1,
+            "promisesMade": 1,
+            "territoryConfirmed": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Voice of The People",
+          "icon": "staff-triple",
+          "requirements": {
+            "townHallsHeld": 5,
+            "promisesKept": 3,
+            "zeroTheftFlags": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Stool",
+          "icon": "staff-five",
+          "requirements": {
+            "townHallsHeld": 20,
+            "promisesKept": 15,
+            "councilApproval": true,
+            "zeroViolenceFlags": true
+          },
+          "visual": {
+            "color": "#6d28d9",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["ALASE-01", "ALASE-02", "ALASE-03", "ALASE-04", "ALASE-08"]
+    },
+    {
+      "roleId": "traditional_ruler",
+      "roleName": "Traditional Ruler / Chief",
+      "description": "Chief, king, queen mother, clan elder, palace authority",
+      "icon": "Crown",
+      "theme": {
+        "primary": "#7c3aed",
+        "secondary": "#6d28d9",
+        "accent": "#a78bfa"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Palace confirmation or elder council recognition",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "State your stool, clan, and area of authority",
+          "required": true
+        },
+        {
+          "type": "territory_binding",
+          "description": "Specify clan, chiefdom, or traditional area",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "sacred_council",
+          "name": "Sacred Council Room",
+          "icon": "Users",
+          "description": "Private mediation for land, marriage, inheritance",
+          "component": "SacredCouncil"
+        },
+        {
+          "id": "land_dispute_mediation",
+          "name": "Land Dispute Mediation",
+          "icon": "Map",
+          "description": "Resolve boundary and ownership conflicts",
+          "component": "LandDisputeMediation"
+        },
+        {
+          "id": "cultural_ruling",
+          "name": "Cultural Ruling",
+          "icon": "Scroll",
+          "description": "Issue traditional judgment on disputes",
+          "component": "CulturalRuling"
+        },
+        {
+          "id": "community_broadcast",
+          "name": "Community Broadcast",
+          "icon": "Radio",
+          "description": "Send traditional messages to your people",
+          "component": "CommunityBroadcast"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unproven Mouth",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Bearer of Oath",
+          "icon": "staff-single",
+          "requirements": {
+            "disputesMediated": 1,
+            "territoryConfirmed": true,
+            "elderApproval": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Voice of The People",
+          "icon": "staff-triple",
+          "requirements": {
+            "disputesMediated": 8,
+            "fairRulings": 5,
+            "zeroCorruptionFlags": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Stool",
+          "icon": "staff-five",
+          "requirements": {
+            "disputesMediated": 30,
+            "councilApproval": true,
+            "zeroLandFraudFlags": true
+          },
+          "visual": {
+            "color": "#6d28d9",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["ALASE-01", "ALASE-06", "ALASE-11", "ALASE-13"]
+    },
+    {
+      "roleId": "union_leader",
+      "roleName": "Union Leader / Labor Organizer",
+      "description": "Market union chair, transport union, trade association leader",
+      "icon": "Users",
+      "theme": {
+        "primary": "#7c3aed",
+        "secondary": "#6d28d9",
+        "accent": "#a78bfa"
+      },
+      "verificationRequired": [
+        {
+          "type": "union_card",
+          "description": "Union membership card or association proof",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "State your union and promise to serve members",
+          "required": true
+        },
+        {
+          "type": "territory_binding",
+          "description": "Specify market, route, or trade association",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "union_town_hall",
+          "name": "Union Town Hall",
+          "icon": "Megaphone",
+          "description": "Meet with members and answer questions",
+          "component": "UnionTownHall"
+        },
+        {
+          "id": "worker_petition_handler",
+          "name": "Worker Petition Handler",
+          "icon": "FileText",
+          "description": "Receive and respond to member complaints",
+          "component": "WorkerPetitionHandler"
+        },
+        {
+          "id": "strike_coordinator",
+          "name": "Strike Coordinator",
+          "icon": "AlertTriangle",
+          "description": "Organize peaceful labor action",
+          "component": "StrikeCoordinator"
+        },
+        {
+          "id": "dues_transparency",
+          "name": "Dues Transparency",
+          "icon": "DollarSign",
+          "description": "Show transparent accounting of union funds",
+          "component": "DuesTransparency"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unproven Mouth",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Bearer of Oath",
+          "icon": "staff-single",
+          "requirements": {
+            "townHallsHeld": 1,
+            "memberConfirmation": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Voice of The People",
+          "icon": "staff-triple",
+          "requirements": {
+            "townHallsHeld": 5,
+            "winsForMembers": 3,
+            "zeroSelloutFlags": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Stool",
+          "icon": "staff-five",
+          "requirements": {
+            "townHallsHeld": 20,
+            "winsForMembers": 12,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6d28d9",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["ALASE-01", "ALASE-02", "ALASE-03", "ALASE-07"]
+    },
+    {
+      "roleId": "paralegal_mediator",
+      "roleName": "Paralegal / Community Mediator",
+      "description": "Legal aid worker, rights advocate, dispute mediator",
+      "icon": "Scale",
+      "theme": {
+        "primary": "#7c3aed",
+        "secondary": "#6d28d9",
+        "accent": "#a78bfa"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Paralegal training certificate or legal aid credentials",
+          "required": false
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath to provide fair legal guidance",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community recommendation as trusted mediator",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "dispute_mediation_room",
+          "name": "Dispute Mediation Room",
+          "icon": "MessageSquare",
+          "description": "Private resolution for conflicts",
+          "component": "DisputeMediationRoom"
+        },
+        {
+          "id": "legal_advice_session",
+          "name": "Legal Advice Session",
+          "icon": "FileText",
+          "description": "Provide rights education and guidance",
+          "component": "LegalAdviceSession"
+        },
+        {
+          "id": "bail_fund_request",
+          "name": "Bail Fund Request",
+          "icon": "Wallet",
+          "description": "Request community bail assistance",
+          "component": "BailFundRequest"
+        },
+        {
+          "id": "police_complaint_logger",
+          "name": "Police Complaint Logger",
+          "icon": "Shield",
+          "description": "Document harassment and extortion",
+          "component": "PoliceComplaintLogger"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unproven Mouth",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Bearer of Oath",
+          "icon": "staff-single",
+          "requirements": {
+            "casesHandled": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Voice of The People",
+          "icon": "staff-triple",
+          "requirements": {
+            "casesHandled": 10,
+            "fairResolutions": 7,
+            "zeroMoneyScamFlags": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Stool",
+          "icon": "staff-five",
+          "requirements": {
+            "casesHandled": 40,
+            "councilApproval": true,
+            "zeroWhistleblowerLeaks": true
+          },
+          "visual": {
+            "color": "#6d28d9",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["ALASE-01", "ALASE-09", "ALASE-14"]
+    },
+    {
+      "roleId": "youth_spokesperson",
+      "roleName": "Youth Spokesperson / Activist",
+      "description": "Youth leader, street organizer, community mobilizer",
+      "icon": "Megaphone",
+      "theme": {
+        "primary": "#7c3aed",
+        "secondary": "#6d28d9",
+        "accent": "#a78bfa"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_oath",
+          "description": "State your street/area and promise peaceful mobilization",
+          "required": true
+        },
+        {
+          "type": "territory_binding",
+          "description": "Specify neighborhood, street axis, or youth block",
+          "required": true
+        },
+        {
+          "type": "community_confirmation",
+          "description": "Youth in your area confirm you speak for them",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "emergency_broadcast",
+          "name": "Emergency Broadcast",
+          "icon": "Radio",
+          "description": "Send urgent alerts to community",
+          "component": "EmergencyBroadcast"
+        },
+        {
+          "id": "rally_organizer",
+          "name": "Rally Organizer",
+          "icon": "Users",
+          "description": "Coordinate peaceful protests and gatherings",
+          "component": "RallyOrganizer"
+        },
+        {
+          "id": "red_smoke_alert",
+          "name": "Red Smoke Alert",
+          "icon": "AlertTriangle",
+          "description": "Signal crisis happening now (raid, demolition, violence)",
+          "component": "RedSmokeAlert"
+        },
+        {
+          "id": "youth_town_hall",
+          "name": "Youth Town Hall",
+          "icon": "MessageCircle",
+          "description": "Meet with youth and answer questions",
+          "component": "YouthTownHall"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unproven Mouth",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Bearer of Oath",
+          "icon": "staff-single",
+          "requirements": {
+            "townHallsHeld": 1,
+            "territoryConfirmed": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Voice of The People",
+          "icon": "staff-triple",
+          "requirements": {
+            "townHallsHeld": 5,
+            "peacefulActions": 3,
+            "zeroViolenceIncitement": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Stool",
+          "icon": "staff-five",
+          "requirements": {
+            "townHallsHeld": 15,
+            "winsForCommunity": 8,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#6d28d9",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["ALASE-01", "ALASE-04", "ALASE-08", "ALASE-15"]
+    },
+    {
+      "roleId": "polling_agent",
+      "roleName": "Polling Agent / Election Observer",
+      "description": "Election monitor, polling unit agent, voter rights watcher",
+      "icon": "Eye",
+      "theme": {
+        "primary": "#7c3aed",
+        "secondary": "#6d28d9",
+        "accent": "#a78bfa"
+      },
+      "verificationRequired": [
+        {
+          "type": "polling_unit_id",
+          "description": "Polling unit assignment or observer credentials",
+          "required": true
+        },
+        {
+          "type": "video_oath",
+          "description": "Oath: Report truth, no manipulation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "polling_evidence_upload",
+          "name": "Polling Evidence Upload",
+          "icon": "Camera",
+          "description": "Upload vote count photos and irregularities",
+          "component": "PollingEvidenceUpload"
+        },
+        {
+          "id": "ballot_stuffing_alert",
+          "name": "Ballot Stuffing Alert",
+          "icon": "AlertTriangle",
+          "description": "Report voter intimidation or fraud",
+          "component": "BallotStuffingAlert"
+        },
+        {
+          "id": "result_verification",
+          "name": "Result Verification",
+          "icon": "CheckCircle",
+          "description": "Cross-check official vs observed results",
+          "component": "ResultVerification"
+        },
+        {
+          "id": "observer_network",
+          "name": "Observer Network",
+          "icon": "Users",
+          "description": "Coordinate with other polling agents",
+          "component": "ObserverNetwork"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unproven Mouth",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Bearer of Oath",
+          "icon": "staff-single",
+          "requirements": {
+            "electionsMonitored": 1,
+            "evidenceUploaded": 1
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Voice of The People",
+          "icon": "staff-triple",
+          "requirements": {
+            "electionsMonitored": 3,
+            "accurateReports": 3,
+            "zeroFakeEvidenceFlags": true
+          },
+          "visual": {
+            "color": "#7c3aed",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Stool",
+          "icon": "staff-five",
+          "requirements": {
+            "electionsMonitored": 8,
+            "councilApproval": true,
+            "zeroManipulationFlags": true
+          },
+          "visual": {
+            "color": "#6d28d9",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["ALASE-01", "ALASE-10", "ALASE-13"]
+    }
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "council_only",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "community_funding",
+      "description": "Transparent community pots for projects and bail funds",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Thunder", "Oracle", "Iron", "Mother"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "ALASE-01",
+      "ruleText": "If you speak for us, speak with your face (no anonymous leadership)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-02",
+      "ruleText": "A promise spoken to the people is an oath",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ALASE-03",
+      "ruleText": "Do not eat public yam alone (no stealing community funds)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-04",
+      "ruleText": "Do not send boys to break heads (no violence or thuggery)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-05",
+      "ruleText": "Do not shame the weak for crying",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ALASE-06",
+      "ruleText": "Do not lie on the land (land fraud causes bloodshed)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-07",
+      "ruleText": "Do not trade freedom for silence (no selling out your people)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-08",
+      "ruleText": "Answer when called (respond to urgent petitions)",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ALASE-09",
+      "ruleText": "Release the captured (no taking bail money and disappearing)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-10",
+      "ruleText": "No fake observer (election evidence must be real)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-11",
+      "ruleText": "Respect the widow and the orphan",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-12",
+      "ruleText": "Community pot is transparent",
+      "severity": "high",
+      "action": "delay_payout"
+    },
+    {
+      "ruleId": "ALASE-13",
+      "ruleText": "Your word does not disappear (no deleting promises)",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ALASE-14",
+      "ruleText": "Do not endanger whistleblowers",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ALASE-15",
+      "ruleText": "When fire comes, calm first then speak (no violence incitement)",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Bearer of Oath, {petitionsWaiting} petitions wait for your answer. {promisesDue} promises must be delivered this week. The people are watching. Speak with honor.",
+    "statusTiles": [
+      "petitions_waiting",
+      "promises_due",
+      "community_pot_balance",
+      "shield_status"
+    ],
+    "quickActions": [
+      "open_town_hall",
+      "respond_to_petition",
+      "mark_promise_delivered",
+      "emergency_broadcast",
+      "call_council_session"
+    ]
+  }
+}

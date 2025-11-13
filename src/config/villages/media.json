@@ -1,0 +1,1022 @@
+{
+  "villageId": "media",
+  "villageName": "Media Village",
+  "description": "Media workers - journalists, broadcasters, reporters, podcasters, photographers, fact-checkers, and all who carry the word and signal truth",
+  "color": "#dc2626",
+  "icon": "Radio",
+  "englishName": "The Village of Words, Drums, and Signal",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#dc2626",
+    "colorSecondary": "#991b1b",
+    "iconSet": ["radio", "megaphone", "camera", "mic"],
+    "backgroundTexture": "talking_drum_scroll_satellite",
+    "symbols": ["talking_drum", "scroll", "satellite_arc", "flame_center"]
+  },
+  
+  "promiseTagline": "If you silence the truth, the drums will speak. If you break the drums, the wind will whisper it still. Speak so the people can see.",
+  
+  "defaultTools": [
+    "story_uploader",
+    "fact_checker",
+    "jollof_tv_broadcaster",
+    "source_protector",
+    "truth_archive",
+    "live_coverage"
+  ],
+  
+  "roles": [
+    {
+      "roleId": "journalist_reporter",
+      "roleName": "Journalist / Reporter",
+      "description": "Field and desk reporters covering news, investigations, and community stories",
+      "icon": "Newspaper",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show sample reporting work or journalism credentials",
+          "required": true
+        },
+        {
+          "type": "portfolio",
+          "description": "Published articles or broadcast segments",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "upload_story",
+          "name": "Upload Story",
+          "icon": "Upload",
+          "description": "Submit news report with evidence",
+          "component": "UploadStory"
+        },
+        {
+          "id": "fact_check_now",
+          "name": "Fact Check Now",
+          "icon": "CheckCircle",
+          "description": "Verify story before publishing",
+          "component": "FactCheckNow"
+        },
+        {
+          "id": "start_live_coverage",
+          "name": "Start Live Coverage",
+          "icon": "Video",
+          "description": "Go live from the field",
+          "component": "StartLiveCoverage"
+        },
+        {
+          "id": "encrypt_source",
+          "name": "Encrypt Source",
+          "icon": "Lock",
+          "description": "Protect whistleblower identity",
+          "component": "EncryptSource"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "storiesPublished": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "storiesPublished": 3,
+            "truthRatio": 0.8,
+            "zeroMisinformation": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "storiesPublished": 20,
+            "truthRatio": 0.85,
+            "peerRecognition": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "storiesPublished": 100,
+            "truthRatio": 0.9,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["ORO-01", "ORO-02", "ORO-03", "ORO-10", "ORO-11"]
+    },
+    {
+      "roleId": "investigative_journalist",
+      "roleName": "Investigative Journalist / Data Reporter",
+      "description": "Deep investigations, data analysis, and long-form investigative reporting",
+      "icon": "Search",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "portfolio",
+          "description": "Published investigative work or data journalism",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Truth over fear, protect sources, verify deeply",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "investigation_workspace",
+          "name": "Investigation Workspace",
+          "icon": "FolderOpen",
+          "description": "Organize evidence, sources, and timeline",
+          "component": "InvestigationWorkspace"
+        },
+        {
+          "id": "data_analyzer",
+          "name": "Data Analyzer",
+          "icon": "BarChart",
+          "description": "Analyze patterns and visualize findings",
+          "component": "DataAnalyzer"
+        },
+        {
+          "id": "source_vault",
+          "name": "Source Vault",
+          "icon": "Shield",
+          "description": "Securely store sensitive documents and contacts",
+          "component": "SourceVault"
+        },
+        {
+          "id": "legal_backup_request",
+          "name": "Legal Backup Request",
+          "icon": "Scale",
+          "description": "Request legal protection from Governance Village",
+          "component": "LegalBackupRequest"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "storiesPublished": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "investigationsPublished": 1,
+            "truthRatio": 0.85,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "investigationsPublished": 5,
+            "truthRatio": 0.9,
+            "impactfulStories": 3
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "investigationsPublished": 20,
+            "truthRatio": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["ORO-01", "ORO-02", "ORO-03", "ORO-12", "ORO-14"]
+    },
+    {
+      "roleId": "broadcaster",
+      "roleName": "Broadcaster / TV/Radio Host",
+      "description": "TV, radio, and livestream presenters and anchors",
+      "icon": "Radio",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show sample broadcast or hosting work",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "go_live",
+          "name": "Go Live",
+          "icon": "Video",
+          "description": "Start live broadcast on Jollof TV",
+          "component": "GoLive"
+        },
+        {
+          "id": "script_teleprompter",
+          "name": "Script & Teleprompter",
+          "icon": "FileText",
+          "description": "Prepare and display broadcast scripts",
+          "component": "ScriptTeleprompter"
+        },
+        {
+          "id": "guest_coordinator",
+          "name": "Guest Coordinator",
+          "icon": "Users",
+          "description": "Schedule and manage interview guests",
+          "component": "GuestCoordinator"
+        },
+        {
+          "id": "sorosoke_moderator",
+          "name": "Sorosoke Moderator",
+          "icon": "MessageCircle",
+          "description": "Moderate live audience questions",
+          "component": "SorosokeModerator"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "broadcastsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "broadcastsCompleted": 3,
+            "zeroViolations": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "broadcastsCompleted": 20,
+            "viewerTrust": 0.8
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "broadcastsCompleted": 100,
+            "councilApproval": true,
+            "nationalReach": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["ORO-01", "ORO-04", "ORO-05", "ORO-06"]
+    },
+    {
+      "roleId": "photographer_videographer",
+      "roleName": "Photographer / Videographer",
+      "description": "Visual journalists capturing photo and video evidence",
+      "icon": "Camera",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "portfolio",
+          "description": "Show photography or video work samples",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "upload_media",
+          "name": "Upload Media",
+          "icon": "Upload",
+          "description": "Submit photos and videos with metadata",
+          "component": "UploadMedia"
+        },
+        {
+          "id": "media_verification",
+          "name": "Media Verification",
+          "icon": "ShieldCheck",
+          "description": "Verify authenticity of visual content",
+          "component": "MediaVerification"
+        },
+        {
+          "id": "crisis_coverage",
+          "name": "Crisis Coverage",
+          "icon": "AlertTriangle",
+          "description": "Capture breaking news and emergencies",
+          "component": "CrisisCoverage"
+        },
+        {
+          "id": "auto_blur_protection",
+          "name": "Auto-Blur Protection",
+          "icon": "EyeOff",
+          "description": "Protect minors and victims automatically",
+          "component": "AutoBlurProtection"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "mediaUploaded": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "mediaUploaded": 5,
+            "authenticityVerified": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "mediaUploaded": 30,
+            "zeroDoctoredMedia": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "mediaUploaded": 150,
+            "impactfulVisuals": 20,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["ORO-08", "ORO-09", "ORO-13"]
+    },
+    {
+      "roleId": "podcaster",
+      "roleName": "Podcaster / Audio Host",
+      "description": "Podcast hosts, audio journalists, and long-form interviewers",
+      "icon": "Mic",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "audio_demo",
+          "description": "Submit sample podcast episode or interview",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "record_episode",
+          "name": "Record Episode",
+          "icon": "Mic",
+          "description": "Record and edit podcast episodes",
+          "component": "RecordEpisode"
+        },
+        {
+          "id": "guest_booking",
+          "name": "Guest Booking",
+          "icon": "UserPlus",
+          "description": "Invite and schedule podcast guests",
+          "component": "GuestBooking"
+        },
+        {
+          "id": "live_podcast",
+          "name": "Live Podcast",
+          "icon": "Radio",
+          "description": "Stream live podcast with Sorosoke",
+          "component": "LivePodcast"
+        },
+        {
+          "id": "episode_archive",
+          "name": "Episode Archive",
+          "icon": "Archive",
+          "description": "Store and share past episodes",
+          "component": "EpisodeArchive"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "episodesPublished": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "episodesPublished": 3,
+            "zeroViolations": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "episodesPublished": 20,
+            "listenerTrust": 0.8
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "episodesPublished": 100,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["ORO-01", "ORO-06", "ORO-07", "ORO-11"]
+    },
+    {
+      "roleId": "fact_checker",
+      "roleName": "Fact-Checker / Ombudsman",
+      "description": "Verify claims, debunk misinformation, and maintain truth standards",
+      "icon": "CheckCircle",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Fact-checking training or journalism credentials",
+          "required": false
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Verify before judge, correct publicly",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "rumor_queue",
+          "name": "Rumor Queue",
+          "icon": "AlertCircle",
+          "description": "Review flagged claims and viral content",
+          "component": "RumorQueue"
+        },
+        {
+          "id": "verification_toolkit",
+          "name": "Verification Toolkit",
+          "icon": "Search",
+          "description": "Cross-check sources, timestamps, locations",
+          "component": "VerificationToolkit"
+        },
+        {
+          "id": "publish_correction",
+          "name": "Publish Correction",
+          "icon": "Edit",
+          "description": "Issue public fact-check or correction",
+          "component": "PublishCorrection"
+        },
+        {
+          "id": "misinformation_tracker",
+          "name": "Misinformation Tracker",
+          "icon": "TrendingDown",
+          "description": "Track patterns of false information",
+          "component": "MisinformationTracker"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "checksCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "checksCompleted": 5,
+            "accuracyRate": 0.9
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "checksCompleted": 30,
+            "accuracyRate": 0.95,
+            "peerRecognition": true
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "checksCompleted": 150,
+            "accuracyRate": 0.98,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["ORO-02", "ORO-10", "ORO-15"]
+    },
+    {
+      "roleId": "citizen_reporter",
+      "roleName": "Citizen Reporter / Witness Streamer",
+      "description": "Community members documenting local events and breaking news",
+      "icon": "Smartphone",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_oath",
+          "description": "Promise to report truthfully from your community",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "quick_stream",
+          "name": "Quick Stream",
+          "icon": "Video",
+          "description": "Go live immediately from any location",
+          "component": "QuickStream"
+        },
+        {
+          "id": "evidence_uploader",
+          "name": "Evidence Uploader",
+          "icon": "Upload",
+          "description": "Submit photos and videos of events",
+          "component": "EvidenceUploader"
+        },
+        {
+          "id": "black_screen_mode",
+          "name": "Black Screen Mode",
+          "icon": "EyeOff",
+          "description": "Emergency safety mode if attacked while streaming",
+          "component": "BlackScreenMode"
+        },
+        {
+          "id": "geo_lock",
+          "name": "Geo-Lock",
+          "icon": "MapPin",
+          "description": "Hide your location after uploading",
+          "component": "GeoLock"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "reportsSubmitted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "reportsSubmitted": 3,
+            "truthfulReports": 2
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "reportsSubmitted": 15,
+            "truthRatio": 0.85
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "reportsSubmitted": 60,
+            "impactfulReports": 10,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["ORO-01", "ORO-02", "ORO-03", "ORO-13"]
+    },
+    {
+      "roleId": "media_translator",
+      "roleName": "Media Translator / Captioner",
+      "description": "Translate news and create subtitles for accessibility",
+      "icon": "Languages",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#b91c1c",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "language_test",
+          "description": "Demonstrate fluency in translation languages",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "translation_queue",
+          "name": "Translation Queue",
+          "icon": "List",
+          "description": "View stories awaiting translation",
+          "component": "TranslationQueue"
+        },
+        {
+          "id": "subtitle_editor",
+          "name": "Subtitle Editor",
+          "icon": "Type",
+          "description": "Create accurate captions and subtitles",
+          "component": "SubtitleEditor"
+        },
+        {
+          "id": "context_notes",
+          "name": "Context Notes",
+          "icon": "FileText",
+          "description": "Add cultural context for translations",
+          "component": "ContextNotes"
+        },
+        {
+          "id": "accuracy_checker",
+          "name": "Accuracy Checker",
+          "icon": "CheckCircle",
+          "description": "Verify translation quality",
+          "component": "AccuracyChecker"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "New Voice",
+          "icon": "circle",
+          "requirements": {
+            "translationsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Verified Reporter",
+          "icon": "drum-single",
+          "requirements": {
+            "translationsCompleted": 5,
+            "accuracyRate": 0.85
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Trusted Drum",
+          "icon": "drum-triple",
+          "requirements": {
+            "translationsCompleted": 30,
+            "accuracyRate": 0.9
+          },
+          "visual": {
+            "color": "#dc2626",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Voice of the People",
+          "icon": "drum-five",
+          "requirements": {
+            "translationsCompleted": 150,
+            "accuracyRate": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#b91c1c",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["ORO-02", "ORO-11"]
+    }
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "editorial_council",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "tipping",
+      "description": "Cowrie tips from viewers and readers",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Premium investigative content access",
+      "enabled": true
+    },
+    {
+      "type": "sponsorship",
+      "description": "Transparent sponsor partnerships (disclosed publicly)",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Creator", "Oracle", "Thunder", "Mother"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "ORO-01",
+      "ruleText": "Speak truth, not fear",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ORO-02",
+      "ruleText": "Verify before broadcast",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ORO-03",
+      "ruleText": "Protect sources, especially women, minors, and whistleblowers",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ORO-04",
+      "ruleText": "No hate speech",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ORO-05",
+      "ruleText": "No tribal manipulation",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ORO-06",
+      "ruleText": "Separate commentary from fact",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "ORO-07",
+      "ruleText": "Disclose sponsorship or bias",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ORO-08",
+      "ruleText": "No doctored media (no fake images/videos)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ORO-09",
+      "ruleText": "No revenge exposure (publishing nudes, private data)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ORO-10",
+      "ruleText": "Correct errors publicly within 24 hours",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ORO-11",
+      "ruleText": "Always credit originators",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "ORO-12",
+      "ruleText": "No blackmail journalism (pay or I publish)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "ORO-13",
+      "ruleText": "Never publish violence footage without blur or context",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "ORO-14",
+      "ruleText": "Use empathy in tragedy",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "ORO-15",
+      "ruleText": "The story must serve people, not ego",
+      "severity": "medium",
+      "action": "warn"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Bearer of the Drum, {activeStories} active stories in queue. {pendingFactChecks} pending verification. {misinformationWarnings} misinformation warnings this week. Stay clean. Words live longer than men.",
+    "statusTiles": [
+      "active_stories",
+      "pending_fact_checks",
+      "truth_ratio",
+      "audience_impact"
+    ],
+    "quickActions": [
+      "upload_story",
+      "start_live_coverage",
+      "fact_check_now",
+      "push_to_jollof_tv",
+      "archive_truth_copy"
+    ]
+  }
+}

@@ -1,0 +1,1088 @@
+{
+  "villageId": "security",
+  "villageName": "Security Village",
+  "description": "Security workers - bodyguards, escorts, guards, marshals, and protectors who stand in front when danger comes",
+  "color": "#dc2626",
+  "icon": "Shield",
+  "englishName": "The Village of Warriors",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#dc2626",
+    "colorSecondary": "#1f2937",
+    "iconSet": ["shield", "shield-check", "user-shield", "alert-triangle"],
+    "backgroundTexture": "matte_red_black_earth_leopard_paint",
+    "symbols": ["shield", "spear", "leopard_spots", "watchfire"]
+  },
+  
+  "promiseTagline": "You stand for us. We stand behind you. We bring you work, pay you fairly, witness your courage, and never allow your strength to turn into fear for the people.",
+  
+  "defaultTools": [
+    "duty_board",
+    "witness_mode",
+    "backup_mesh",
+    "incident_log",
+    "earnings_wallet",
+    "safe_handoff"
+  ],
+  
+  "roles": [
+    {
+      "roleId": "personal_escort",
+      "roleName": "Personal Escort / Bodyguard",
+      "description": "Provide personal protection and safe movement",
+      "icon": "UserShield",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Introduce yourself, show your presence, explain your zone",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Reference from community leader or past client",
+          "required": false
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Protector does not become predator",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "duty_calls",
+          "name": "Duty Calls",
+          "icon": "Bell",
+          "description": "View and accept escort requests",
+          "component": "DutyCalls"
+        },
+        {
+          "id": "witness_mode",
+          "name": "Witness Mode",
+          "icon": "Video",
+          "description": "Record encrypted duty evidence",
+          "component": "WitnessMode"
+        },
+        {
+          "id": "safe_arrival",
+          "name": "Mark Safe Arrival",
+          "icon": "CheckCircle",
+          "description": "Confirm client reached destination safely",
+          "component": "SafeArrival"
+        },
+        {
+          "id": "panic_response",
+          "name": "Panic Response",
+          "icon": "AlertTriangle",
+          "description": "Emergency backup call system",
+          "component": "PanicResponse"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true,
+            "councilApproval": false
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["WR-01", "WR-02", "WR-08", "WR-09", "WR-18"]
+    },
+    {
+      "roleId": "night_guard",
+      "roleName": "Night Guard / Gate Security",
+      "description": "Overnight security for compounds, gates, and property",
+      "icon": "Moon",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show yourself and explain your experience",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Reference from property owner or estate manager",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "on_watch_toggle",
+          "name": "On Watch Toggle",
+          "icon": "Eye",
+          "description": "Mark yourself on duty or off duty",
+          "component": "OnWatchToggle"
+        },
+        {
+          "id": "patrol_log",
+          "name": "Patrol Log",
+          "icon": "ClipboardList",
+          "description": "Record patrol rounds and observations",
+          "component": "PatrolLog"
+        },
+        {
+          "id": "incident_report",
+          "name": "Incident Report",
+          "icon": "FileWarning",
+          "description": "Report attempted break-ins or threats",
+          "component": "IncidentReport"
+        },
+        {
+          "id": "backup_call",
+          "name": "Call Backup",
+          "icon": "Users",
+          "description": "Request nearby warrior assistance",
+          "component": "BackupCall"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["WR-02", "WR-04", "WR-13"]
+    },
+    {
+      "roleId": "atm_escort",
+      "roleName": "ATM Escort / Cash Run Guard",
+      "description": "Escort people during ATM withdrawals and cash movements",
+      "icon": "Wallet",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Explain how you keep people safe during cash runs",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: I will not steal from those I protect",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "pickup_requests",
+          "name": "Pickup Requests",
+          "icon": "MapPin",
+          "description": "View ATM escort requests nearby",
+          "component": "PickupRequests"
+        },
+        {
+          "id": "route_tracker",
+          "name": "Route Tracker",
+          "icon": "Route",
+          "description": "Track escort route with timestamps",
+          "component": "RouteTracker"
+        },
+        {
+          "id": "safe_handoff",
+          "name": "Safe Hand-off",
+          "icon": "HandHeart",
+          "description": "Transfer client to taxi/bike rider safely",
+          "component": "SafeHandoff"
+        },
+        {
+          "id": "witness_mode",
+          "name": "Witness Mode",
+          "icon": "Video",
+          "description": "Record duty evidence securely",
+          "component": "WitnessMode"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["WR-01", "WR-04", "WR-09", "WR-18"]
+    },
+    {
+      "roleId": "event_security",
+      "roleName": "Event Security / Bouncer",
+      "description": "Provide security for events, clubs, and gatherings",
+      "icon": "Music",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show experience managing crowds or events",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Past event security work or references",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "event_bookings",
+          "name": "Event Bookings",
+          "icon": "Calendar",
+          "description": "View and accept event security jobs",
+          "component": "EventBookings"
+        },
+        {
+          "id": "team_coordinator",
+          "name": "Team Coordinator",
+          "icon": "Users",
+          "description": "Coordinate with other security staff",
+          "component": "TeamCoordinator"
+        },
+        {
+          "id": "crowd_monitor",
+          "name": "Crowd Monitor",
+          "icon": "UserCheck",
+          "description": "Track crowd size and behavior",
+          "component": "CrowdMonitor"
+        },
+        {
+          "id": "incident_log",
+          "name": "Incident Log",
+          "icon": "FileText",
+          "description": "Record disturbances or issues",
+          "component": "IncidentLog"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["WR-03", "WR-07", "WR-15"]
+    },
+    {
+      "roleId": "protest_marshal",
+      "roleName": "Protest / Rally Marshal",
+      "description": "Ensure safety during protests, rallies, and demonstrations",
+      "icon": "Megaphone",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "council_oath",
+          "description": "Oath: Crowd must go home alive",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Past rally or crowd safety experience",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "rally_briefing",
+          "name": "Rally Briefing",
+          "icon": "FileCheck",
+          "description": "View protest safety plan and routes",
+          "component": "RallyBriefing"
+        },
+        {
+          "id": "perimeter_map",
+          "name": "Safe Perimeter Map",
+          "icon": "Map",
+          "description": "Mark safe zones and exit routes",
+          "component": "PerimeterMap"
+        },
+        {
+          "id": "police_aggression_log",
+          "name": "Police Aggression Log",
+          "icon": "Shield",
+          "description": "Document police violence or threats",
+          "component": "PoliceAggressionLog"
+        },
+        {
+          "id": "witness_mode",
+          "name": "Witness Mode",
+          "icon": "Video",
+          "description": "Record protest events securely",
+          "component": "WitnessMode"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 5,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["WR-10", "WR-12", "WR-15", "WR-20"]
+    },
+    {
+      "roleId": "self_defense_trainer",
+      "roleName": "Self-Defense Trainer",
+      "description": "Teach self-defense and personal safety skills",
+      "icon": "Target",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate teaching a self-defense technique",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Training certification or student testimonials",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "class_scheduler",
+          "name": "Class Scheduler",
+          "icon": "Calendar",
+          "description": "Schedule training sessions",
+          "component": "ClassScheduler"
+        },
+        {
+          "id": "student_tracker",
+          "name": "Student Tracker",
+          "icon": "Users",
+          "description": "Track student progress and attendance",
+          "component": "StudentTracker"
+        },
+        {
+          "id": "technique_library",
+          "name": "Technique Library",
+          "icon": "BookOpen",
+          "description": "Store and share training videos",
+          "component": "TechniqueLibrary"
+        },
+        {
+          "id": "youth_protection_score",
+          "name": "Youth Protection Score",
+          "icon": "Heart",
+          "description": "Track impact on community safety",
+          "component": "YouthProtectionScore"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 3,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 80,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["WR-06", "WR-14"]
+    },
+    {
+      "roleId": "domestic_safety_guardian",
+      "roleName": "Domestic Safety Guardian",
+      "description": "Provide safe presence during domestic disputes and child pickups",
+      "icon": "Home",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "council_oath",
+          "description": "Oath: You are witness, not judge",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Strong community recommendation required",
+          "required": true
+        },
+        {
+          "type": "video_demo",
+          "description": "Explain your de-escalation approach",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "domestic_calls",
+          "name": "Domestic Safety Calls",
+          "icon": "Shield",
+          "description": "High-sensitivity protection requests",
+          "component": "DomesticCalls"
+        },
+        {
+          "id": "deescalation_guide",
+          "name": "De-escalation Guide",
+          "icon": "MessageCircle",
+          "description": "Calm phrases and safety protocols",
+          "component": "DeescalationGuide"
+        },
+        {
+          "id": "witness_mode",
+          "name": "Witness Mode",
+          "icon": "Video",
+          "description": "Secure evidence recording",
+          "component": "WitnessMode"
+        },
+        {
+          "id": "backup_call",
+          "name": "Emergency Backup",
+          "icon": "Phone",
+          "description": "Call additional protectors if needed",
+          "component": "BackupCall"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 25,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["WR-01", "WR-06", "WR-07", "WR-11", "WR-18"]
+    },
+    {
+      "roleId": "convoy_escort",
+      "roleName": "Convoy Escort / Secure Driver",
+      "description": "Escort high-value deliveries and secure transportation",
+      "icon": "Truck",
+      "theme": {
+        "primary": "#dc2626",
+        "secondary": "#991b1b",
+        "accent": "#ef4444"
+      },
+      "verificationRequired": [
+        {
+          "type": "license",
+          "description": "Valid driver's license (if driving)",
+          "required": false
+        },
+        {
+          "type": "video_demo",
+          "description": "Show your vehicle and explain your experience",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: No stealing, no leaking routes",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "convoy_assignments",
+          "name": "Convoy Assignments",
+          "icon": "Truck",
+          "description": "View high-value escort jobs",
+          "component": "ConvoyAssignments"
+        },
+        {
+          "id": "route_security",
+          "name": "Route Security",
+          "icon": "Route",
+          "description": "Secure route planning and tracking",
+          "component": "RouteSecurity"
+        },
+        {
+          "id": "delivery_handoff",
+          "name": "Delivery Hand-off",
+          "icon": "PackageCheck",
+          "description": "Confirm safe package delivery",
+          "component": "DeliveryHandoff"
+        },
+        {
+          "id": "threat_alert",
+          "name": "Threat Alert",
+          "icon": "AlertTriangle",
+          "description": "Report route dangers or ambush attempts",
+          "component": "ThreatAlert"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Force",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Night Shield",
+          "icon": "shield-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#d97706",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Blood Oath Protector",
+          "icon": "shield-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#64748b",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Keeper of the Gate",
+          "icon": "shield-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#1f2937",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["WR-04", "WR-10", "WR-18"]
+    }
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Escort and protection services with escrow payment",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Regular protection contracts (nightly guard, weekly escort)",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Thunder", "Iron", "Mother", "Oracle"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "WR-01",
+      "ruleText": "Protector does not become predator",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-02",
+      "ruleText": "Do not take coin then disappear",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-03",
+      "ruleText": "Do not threaten the people you guard",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-04",
+      "ruleText": "No stealing from the space you guard",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-05",
+      "ruleText": "You must declare if you are carrying any weapon",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "WR-06",
+      "ruleText": "No force on children",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-07",
+      "ruleText": "Your mouth must cool fire, not start fire",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "WR-08",
+      "ruleText": "No extortion after duty",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-09",
+      "ruleText": "Respect the body of a woman walking at night",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-10",
+      "ruleText": "If danger is bigger than you, call backup",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "WR-11",
+      "ruleText": "You are witness, not judge",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "WR-12",
+      "ruleText": "No politics weaponization unless requested",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-13",
+      "ruleText": "Do not lie in your report",
+      "severity": "high",
+      "action": "delay_payout"
+    },
+    {
+      "ruleId": "WR-14",
+      "ruleText": "You must protect those with lower strength",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "WR-15",
+      "ruleText": "Crowd must go home alive",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-16",
+      "ruleText": "No robbing uniform (no fake police/soldier impersonation)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-17",
+      "ruleText": "Do not recruit street boys without Council blessing",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "WR-18",
+      "ruleText": "Do not leak address or routine",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "WR-19",
+      "ruleText": "You must answer Council call",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "WR-20",
+      "ruleText": "You are the wall, not the knife",
+      "severity": "medium",
+      "action": "warn"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Protector of the Road, {dutyCallsWaiting} calls waiting near {location}. Your presence bought {cowriesEarned} Cowrie Coins this moon. Do you answer?",
+    "statusTiles": [
+      "on_watch_status",
+      "duty_calls_waiting",
+      "completed_escorts",
+      "cowries_in_escrow"
+    ],
+    "quickActions": [
+      "go_on_watch",
+      "accept_escort_call",
+      "mark_safe_arrival",
+      "log_incident",
+      "call_backup"
+    ]
+  }
+}

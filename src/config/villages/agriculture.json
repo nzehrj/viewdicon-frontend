@@ -1,0 +1,1039 @@
+{
+  "villageId": "agriculture",
+  "villageName": "Agriculture Village",
+  "description": "Agriculture workers - farmers, fishers, herders, water vendors, and all who feed the nation and steward the land",
+  "color": "#22c55e",
+  "icon": "Sprout",
+  "englishName": "The Village of Farmers & Earth Stewards",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#22c55e",
+    "colorSecondary": "#eab308",
+    "iconSet": ["sprout", "fish", "wheat", "droplet"],
+    "backgroundTexture": "harvest_yellow_fertile_green",
+    "symbols": ["grain_calabash", "woven_basket", "yam_barn", "raffia_mat"]
+  },
+  
+  "promiseTagline": "You feed us. We will not let you suffer hunger. Your harvest will find buyers. Your journey will not waste. Your voice in land matters will be heard.",
+  
+  "defaultTools": [
+    "harvest_listing",
+    "shared_truck",
+    "cooperative_pool",
+    "rain_watch",
+    "grazing_mediator",
+    "earnings_wallet"
+  ],
+  
+  "roles": [
+    {
+      "roleId": "crop_farmer",
+      "roleName": "Crop Farmer",
+      "description": "Grow cassava, maize, millet, yam, rice, vegetables, and staple crops",
+      "icon": "Wheat",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your farm or field with current crops",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Voice intro explaining what you grow and where",
+          "required": false
+        }
+      ],
+      "tools": [
+        {
+          "id": "list_harvest",
+          "name": "List Harvest",
+          "icon": "Package",
+          "description": "Record harvest ready for sale (voice or photo)",
+          "component": "ListHarvest"
+        },
+        {
+          "id": "join_shared_truck",
+          "name": "Join Shared Truck",
+          "icon": "Truck",
+          "description": "Share transport costs with other farmers",
+          "component": "JoinSharedTruck"
+        },
+        {
+          "id": "rain_watch",
+          "name": "Rain Watch",
+          "icon": "CloudRain",
+          "description": "Check flood and weather alerts",
+          "component": "RainWatch"
+        },
+        {
+          "id": "city_buyers",
+          "name": "City Buyers",
+          "icon": "Users",
+          "description": "View buyers requesting your crops",
+          "component": "CityBuyers"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 10,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 50,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["AGB-01", "AGB-03", "AGB-09"]
+    },
+    {
+      "roleId": "fisher",
+      "roleName": "Fisher / Net Crew",
+      "description": "Fish from rivers, lagoons, or ocean with nets and boats",
+      "icon": "Fish",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your boat, nets, or catch",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "catch_listing",
+          "name": "List Catch",
+          "icon": "Fish",
+          "description": "Record fresh catch ready for sale",
+          "component": "CatchListing"
+        },
+        {
+          "id": "smokehouse_booking",
+          "name": "Smokehouse Booking",
+          "icon": "Flame",
+          "description": "Book fish smoking or drying service",
+          "component": "SmokehouseBooking"
+        },
+        {
+          "id": "boat_departure",
+          "name": "Boat Departure Log",
+          "icon": "Waves",
+          "description": "Log when you leave and return from water",
+          "component": "BoatDeparture"
+        },
+        {
+          "id": "shared_truck",
+          "name": "Shared Truck",
+          "icon": "Truck",
+          "description": "Share transport to city markets",
+          "component": "SharedTruck"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 40,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["AGB-01", "AGB-03", "AGB-09"]
+    },
+    {
+      "roleId": "poultry_farmer",
+      "roleName": "Poultry Farmer",
+      "description": "Raise chickens, turkeys, or produce eggs",
+      "icon": "Bird",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your birds or egg production setup",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "stock_listing",
+          "name": "Stock Listing",
+          "icon": "Egg",
+          "description": "List birds or eggs available for sale",
+          "component": "StockListing"
+        },
+        {
+          "id": "health_alert",
+          "name": "Health Alert",
+          "icon": "AlertTriangle",
+          "description": "Report disease outbreak to protect community",
+          "component": "HealthAlert"
+        },
+        {
+          "id": "bulk_orders",
+          "name": "Bulk Orders",
+          "icon": "ShoppingCart",
+          "description": "View requests for large quantities",
+          "component": "BulkOrders"
+        },
+        {
+          "id": "delivery_coordinator",
+          "name": "Delivery Coordinator",
+          "icon": "Truck",
+          "description": "Arrange live bird or egg delivery",
+          "component": "DeliveryCoordinator"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 12,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["AGB-01", "AGB-03", "AGB-12"]
+    },
+    {
+      "roleId": "herdsman",
+      "roleName": "Herdsman / Livestock Keeper",
+      "description": "Rear goats, sheep, or cattle",
+      "icon": "Beef",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your animals and explain your grazing practices",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Peaceful grazing, call mediator before conflict",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "livestock_listing",
+          "name": "Livestock Listing",
+          "icon": "Beef",
+          "description": "List animals available for sale",
+          "component": "LivestockListing"
+        },
+        {
+          "id": "safe_grazing_route",
+          "name": "Safe Grazing Route",
+          "icon": "Route",
+          "description": "View approved grazing paths",
+          "component": "SafeGrazingRoute"
+        },
+        {
+          "id": "grazing_mediator",
+          "name": "Call Grazing Mediator",
+          "icon": "Handshake",
+          "description": "Request mediation before conflict",
+          "component": "GrazingMediator"
+        },
+        {
+          "id": "water_point_finder",
+          "name": "Water Point Finder",
+          "icon": "Droplet",
+          "description": "Locate safe water sources for animals",
+          "component": "WaterPointFinder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 8,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 30,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["AGB-08", "AGB-09", "AGB-15"]
+    },
+    {
+      "roleId": "truck_coordinator",
+      "roleName": "Village Truck Coordinator",
+      "description": "Organize shared transport for farmers to city markets",
+      "icon": "Truck",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your truck or explain your coordination experience",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Fair pricing, no route diversion, safe delivery",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "create_shared_truck",
+          "name": "Create Shared Truck",
+          "icon": "PlusCircle",
+          "description": "Start new shared load to city",
+          "component": "CreateSharedTruck"
+        },
+        {
+          "id": "route_planner",
+          "name": "Route Planner",
+          "icon": "Map",
+          "description": "Plan pickup stops across farms",
+          "component": "RoutePlanner"
+        },
+        {
+          "id": "cost_splitter",
+          "name": "Cost Splitter",
+          "icon": "DollarSign",
+          "description": "Calculate fair transport share per farmer",
+          "component": "CostSplitter"
+        },
+        {
+          "id": "pickup_proof",
+          "name": "Pickup Proof Logger",
+          "icon": "Camera",
+          "description": "Photo each basket/crate at pickup",
+          "component": "PickupProof"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 2,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 15,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "high",
+      "specialRules": ["AGB-06", "AGB-09", "AGB-10", "AGB-15"]
+    },
+    {
+      "roleId": "water_vendor",
+      "roleName": "Water Vendor",
+      "description": "Sell clean water from boreholes, wells, or tankers",
+      "icon": "Droplets",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show your water source and delivery setup",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Water is safe for drinking",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "water_orders",
+          "name": "Water Orders",
+          "icon": "ClipboardList",
+          "description": "View water delivery requests",
+          "component": "WaterOrders"
+        },
+        {
+          "id": "cart_tracker",
+          "name": "Cart Distance Tracker",
+          "icon": "MapPin",
+          "description": "Track delivery routes and distances",
+          "component": "CartTracker"
+        },
+        {
+          "id": "source_certification",
+          "name": "Source Certification",
+          "icon": "Award",
+          "description": "Display water source approval",
+          "component": "SourceCertification"
+        },
+        {
+          "id": "payment_log",
+          "name": "Payment Log",
+          "icon": "Receipt",
+          "description": "Track payments owed and received",
+          "component": "PaymentLog"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 3,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 80,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["AGB-14", "AGB-15"]
+    },
+    {
+      "roleId": "grazing_mediator",
+      "roleName": "Grazing Mediator",
+      "description": "Mediate conflicts between herders and crop farmers",
+      "icon": "Scale",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Strong community recommendation from both farmers and herders",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Fair mediation, no tribal bias, peace first",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "mediation_room",
+          "name": "Mediation Room",
+          "icon": "MessageSquare",
+          "description": "Open protected conflict resolution space",
+          "component": "MediationRoom"
+        },
+        {
+          "id": "route_mapper",
+          "name": "Safe Route Mapper",
+          "icon": "Map",
+          "description": "Mark safe grazing and farm boundaries",
+          "component": "RouteMapper"
+        },
+        {
+          "id": "incident_log",
+          "name": "Incident Log",
+          "icon": "FileWarning",
+          "description": "Record conflicts and resolutions",
+          "component": "IncidentLog"
+        },
+        {
+          "id": "warrior_backup",
+          "name": "Request Warrior Backup",
+          "icon": "Shield",
+          "description": "Call protection if violence threatens",
+          "component": "WarriorBackup"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 1,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 5,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["AGB-08", "AGB-15"]
+    },
+    {
+      "roleId": "rain_watcher",
+      "roleName": "Rain Watcher / Flood Alert",
+      "description": "Monitor weather and warn community of floods and storms",
+      "icon": "CloudRain",
+      "theme": {
+        "primary": "#22c55e",
+        "secondary": "#16a34a",
+        "accent": "#4ade80"
+      },
+      "verificationRequired": [
+        {
+          "type": "elder_vouch",
+          "description": "Community trust as reliable weather observer",
+          "required": true
+        },
+        {
+          "type": "council_oath",
+          "description": "Oath: Honest warnings, lives depend on truth",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "weather_broadcast",
+          "name": "Weather Broadcast",
+          "icon": "Radio",
+          "description": "Send rain/flood alerts to area farmers",
+          "component": "WeatherBroadcast"
+        },
+        {
+          "id": "river_level_tracker",
+          "name": "River Level Tracker",
+          "icon": "Waves",
+          "description": "Monitor water levels and flood risk",
+          "component": "RiverLevelTracker"
+        },
+        {
+          "id": "storm_timeline",
+          "name": "Storm Timeline",
+          "icon": "Clock",
+          "description": "Predict when rain will arrive",
+          "component": "StormTimeline"
+        },
+        {
+          "id": "evacuation_alert",
+          "name": "Evacuation Alert",
+          "icon": "AlertTriangle",
+          "description": "Send emergency evacuation warnings",
+          "component": "EvacuationAlert"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "First Harvest",
+          "icon": "circle",
+          "requirements": {
+            "jobsCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Reliable Hand",
+          "icon": "basket-single",
+          "requirements": {
+            "jobsCompleted": 5,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Steady Supplier",
+          "icon": "basket-triple",
+          "requirements": {
+            "jobsCompleted": 20,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#22c55e",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Earth Pillar",
+          "icon": "basket-five",
+          "requirements": {
+            "jobsCompleted": 60,
+            "zeroComplaints": true,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#16a34a",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "critical",
+      "specialRules": ["AGB-07", "AGB-15"]
+    }
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hybrid",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Direct harvest sales with escrow and transport coordination",
+      "enabled": true
+    },
+    {
+      "type": "commission",
+      "description": "Cooperative transport fees and aggregation services",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Iron", "Thunder", "Mother", "Oracle"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "AGB-01",
+      "ruleText": "Do not lie about quantity",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AGB-02",
+      "ruleText": "Do not water-log or stone-load to fake weight",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-03",
+      "ruleText": "You must say freshness honestly",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AGB-04",
+      "ruleText": "Do not hold harvest hostage on arrival",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-05",
+      "ruleText": "No underpaying because of gender, tribe, or language",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-06",
+      "ruleText": "Driver must not divert route for side-sale",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-07",
+      "ruleText": "When flood comes, we warn each other",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-08",
+      "ruleText": "No fight in grazing matters before mediation",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-09",
+      "ruleText": "Respect the shared truck timing",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "AGB-10",
+      "ruleText": "You must honor cooperative cost split",
+      "severity": "high",
+      "action": "delay_payout"
+    },
+    {
+      "ruleId": "AGB-11",
+      "ruleText": "Do not insult harvest or farmer",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "AGB-12",
+      "ruleText": "You must report sickness outbreaks fast",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-13",
+      "ruleText": "No fake scarcity panic to raise prices",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AGB-14",
+      "ruleText": "The water you sell must be safe",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "AGB-15",
+      "ruleText": "Answer council when called",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "AGB-16",
+      "ruleText": "Do not dump waste back into the community",
+      "severity": "high",
+      "action": "amber_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Harvester, {cityBuyers} buyers want your produce. Rain warning for {rainTime}. Shared truck leaves in {truckTime}. Will you load?",
+    "statusTiles": [
+      "baskets_ready",
+      "city_buyers_waiting",
+      "truck_slot_booked",
+      "rain_risk_today"
+    ],
+    "quickActions": [
+      "list_harvest_for_sale",
+      "join_shared_truck",
+      "ask_rain_watch",
+      "call_grazing_mediator",
+      "mark_goods_loaded"
+    ]
+  }
+}

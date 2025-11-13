@@ -1,111 +1,758 @@
 {
   "villageId": "hospitality",
-  "villageName": "Village of Hosts",
-  "description": "Service workers - hotel staff, chefs, waiters, tour guides, and event planners",
+  "villageName": "KARIBU · Village of Hospitality",
+  "description": "Hospitality workers - chefs, servers, hotel staff, tour guides, event planners, ceremony coordinators, and all who welcome, host, feed, and serve with dignity",
   "color": "#14b8a6",
   "icon": "UtensilsCrossed",
+  "englishName": "The Village of Hosts and Welcomers",
+  "panAfricanName": "KARIBU",
+  "panAfricanMeaning": "You are welcomed / You are received warmly",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": true,
+  
+  "visual": {
+    "colorPrimary": "#14b8a6",
+    "colorSecondary": "#0d9488",
+    "iconSet": ["utensils-crossed", "hotel", "coffee", "gift"],
+    "backgroundTexture": "teal_hospitality_welcome_calabash",
+    "symbols": ["welcome_calabash", "shared_plate", "open_door", "warm_fire"]
+  },
+  
+  "promiseTagline": "Make people feel welcomed, nourished, hosted, respected. Every guest matters. Every service is sacred. Welcome is our work.",
+  
+  "defaultTools": [
+    "booking_board",
+    "hospitality_menu_builder",
+    "escrow_booking_guarantee",
+    "guest_review_ledger",
+    "inventory_tracker",
+    "creator_studio_hospitality",
+    "marketplace_profile"
+  ],
+  
   "roles": [
     {
-      "roleId": "chef",
-      "roleName": "Chef/Cook",
-      "description": "Prepare delicious meals in restaurants",
+      "roleId": "executive_chef",
+      "roleName": "Executive Chef",
+      "description": "Design menus and lead kitchen operations as cultural curator of taste",
       "icon": "ChefHat",
       "theme": {
         "primary": "#14b8a6",
         "secondary": "#0d9488",
         "accent": "#2dd4bf"
       },
+      "verificationRequired": [
+        {
+          "type": "certification",
+          "description": "Culinary credentials or training certificates",
+          "required": false
+        },
+        {
+          "type": "portfolio",
+          "description": "Photos of dishes and kitchen leadership",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "menu_builder",
+          "name": "Menu Builder",
+          "icon": "BookOpen",
+          "description": "Design menus and pricing",
+          "component": "MenuBuilder"
+        },
+        {
+          "id": "inventory_tracker",
+          "name": "Kitchen Inventory",
+          "icon": "Package",
+          "description": "Track supplies and ingredients",
+          "component": "InventoryTracker"
+        },
+        {
+          "id": "creator_studio",
+          "name": "Creator Studio",
+          "icon": "Camera",
+          "description": "Photograph dishes and kitchen",
+          "component": "CreatorStudio"
+        },
+        {
+          "id": "vendor_connect",
+          "name": "Vendor Connect",
+          "icon": "Link",
+          "description": "Connect to suppliers",
+          "component": "VendorConnect"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Host",
+          "icon": "circle",
+          "requirements": {
+            "servicesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Welcomed Guest",
+          "icon": "calabash-single",
+          "requirements": {
+            "servicesCompleted": 5,
+            "guestSatisfaction": 0.8
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Welcome",
+          "icon": "calabash-triple",
+          "requirements": {
+            "servicesCompleted": 30,
+            "guestSatisfaction": 0.9,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of Hospitality",
+          "icon": "calabash-five",
+          "requirements": {
+            "servicesCompleted": 150,
+            "guestSatisfaction": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0d9488",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "medium",
+      "specialRules": ["KARIBU-01", "KARIBU-02", "KARIBU-03"]
+    },
+    {
+      "roleId": "sous_chef",
+      "roleName": "Sous Chef",
+      "description": "Assist executive chef and supervise kitchen preparation with discipline",
+      "icon": "ChefHat",
+      "theme": {
+        "primary": "#14b8a6",
+        "secondary": "#0d9488",
+        "accent": "#2dd4bf"
+      },
+      "verificationRequired": [
+        {
+          "type": "experience_proof",
+          "description": "Kitchen experience documentation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "inventory_tracker",
+          "name": "Kitchen Inventory",
+          "icon": "Package",
+          "description": "Manage kitchen supplies",
+          "component": "InventoryTracker"
+        },
+        {
+          "id": "menu_builder",
+          "name": "Menu Builder",
+          "icon": "BookOpen",
+          "description": "Contribute to menu planning",
+          "component": "MenuBuilder"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Host",
+          "icon": "circle",
+          "requirements": {
+            "servicesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Welcomed Guest",
+          "icon": "calabash-single",
+          "requirements": {
+            "servicesCompleted": 5,
+            "guestSatisfaction": 0.8
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Welcome",
+          "icon": "calabash-triple",
+          "requirements": {
+            "servicesCompleted": 30,
+            "guestSatisfaction": 0.9,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of Hospitality",
+          "icon": "calabash-five",
+          "requirements": {
+            "servicesCompleted": 150,
+            "guestSatisfaction": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0d9488",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["KARIBU-01", "KARIBU-02"]
+    },
+    {
+      "roleId": "line_chef",
+      "roleName": "Line Chef / Station Chef",
+      "description": "Execute dishes on station with consistency and craft",
+      "icon": "Flame",
+      "theme": {
+        "primary": "#14b8a6",
+        "secondary": "#0d9488",
+        "accent": "#2dd4bf"
+      },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show cooking skills and dish preparation",
+          "required": true
+        }
+      ],
+      "tools": [
+        {
+          "id": "menu_builder",
+          "name": "Station Menu",
+          "icon": "BookOpen",
+          "description": "View station dishes",
+          "component": "MenuBuilder"
+        },
+        {
+          "id": "order_system",
+          "name": "Order System",
+          "icon": "ClipboardList",
+          "description": "Receive and complete orders",
+          "component": "OrderSystem"
+        }
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Host",
+          "icon": "circle",
+          "requirements": {
+            "servicesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Welcomed Guest",
+          "icon": "calabash-single",
+          "requirements": {
+            "servicesCompleted": 5,
+            "guestSatisfaction": 0.8
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Welcome",
+          "icon": "calabash-triple",
+          "requirements": {
+            "servicesCompleted": 30,
+            "guestSatisfaction": 0.9,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of Hospitality",
+          "icon": "calabash-five",
+          "requirements": {
+            "servicesCompleted": 150,
+            "guestSatisfaction": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0d9488",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["KARIBU-01", "KARIBU-02"]
+    },
+    {
+      "roleId": "pastry_chef",
+      "roleName": "Pastry Chef / Dessert Artist",
+      "description": "Create baked art and celebration food with sweetness in milestones",
+      "icon": "Cake",
+      "theme": {
+        "primary": "#14b8a6",
+        "secondary": "#0d9488",
+        "accent": "#2dd4bf"
+      },
+      "verificationRequired": [
+        {
+          "type": "portfolio",
+          "description": "Photos of pastry and dessert work",
+          "required": true
+        }
+      ],
       "tools": [
         {
           "id": "recipe_book",
           "name": "Recipe Book",
           "icon": "BookOpen",
-          "description": "Manage your recipes",
+          "description": "Store pastry recipes",
           "component": "RecipeBook"
         },
         {
-          "id": "inventory_kitchen",
-          "name": "Kitchen Inventory",
-          "icon": "Apple",
-          "description": "Track ingredients and stock",
-          "component": "KitchenInventory"
+          "id": "creator_studio",
+          "name": "Creator Studio",
+          "icon": "Camera",
+          "description": "Photograph pastries",
+          "component": "CreatorStudio"
         },
         {
-          "id": "menu_planner",
-          "name": "Menu Planner",
-          "icon": "ClipboardList",
-          "description": "Plan daily/weekly menus",
-          "component": "MenuPlanner"
+          "id": "menu_builder",
+          "name": "Dessert Menu",
+          "icon": "BookOpen",
+          "description": "Build dessert offerings",
+          "component": "MenuBuilder"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Host",
+          "icon": "circle",
+          "requirements": {
+            "servicesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Welcomed Guest",
+          "icon": "calabash-single",
+          "requirements": {
+            "servicesCompleted": 5,
+            "guestSatisfaction": 0.8
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Welcome",
+          "icon": "calabash-triple",
+          "requirements": {
+            "servicesCompleted": 30,
+            "guestSatisfaction": 0.9,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of Hospitality",
+          "icon": "calabash-five",
+          "requirements": {
+            "servicesCompleted": 150,
+            "guestSatisfaction": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0d9488",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["KARIBU-01", "KARIBU-02"]
     },
     {
-      "roleId": "waiter",
-      "roleName": "Waiter/Server",
-      "description": "Serve customers with excellent service",
-      "icon": "UserCheck",
+      "roleId": "continental_chef",
+      "roleName": "Continental Chef",
+      "description": "Specialize in European and international cuisines",
+      "icon": "ChefHat",
       "theme": {
         "primary": "#14b8a6",
         "secondary": "#0d9488",
         "accent": "#2dd4bf"
       },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate continental cooking techniques",
+          "required": true
+        }
+      ],
       "tools": [
         {
-          "id": "order_system",
-          "name": "Order System",
-          "icon": "ClipboardCheck",
-          "description": "Take and manage orders",
-          "component": "OrderSystem"
+          "id": "menu_builder",
+          "name": "Menu Builder",
+          "icon": "BookOpen",
+          "description": "Create continental menus",
+          "component": "MenuBuilder"
         },
         {
-          "id": "table_mgmt",
-          "name": "Table Management",
-          "icon": "LayoutGrid",
-          "description": "Manage table assignments",
-          "component": "TableMgmt"
-        },
-        {
-          "id": "tip_tracker",
-          "name": "Tip Tracker",
-          "icon": "DollarSign",
-          "description": "Track daily tips",
-          "component": "TipTracker"
+          "id": "recipe_book",
+          "name": "Recipe Book",
+          "icon": "BookOpen",
+          "description": "Store continental recipes",
+          "component": "RecipeBook"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Host",
+          "icon": "circle",
+          "requirements": {
+            "servicesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Welcomed Guest",
+          "icon": "calabash-single",
+          "requirements": {
+            "servicesCompleted": 5,
+            "guestSatisfaction": 0.8
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Welcome",
+          "icon": "calabash-triple",
+          "requirements": {
+            "servicesCompleted": 30,
+            "guestSatisfaction": 0.9,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of Hospitality",
+          "icon": "calabash-five",
+          "requirements": {
+            "servicesCompleted": 150,
+            "guestSatisfaction": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0d9488",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["KARIBU-01", "KARIBU-02"]
     },
     {
-      "roleId": "hotel_staff",
-      "roleName": "Hotel Staff",
-      "description": "Manage hotel operations and guest services",
-      "icon": "Hotel",
+      "roleId": "african_heritage_chef",
+      "roleName": "African Heritage Cuisine Chef",
+      "description": "Specialize in ancestral recipes and protect culinary lineage",
+      "icon": "ChefHat",
       "theme": {
         "primary": "#14b8a6",
         "secondary": "#0d9488",
         "accent": "#2dd4bf"
       },
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Demonstrate traditional African cooking",
+          "required": true
+        },
+        {
+          "type": "elder_vouch",
+          "description": "Community recognition as keeper of recipes",
+          "required": false
+        }
+      ],
       "tools": [
         {
-          "id": "booking_system",
-          "name": "Booking System",
-          "icon": "CalendarCheck",
-          "description": "Manage room bookings",
-          "component": "BookingSystem"
+          "id": "cookbook_archive",
+          "name": "Cookbook Archive",
+          "icon": "Archive",
+          "description": "Store ancestral recipes",
+          "component": "CookbookArchive"
         },
         {
-          "id": "room_status",
-          "name": "Room Status",
-          "icon": "Bed",
-          "description": "Track room availability",
-          "component": "RoomStatus"
+          "id": "creator_studio",
+          "name": "Creator Studio",
+          "icon": "Camera",
+          "description": "Document traditional dishes",
+          "component": "CreatorStudio"
         },
         {
-          "id": "guest_services",
-          "name": "Guest Services",
-          "icon": "Bell",
-          "description": "Handle guest requests",
-          "component": "GuestServices"
+          "id": "menu_builder",
+          "name": "Heritage Menu",
+          "icon": "BookOpen",
+          "description": "Build traditional menus",
+          "component": "MenuBuilder"
         }
-      ]
+      ],
+      "crestPath": [
+        {
+          "tier": 0,
+          "name": "Unknown Host",
+          "icon": "circle",
+          "requirements": {
+            "servicesCompleted": 0
+          },
+          "visual": {
+            "color": "#9ca3af",
+            "glow": false
+          }
+        },
+        {
+          "tier": 1,
+          "name": "Welcomed Guest",
+          "icon": "calabash-single",
+          "requirements": {
+            "servicesCompleted": 5,
+            "guestSatisfaction": 0.8
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": false
+          }
+        },
+        {
+          "tier": 3,
+          "name": "Keeper of Welcome",
+          "icon": "calabash-triple",
+          "requirements": {
+            "servicesCompleted": 30,
+            "guestSatisfaction": 0.9,
+            "zeroComplaints": true
+          },
+          "visual": {
+            "color": "#14b8a6",
+            "glow": true
+          }
+        },
+        {
+          "tier": 5,
+          "name": "Master of Hospitality",
+          "icon": "calabash-five",
+          "requirements": {
+            "servicesCompleted": 150,
+            "guestSatisfaction": 0.95,
+            "councilApproval": true
+          },
+          "visual": {
+            "color": "#0d9488",
+            "glow": true
+          }
+        }
+      ],
+      "riskClass": "low",
+      "specialRules": ["KARIBU-01", "KARIBU-02", "KARIBU-10"]
     }
-  ]
+  ],
+  
+  "councilStructure": {
+    "hasElders": true,
+    "canSuspendMembers": true,
+    "canBoostMembers": true,
+    "disputeEscalation": "hospitality_council",
+    "votingThreshold": 3
+  },
+  
+  "revenueChannels": [
+    {
+      "type": "paid_service",
+      "description": "Bookable hospitality services with escrow protection",
+      "enabled": true
+    },
+    {
+      "type": "tipping",
+      "description": "Guest appreciation Cowries for excellent service",
+      "enabled": true
+    },
+    {
+      "type": "subscription",
+      "description": "Regular catering or accommodation contracts",
+      "enabled": true
+    }
+  ],
+  
+  "specialAIWatch": ["Mother", "Oracle", "Iron", "Thunder"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "KARIBU-01",
+      "ruleText": "Treat every guest with dignity and respect",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "KARIBU-02",
+      "ruleText": "Food must be clean, safe, and honestly prepared",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "KARIBU-03",
+      "ruleText": "No sexual harassment of guests or co-workers",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "KARIBU-04",
+      "ruleText": "Accommodation spaces must be clean and safe",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "KARIBU-05",
+      "ruleText": "No stealing from guests (money, belongings, identity)",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "KARIBU-06",
+      "ruleText": "Guest privacy and data must be protected",
+      "severity": "critical",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "KARIBU-07",
+      "ruleText": "Pricing must be transparent (no hidden charges)",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "KARIBU-08",
+      "ruleText": "Bookings and reservations must be honored",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "KARIBU-09",
+      "ruleText": "No fake reviews or paying for false testimonials",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "KARIBU-10",
+      "ruleText": "Cultural and dietary restrictions must be respected",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "KARIBU-11",
+      "ruleText": "Ceremonies must be conducted with cultural sensitivity",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "KARIBU-12",
+      "ruleText": "Tour guides must provide accurate information",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "KARIBU-13",
+      "ruleText": "No waste of food or resources",
+      "severity": "medium",
+      "action": "warn"
+    },
+    {
+      "ruleId": "KARIBU-14",
+      "ruleText": "Conflicts with guests must be resolved peacefully",
+      "severity": "high",
+      "action": "amber_shield"
+    },
+    {
+      "ruleId": "KARIBU-15",
+      "ruleText": "Emergency safety protocols must be followed",
+      "severity": "critical",
+      "action": "red_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "Keeper of Welcome, {bookingsToday} guests await your service. {reviewScore} satisfaction rating. {earningsPending} Cowries to be released. Welcome is your work.",
+    "statusTiles": [
+      "todays_bookings",
+      "guest_satisfaction",
+      "services_completed",
+      "earnings_pending"
+    ],
+    "quickActions": [
+      "accept_booking",
+      "update_menu",
+      "check_inventory",
+      "respond_to_review",
+      "upload_dish_photo"
+    ]
+  }
 }

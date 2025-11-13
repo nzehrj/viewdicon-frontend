@@ -1,0 +1,93 @@
+{
+  "villageId": "getting_started",
+  "displayName": "Getting Started",
+  "englishName": "The Gate",
+  "isPublic": true,
+  "selectableAtOnboarding": true,
+  "selectableAsHome": false,
+  
+  "visual": {
+    "colorPrimary": "#6366f1",
+    "colorSecondary": "#4b5563",
+    "iconSet": ["Compass", "Map", "HelpCircle", "MapPin"],
+    "backgroundTexture": "neutral_charcoal",
+    "symbols": ["open_door", "crossroads", "listening_ear"]
+  },
+  
+  "promiseTagline": "We are listening to your work. We will place you in the right house.",
+  
+  "description": "The Holding Village is where you land when we cannot find your exact work in our 17 villages. We sit with you, listen, and place you correctly. This is not your permanent home—this is the gate.",
+  
+  "defaultTools": [],
+  
+  "guilds": [
+    {
+      "guildId": "unclassified_worker",
+      "guildName": "Worker Under Review",
+      "description": "Temporary status while we find your proper village and role",
+      "icon": "UserSearch",
+      "verificationRequired": [
+        {
+          "type": "video_demo",
+          "description": "Show us your actual work—your tools, your workspace, what you do",
+          "required": true
+        },
+        {
+          "type": "experience_proof",
+          "description": "Tell us who pays you and what they pay you for",
+          "required": true
+        }
+      ],
+      "extraTools": [],
+      "crestPath": [],
+      "riskClass": "medium"
+    }
+  ],
+  
+  "councilStructure": {
+    "hasElders": false,
+    "canSuspendMembers": false,
+    "canBoostMembers": false,
+    "disputeEscalation": "ai_guardian"
+  },
+  
+  "revenueChannels": [],
+  
+  "specialAIWatch": ["Oracle", "Thunder", "Mother"],
+  
+  "cawsRules": [
+    {
+      "ruleId": "GATE-01",
+      "ruleText": "Do not lie about your work during placement",
+      "severity": "high",
+      "action": "red_shield"
+    },
+    {
+      "ruleId": "GATE-02",
+      "ruleText": "You must show real proof of your work environment",
+      "severity": "high",
+      "action": "council_review"
+    },
+    {
+      "ruleId": "GATE-03",
+      "ruleText": "Answer all placement questions honestly",
+      "severity": "medium",
+      "action": "amber_shield"
+    }
+  ],
+  
+  "dashboardLayout": {
+    "welcomeMessage": "You are in the Holding Village. We are listening to your work. Answer clearly and we will protect you.",
+    "statusTiles": [
+      "placement_progress",
+      "proof_completion",
+      "review_status"
+    ],
+    "quickActions": [
+      "record_my_work",
+      "record_my_place",
+      "explain_my_role",
+      "ask_for_help"
+    ]
+  }
+}

@@ -5,37 +5,47 @@ import * as Icons from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GradientBackground } from '@components/common/GradientBackground';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
-import { setUserRole, setUserVillage } from '@store/slices/userSlice';
+import { setUserRole, setUserVillage, setUser } from '@store/slices/userSlice';
 import { setAuthenticated } from '@store/slices/authSlice';
 import { nextStep } from '@store/slices/authFlowSlice';
 
-// ✅ Updated Village JSON imports with clear names
-import healthcareConfig from '../../config/villages/healthcare.json';
-import farmingConfig from '../../config/villages/farming.json';
-import constructionConfig from '../../config/villages/construction.json';
+// ✅ Updated Village JSON imports - All 17 Villages
+import agricultureConfig from '../../config/villages/agriculture.json';
 import businessConfig from '../../config/villages/business.json';
+import constructionConfig from '../../config/villages/construction.json';
+import craftsConfig from '../../config/villages/crafts.json';
 import creativeConfig from '../../config/villages/creative.json';
 import educationConfig from '../../config/villages/education.json';
-import governmentConfig from '../../config/villages/government.json';
-import transportConfig from '../../config/villages/transport.json';
-import technologyConfig from '../../config/villages/technology.json';
-import hospitalityConfig from '../../config/villages/hospitality.json';
 import financeConfig from '../../config/villages/finance.json';
-import environmentConfig from '../../config/villages/environment.json';
+import governanceConfig from '../../config/villages/governance.json';
+import governmentConfig from '../../config/villages/government.json';
+import healthcareConfig from '../../config/villages/healthcare.json';
+import gettingStartedConfig from '../../config/villages/getting_started.json';
+import hospitalityConfig from '../../config/villages/hospitality.json';
+import mediaConfig from '../../config/villages/media.json';
+import securityConfig from '../../config/villages/security.json';
+import spiritualConfig from '../../config/villages/spiritual.json';
+import technologyConfig from '../../config/villages/technology.json';
+import transportConfig from '../../config/villages/transport.json';
 
 const villageConfigs: Record<string, any> = {
-  healthcare: healthcareConfig,
-  farming: farmingConfig,
-  construction: constructionConfig,
+  agriculture: agricultureConfig,
   business: businessConfig,
+  construction: constructionConfig,
+  crafts: craftsConfig,
   creative: creativeConfig,
   education: educationConfig,
-  government: governmentConfig,
-  transport: transportConfig,
-  technology: technologyConfig,
-  hospitality: hospitalityConfig,
   finance: financeConfig,
-  environment: environmentConfig,
+  governance: governanceConfig,
+  government: governmentConfig,
+  healthcare: healthcareConfig,
+  getting_started: gettingStartedConfig,
+  hospitality: hospitalityConfig,
+  media: mediaConfig,
+  security: securityConfig,
+  spiritual: spiritualConfig,
+  technology: technologyConfig,
+  transport: transportConfig,
 };
 
 interface VillageSelectionProps {
@@ -45,27 +55,35 @@ interface VillageSelectionProps {
 export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector((s) => s.theme.theme);
+  const phoneNumber = useAppSelector((s) => s.auth.phoneNumber);
+  const userName = useAppSelector((s) => s.auth.userName);
+  const existingUser = useAppSelector((s) => s.user.user);
 
   const [selectedVillageId, setSelectedVillageId] = useState<string | null>(null);
   const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // ✅ Show ALL 17 villages including getting_started
   const villages = useMemo(() => {
-    return Object.keys(villageConfigs).map((key) => {
-      const cfg = villageConfigs[key];
-      return {
-        id: cfg.villageId || key,
-        name: cfg.villageName || cfg.name || key,
-        description: cfg.description || '',
-        color: cfg.color || '#888',
-        iconName: cfg.icon || 'Home',
-        roles: cfg.roles || [],
-      };
-    });
+    return Object.keys(villageConfigs)
+      .map((key) => {
+        const cfg = villageConfigs[key];
+        return {
+          id: cfg.villageId || key,
+          name: cfg.villageName || cfg.name || key,
+          description: cfg.description || '',
+          color: cfg.color || '#888',
+          iconName: cfg.icon || 'Home',
+          roles: cfg.roles || [],
+        };
+      });
   }, []);
 
   const selectedVillage = selectedVillageId ? villageConfigs[selectedVillageId] : null;
   const availableRoles = selectedVillage?.roles || [];
+  
+  // ✅ Check if selected village is getting_started (no role required)
+  const isGettingStarted = selectedVillageId === 'getting_started';
 
   const resolveIcon = (iconName?: string) => {
     if (!iconName) return Icons.User;
@@ -77,11 +95,84 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
     console.log('🏘️ Village selected:', id);
     setSelectedVillageId(id);
     setSelectedRoleId(null);
+    
+    // ✅ If getting_started is selected, auto-set a default role/guild
+    if (id === 'getting_started') {
+      const gettingStartedGuilds = villageConfigs[id]?.guilds || villageConfigs[id]?.roles || [];
+      if (gettingStartedGuilds.length > 0) {
+        // Auto-select the first guild/role
+        setSelectedRoleId(gettingStartedGuilds[0].guildId || gettingStartedGuilds[0].roleId);
+      }
+    }
   };
 
   const handleRoleSelect = (id: string) => {
     console.log('👤 Role selected:', id);
     setSelectedRoleId(id);
+  };
+
+  // ✅ Handle getting_started village completion (no role selection needed)
+  const handleGettingStartedComplete = async () => {
+    console.log('🚀 Getting Started - Proceeding without role selection');
+    setIsSubmitting(true);
+
+    const villageCfg = villageConfigs[selectedVillageId!];
+    // Support both "guilds" and "roles" structure
+    const defaultRole = villageCfg.guilds?.[0] || villageCfg.roles?.[0] || { 
+      guildId: 'unclassified_worker', 
+      guildName: 'Worker Under Review',
+      roleId: 'unclassified_worker',
+      roleName: 'Worker Under Review'
+    };
+
+    console.log('📝 Dispatching to Redux...');
+    console.log('Village:', villageCfg.villageName || villageCfg.displayName);
+    console.log('Role/Guild:', defaultRole.guildName || defaultRole.roleName);
+
+    // ✅ CRITICAL: Create user object with phone number and preserve any existing data
+    dispatch(setUser({
+      id: existingUser?.id || `temp-${Date.now()}`,
+      phoneNumber: phoneNumber || existingUser?.phoneNumber || 'unknown',
+      name: userName || existingUser?.name || existingUser?.full_name || phoneNumber || 'User',
+      full_name: existingUser?.full_name || userName || phoneNumber || 'User',
+      // ✅ Preserve tribe/heritage from KYC if it exists - convert null to undefined
+      tribe: existingUser?.tribe || undefined,
+      country: existingUser?.country || undefined,
+      afro_id: existingUser?.afro_id || undefined,
+      kinship_tier: existingUser?.kinship_tier || undefined,
+      sankofa_totem: existingUser?.sankofa_totem || undefined,
+      iwa_score: existingUser?.iwa_score || undefined,
+    }));
+    console.log('✓ User object created');
+
+    // Dispatch village info
+    dispatch(
+      setUserVillage({
+        villageId: villageCfg.villageId,
+        villageName: villageCfg.villageName || villageCfg.displayName,
+      })
+    );
+    console.log('✓ Village dispatched');
+
+    // Dispatch role info
+    dispatch(
+      setUserRole({
+        roleId: defaultRole.guildId || defaultRole.roleId,
+        roleName: defaultRole.guildName || defaultRole.roleName,
+      })
+    );
+    console.log('✓ Role dispatched');
+
+    // Mark user as authenticated
+    dispatch(setAuthenticated(true));
+    console.log('✓ Authentication set to true');
+
+    // Dispatch next step
+    dispatch(nextStep());
+    console.log('✓ Next step dispatched');
+
+    console.log('🎯 Calling onSelect callback...');
+    onSelect(villageCfg.villageId, defaultRole.guildId || defaultRole.roleId);
   };
 
   const handleComplete = async () => {
@@ -99,6 +190,22 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
     console.log('📝 Dispatching to Redux...');
     console.log('Village:', villageCfg.villageName);
     console.log('Role:', roleCfg.roleName);
+
+    // ✅ CRITICAL: Create user object with phone number and preserve any existing data
+    dispatch(setUser({
+      id: existingUser?.id || `temp-${Date.now()}`,
+      phoneNumber: phoneNumber || existingUser?.phoneNumber || 'unknown',
+      name: userName || existingUser?.name || existingUser?.full_name || phoneNumber || 'User',
+      full_name: existingUser?.full_name || userName || phoneNumber || 'User',
+      // ✅ Preserve tribe/heritage from KYC if it exists - convert null to undefined
+      tribe: existingUser?.tribe || undefined,
+      country: existingUser?.country || undefined,
+      afro_id: existingUser?.afro_id || undefined,
+      kinship_tier: existingUser?.kinship_tier || undefined,
+      sankofa_totem: existingUser?.sankofa_totem || undefined,
+      iwa_score: existingUser?.iwa_score || undefined,
+    }));
+    console.log('✓ User object created');
 
     // Dispatch village info
     dispatch(
@@ -118,7 +225,7 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
     );
     console.log('✓ Role dispatched');
 
-    // ✅ CRITICAL: Mark user as authenticated
+    // Mark user as authenticated
     dispatch(setAuthenticated(true));
     console.log('✓ Authentication set to true');
 
@@ -126,12 +233,8 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
     dispatch(nextStep());
     console.log('✓ Next step dispatched');
 
-    // ✅ FIXED: Only call the callback, let parent handle navigation
     console.log('🎯 Calling onSelect callback...');
     onSelect(villageCfg.villageId, roleCfg.roleId);
-    
-    // ❌ REMOVED: Direct navigation to dashboard
-    // The parent component (AuthRoutes) will handle navigation to afro-id-welcome
   };
 
   return (
@@ -152,15 +255,18 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
               } flex items-center gap-2`}
             >
               <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-              Choose Your Village & Role
+              Choose Your Village {!isGettingStarted && '& Role'}
             </h2>
             <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-              Select the industry that matches your work, then choose your specific role.
+              {isGettingStarted 
+                ? "Perfect! Let's get you started - no role selection needed."
+                : "Select the industry that matches your work, then choose your specific role."
+              }
             </p>
           </div>
 
           {/* Progress indicator - Mobile Optimized */}
-          {selectedVillageId && (
+          {selectedVillageId && !isGettingStarted && (
             <div className="flex items-center justify-center gap-3 sm:gap-6 mb-4 sm:mb-8 px-2">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
@@ -207,7 +313,7 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
           )}
 
           <AnimatePresence mode="wait">
-            {/* Village grid - Mobile Optimized */}
+            {/* Village grid - Shows ALL 17 villages */}
             {!selectedVillageId && (
               <motion.div
                 key="villages"
@@ -260,8 +366,92 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
               </motion.div>
             )}
 
-            {/* Role grid - Mobile Optimized */}
-            {selectedVillageId && !selectedRoleId && (
+            {/* ✅ NEW: Getting Started Confirmation (No role selection) */}
+            {selectedVillageId && isGettingStarted && (
+              <motion.div
+                key="getting-started-confirm"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className={`p-4 sm:p-8 rounded-2xl sm:rounded-3xl ${
+                  theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-xl'
+                }`}
+              >
+                <div className="text-center mb-6">
+                  {(() => {
+                    const iconName = selectedVillage?.visual?.iconSet?.[0] || selectedVillage?.icon || 'Compass';
+                    const Icon = resolveIcon(iconName);
+                    const color = selectedVillage?.visual?.colorPrimary || selectedVillage?.color || '#6366f1';
+                    return (
+                      <div
+                        className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl flex items-center justify-center mb-4"
+                        style={{
+                          background: `linear-gradient(135deg, ${color}20 0%, ${color}40 100%)`,
+                          color: color,
+                        }}
+                      >
+                        <Icon className="w-10 h-10 sm:w-12 sm:h-12" />
+                      </div>
+                    );
+                  })()}
+                  <h2
+                    className={`text-lg sm:text-2xl font-bold mb-2 ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {selectedVillage?.displayName || selectedVillage?.villageName}
+                  </h2>
+                  <p
+                    className={`text-sm sm:text-base mb-4 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}
+                  >
+                    {selectedVillage?.promiseTagline || "You're all set! No role selection needed - let's explore together."}
+                  </p>
+                  <p
+                    className={`text-xs sm:text-sm ${
+                      theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
+                    }`}
+                  >
+                    {selectedVillage?.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <button
+                    onClick={() => setSelectedVillageId(null)}
+                    disabled={isSubmitting}
+                    className={`w-full sm:flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold transition-colors ${
+                      theme === 'dark'
+                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    ← Back to Villages
+                  </button>
+                  <button
+                    onClick={handleGettingStartedComplete}
+                    disabled={isSubmitting}
+                    className="w-full sm:flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                        <span>Loading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Continue to Dashboard</span>
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Role grid - Only shown for non-getting_started villages */}
+            {selectedVillageId && !isGettingStarted && !selectedRoleId && (
               <motion.div
                 key="roles"
                 initial={{ opacity: 0 }}
@@ -332,8 +522,8 @@ export const VillageSelection: React.FC<VillageSelectionProps> = ({ onSelect }) 
               </motion.div>
             )}
 
-            {/* Confirmation - Mobile Optimized */}
-            {selectedVillageId && selectedRoleId && (
+            {/* Confirmation - For villages with roles */}
+            {selectedVillageId && !isGettingStarted && selectedRoleId && (
               <motion.div
                 key="confirm"
                 initial={{ opacity: 0, scale: 0.95 }}
