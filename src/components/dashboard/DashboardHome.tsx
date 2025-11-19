@@ -6,6 +6,11 @@ import {
   Search,
   User,
   Menu,
+  Video,
+  Plus,
+  Mic,
+  Sparkles,
+  Image,
   X,
   LogOut,
   Grid,
@@ -19,7 +24,23 @@ import {
   Users,
   RefreshCw,
   MessageCircle,
+  Eye,
+  CreditCard,
+  Monitor,
+  Activity,
+  Link as LinkIcon,
+  Briefcase,
 } from 'lucide-react';
+
+// ✅ FEED COMPONENTS
+import { MotionFeed } from '@components/feeds/MotionFeed';
+import { GalleryFeed } from '@components/feeds/GalleryFeed';
+import { FamilyCircle } from '@components/feeds/FamilyCircle';
+import { DiscoverySpotlight } from '@components/feeds/DiscoverySpotlight';
+import { FeedComposer } from '@components/feeds/FeedComposer';
+import { Discover } from '@components/discover/Discover';
+
+
 import { useNavigate } from 'react-router-dom';
 import { GuardianDashboard } from './GuardianDashboard';
 import * as Icons from 'lucide-react';
@@ -27,6 +48,7 @@ import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { logout as authLogout } from '@store/slices/authSlice';
 import { clearUser } from '@store/slices/userSlice';
 
+// Village Configurations
 import agricultureConfig from '../../config/villages/agriculture.json';
 import businessConfig from '../../config/villages/business.json';
 import constructionConfig from '../../config/villages/construction.json';
@@ -45,14 +67,12 @@ import spiritualConfig from '../../config/villages/spiritual.json';
 import technologyConfig from '../../config/villages/technology.json';
 import transportConfig from '../../config/villages/transport.json';
 
-
+// ✅ PHASE 1-5: Core Components
 import { FeedTimeline } from '@components/feed/FeedTimeline';
 import { ProfileCard } from './ProfileCard';
 import { AfroIDSection } from './AfroIDSection';
 import { SettingsPanel } from '@components/settings/SettingsPanel';
-import { NotificationCenter } from '@components/notifications/NotificationCenter';
-import { EmergencyContactsManager } from '@components/security/EmergencyContactsManager';
-import { LocationTruthPanel } from '@components/dashboard/LocationTruthPanel';
+import NotificationCenter from '@components/notifications/NotificationCenter';
 import { TwinPresenceToggle } from '@components/dashboard/TwinPresenceToggle';
 import { ProtectionModeScreen } from '@components/security/ProtectionModeScreen';
 import { RequestsSection } from '@components/home/RequestsSection';
@@ -64,8 +84,25 @@ import { VillageChangeSection } from '@components/home/VillageChangeSection';
 import { VillageSelector } from '@components/village/VillageSelector';
 import { RoleChangeRequest } from '@components/village/RoleChangeRequest';
 
-import type { EmergencyContact, ProtectionMode } from '@/types/security.types';
-import type { LocationTruth } from '@/types/location.types';
+// ✅ PHASE 6: Business Session Components - DEFAULT IMPORTS
+import BusinessSession from '@components/business/BusinessSession';
+import EscrowManager from '@components/business/EscrowManager';
+import DisputeResolution from '@components/business/DisputeResolution';
+import SessionHistory from '@components/business/SessionHistory';
+
+// ✅ PHASE 7: LINK Tab (Networking) Components - DEFAULT IMPORTS
+import KinshipNetwork from '@components/market/KinshipNetwork';
+import LinkRequest from '@components/market/LinkRequest';
+import NetworkStats from '@components/market/NetworkStats';
+
+// ✅ PHASE 8: GUARD Tab (Security) Components - DEFAULT IMPORTS
+import SecurityDashboard from '@components/security/SecurityDashboard';
+import WatchfulEye from '@components/security/WatchfulEye';
+import VerificationTiers from '@components/security/VerificationTiers';
+import DeviceManager from '@components/security/DeviceManager';
+import SessionMonitor from '@components/security/SessionMonitor';
+
+import type { ProtectionMode } from '@/types/security.types';
 
 const villageConfigs: Record<string, any> = {
   agriculture: agricultureConfig,
@@ -87,6 +124,7 @@ const villageConfigs: Record<string, any> = {
   transport: transportConfig,
 };
 
+
 interface Tool {
   toolId: string;
   toolName: string;
@@ -99,10 +137,21 @@ const DashboardHome: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   
+  // Navigation States
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeView, setActiveView] = useState<'home' | 'profile' | 'tools' | 'security'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'profile' | 'tools' | 'business' | 'network' | 'security'>('home');
   const [activeBottomTab, setActiveBottomTab] = useState<'home' | 'social' | 'banking' | 'ai' | 'chat'>('home');
   const [activeHomeApp, setActiveHomeApp] = useState<string | null>(null);
+
+  const [activeFeedType, setActiveFeedType] = useState<'village' | 'discover' | 'motion' | 'gallery' | 'voice' | 'family' | 'spotlight'>('village');
+  const [isComposerOpen, setIsComposerOpen] = useState(false);
+  
+  // ✅ Sub-tab states for Phase 6, 7, 8
+  const [activeBusinessTab, setActiveBusinessTab] = useState<'sessions' | 'escrow' | 'history' | 'disputes'>('sessions');
+  const [activeNetworkTab, setActiveNetworkTab] = useState<'kinship' | 'requests' | 'stats'>('kinship');
+  const [activeSecurityTab, setActiveSecurityTab] = useState<'dashboard' | 'watchful-eye' | 'verification' | 'devices' | 'sessions'>('dashboard');
+  
+  // Modal States
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isVillageSelectorOpen, setIsVillageSelectorOpen] = useState(false);
@@ -115,25 +164,12 @@ const DashboardHome: React.FC = () => {
     roleName: string;
     roleIcon: string;
   } | null>(null);
+  
+  // User States
   const [presenceMode, setPresenceMode] = useState<'spirit' | 'flesh'>('spirit');
   const [protectionMode] = useState<ProtectionMode | null>(null);
-  const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([
-    {
-      afro_id: 'YRB-LION-95-HEAL-ELDER01',
-      display_name: 'Adebayo Johnson',
-      relationship: 'Brother',
-      phone: '8012345678',
-      last_confirmed: new Date('2024-01-15'),
-    },
-    {
-      afro_id: 'IGB-EAGLE-88-TEACH-KEEPER12',
-      display_name: 'Chiamaka Okonkwo',
-      relationship: 'Close Friend',
-      phone: '8087654321',
-      last_confirmed: new Date('2024-01-10'),
-    },
-  ]);
   
+  // Redux State
   const theme = useAppSelector((state) => state.theme.theme);
   const user = useAppSelector((state) => state.user.user);
   const userVillage = useAppSelector((state) => state.user.village);
@@ -141,22 +177,17 @@ const DashboardHome: React.FC = () => {
   const phoneNumber = useAppSelector((state) => state.auth.phoneNumber);
   const messageRequests = useAppSelector((state) => state.user.messageRequests);
 
+  // Village Configuration
   const villageConfig = userVillage?.villageId ? villageConfigs[userVillage.villageId] : null;
-  
-  // ✅ FIXED: Support both "roles" and "guilds" structure (getting_started uses guilds)
   const rolesOrGuilds = villageConfig?.roles || villageConfig?.guilds || [];
   const roleConfig = rolesOrGuilds.find((r: any) => 
     r.roleId === userRole?.roleId || r.guildId === userRole?.roleId
   );
-  
-  // ✅ FIXED: Support both tools and extraTools
   const tools: Tool[] = roleConfig?.tools || roleConfig?.extraTools || [];
-  
-  // ✅ FIXED: Support both color formats
   const villageColor = villageConfig?.color || villageConfig?.visual?.colorPrimary || '#10b981';
-  
   const pendingRequestsCount = messageRequests.filter(r => r.status === 'pending').length;
 
+  // Helper Functions
   const resolveIcon = (iconName?: string) => {
     if (!iconName) return Grid;
     const IconComp = (Icons as any)[iconName];
@@ -165,47 +196,17 @@ const DashboardHome: React.FC = () => {
 
   const RoleIcon = resolveIcon(roleConfig?.icon);
   const displayName = user?.full_name || user?.name || phoneNumber || 'User';
-  
-  // ✅ FIXED: Get village name from multiple possible fields
   const villageName = villageConfig?.villageName || villageConfig?.displayName || 'Dashboard';
   const roleName = roleConfig?.roleName || roleConfig?.guildName || 'User';
   
+  // Mock Data
   const spiritAvatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=spirit';
   const fleshPhoto = 'https://api.dicebear.com/7.x/avataaars/svg?seed=real';
   const photoStatus: 'verified_real' | 'flagged_filtered' | 'rejected_ai' | 'not_uploaded' = 'verified_real';
-  
-  const locationTruth: LocationTruth = {
-    network_region_guess: 'West Africa / NG',
-    spoken_declaration: 'I am in Lagos, Victoria Island, Nigeria',
-    clan_confirmations: [
-      {
-        afro_id: 'YRB-LION-95-HEAL-ELDER01',
-        display_name: 'Adebayo Johnson',
-        confirmed_at: new Date('2024-01-15'),
-        location_claimed: 'Lagos, Nigeria',
-      },
-    ],
-    last_verified_at: new Date(),
-    confidence_score: 85,
-  };
 
+  // Event Handlers
   const handlePresenceToggle = (mode: 'spirit' | 'flesh') => {
     setPresenceMode(mode);
-  };
-
-  const handleAddContact = (contact: Omit<EmergencyContact, 'afro_id'>) => {
-    const newContact: EmergencyContact = { ...contact, afro_id: `TEMP-${Date.now()}` };
-    setEmergencyContacts([...emergencyContacts, newContact]);
-  };
-
-  const handleRemoveContact = (afroId: string) => {
-    setEmergencyContacts(emergencyContacts.filter(c => c.afro_id !== afroId));
-  };
-
-  const handleUpdateContact = (afroId: string, contact: Omit<EmergencyContact, 'afro_id'>) => {
-    setEmergencyContacts(emergencyContacts.map(c => 
-      c.afro_id === afroId ? { ...contact, afro_id: afroId } : c
-    ));
   };
 
   const handleRequestCircle = () => {
@@ -248,13 +249,48 @@ const DashboardHome: React.FC = () => {
     navigate('/auth/login', { replace: true });
   };
 
-  // ✅ 5 Bottom nav items: Home, Social, Banking, AI, Chat
+  // Bottom Navigation Items
   const bottomNavItems = [
     { id: 'home', icon: HomeIcon, label: 'Home', color: '#10b981' },
     { id: 'social', icon: Share2, label: 'Social', color: '#3b82f6' },
     { id: 'banking', icon: Building2, label: 'Banking', color: '#f59e0b' },
     { id: 'ai', icon: Bot, label: 'AI Agent', color: '#8b5cf6' },
     { id: 'chat', icon: MessageCircle, label: 'Chat', color: '#ec4899' },
+  ];
+
+  // ✅ Business Tab Configuration
+  const businessTabs = [
+    { id: 'sessions', label: 'Sessions', icon: Briefcase },
+    { id: 'escrow', label: 'Escrow', icon: Shield },
+    { id: 'history', label: 'History', icon: Activity },
+    { id: 'disputes', label: 'Disputes', icon: MessageSquare },
+  ];
+
+  // ✅ Network Tab Configuration
+  const networkTabs = [
+    { id: 'kinship', label: 'Kinship', icon: Users },
+    { id: 'requests', label: 'Requests', icon: Heart },
+    { id: 'stats', label: 'Stats', icon: Activity },
+  ];
+
+  // ✅ Security Tab Configuration
+  const securityTabs = [
+    { id: 'dashboard', label: 'Overview', icon: Shield },
+    { id: 'watchful-eye', label: 'Watchful Eye', icon: Eye },
+    { id: 'verification', label: 'Verification', icon: CreditCard },
+    { id: 'devices', label: 'Devices', icon: Monitor },
+    { id: 'sessions', label: 'Sessions', icon: Activity },
+  ];
+
+  // ✅ Feed Tab Configuration
+    const feedTabs = [
+    { id: 'village', label: 'Village Square', icon: Users, color: '#10b981' },
+    { id: 'discover', label: 'Discover', icon: Search, color: '#06b6d4' }, // ✅ ADD THIS
+    { id: 'motion', label: 'Motion', icon: Video, color: '#f59e0b' },
+    { id: 'gallery', label: 'Gallery', icon: Image, color: '#ec4899' },
+    { id: 'voice', label: 'Voice', icon: Mic, color: '#8b5cf6' },
+    { id: 'family', label: 'Family', icon: Heart, color: '#ef4444' },
+    { id: 'spotlight', label: 'Spotlight', icon: Sparkles, color: '#fbbf24' },
   ];
 
   return (
@@ -302,7 +338,37 @@ const DashboardHome: React.FC = () => {
           </div>
         </div>
 
-        {/* ✅ Mobile Menu - Slide from LEFT (Sidebar Style) */}
+        {/* Feed Type Tabs - Only show when in social view */}
+        {activeView === 'home' && activeBottomTab === 'social' && (
+          <div className="overflow-x-auto pb-2 px-4 hide-scrollbar">
+            <div className="flex items-center gap-2 min-w-max">
+              {feedTabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeFeedType === tab.id;
+                
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveFeedType(tab.id as any)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+                      isActive
+                        ? 'text-white'
+                        : theme === 'dark'
+                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    style={isActive ? { backgroundColor: tab.color } : {}}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Menu Sidebar */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <>
@@ -359,6 +425,28 @@ const DashboardHome: React.FC = () => {
                   >
                     <User className="w-5 h-5" />
                     <span className="font-medium">Profile</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveView('business'); setIsMobileMenuOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                      activeView === 'business'
+                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Briefcase className="w-5 h-5" />
+                    <span className="font-medium">Business</span>
+                  </button>
+                  <button
+                    onClick={() => { setActiveView('network'); setIsMobileMenuOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                      activeView === 'network'
+                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <LinkIcon className="w-5 h-5" />
+                    <span className="font-medium">Network</span>
                   </button>
                   <button
                     onClick={() => { setActiveView('security'); setIsMobileMenuOpen(false); }}
@@ -467,6 +555,28 @@ const DashboardHome: React.FC = () => {
                 <span className="font-medium">Profile</span>
               </button>
               <button
+                onClick={() => setActiveView('business')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'business'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <Briefcase className="w-5 h-5" />
+                <span className="font-medium">Business</span>
+              </button>
+              <button
+                onClick={() => setActiveView('network')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeView === 'network'
+                    ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                    : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                <LinkIcon className="w-5 h-5" />
+                <span className="font-medium">Network</span>
+              </button>
+              <button
                 onClick={() => setActiveView('security')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   activeView === 'security'
@@ -526,7 +636,7 @@ const DashboardHome: React.FC = () => {
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
             <AnimatePresence mode="wait">
-              {/* HOME VIEW - 6 APP ICONS (No Tools) */}
+              {/* HOME VIEW */}
               {activeView === 'home' && activeBottomTab === 'home' && (
                 <motion.div
                   key="home"
@@ -557,7 +667,7 @@ const DashboardHome: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* 6 App Icons (No Tools) */}
+                  {/* 6 App Icons */}
                   <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
                     <motion.button
                       onClick={() => setActiveHomeApp('requests')}
@@ -663,13 +773,78 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* SOCIAL VIEW (Feed/Posts) */}
+              {/* SOCIAL VIEW */}
               {activeView === 'home' && activeBottomTab === 'social' && (
-                <motion.div key="social" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                  <FeedTimeline />
+                <motion.div 
+                  key="social" 
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  exit={{ opacity: 0, y: -20 }}
+                  className="relative"
+                >
+                  <AnimatePresence mode="wait">
+                    {activeFeedType === 'village' && (
+                      <motion.div key="village-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <FeedTimeline />
+                      </motion.div>
+                    )}
+                    
+                    {activeFeedType === 'discover' && (
+                      <motion.div key="discover-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <Discover />
+                      </motion.div>
+                    )}
+                    
+                    {activeFeedType === 'motion' && (
+                      <motion.div key="motion-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <MotionFeed />
+                      </motion.div>
+                    )}
+                    
+                    {activeFeedType === 'gallery' && (
+                      <motion.div key="gallery-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <GalleryFeed />
+                      </motion.div>
+                    )}
+                    
+                    {activeFeedType === 'voice' && (
+                      <motion.div key="voice-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <div className={`p-4 sm:p-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                          <div className={`p-8 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
+                            <Mic className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                            <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                              Voice Feed
+                            </h3>
+                            <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                              Audio discussions and voice notes (Coming Soon)
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                    
+                    {activeFeedType === 'family' && (
+                      <motion.div key="family-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <FamilyCircle />
+                      </motion.div>
+                    )}
+                    
+                    {activeFeedType === 'spotlight' && (
+                      <motion.div key="spotlight-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <DiscoverySpotlight />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Floating Create Post Button */}
+                  <button
+                    onClick={() => setIsComposerOpen(true)}
+                    className="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
+                  >
+                    <Plus className="w-6 h-6" />
+                  </button>
                 </motion.div>
               )}
-
               {/* BANKING VIEW */}
               {activeView === 'home' && activeBottomTab === 'banking' && (
                 <motion.div key="banking" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
@@ -688,7 +863,7 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* CHAT VIEW (Direct Messages) */}
+              {/* CHAT VIEW */}
               {activeView === 'home' && activeBottomTab === 'chat' && (
                 <motion.div key="chat" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                   <MessageCircle className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
@@ -697,11 +872,18 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* PROFILE VIEW (Analytics at bottom) */}
+              {/* PROFILE VIEW */}
               {activeView === 'profile' && (
                 <motion.div key="profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 max-w-4xl mx-auto">
                   <div className="flex justify-end mb-4">
-                    <TwinPresenceToggle spiritAvatar={spiritAvatar} fleshPhoto={fleshPhoto} hasFleshAccess={true} currentMode={presenceMode} onToggle={handlePresenceToggle} photoStatus={photoStatus} />
+                    <TwinPresenceToggle 
+                      spiritAvatar={spiritAvatar} 
+                      fleshPhoto={fleshPhoto} 
+                      hasFleshAccess={true} 
+                      currentMode={presenceMode} 
+                      onToggle={handlePresenceToggle} 
+                      photoStatus={photoStatus} 
+                    />
                   </div>
                   <ProfileCard viewType="self" onEditProfile={() => console.log('Edit profile')} />
                   <GuardianDashboard
@@ -722,7 +904,7 @@ const DashboardHome: React.FC = () => {
                   />
                   <AfroIDSection showWarning={true} allowDownload={true} allowShare={true} />
                   
-                  {/* Analytics Section at Bottom of Profile */}
+                  {/* Analytics Section */}
                   <div className={`p-8 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
                     <h3 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                       Analytics
@@ -749,7 +931,242 @@ const DashboardHome: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* SECURITY VIEW */}
+              {/* ✅ PHASE 6: BUSINESS VIEW - WITH SUB-TABS */}
+              {activeView === 'business' && (
+                <motion.div key="business" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+                  <div>
+                    <h2 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      Business Sessions
+                    </h2>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Manage your professional engagements
+                    </p>
+                  </div>
+
+                  {/* Business Tabs */}
+                  <div className={`flex gap-2 overflow-x-auto pb-2 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b`}>
+                    {businessTabs.map((tab) => {
+                      const TabIcon = tab.icon;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveBusinessTab(tab.id as any)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                            activeBusinessTab === tab.id
+                              ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                              : theme === 'dark' ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          <TabIcon className="w-4 h-4" />
+                          <span className="text-sm font-medium">{tab.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Business Tab Content */}
+                  <AnimatePresence mode="wait">
+                    {activeBusinessTab === 'sessions' && (
+                      <motion.div key="sessions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <BusinessSession 
+                          professionalId="prof-123"
+                          professionalName="John Doe"
+                          professionalVillage={villageName}
+                          professionalVillageColor={villageColor}
+                          professionalCrest={8}
+                          serviceType="Professional Service"
+                          onClose={() => setActiveBusinessTab('sessions')}
+                        />
+                      </motion.div>
+                    )}
+                    {activeBusinessTab === 'escrow' && (
+                      <motion.div key="escrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <EscrowManager 
+                          escrowId="esc-456"
+                          amount={45000}
+                          currency="NGN"
+                          payerId={user?.id || 'user-123'}
+                          beneficiaryId="prof-123"
+                          payerName={displayName}
+                          beneficiaryName="John Doe"
+                          status="locked"
+                          createdAt={new Date().toISOString()}
+                          onFund={() => console.log('Fund escrow')}
+                          onRelease={() => console.log('Release escrow')}
+                          onRefund={() => console.log('Refund escrow')}
+                          onRaiseDispute={(reason, evidence) => console.log('Raise dispute', reason, evidence)}
+                        />
+                      </motion.div>
+                    )}
+                    {activeBusinessTab === 'history' && (
+                      <motion.div key="history" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <SessionHistory 
+                          userId={user?.id || 'user-123'}
+                          transactions={[]}
+                          isLoading={false}
+                          onViewDetails={(sessionId) => console.log('View details', sessionId)}
+                          onDownloadReceipt={(receiptId) => console.log('Download receipt', receiptId)}
+                          onViewDispute={(sessionId) => console.log('View dispute', sessionId)}
+                        />
+                      </motion.div>
+                    )}
+                    {activeBusinessTab === 'disputes' && (
+                      <motion.div key="disputes" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <DisputeResolution 
+                          escrowId="esc-456"
+                          disputeId="disp-789"
+                          mootId="moot-101"
+                          sessionId="sess-202"
+                          amount={45000}
+                          raisedBy="payer"
+                          status="evidence_submission"
+                          parties={{
+                            payer: { id: user?.id || 'user-123', name: displayName, crest: 7 },
+                            beneficiary: { id: 'prof-123', name: 'John Doe', crest: 8 }
+                          }}
+                          mediator={{
+                            id: 'med-303',
+                            name: 'Elder Smith',
+                            village: villageName,
+                            crest: 10,
+                            mootsResolved: 45
+                          }}
+                          evidence={[]}
+                          messages={[]}
+                          timeline={{
+                            initiated: new Date().toISOString(),
+                            mediatorAssigned: new Date().toISOString(),
+                            evidenceDeadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+                          }}
+                          onFileUpload={async (file, description) => console.log('File upload', file, description)}
+                          onSendMessage={async (message, isPrivate) => console.log('Send message', message, isPrivate)}
+                          onAcceptResolution={async () => console.log('Accept resolution')}
+                          onRejectResolution={async () => console.log('Reject resolution')}
+                          onEscalate={async (reason) => console.log('Escalate', reason)}
+                          onClose={() => setActiveBusinessTab('disputes')}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              )}
+
+              // ✅ PHASE 7: NETWORK VIEW - WITH SUB-TABS (Fixed)
+              {activeView === 'network' && (
+                <motion.div key="network" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+                  <div>
+                    <h2 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      Kinship Network
+                    </h2>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Your professional connections and community
+                    </p>
+                  </div>
+
+                  {/* Network Tabs */}
+                  <div className={`flex gap-2 overflow-x-auto pb-2 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b`}>
+                    {networkTabs.map((tab) => {
+                      const TabIcon = tab.icon;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveNetworkTab(tab.id as any)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                            activeNetworkTab === tab.id
+                              ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                              : theme === 'dark' ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          <TabIcon className="w-4 h-4" />
+                          <span className="text-sm font-medium">{tab.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Network Tab Content */}
+                  <AnimatePresence mode="wait">
+                    {activeNetworkTab === 'kinship' && (
+                      <motion.div key="kinship" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <KinshipNetwork 
+                          userId={user?.id || 'user-123'}
+                          userVillage={villageName}
+                          connections={[]}
+                          pendingRequests={0}
+                          isLoading={false}
+                          onViewProfile={(connectionId) => console.log('View profile', connectionId)}
+                          onSendMessage={(connectionId) => console.log('Send message', connectionId)}
+                          onViewRequests={() => setActiveNetworkTab('requests')}
+                        />
+                      </motion.div>
+                    )}
+                    {activeNetworkTab === 'requests' && (
+                      <motion.div key="requests" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <LinkRequest 
+                          currentUserId={user?.id || 'user-123'}
+                          receivedRequests={[]}
+                          sentRequests={[]}
+                          suggestions={[]}
+                          isLoading={false}
+                          onAcceptRequest={async (requestId) => console.log('Accept request', requestId)}
+                          onRejectRequest={async (requestId) => console.log('Reject request', requestId)}
+                          onCancelRequest={async (requestId) => console.log('Cancel request', requestId)}
+                          onSendRequest={async (userId, message) => console.log('Send request', userId, message)}
+                          onViewProfile={(userId) => console.log('View profile', userId)}
+                        />
+                      </motion.div>
+                    )}
+                    {activeNetworkTab === 'stats' && (
+                      <motion.div key="stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <NetworkStats 
+                          userId={user?.id || 'user-123'}
+                          metrics={{
+                            totalConnections: 248,
+                            newConnectionsThisWeek: 12,
+                            connectionGrowthRate: 15.5,
+                            averageCrest: 7.2,
+                            totalSessions: 156,
+                            activeConnections: 189,
+                            mutualConnectionRate: 0.68
+                          }}
+                          villageDistribution={[
+                            { village: villageName, count: 85, percentage: 34 },
+                            { village: 'Technology', count: 62, percentage: 25 },
+                            { village: 'Creative', count: 48, percentage: 19 },
+                            { village: 'Business', count: 35, percentage: 14 },
+                            { village: 'Healthcare', count: 18, percentage: 8 }
+                          ]}
+                          tierDistribution={[
+                            { tier: 'C1', count: 156, percentage: 63 },
+                            { tier: 'C2', count: 68, percentage: 27 },
+                            { tier: 'C3', count: 24, percentage: 10 }
+                          ]}
+                          engagementData={{
+                            messagesExchanged: 1247,
+                            profileViews: 3456,
+                            sessionRequests: 89,
+                            averageResponseTime: '2h'
+                          }}
+                          growthData={[
+                            { period: 'Jan', connections: 180, sessions: 45 },
+                            { period: 'Feb', connections: 195, sessions: 52 },
+                            { period: 'Mar', connections: 210, sessions: 63 },
+                            { period: 'Apr', connections: 228, sessions: 78 },
+                            { period: 'May', connections: 248, sessions: 89 }
+                          ]}
+                          topConnections={[
+                            { id: '1', name: 'Sarah Johnson', village: 'Technology', sessions: 23, mutualConnections: 45 },
+                            { id: '2', name: 'Michael Chen', village: 'Creative', sessions: 18, mutualConnections: 38 },
+                            { id: '3', name: 'Amina Okafor', village: villageName, sessions: 15, mutualConnections: 52 }
+                          ]}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              )}
+
+              // ✅ PHASE 8: SECURITY VIEW - WITH SUB-TABS (Fixed)
               {activeView === 'security' && (
                 <motion.div key="security" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
                   <div className="flex items-center gap-4 mb-6">
@@ -757,32 +1174,259 @@ const DashboardHome: React.FC = () => {
                       <Shield className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Security Dashboard</h2>
-                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Your protection and trusted circle</p>
+                      <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                        Ancestral Shield
+                      </h2>
+                      <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Your complete security and verification system
+                      </p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <GuardianDashboard
-                      shield={{
-                        afro_id: user?.afro_id || '',
-                        overall_state: 'calm',
-                        last_updated: new Date(),
-                        guardians: {
-                          voice_spirit: { status: 'ok', last_check: new Date(), message: 'Voice pattern recognized', voiceprint_match_score: 92 },
-                          drum_binding: { status: 'ok', last_check: new Date(), message: 'Device blessed and recognized', registered_devices: 2, current_device_blessed: true },
-                          footsteps: { status: 'ok', last_check: new Date(), message: 'Behavior pattern normal', anomaly_score: 5 },
-                          cultural_memory: { status: 'ok', last_check: new Date(), message: 'Identity consistent', consistency_score: 95 },
-                        },
-                        recommended_restrictions: [],
-                        requires_clan_blessing: false,
-                      }}
-                      showDetails={true}
-                    />
-                    <LocationTruthPanel locationTruth={locationTruth} isOwner={true} />
-                    <div className="lg:col-span-2">
-                      <EmergencyContactsManager contacts={emergencyContacts} maxContacts={5} onAdd={handleAddContact} onRemove={handleRemoveContact} onUpdate={handleUpdateContact} />
-                    </div>
+
+                  {/* Security Tabs */}
+                  <div className={`flex gap-2 overflow-x-auto pb-2 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b`}>
+                    {securityTabs.map((tab) => {
+                      const TabIcon = tab.icon;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveSecurityTab(tab.id as any)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                            activeSecurityTab === tab.id
+                              ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                              : theme === 'dark' ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          <TabIcon className="w-4 h-4" />
+                          <span className="text-sm font-medium">{tab.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
+
+                  {/* Security Tab Content */}
+                  <AnimatePresence mode="wait">
+                    {activeSecurityTab === 'dashboard' && (
+                      <motion.div key="security-dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <SecurityDashboard 
+                          userId={user?.id || 'user-123'}
+                          metrics={{
+                            overallScore: 85,
+                            securityLevel: 'high',
+                            threatLevel: 'low',
+                            lastSecurityCheck: new Date().toISOString(),
+                            protectionModesActive: 4
+                          }}
+                          verificationStatus={{
+                            crest: 7,
+                            shield: {
+                              level: 3,
+                              maxLevel: 5,
+                              status: 'active'
+                            },
+                            honor: {
+                              stage: 2,
+                              maxStage: 5,
+                              title: 'Trusted Member'
+                            }
+                          }}
+                          recentActivity={[
+                            {
+                              id: '1',
+                              type: 'login',
+                              description: 'Successful login from Lagos',
+                              timestamp: new Date().toISOString(),
+                              location: 'Lagos, Nigeria',
+                              device: 'iPhone 14',
+                              status: 'success'
+                            }
+                          ]}
+                          trustedDevices={[
+                            {
+                              id: 'dev-1',
+                              name: 'iPhone 14',
+                              type: 'mobile',
+                              lastUsed: new Date().toISOString(),
+                              location: 'Lagos, Nigeria',
+                              isCurrentDevice: true
+                            }
+                          ]}
+                          emergencyContacts={3}
+                          activeSessions={1}
+                          protectionModeActive={false}
+                          onViewActivity={() => console.log('View activity')}
+                          onManageDevices={() => setActiveSecurityTab('devices')}
+                          onManageContacts={() => console.log('Manage contacts')}
+                          onViewSessions={() => setActiveSecurityTab('sessions')}
+                          onConfigureSecurity={() => console.log('Configure security')}
+                          onActivateProtection={() => console.log('Activate protection')}
+                        />
+                      </motion.div>
+                    )}
+                    {activeSecurityTab === 'watchful-eye' && (
+                      <motion.div key="watchful-eye" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <WatchfulEye 
+                          isActive={true}
+                          reason="transaction"
+                          transactionAmount={45000}
+                          onCaptureComplete={async (capture) => {
+                            console.log('Capture complete', capture);
+                            return true;
+                          }}
+                          onCancel={() => setActiveSecurityTab('dashboard')}
+                          onSkip={() => setActiveSecurityTab('dashboard')}
+                        />
+                      </motion.div>
+                    )}
+                    {activeSecurityTab === 'verification' && (
+                      <motion.div key="verification" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <VerificationTiers 
+                          crest={{
+                            level: 7,
+                            maxLevel: 10,
+                            progress: 65,
+                            nextLevelRequirements: {
+                              transactions: 50,
+                              rating: 4.5,
+                              timeInDays: 90
+                            },
+                            benefits: [
+                              'Access to premium tools',
+                              'Priority support',
+                              'Lower transaction fees',
+                              'Verified badge'
+                            ]
+                          }}
+                          shield={{
+                            level: 3,
+                            maxLevel: 5,
+                            status: 'active',
+                            protections: [
+                              {
+                                name: 'Two-Factor Authentication',
+                                enabled: true,
+                                description: 'Extra layer of security for your account'
+                              },
+                              {
+                                name: 'Device Recognition',
+                                enabled: true,
+                                description: 'Automatic detection of trusted devices'
+                              },
+                              {
+                                name: 'Face Verification',
+                                enabled: false,
+                                description: 'Biometric verification for sensitive actions'
+                              }
+                            ],
+                            vulnerabilities: []
+                          }}
+                          honor={{
+                            stage: 2,
+                            maxStage: 5,
+                            title: 'Trusted Member',
+                            description: 'You have established yourself as a reliable community member',
+                            achievements: [
+                              {
+                                name: 'Complete Profile',
+                                completed: true,
+                                description: 'Fill out all profile information'
+                              },
+                              {
+                                name: 'First Connection',
+                                completed: true,
+                                description: 'Make your first professional connection'
+                              },
+                              {
+                                name: 'Verified Identity',
+                                completed: false,
+                                description: 'Complete identity verification process'
+                              }
+                            ],
+                            nextStageRequirements: [
+                              'Complete 100 successful transactions',
+                              'Maintain 4.5+ rating for 6 months',
+                              'Verify your identity with government ID'
+                            ]
+                          }}
+                          onUpgradeCrest={() => console.log('Upgrade crest')}
+                          onActivateShield={() => console.log('Activate shield')}
+                          onViewAchievements={() => console.log('View achievements')}
+                        />
+                      </motion.div>
+                    )}
+                    {activeSecurityTab === 'devices' && (
+                      <motion.div key="devices" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <DeviceManager 
+                          devices={[
+                            {
+                              id: 'dev-1',
+                              name: 'iPhone 14',
+                              type: 'mobile',
+                              browser: 'safari',
+                              browserVersion: '17.0',
+                              os: 'iOS',
+                              osVersion: '17.0',
+                              status: 'active',
+                              location: {
+                                city: 'Lagos',
+                                country: 'Nigeria'
+                              },
+                              ipAddress: '197.210.x.x',
+                              lastActive: new Date(),
+                              firstSeen: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                              isCurrent: true,
+                              trustScore: 95,
+                              loginCount: 156
+                            }
+                          ]}
+                          currentDeviceId="dev-1"
+                          onTrustDevice={(deviceId) => console.log('Trust device', deviceId)}
+                          onBlockDevice={(deviceId) => console.log('Block device', deviceId)}
+                          onRemoveDevice={(deviceId) => console.log('Remove device', deviceId)}
+                          onRefreshDevices={() => console.log('Refresh devices')}
+                          onAddDevice={() => console.log('Add device')}
+                        />
+                      </motion.div>
+                    )}
+                    {activeSecurityTab === 'sessions' && (
+                      <motion.div key="sessions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <SessionMonitor 
+                          sessions={[
+                            {
+                              id: 'sess-1',
+                              deviceName: 'iPhone 14',
+                              deviceType: 'mobile',
+                              browser: 'Safari',
+                              browserVersion: '17.0',
+                              os: 'iOS 17.0',
+                              location: {
+                                city: 'Lagos',
+                                country: 'Nigeria',
+                                ip: '197.210.x.x'
+                              },
+                              status: 'active',
+                              startedAt: new Date(),
+                              lastActivity: new Date(),
+                              expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+                              isCurrent: true,
+                              isSecure: true,
+                              activities: [
+                                {
+                                  timestamp: new Date(),
+                                  action: 'Logged in',
+                                  details: 'From Lagos, Nigeria'
+                                }
+                              ]
+                            }
+                          ]}
+                          onTerminateSession={(sessionId) => console.log('Terminate session', sessionId)}
+                          onTerminateAllOthers={() => console.log('Terminate all others')}
+                          onRefreshSessions={() => console.log('Refresh sessions')}
+                          maxConcurrentSessions={5}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
 
@@ -794,7 +1438,6 @@ const DashboardHome: React.FC = () => {
                     <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tools.length} tools available for {roleName}</p>
                   </div>
                   
-                  {/* ✅ Show message if no tools available (for getting_started village) */}
                   {tools.length === 0 ? (
                     <div className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                       <Grid className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
@@ -808,14 +1451,33 @@ const DashboardHome: React.FC = () => {
                       {tools.map((tool) => {
                         const ToolIcon = resolveIcon(tool.icon);
                         return (
-                          <motion.button key={tool.toolId} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className={`p-6 rounded-xl text-left transition-all ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-lg'}`}>
-                            <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: `${villageColor}20`, color: villageColor }}>
+                          <motion.button 
+                            key={tool.toolId} 
+                            whileHover={{ scale: 1.02 }} 
+                            whileTap={{ scale: 0.98 }} 
+                            className={`p-6 rounded-xl text-left transition-all ${
+                              theme === 'dark' ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-lg'
+                            }`}
+                          >
+                            <div 
+                              className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" 
+                              style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+                            >
                               <ToolIcon className="w-7 h-7" />
                             </div>
-                            <h4 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{tool.toolName}</h4>
-                            <p className={`text-sm line-clamp-2 mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tool.description}</p>
+                            <h4 className={`font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                              {tool.toolName}
+                            </h4>
+                            <p className={`text-sm line-clamp-2 mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {tool.description}
+                            </p>
                             {tool.category && (
-                              <span className="inline-block px-2 py-1 text-xs rounded-full" style={{ backgroundColor: `${villageColor}15`, color: villageColor }}>{tool.category}</span>
+                              <span 
+                                className="inline-block px-2 py-1 text-xs rounded-full" 
+                                style={{ backgroundColor: `${villageColor}15`, color: villageColor }}
+                              >
+                                {tool.category}
+                              </span>
                             )}
                           </motion.button>
                         );
@@ -829,7 +1491,7 @@ const DashboardHome: React.FC = () => {
         </main>
       </div>
 
-      {/* ✅ Bottom Navigation Bar (5 tabs: Home, Social, Banking, AI, Chat) */}
+      {/* Bottom Navigation Bar */}
       <nav className={`fixed bottom-0 left-0 right-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
         <div className="flex items-center justify-around px-2 py-3 max-w-screen-xl mx-auto">
           {bottomNavItems.map((item) => {
@@ -842,12 +1504,29 @@ const DashboardHome: React.FC = () => {
                   setActiveBottomTab(item.id as any);
                   setActiveView('home');
                 }}
-                className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${isActive ? 'scale-105' : 'opacity-70 hover:opacity-100'}`}
+                className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${
+                  isActive ? 'scale-105' : 'opacity-70 hover:opacity-100'
+                }`}
               >
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${isActive ? 'scale-110' : ''}`} style={{ backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6', color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280' }}>
+                <div 
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${
+                    isActive ? 'scale-110' : ''
+                  }`} 
+                  style={{ 
+                    backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6', 
+                    color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280' 
+                  }}
+                >
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <span className={`text-xs font-medium transition-colors ${isActive ? theme === 'dark' ? 'text-white' : 'text-gray-900' : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} style={{ color: isActive ? item.color : undefined }}>
+                <span 
+                  className={`text-xs font-medium transition-colors ${
+                    isActive 
+                      ? theme === 'dark' ? 'text-white' : 'text-gray-900' 
+                      : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }`} 
+                  style={{ color: isActive ? item.color : undefined }}
+                >
                   {item.label}
                 </span>
               </button>
@@ -860,10 +1539,25 @@ const DashboardHome: React.FC = () => {
       <AnimatePresence>
         {activeHomeApp && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveHomeApp(null)} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" />
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setActiveHomeApp(null)} 
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" 
+            />
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-              <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 20 }} className={`w-full max-w-4xl max-h-[90vh] overflow-y-auto ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-2xl`}>
-                <div className={`sticky top-0 z-10 flex items-center justify-between p-6 border-b ${theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+                animate={{ opacity: 1, scale: 1, y: 0 }} 
+                exit={{ opacity: 0, scale: 0.9, y: 20 }} 
+                className={`w-full max-w-4xl max-h-[90vh] overflow-y-auto ${
+                  theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+                } rounded-2xl shadow-2xl`}
+              >
+                <div className={`sticky top-0 z-10 flex items-center justify-between p-6 border-b ${
+                  theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
+                }`}>
                   <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                     {activeHomeApp === 'requests' && 'Message Requests'}
                     {activeHomeApp === 'connections' && 'My Connections'}
@@ -872,7 +1566,10 @@ const DashboardHome: React.FC = () => {
                     {activeHomeApp === 'preferences' && 'Content Preferences'}
                     {activeHomeApp === 'village' && 'Change Village or Role'}
                   </h2>
-                  <button onClick={() => setActiveHomeApp(null)} className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}>
+                  <button 
+                    onClick={() => setActiveHomeApp(null)} 
+                    className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}
+                  >
                     <X className="w-6 h-6" />
                   </button>
                 </div>
@@ -882,7 +1579,9 @@ const DashboardHome: React.FC = () => {
                   {activeHomeApp === 'community' && <CommunitySection />}
                   {activeHomeApp === 'familytree' && <FamilyTreeSection />}
                   {activeHomeApp === 'preferences' && <ContentPreferencesSection />}
-                  {activeHomeApp === 'village' && <VillageChangeSection onOpenVillageSelector={handleOpenVillageSelector} />}
+                  {activeHomeApp === 'village' && (
+                    <VillageChangeSection onOpenVillageSelector={handleOpenVillageSelector} />
+                  )}
                 </div>
               </motion.div>
             </div>
@@ -890,9 +1589,14 @@ const DashboardHome: React.FC = () => {
         )}
       </AnimatePresence>
 
+      {/* Global Modals */}
       <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       <NotificationCenter isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)} />
-      <VillageSelector isOpen={isVillageSelectorOpen} onClose={() => setIsVillageSelectorOpen(false)} onSelectVillage={handleSelectVillage} />
+      <VillageSelector 
+        isOpen={isVillageSelectorOpen} 
+        onClose={() => setIsVillageSelectorOpen(false)} 
+        onSelectVillage={handleSelectVillage} 
+      />
       
       {selectedVillageForChange && (
         <RoleChangeRequest
@@ -912,8 +1616,24 @@ const DashboardHome: React.FC = () => {
       )}
       
       {protectionMode?.active && (
-        <ProtectionModeScreen protectionMode={protectionMode} onRequestCircle={handleRequestCircle} onContactSupport={handleContactSupport} />
+        <ProtectionModeScreen 
+          protectionMode={protectionMode} 
+          onRequestCircle={handleRequestCircle} 
+          onContactSupport={handleContactSupport} 
+        />
       )}
+
+        {/* Feed Composer Modal */}
+      <FeedComposer 
+        isOpen={isComposerOpen} 
+        onClose={() => setIsComposerOpen(false)}
+        defaultFeedType={activeFeedType}
+        onPost={(postData) => {
+          console.log('Post created:', postData);
+          setIsComposerOpen(false);
+          // TODO: Handle post submission
+        }}
+      />
     </div>
   );
 };

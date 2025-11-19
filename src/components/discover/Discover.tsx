@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, MapPin, Zap, Award, SlidersHorizontal } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import { ProfessionalCard } from './ProfessionalCard';
+import { DiscoverFilters, FilterState } from './DiscoverFilters';
 
 // Type definitions
 interface Village {
@@ -50,18 +51,51 @@ type DiscoverMode = 'nearby' | 'urgent' | 'trusted';
  * - Search by proximity, urgency, trust
  * - Result cards with "Request Work" CTA
  * 
+ * TODO - Redux Integration:
+ * Replace the mock villages array with:
+ * const villages = useAppSelector((state) => state.yourVillageSlice.villages);
+ * 
+ * Or fetch from API:
+ * useEffect(() => { dispatch(fetchVillages()); }, []);
+ * 
  * Location: src/pages/Discover.tsx or src/components/discover/DiscoverPage.tsx
  */
 export const Discover: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.theme);
-  // DashboardState may not declare `villages`; coerce safely and default to an empty array
-  const villages = useAppSelector((state) => ((state.dashboard as any)?.villages ?? [])) as Village[];
+  
+  // TODO: Replace with actual Redux selector when villages are in state
+  // For now, using mock data structure that matches your villages config
+  const villages: Village[] = [
+    { villageId: 'agriculture', villageName: 'Agriculture Village', primaryColor: '#10b981', roles: [] },
+    { villageId: 'business', villageName: 'Business Village', primaryColor: '#f59e0b', roles: [] },
+    { villageId: 'construction', villageName: 'Construction Village', primaryColor: '#3b82f6', roles: [] },
+    { villageId: 'crafts', villageName: 'Crafts Village', primaryColor: '#8b5cf6', roles: [] },
+    { villageId: 'creative', villageName: 'Creative Village', primaryColor: '#ec4899', roles: [] },
+    { villageId: 'education', villageName: 'Education Village', primaryColor: '#14b8a6', roles: [] },
+    { villageId: 'finance', villageName: 'Finance Village', primaryColor: '#eab308', roles: [] },
+    { villageId: 'governance', villageName: 'Governance Village', primaryColor: '#dc2626', roles: [] },
+    { villageId: 'government', villageName: 'Government Village', primaryColor: '#b91c1c', roles: [] },
+    { villageId: 'healthcare', villageName: 'Healthcare Village', primaryColor: '#06b6d4', roles: [] },
+    { villageId: 'hospitality', villageName: 'Hospitality Village', primaryColor: '#f97316', roles: [] },
+    { villageId: 'media', villageName: 'Media Village', primaryColor: '#a855f7', roles: [] },
+    { villageId: 'security', villageName: 'Security Village', primaryColor: '#ef4444', roles: [] },
+    { villageId: 'spiritual', villageName: 'Spiritual Village', primaryColor: '#6366f1', roles: [] },
+    { villageId: 'technology', villageName: 'Technology Village', primaryColor: '#0ea5e9', roles: [] },
+    { villageId: 'transport', villageName: 'Transport Village', primaryColor: '#22c55e', roles: [] },
+    { villageId: 'getting_started', villageName: 'Getting Started', primaryColor: '#6b7280', roles: [] },
+  ];
   
   const [selectedVillageId, setSelectedVillageId] = useState<string>('');
   const [selectedGuildId, setSelectedGuildId] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [discoverMode, setDiscoverMode] = useState<DiscoverMode>('nearby');
   const [showFilters, setShowFilters] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState<FilterState>({});
+  
+  const handleApplyFilters = (filters: FilterState) => {
+    setAppliedFilters(filters);
+    // TODO: Apply filters to results
+  };
   
   // Mock professionals data - TODO: Replace with API call
   const professionals: Professional[] = [
@@ -369,6 +403,14 @@ export const Discover: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {/* Filters Modal */}
+      <DiscoverFilters
+        isOpen={showFilters}
+        onClose={() => setShowFilters(false)}
+        onApplyFilters={handleApplyFilters}
+        currentFilters={appliedFilters}
+      />
     </div>
   );
 };
