@@ -38,38 +38,11 @@ interface PostData {
   voiceNote?: Blob;
   location?: string;
   tags?: string[];
-  price?: number; // For marketplace posts
-  eventDate?: Date; // For family/community events
-  targetAmount?: number; // For fundraising
+  price?: number;
+  eventDate?: Date;
+  targetAmount?: number;
 }
 
-/**
- * FEED COMPOSER COMPONENT
- * 
- * Universal post creation modal for all feed types.
- * 
- * Features:
- * - Multi-feed support (Motion, Gallery, Voice, Family, Village)
- * - Media upload (photos, videos, voice)
- * - Identity skin selection (Work/Public/Clan)
- * - Privacy controls (5 levels)
- * - Location tagging
- * - Hashtags
- * - Price setting (for products)
- * - Event date (for announcements)
- * - Fundraising goal (for community)
- * - Character limits per feed type
- * - Preview before posting
- * 
- * Feed Type Limits:
- * - Motion: 400 chars, 1 video (90s max)
- * - Gallery: 2000 chars, 1-10 photos
- * - Voice: 400 chars, 1 voice note (90s max)
- * - Family: 2000 chars, 1 photo
- * - Village: 1000 chars, 1 photo/video
- * 
- * Location: src/components/feeds/FeedComposer.tsx
- */
 export const FeedComposer: React.FC<FeedComposerProps> = ({
   isOpen,
   onClose,
@@ -93,14 +66,14 @@ export const FeedComposer: React.FC<FeedComposerProps> = ({
   const [targetAmount, setTargetAmount] = useState<number | undefined>();
   
   const feedTypes: Array<{ id: FeedType; label: string; icon: React.ElementType; limit: number }> = [
-  { id: 'village', label: 'Village Square', icon: Users, limit: 1000 },
-  { id: 'discover', label: 'Discover', icon: Search, limit: 1000 }, // ✅ ADD THIS
-  { id: 'motion', label: 'Motion', icon: Video, limit: 400 },
-  { id: 'gallery', label: 'Gallery', icon: ImageIcon, limit: 2000 },
-  { id: 'voice', label: 'Voice', icon: Mic, limit: 400 },
-  { id: 'family', label: 'Family Circle', icon: Users, limit: 2000 },
-  { id: 'spotlight', label: 'Spotlight', icon: Sparkles, limit: 1000 },
-];
+    { id: 'village', label: 'Village Square', icon: Users, limit: 1000 },
+    { id: 'discover', label: 'Discover', icon: Search, limit: 1000 },
+    { id: 'motion', label: 'Motion', icon: Video, limit: 400 },
+    { id: 'gallery', label: 'Gallery', icon: ImageIcon, limit: 2000 },
+    { id: 'voice', label: 'Voice', icon: Mic, limit: 400 },
+    { id: 'family', label: 'Family Circle', icon: Users, limit: 2000 },
+    { id: 'spotlight', label: 'Spotlight', icon: Sparkles, limit: 1000 },
+  ];
   
   const privacyLevels: Array<{ id: PrivacyLevel; label: string; icon: React.ElementType; description: string }> = [
     { id: 'public', label: 'Public', icon: Globe, description: 'Everyone can see' },
@@ -164,17 +137,17 @@ export const FeedComposer: React.FC<FeedComposerProps> = ({
             className="fixed inset-0 bg-black/50 z-50"
           />
           
-          {/* Modal */}
+          {/* Modal - FIXED VERSION */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className={`fixed inset-x-4 top-20 bottom-20 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl z-50 rounded-2xl overflow-hidden ${
+            className={`fixed left-4 right-4 top-4 bottom-4  md:w-full md:max-w-2xl md:h-auto md:max-h-[90vh] z-50 rounded-2xl flex flex-col ${
               theme === 'dark' ? 'bg-gray-900' : 'bg-white'
             }`}
           >
-            {/* Header */}
-            <div className={`p-4 border-b flex items-center justify-between ${
+            {/* Header - Fixed at top */}
+            <div className={`p-4 border-b flex items-center justify-between flex-shrink-0 ${
               theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
             }`}>
               <div>
@@ -196,8 +169,8 @@ export const FeedComposer: React.FC<FeedComposerProps> = ({
               </button>
             </div>
             
-            {/* Content */}
-            <div className="overflow-y-auto max-h-[calc(100vh-16rem)] p-4 space-y-4">
+            {/* Content - Scrollable middle section */}
+            <div className="overflow-y-auto flex-1 p-4 space-y-4">
               {/* User Info */}
               <div className="flex items-center gap-3">
                 <div 
@@ -441,8 +414,8 @@ export const FeedComposer: React.FC<FeedComposerProps> = ({
               </div>
             </div>
             
-            {/* Footer */}
-            <div className={`p-4 border-t ${
+            {/* Footer - Fixed at bottom */}
+            <div className={`p-4 border-t flex-shrink-0 ${
               theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
             }`}>
               <div className="flex items-center gap-3">

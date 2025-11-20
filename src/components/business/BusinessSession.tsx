@@ -14,7 +14,7 @@ import {
   Shield,
   Award,
   ChevronRight,
-  ChevronLeft,
+  X,
   Eye
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
@@ -186,6 +186,13 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
     console.log('Submit rating:', rating, review);
     onClose?.();
   };
+
+  const handleClose = () => {
+    console.log('Closing BusinessSession');
+    if (onClose) {
+      onClose();
+    }
+  };
   
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -208,12 +215,13 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
         }`}>
           <div className="flex items-center gap-3 mb-4">
             <button
-              onClick={onClose}
-              className={`p-2 rounded-lg ${
+              onClick={handleClose}
+              className={`p-2 rounded-lg transition-colors ${
                 theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
               }`}
+              aria-label="Close"
             >
-              <ChevronLeft className={`w-5 h-5 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`} />
+              <X className={`w-5 h-5 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`} />
             </button>
             
             <div className="flex-1">

@@ -18,6 +18,8 @@ import {
   Settings,
   Share2,
   Building2,
+  ChevronLeft,
+  ChevronRight,
   Bot,
   MessageSquare,
   Heart,
@@ -138,10 +140,13 @@ const DashboardHome: React.FC = () => {
   const dispatch = useAppDispatch();
   
   // Navigation States
+  const [showBusinessSession, setShowBusinessSession] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState<'home' | 'profile' | 'tools' | 'business' | 'network' | 'security'>('home');
   const [activeBottomTab, setActiveBottomTab] = useState<'home' | 'social' | 'banking' | 'ai' | 'chat'>('home');
   const [activeHomeApp, setActiveHomeApp] = useState<string | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // For mobile
 
   const [activeFeedType, setActiveFeedType] = useState<'village' | 'discover' | 'motion' | 'gallery' | 'voice' | 'family' | 'spotlight'>('village');
   const [isComposerOpen, setIsComposerOpen] = useState(false);
@@ -249,6 +254,18 @@ const DashboardHome: React.FC = () => {
     navigate('/auth/login', { replace: true });
   };
 
+  // Helper to check if view should be full-screen
+  const isFullScreenView = () => {
+    return (
+      activeView === 'profile' ||
+      activeView === 'business' ||
+      activeView === 'network' ||
+      activeView === 'security' ||
+      activeView === 'tools' ||
+      (activeView === 'home' && activeBottomTab === 'social')
+    );
+  };
+
   // Bottom Navigation Items
   const bottomNavItems = [
     { id: 'home', icon: HomeIcon, label: 'Home', color: '#10b981' },
@@ -296,337 +313,406 @@ const DashboardHome: React.FC = () => {
   return (
     <div className={`min-h-screen pb-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Mobile Header */}
-      <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
-        <div className="flex items-center justify-between px-4 py-3">
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`lg:hidden p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-
-          <div className="flex items-center gap-3">
-            <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+      {!isFullScreenView() && (
+        <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
+          <div className="flex items-center justify-between px-4 py-3">
+            <button
+              onClick={() => {
+                if (isFullScreenView()) {
+                  setIsSidebarVisible(!isSidebarVisible);
+                } else {
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                }
+              }}
+              className={`lg:hidden p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
             >
-              <RoleIcon className="w-6 h-6" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                {roleName}
-              </h1>
-              <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                {villageName}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
-              <Search className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+              <Menu className="w-6 h-6" />
             </button>
-            <button 
-              className={`p-2 rounded-lg relative ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
-              onClick={() => setIsNotificationOpen(true)}
-            >
-              <Bell className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-              {pendingRequestsCount > 0 && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              )}
-            </button>
-          </div>
-        </div>
 
-        {/* Feed Type Tabs - Only show when in social view */}
-        {activeView === 'home' && activeBottomTab === 'social' && (
-          <div className="overflow-x-auto pb-2 px-4 hide-scrollbar">
-            <div className="flex items-center gap-2 min-w-max">
-              {feedTabs.map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeFeedType === tab.id;
-                
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveFeedType(tab.id as any)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
-                      isActive
-                        ? 'text-white'
-                        : theme === 'dark'
-                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                    style={isActive ? { backgroundColor: tab.color } : {}}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Mobile Menu Sidebar */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 lg:hidden"
-              />
-              
-              <motion.div
-                initial={{ x: '-100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '-100%' }}
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className={`fixed top-0 left-0 h-full w-72 z-50 lg:hidden ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                } shadow-2xl`}
+            <div className="flex items-center gap-3">
+              <div 
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
               >
-                <div className={`flex items-center justify-between p-4 border-b ${
-                  theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
-                }`}>
-                  <h2 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    Menu
-                  </h2>
-                  <button
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
-                </div>
+                <RoleIcon className="w-6 h-6" />
+              </div>
+              <div className="hidden sm:block">
+                <h1 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {roleName}
+                </h1>
+                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {villageName}
+                </p>
+              </div>
+            </div>
 
-                <nav className="p-4 space-y-2 overflow-y-auto h-[calc(100%-80px)]">
-                  <button
-                    onClick={() => { setActiveView('home'); setIsMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      activeView === 'home'
-                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    <HomeIcon className="w-5 h-5" />
-                    <span className="font-medium">Home</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveView('profile'); setIsMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      activeView === 'profile'
-                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    <User className="w-5 h-5" />
-                    <span className="font-medium">Profile</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveView('business'); setIsMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      activeView === 'business'
-                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    <Briefcase className="w-5 h-5" />
-                    <span className="font-medium">Business</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveView('network'); setIsMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      activeView === 'network'
-                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    <LinkIcon className="w-5 h-5" />
-                    <span className="font-medium">Network</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveView('security'); setIsMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      activeView === 'security'
-                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    <Shield className="w-5 h-5" />
-                    <span className="font-medium">Security</span>
-                  </button>
-                  <button
-                    onClick={() => { setActiveView('tools'); setIsMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      activeView === 'tools'
-                        ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
-                        : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    <Grid className="w-5 h-5" />
-                    <span className="font-medium">My Tools</span>
-                  </button>
-                  <button
-                    onClick={() => { setIsSettingsOpen(true); setIsMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    <Settings className="w-5 h-5" />
-                    <span className="font-medium">Settings</span>
-                  </button>
-                  <button 
-                    onClick={handleLogout}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
-                    }`}
-                  >
-                    <LogOut className="w-5 h-5" />
-                    <span className="font-medium">Logout</span>
-                  </button>
-                </nav>
-              </motion.div>
-            </>
+            <div className="flex items-center gap-2">
+              <button className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}>
+                <Search className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+              </button>
+              <button 
+                className={`p-2 rounded-lg relative ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+                onClick={() => setIsNotificationOpen(true)}
+              >
+                <Bell className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                {pendingRequestsCount > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Feed Type Tabs - Only show when in social view */}
+          {activeView === 'home' && activeBottomTab === 'social' && (
+            <div className="overflow-x-auto pb-2 px-4 hide-scrollbar">
+              <div className="flex items-center gap-2 min-w-max">
+                {feedTabs.map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = activeFeedType === tab.id;
+                  
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveFeedType(tab.id as any)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+                        isActive
+                          ? 'text-white'
+                          : theme === 'dark'
+                          ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                      style={isActive ? { backgroundColor: tab.color } : {}}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           )}
-        </AnimatePresence>
-      </header>
+
+          {/* Mobile Menu Sidebar */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 lg:hidden"
+                />
+                
+                <motion.div
+                  initial={{ x: '-100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '-100%' }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                  className={`fixed top-0 left-0 h-full w-72 z-50 lg:hidden ${
+                    theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                  } shadow-2xl`}
+                >
+                  <div className={`flex items-center justify-between p-4 border-b ${
+                    theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                  }`}>
+                    <h2 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      Menu
+                    </h2>
+                    <button
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+
+                  <nav className="p-4 space-y-2 overflow-y-auto h-[calc(100%-80px)]">
+                    <button
+                      onClick={() => { setActiveView('home'); setIsMobileMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        activeView === 'home'
+                          ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                          : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <HomeIcon className="w-5 h-5" />
+                      <span className="font-medium">Home</span>
+                    </button>
+                    <button
+                      onClick={() => { setActiveView('profile'); setIsMobileMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        activeView === 'profile'
+                          ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                          : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <User className="w-5 h-5" />
+                      <span className="font-medium">Profile</span>
+                    </button>
+                    <button
+                      onClick={() => { setActiveView('business'); setIsMobileMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        activeView === 'business'
+                          ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                          : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <Briefcase className="w-5 h-5" />
+                      <span className="font-medium">Business</span>
+                    </button>
+                    <button
+                      onClick={() => { setActiveView('network'); setIsMobileMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        activeView === 'network'
+                          ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                          : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <LinkIcon className="w-5 h-5" />
+                      <span className="font-medium">Network</span>
+                    </button>
+                    <button
+                      onClick={() => { setActiveView('security'); setIsMobileMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        activeView === 'security'
+                          ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                          : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <Shield className="w-5 h-5" />
+                      <span className="font-medium">Security</span>
+                    </button>
+                    <button
+                      onClick={() => { setActiveView('tools'); setIsMobileMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        activeView === 'tools'
+                          ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                          : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <Grid className="w-5 h-5" />
+                      <span className="font-medium">My Tools</span>
+                    </button>
+                    <button
+                      onClick={() => { setIsSettingsOpen(true); setIsMobileMenuOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      <Settings className="w-5 h-5" />
+                      <span className="font-medium">Settings</span>
+                    </button>
+                    <button 
+                      onClick={handleLogout}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
+                      }`}
+                    >
+                      <LogOut className="w-5 h-5" />
+                      <span className="font-medium">Logout</span>
+                    </button>
+                  </nav>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+       </header>
+      )}
 
       <div className="flex">
-        {/* Desktop Sidebar */}
-        <aside className={`hidden lg:block w-64 h-[calc(100vh-73px)] sticky top-[73px] overflow-y-auto ${
-          theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-        } border-r`}>
-          <div className="p-6">
-            <div className={`p-4 rounded-xl mb-6 ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
-              <div className="flex items-center gap-3 mb-3">
+        <aside 
+          className={`
+            hidden lg:block
+            ${isSidebarCollapsed ? 'w-20' : 'w-64'}
+            ${isFullScreenView() ? 'h-screen sticky top-0' : 'h-[calc(100vh-73px)] sticky top-[73px]'}
+            overflow-y-auto
+            ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+            border-r
+            transition-all duration-300 ease-in-out
+            relative
+          `}
+        >
+          {/* Collapse/Expand Toggle Button */}
+          {isFullScreenView() && (
+            <button
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              className={`
+                absolute -right-3 top-6 z-50
+                w-6 h-6 rounded-full
+                ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}
+                flex items-center justify-center
+                transition-all duration-200
+                shadow-md
+              `}
+            >
+              {isSidebarCollapsed ? (
+                <ChevronRight className="w-4 h-4" />
+              ) : (
+                <ChevronLeft className="w-4 h-4" />
+              )}
+            </button>
+          )}
+          <div className={`${isSidebarCollapsed ? 'p-3' : 'p-6'} transition-all duration-300`}>
+            {/* User Profile Card */}
+            <div className={`${isSidebarCollapsed ? 'p-2' : 'p-4'} rounded-xl mb-6 ${
+              theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'
+            }`}>
+              <div className={`flex ${isSidebarCollapsed ? 'flex-col' : 'items-center'} gap-3 mb-3`}>
                 <div className="relative">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  <div className={`${isSidebarCollapsed ? 'w-10 h-10' : 'w-12 h-12'} rounded-full flex items-center justify-center ${
                     theme === 'dark' ? 'bg-gray-600' : 'bg-gray-200'
-                  }`}>
-                    <User className={`w-6 h-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                  } transition-all duration-300`}>
+                    <User className={`${isSidebarCollapsed ? 'w-5 h-5' : 'w-6 h-6'} ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`} />
                   </div>
                   <div className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 ${
                     theme === 'dark' ? 'border-gray-700' : 'border-gray-50'
                   } ${presenceMode === 'spirit' ? 'bg-purple-500' : 'bg-green-500'}`} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className={`font-semibold text-sm truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    {displayName}
-                  </p>
-                  <p className={`text-xs truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {roleName}
-                  </p>
-                </div>
+                
+                {!isSidebarCollapsed && (
+                  <div className="flex-1 min-w-0">
+                    <p className={`font-semibold text-sm truncate ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {displayName}
+                    </p>
+                    <p className={`text-xs truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {roleName}
+                    </p>
+                  </div>
+                )}
               </div>
-              <button
-                onClick={() => setActiveView('profile')}
-                className="w-full text-xs font-semibold text-center py-2 rounded-lg transition-colors"
-                style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
-              >
-                View Profile
-              </button>
+              
+              {!isSidebarCollapsed && (
+                <button
+                  onClick={() => setActiveView('profile')}
+                  className="w-full text-xs font-semibold text-center py-2 rounded-lg transition-colors"
+                  style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+                >
+                  View Profile
+                </button>
+              )}
             </div>
 
-            <nav className="space-y-2 mb-6">
+            {/* Navigation */}
+            <nav className="space-y-2 mb-6 ">
               <button
                 onClick={() => setActiveView('home')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   activeView === 'home'
                     ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                     : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
+                title={isSidebarCollapsed ? 'Home' : ''}
               >
                 <HomeIcon className="w-5 h-5" />
-                <span className="font-medium">Home</span>
+                {!isSidebarCollapsed && <span className="font-medium">Home</span>}
               </button>
+              
               <button
                 onClick={() => setActiveView('profile')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   activeView === 'profile'
                     ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                     : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
+                title={isSidebarCollapsed ? 'Profile' : ''}
               >
                 <User className="w-5 h-5" />
-                <span className="font-medium">Profile</span>
+                {!isSidebarCollapsed && <span className="font-medium">Profile</span>}
               </button>
+              
               <button
                 onClick={() => setActiveView('business')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   activeView === 'business'
                     ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                     : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
+                title={isSidebarCollapsed ? 'Business' : ''}
               >
                 <Briefcase className="w-5 h-5" />
-                <span className="font-medium">Business</span>
+                {!isSidebarCollapsed && <span className="font-medium">Business</span>}
               </button>
+              
               <button
                 onClick={() => setActiveView('network')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   activeView === 'network'
                     ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                     : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
+                title={isSidebarCollapsed ? 'Network' : ''}
               >
                 <LinkIcon className="w-5 h-5" />
-                <span className="font-medium">Network</span>
+                {!isSidebarCollapsed && <span className="font-medium">Network</span>}
               </button>
+              
               <button
                 onClick={() => setActiveView('security')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   activeView === 'security'
                     ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                     : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
+                title={isSidebarCollapsed ? 'Security' : ''}
               >
                 <Shield className="w-5 h-5" />
-                <span className="font-medium">Security</span>
+                {!isSidebarCollapsed && <span className="font-medium">Security</span>}
               </button>
+              
               <button
                 onClick={() => setActiveView('tools')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   activeView === 'tools'
                     ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
                     : theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
+                title={isSidebarCollapsed ? 'My Tools' : ''}
               >
                 <Grid className="w-5 h-5" />
-                <span className="font-medium">My Tools</span>
-                <span 
-                  className="ml-auto px-2 py-0.5 text-xs rounded-full"
-                  style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
-                >
-                  {tools.length}
-                </span>
+                {!isSidebarCollapsed && (
+                  <>
+                    <span className="font-medium">My Tools</span>
+                    <span 
+                      className="ml-auto py-0.5 text-xs rounded-full"
+                      style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+                    >
+                      {tools.length}
+                    </span>
+                  </>
+                )}
               </button>
             </nav>
 
+            {/* Settings */}
             <div className="mb-6">
               <button
                 onClick={() => setIsSettingsOpen(true)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   theme === 'dark' ? 'text-gray-400 hover:bg-gray-700 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
+                title={isSidebarCollapsed ? 'Settings' : ''}
               >
                 <Settings className="w-5 h-5" />
-                <span className="font-medium">Settings</span>
+                {!isSidebarCollapsed && <span className="font-medium">Settings</span>}
               </button>
             </div>
 
+            {/* Logout */}
             <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
               <button 
                 onClick={handleLogout}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg transition-colors ${
                   theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
                 }`}
+                title={isSidebarCollapsed ? 'Logout' : ''}
               >
                 <LogOut className="w-5 h-5" />
-                <span className="font-medium">Logout</span>
+                {!isSidebarCollapsed && <span className="font-medium">Logout</span>}
               </button>
             </div>
           </div>
@@ -634,7 +720,159 @@ const DashboardHome: React.FC = () => {
 
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+          {/* Mobile Sidebar Overlay */}
+          <AnimatePresence>
+            {isSidebarVisible && isFullScreenView() && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setIsSidebarVisible(false)}
+                  className="lg:hidden fixed inset-0 bg-black/60 z-40"
+                />
+                <motion.div
+                  initial={{ x: '-100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '-100%' }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                  className={`
+                    lg:hidden fixed top-0 left-0 h-full w-64 z-50
+                    ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}
+                    shadow-2xl overflow-y-auto
+                  `}
+                >
+                  {/* Close button */}
+                  <div className="flex items-center justify-between p-4 border-b border-gray-700">
+                    <h2 className={`text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      Menu
+                    </h2>
+                    <button
+                      onClick={() => setIsSidebarVisible(false)}
+                      className="p-2 rounded-lg hover:bg-gray-700"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Sidebar Content - Copy from desktop sidebar */}
+                  <div className="p-6">
+                    <div className="p-4 rounded-xl mb-6 bg-gray-700/50">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="relative">
+                          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-600">
+                            <User className="w-6 h-6 text-gray-400" />
+                          </div>
+                          <div className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-gray-700 ${
+                            presenceMode === 'spirit' ? 'bg-purple-500' : 'bg-green-500'
+                          }`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`font-semibold text-sm truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                            {displayName}
+                          </p>
+                          <p className="text-xs truncate text-gray-400">{roleName}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setActiveView('profile');
+                          setIsSidebarVisible(false);
+                        }}
+                        className="w-full text-xs font-semibold text-center py-2 rounded-lg transition-colors"
+                        style={{ backgroundColor: `${villageColor}20`, color: villageColor }}
+                      >
+                        View Profile
+                      </button>
+                    </div>
+
+                    <nav className="space-y-2 mb-6">
+                      <button
+                        onClick={() => { setActiveView('home'); setIsSidebarVisible(false); setActiveBottomTab('home'); }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
+                          activeView === 'home' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700'
+                        }`}
+                      >
+                        <HomeIcon className="w-5 h-5" />
+                        <span className="font-medium">Home</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => { setActiveView('profile'); setIsSidebarVisible(false); }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
+                          activeView === 'profile' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700'
+                        }`}
+                      >
+                        <User className="w-5 h-5" />
+                        <span className="font-medium">Profile</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => { setActiveView('business'); setIsSidebarVisible(false); }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
+                          activeView === 'business' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700'
+                        }`}
+                      >
+                        <Briefcase className="w-5 h-5" />
+                        <span className="font-medium">Business</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => { setActiveView('network'); setIsSidebarVisible(false); }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
+                          activeView === 'network' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700'
+                        }`}
+                      >
+                        <LinkIcon className="w-5 h-5" />
+                        <span className="font-medium">Network</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => { setActiveView('security'); setIsSidebarVisible(false); }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
+                          activeView === 'security' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700'
+                        }`}
+                      >
+                        <Shield className="w-5 h-5" />
+                        <span className="font-medium">Security</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => { setActiveView('tools'); setIsSidebarVisible(false); }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${
+                          activeView === 'tools' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700'
+                        }`}
+                      >
+                        <Grid className="w-5 h-5" />
+                        <span className="font-medium">My Tools</span>
+                      </button>
+                    </nav>
+
+                    <div className="mb-6">
+                      <button
+                        onClick={() => { setIsSettingsOpen(true); setIsSidebarVisible(false); }}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-700"
+                      >
+                        <Settings className="w-5 h-5" />
+                        <span className="font-medium">Settings</span>
+                      </button>
+                    </div>
+
+                    <div className="pt-6 border-t border-gray-700">
+                      <button 
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-900/20"
+                      >
+                        <LogOut className="w-5 h-5" />
+                        <span className="font-medium">Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+          <div className={`${isFullScreenView() ? 'h-screen' : 'p-4 sm:p-6 lg:p-8'} max-w-7xl mx-auto`}>
             <AnimatePresence mode="wait">
               {/* HOME VIEW */}
               {activeView === 'home' && activeBottomTab === 'home' && (
@@ -780,7 +1018,7 @@ const DashboardHome: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }} 
                   animate={{ opacity: 1, y: 0 }} 
                   exit={{ opacity: 0, y: -20 }}
-                  className="relative"
+                  className="relative p-4"
                 >
                   <AnimatePresence mode="wait">
                     {activeFeedType === 'village' && (
@@ -839,7 +1077,7 @@ const DashboardHome: React.FC = () => {
                   {/* Floating Create Post Button */}
                   <button
                     onClick={() => setIsComposerOpen(true)}
-                    className="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
+                    className="fixed bottom-28 right-6 lg:right-12 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
                   >
                     <Plus className="w-6 h-6" />
                   </button>
@@ -874,7 +1112,7 @@ const DashboardHome: React.FC = () => {
 
               {/* PROFILE VIEW */}
               {activeView === 'profile' && (
-                <motion.div key="profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 max-w-4xl mx-auto">
+                <motion.div key="profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 max-w-4xl mx-auto p-4">
                   <div className="flex justify-end mb-4">
                     <TwinPresenceToggle 
                       spiritAvatar={spiritAvatar} 
@@ -933,7 +1171,7 @@ const DashboardHome: React.FC = () => {
 
               {/* ✅ PHASE 6: BUSINESS VIEW - WITH SUB-TABS */}
               {activeView === 'business' && (
-                <motion.div key="business" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+                <motion.div key="business" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 p-4">
                   <div>
                     <h2 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                       Business Sessions
@@ -968,15 +1206,46 @@ const DashboardHome: React.FC = () => {
                   <AnimatePresence mode="wait">
                     {activeBusinessTab === 'sessions' && (
                       <motion.div key="sessions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <BusinessSession 
-                          professionalId="prof-123"
-                          professionalName="John Doe"
-                          professionalVillage={villageName}
-                          professionalVillageColor={villageColor}
-                          professionalCrest={8}
-                          serviceType="Professional Service"
-                          onClose={() => setActiveBusinessTab('sessions')}
-                        />
+                        {showBusinessSession ? (
+                          <BusinessSession 
+                            professionalId="prof-123"
+                            professionalName="John Doe"
+                            professionalVillage={villageName}
+                            professionalVillageColor={villageColor}
+                            professionalCrest={8}
+                            serviceType="Professional Service"
+                            onClose={() => {
+                              console.log('Closing BusinessSession');
+                              setShowBusinessSession(false);
+                            }}
+                          />
+                        ) : (
+                          <div className="space-y-4">
+                            <div className={`p-6 rounded-xl border text-center ${
+                              theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                            }`}>
+                              <Briefcase className={`w-12 h-12 mx-auto mb-3 ${
+                                theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+                              }`} />
+                              <h3 className={`text-lg font-bold mb-2 ${
+                                theme === 'dark' ? 'text-white' : 'text-gray-900'
+                              }`}>
+                                No Active Sessions
+                              </h3>
+                              <p className={`text-sm mb-4 ${
+                                theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                              }`}>
+                                Start a new business session with a professional
+                              </p>
+                              <button
+                                onClick={() => setShowBusinessSession(true)}
+                                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors"
+                              >
+                                Start New Session
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </motion.div>
                     )}
                     {activeBusinessTab === 'escrow' && (
@@ -1053,7 +1322,7 @@ const DashboardHome: React.FC = () => {
 
               // ✅ PHASE 7: NETWORK VIEW - WITH SUB-TABS (Fixed)
               {activeView === 'network' && (
-                <motion.div key="network" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+                <motion.div key="network" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 p-4">
                   <div>
                     <h2 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                       Kinship Network
@@ -1168,7 +1437,7 @@ const DashboardHome: React.FC = () => {
 
               // ✅ PHASE 8: SECURITY VIEW - WITH SUB-TABS (Fixed)
               {activeView === 'security' && (
-                <motion.div key="security" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+                <motion.div key="security" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 p-4">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
                       <Shield className="w-7 h-7 text-white" />
@@ -1432,7 +1701,7 @@ const DashboardHome: React.FC = () => {
 
               {/* TOOLS VIEW */}
               {activeView === 'tools' && (
-                <motion.div key="tools" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+                <motion.div key="tools" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6 p-4">
                   <div>
                     <h2 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>My Tools</h2>
                     <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{tools.length} tools available for {roleName}</p>
@@ -1492,48 +1761,49 @@ const DashboardHome: React.FC = () => {
       </div>
 
       {/* Bottom Navigation Bar */}
-      <nav className={`fixed bottom-0 left-0 right-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
-        <div className="flex items-center justify-around px-2 py-3 max-w-screen-xl mx-auto">
-          {bottomNavItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeBottomTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveBottomTab(item.id as any);
-                  setActiveView('home');
-                }}
-                className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${
-                  isActive ? 'scale-105' : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <div 
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${
-                    isActive ? 'scale-110' : ''
-                  }`} 
-                  style={{ 
-                    backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6', 
-                    color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280' 
+      <nav className={`fixed bottom-0 left-0 right-0 z-50 h-22 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
+          <div className="flex items-center justify-around px-2 py-2 max-w-screen-xl mx-auto">
+            {bottomNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeBottomTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveBottomTab(item.id as any);
+                    setActiveView('home');
                   }}
+                  className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all ${
+                    isActive ? 'scale-105' : 'opacity-70 hover:opacity-100'
+                  }`}
                 >
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                </div>
-                <span 
-                  className={`text-xs font-medium transition-colors ${
-                    isActive 
-                      ? theme === 'dark' ? 'text-white' : 'text-gray-900' 
-                      : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                  }`} 
-                  style={{ color: isActive ? item.color : undefined }}
-                >
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+                  <div 
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${
+                      isActive ? 'scale-110' : ''
+                    }`} 
+                    style={{ 
+                      backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6', 
+                      color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280' 
+                    }}
+                  >
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </div>
+                  <span 
+                    className={`text-xs font-medium transition-colors ${
+                      isActive 
+                        ? theme === 'dark' ? 'text-white' : 'text-gray-900' 
+                        : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`} 
+                    style={{ color: isActive ? item.color : undefined }}
+                  >
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+      
 
       {/* App Modals */}
       <AnimatePresence>
