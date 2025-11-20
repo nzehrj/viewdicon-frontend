@@ -302,7 +302,7 @@ const DashboardHome: React.FC = () => {
   // ✅ Feed Tab Configuration
     const feedTabs = [
     { id: 'village', label: 'Village Square', icon: Users, color: '#10b981' },
-    { id: 'discover', label: 'Discover', icon: Search, color: '#06b6d4' }, // ✅ ADD THIS
+    { id: 'discover', label: 'Discover', icon: Search, color: '#06b6d4' }, 
     { id: 'motion', label: 'Motion', icon: Video, color: '#f59e0b' },
     { id: 'gallery', label: 'Gallery', icon: Image, color: '#ec4899' },
     { id: 'voice', label: 'Voice', icon: Mic, color: '#8b5cf6' },
@@ -313,7 +313,7 @@ const DashboardHome: React.FC = () => {
   return (
     <div className={`min-h-screen pb-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Mobile Header */}
-      {!isFullScreenView() && (
+      {(activeView === 'home' || !isFullScreenView()) && (
         <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b`}>
           <div className="flex items-center justify-between px-4 py-3">
             <button
@@ -1018,7 +1018,7 @@ const DashboardHome: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }} 
                   animate={{ opacity: 1, y: 0 }} 
                   exit={{ opacity: 0, y: -20 }}
-                  className="relative p-4"
+                  className="relative"
                 >
                   <AnimatePresence mode="wait">
                     {activeFeedType === 'village' && (
@@ -1077,7 +1077,7 @@ const DashboardHome: React.FC = () => {
                   {/* Floating Create Post Button */}
                   <button
                     onClick={() => setIsComposerOpen(true)}
-                    className="fixed bottom-28 right-6 lg:right-12 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
+                    className="fixed bottom-24 right-6 lg:right-12w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
                   >
                     <Plus className="w-6 h-6" />
                   </button>
