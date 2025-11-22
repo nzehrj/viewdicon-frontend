@@ -42,6 +42,12 @@ import { DiscoverySpotlight } from '@components/feeds/DiscoverySpotlight';
 import { FeedComposer } from '@components/feeds/FeedComposer';
 import { Discover } from '@components/discover/Discover';
 
+// ✅ CIRCLE Components - DEFAULT IMPORTS
+import VillageSquare from '@components/circle/VillageSquare';
+import MyCircle from '@components/circle/MyCircle';
+import Rooms from '@components/circle/Rooms';
+import CouncilAppeals from '@components/circle/CouncilAppeals';
+
 
 import { useNavigate } from 'react-router-dom';
 import { GuardianDashboard } from './GuardianDashboard';
@@ -85,6 +91,10 @@ import { ContentPreferencesSection } from '@components/home/ContentPreferencesSe
 import { VillageChangeSection } from '@components/home/VillageChangeSection';
 import { VillageSelector } from '@components/village/VillageSelector';
 import { RoleChangeRequest } from '@components/village/RoleChangeRequest';
+
+// ✅ CHAT Components - DEFAULT IMPORTS
+import MessageRequests from '@components/messaging/MessageRequests';
+import TrustedConnections from '@components/messaging/TrustedConnections';
 
 // ✅ PHASE 6: Business Session Components - DEFAULT IMPORTS
 import BusinessSession from '@components/business/BusinessSession';
@@ -148,7 +158,9 @@ const DashboardHome: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false); // For mobile
 
-  const [activeFeedType, setActiveFeedType] = useState<'village' | 'discover' | 'motion' | 'gallery' | 'voice' | 'family' | 'spotlight'>('village');
+  const [activeChatTab, setActiveChatTab] = useState<'requests' | 'trusted' | 'all'>('all');
+
+  const [activeFeedType, setActiveFeedType] = useState<'village' | 'discover' | 'motion' | 'gallery' | 'voice' | 'family' | 'spotlight' | 'square' | 'mycircle' | 'rooms' | 'council'>('village');
   const [isComposerOpen, setIsComposerOpen] = useState(false);
   
   // ✅ Sub-tab states for Phase 6, 7, 8
@@ -301,13 +313,24 @@ const DashboardHome: React.FC = () => {
 
   // ✅ Feed Tab Configuration
     const feedTabs = [
-    { id: 'village', label: 'Village Square', icon: Users, color: '#10b981' },
+    { id: 'village', label: 'Feed', icon: Users, color: '#10b981' },
     { id: 'discover', label: 'Discover', icon: Search, color: '#06b6d4' }, 
     { id: 'motion', label: 'Motion', icon: Video, color: '#f59e0b' },
     { id: 'gallery', label: 'Gallery', icon: Image, color: '#ec4899' },
     { id: 'voice', label: 'Voice', icon: Mic, color: '#8b5cf6' },
     { id: 'family', label: 'Family', icon: Heart, color: '#ef4444' },
     { id: 'spotlight', label: 'Spotlight', icon: Sparkles, color: '#fbbf24' },
+    { id: 'square', label: 'Village Square', icon: MessageSquare, color: '#06b6d4' },
+    { id: 'mycircle', label: 'My Circle', icon: Users, color: '#8b5cf6' },
+    { id: 'rooms', label: 'Rooms', icon: Grid, color: '#f59e0b' },
+    { id: 'council', label: 'Council', icon: Shield, color: '#ef4444' },
+  ];
+
+  // ✅ Chat Tab Configuration
+  const chatTabs = [
+    { id: 'all', label: 'All Chats', icon: MessageCircle },
+    { id: 'requests', label: 'Requests', icon: MessageSquare },
+    { id: 'trusted', label: 'Trusted', icon: Shield },
   ];
 
   return (
@@ -1072,12 +1095,40 @@ const DashboardHome: React.FC = () => {
                         <DiscoverySpotlight />
                       </motion.div>
                     )}
+
+                    {/* Village Square Feed - Internal Discussions */}
+                    {activeFeedType === 'square' && (
+                      <motion.div key="square-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <VillageSquare />
+                      </motion.div>
+                    )}
+                    
+                    {/* My Circle Feed - Trusted Connections */}
+                    {activeFeedType === 'mycircle' && (
+                      <motion.div key="mycircle-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <MyCircle />
+                      </motion.div>
+                    )}
+                    
+                    {/* Rooms Feed - Discussion Spaces */}
+                    {activeFeedType === 'rooms' && (
+                      <motion.div key="rooms-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <Rooms />
+                      </motion.div>
+                    )}
+                    
+                    {/* Council Feed - Appeals & Disputes */}
+                    {activeFeedType === 'council' && (
+                      <motion.div key="council-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <CouncilAppeals />
+                      </motion.div>
+                    )}
                   </AnimatePresence>
 
                   {/* Floating Create Post Button */}
                   <button
                     onClick={() => setIsComposerOpen(true)}
-                    className="fixed bottom-24 right-6 lg:right-12w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
+                    className="fixed bottom-24 right-6 lg:right-12 md:bottom-28 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
                   >
                     <Plus className="w-6 h-6" />
                   </button>
@@ -1103,10 +1154,83 @@ const DashboardHome: React.FC = () => {
 
               {/* CHAT VIEW */}
               {activeView === 'home' && activeBottomTab === 'chat' && (
-                <motion.div key="chat" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                  <MessageCircle className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                  <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Chat</h3>
-                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Direct messages with your connections</p>
+                <motion.div 
+                  key="chat" 
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  exit={{ opacity: 0, y: -20 }}
+                  className="space-y-6 p-4"
+                >
+                  <div>
+                    <h2 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      Messages & Whispers
+                    </h2>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      Your conversations and connection requests
+                    </p>
+                  </div>
+
+                  {/* Chat Tabs */}
+                  <div className={`flex gap-2 overflow-x-auto pb-2 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b`}>
+                    {chatTabs.map((tab) => {
+                      const TabIcon = tab.icon;
+                      const isActive = activeChatTab === tab.id;
+                      
+                      // Count badges
+                      const requestCount = tab.id === 'requests' 
+                        ? messageRequests.filter(r => r.status === 'pending').length 
+                        : 0;
+                      
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveChatTab(tab.id as any)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-colors relative ${
+                            isActive
+                              ? theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'
+                              : theme === 'dark' ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          <TabIcon className="w-4 h-4" />
+                          <span className="text-sm font-medium">{tab.label}</span>
+                          {requestCount > 0 && tab.id === 'requests' && (
+                            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">
+                              {requestCount}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Chat Tab Content */}
+                  <AnimatePresence mode="wait">
+                    {activeChatTab === 'all' && (
+                      <motion.div key="all-chats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <div className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+                          <MessageCircle className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                          <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                            All Chats
+                          </h3>
+                          <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                            Your recent conversations will appear here (Coming Soon)
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                    
+                    {activeChatTab === 'requests' && (
+                      <motion.div key="requests" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <MessageRequests />
+                      </motion.div>
+                    )}
+                    
+                    {activeChatTab === 'trusted' && (
+                      <motion.div key="trusted" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <TrustedConnections />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
 

@@ -25,7 +25,7 @@ interface FeedComposerProps {
   onPost?: (post: PostData) => void;
 }
 
-type FeedType = 'motion' | 'gallery' | 'voice' | 'family' | 'village' | 'discover' | 'spotlight';
+type FeedType = 'motion' | 'gallery' | 'voice' | 'family' | 'village' | 'discover' | 'spotlight' | 'square' | 'mycircle' | 'rooms' | 'council';
 type PrivacyLevel = 'public' | 'tribe_only' | 'family_only' | 'village_only' | 'friends_only';
 type IdentitySkin = 'work' | 'public' | 'clan';
 
@@ -142,7 +142,7 @@ export const FeedComposer: React.FC<FeedComposerProps> = ({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className={`fixed left-4 right-4 top-4 bottom-4  md:w-full md:max-w-2xl md:h-auto md:max-h-[90vh] z-50 rounded-2xl flex flex-col ${
+            className={`fixed left-4 right-4 top-4 bottom-4 md:w-full md:max-w-2xl md:h-auto md:max-h-[90vh] z-50 rounded-2xl flex flex-col  ${
               theme === 'dark' ? 'bg-gray-900' : 'bg-white'
             }`}
           >
