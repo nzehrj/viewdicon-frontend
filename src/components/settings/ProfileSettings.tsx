@@ -1,40 +1,35 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
+  X,
   User,
-  Mail,
-  Phone,
-  //MapPin,
-  //Briefcase,
-  //Calendar,
-  Globe,
   Lock,
   Bell,
-  Eye,
+  Settings as SettingsIcon,
   Shield,
-  Trash2,
+  Fingerprint,
+  Copy,
+  Check,
+  Phone,
+  Calendar,
+  MapPin,
+  Briefcase,
+  Globe,
   Camera,
   Save,
-  //X,
-  ChevronRight,
   AlertCircle,
   CheckCircle,
-  //Edit2,
-  //Languages,
-  Moon,
-  Sun,
-  Volume2,
-  Smartphone
+  Trash2,
+  Smartphone,
+  ChevronRight,
 } from 'lucide-react';
 
-// Types
-type PrivacyLevel = 'public' | 'connections' | 'private';
-type Theme = 'light' | 'dark' | 'system';
-type Language = 'en' | 'yo' | 'ig' | 'ha' | 'sw' | 'am' | 'zu';
+// ✅ Using correct types from user's codebase
+type Theme = 'light' | 'dark'; // NOT 'system'
 
 interface ProfileData {
   name: string;
-  email: string;
+  afroId: string;  // NOT email
   phone: string;
   dateOfBirth: string;
   gender: string;
@@ -51,19 +46,18 @@ interface ProfileData {
 }
 
 interface PrivacySettings {
-  profileVisibility: PrivacyLevel;
-  emailVisibility: PrivacyLevel;
-  phoneVisibility: PrivacyLevel;
-  locationVisibility: PrivacyLevel;
+  profileVisibility: 'public' | 'connections' | 'private';
+  afroIdVisibility: 'public' | 'connections' | 'private';
+  phoneVisibility: 'public' | 'connections' | 'private';
+  locationVisibility: 'public' | 'connections' | 'private';
   showOnlineStatus: boolean;
   allowMessages: 'everyone' | 'connections' | 'none';
   showInSearch: boolean;
 }
 
 interface NotificationSettings {
-  emailNotifications: boolean;
   pushNotifications: boolean;
-  smsNotifications: boolean;
+  smsNotifications: boolean;  // NOT email
   connectionRequests: boolean;
   messages: boolean;
   comments: boolean;
@@ -74,13 +68,15 @@ interface NotificationSettings {
 
 interface AppPreferences {
   theme: Theme;
-  language: Language;
+  language: string;
   soundEnabled: boolean;
   autoPlayVideos: boolean;
-  dataUsageMode: 'normal' | 'low';
+  dataUsageMode: 'low' | 'normal' | 'high';
 }
 
 interface ProfileSettingsProps {
+  isOpen: boolean;
+  onClose: () => void;
   profile: ProfileData;
   privacy: PrivacySettings;
   notifications: NotificationSettings;
@@ -92,11 +88,14 @@ interface ProfileSettingsProps {
   onChangePassword?: () => void;
   onDeleteAccount?: () => void;
   villages?: string[];
+  theme?: Theme;
 }
 
 type SettingsTab = 'profile' | 'privacy' | 'notifications' | 'preferences' | 'security';
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+  isOpen,
+  onClose,
   profile: initialProfile,
   privacy: initialPrivacy,
   notifications: initialNotifications,
@@ -107,16 +106,26 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   onUpdatePreferences,
   onChangePassword,
   onDeleteAccount,
-  villages = []
+  villages = [],
+  theme = 'dark',
 }) => {
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
-  const [profile, setProfile] = useState<ProfileData>(initialProfile);
-  const [privacy, setPrivacy] = useState<PrivacySettings>(initialPrivacy);
-  const [notifications, setNotifications] = useState<NotificationSettings>(initialNotifications);
-  const [preferences, setPreferences] = useState<AppPreferences>(initialPreferences);
+  const [profile, setProfile] = useState(initialProfile);
+  const [privacy, setPrivacy] = useState(initialPrivacy);
+  const [notifications, setNotifications] = useState(initialNotifications);
+  const [preferences, setPreferences] = useState(initialPreferences);
   const [hasChanges, setHasChanges] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [copiedAfroId, setCopiedAfroId] = useState(false);
+
+  const tabs = [
+    { id: 'profile' as SettingsTab, label: 'Profile', icon: User },
+    { id: 'privacy' as SettingsTab, label: 'Privacy', icon: Lock },
+    { id: 'notifications' as SettingsTab, label: 'Notifications', icon: Bell },
+    { id: 'preferences' as SettingsTab, label: 'Preferences', icon: SettingsIcon },
+    { id: 'security' as SettingsTab, label: 'Security', icon: Shield },
+  ];
 
   const handleProfileChange = (field: keyof ProfileData, value: any) => {
     setProfile({ ...profile, [field]: value });
@@ -148,18 +157,16 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
 
   const handleSave = async () => {
     setIsSaving(true);
-    
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if (activeTab === 'profile') {
-      onUpdateProfile?.(profile);
-    } else if (activeTab === 'privacy') {
-      onUpdatePrivacy?.(privacy);
-    } else if (activeTab === 'notifications') {
-      onUpdateNotifications?.(notifications);
-    } else if (activeTab === 'preferences') {
-      onUpdatePreferences?.(preferences);
+    if (activeTab === 'profile' && onUpdateProfile) {
+      onUpdateProfile(profile);
+    } else if (activeTab === 'privacy' && onUpdatePrivacy) {
+      onUpdatePrivacy(privacy);
+    } else if (activeTab === 'notifications' && onUpdateNotifications) {
+      onUpdateNotifications(notifications);
+    } else if (activeTab === 'preferences' && onUpdatePreferences) {
+      onUpdatePreferences(preferences);
     }
 
     setIsSaving(false);
@@ -168,691 +175,919 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
     setTimeout(() => setSaveSuccess(false), 3000);
   };
 
-  const tabs = [
-    { id: 'profile' as SettingsTab, label: 'Profile', icon: User },
-    { id: 'privacy' as SettingsTab, label: 'Privacy', icon: Eye },
-    { id: 'notifications' as SettingsTab, label: 'Notifications', icon: Bell },
-    { id: 'preferences' as SettingsTab, label: 'Preferences', icon: Globe },
-    { id: 'security' as SettingsTab, label: 'Security', icon: Shield }
-  ];
+  const handleCopyAfroId = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.afroId);
+      setCopiedAfroId(true);
+      setTimeout(() => setCopiedAfroId(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy Afro-ID:', err);
+    }
+  };
 
-  const languages = [
-    { code: 'en' as Language, name: 'English' },
-    { code: 'yo' as Language, name: 'Yoruba' },
-    { code: 'ig' as Language, name: 'Igbo' },
-    { code: 'ha' as Language, name: 'Hausa' },
-    { code: 'sw' as Language, name: 'Swahili' },
-    { code: 'am' as Language, name: 'Amharic' },
-    { code: 'zu' as Language, name: 'Zulu' }
-  ];
+  if (!isOpen) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6">
-        <h1 className="text-2xl font-bold mb-2">Settings</h1>
-        <p className="text-indigo-100">Manage your account and preferences</p>
-      </div>
+    <AnimatePresence>
+      <div className="fixed inset-0 z-[60] overflow-hidden">
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        />
 
-      {/* Tabs */}
-      <div className="bg-white border-b border-gray-200 overflow-x-auto">
-        <div className="flex">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-
-            return (
+        {/* Modal */}
+        <motion.div
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+          className={`absolute right-0 top-0 bottom-0 w-full sm:w-[600px] z-[70] ${
+            theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+          } shadow-2xl flex flex-col`}
+        >
+          {/* Header */}
+          <div className={`flex-shrink-0 p-6 border-b ${
+            theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
+          }`}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className={`text-2xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
+                Profile Settings
+              </h2>
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 min-w-[100px] relative flex flex-col items-center gap-1 px-4 py-3 text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'text-indigo-600'
-                    : 'text-gray-600 hover:text-gray-900'
+                onClick={onClose}
+                className={`p-2 rounded-lg ${
+                  theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
                 }`}
               >
-                <Icon className="w-5 h-5" />
-                <span>{tab.label}</span>
-                {isActive && (
-                  <motion.div
-                    layoutId="activeSettingsTab"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600"
-                  />
-                )}
+                <X className="w-5 h-5" />
               </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Save Success Message */}
-      <AnimatePresence>
-        {saveSuccess && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="mx-4 mt-4 bg-green-50 border border-green-200 rounded-xl p-4"
-          >
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <p className="text-sm font-medium text-green-900">Settings saved successfully!</p>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* Content */}
-      <div className="p-4">
-        <AnimatePresence mode="wait">
-          {/* Profile Tab */}
-          {activeTab === 'profile' && (
-            <motion.div
-              key="profile"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              {/* Avatar */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-4">Profile Photo</h3>
-                <div className="flex items-center gap-4">
-                  <div className="relative">
-                    {profile.avatar ? (
-                      <img
-                        src={profile.avatar}
-                        alt={profile.name}
-                        className="w-20 h-20 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <User className="w-10 h-10 text-indigo-600" />
-                      </div>
-                    )}
-                    <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-indigo-700 transition-colors">
-                      <Camera className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div>
-                    <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
-                      Upload Photo
-                    </button>
-                    <p className="text-xs text-gray-500 mt-2">JPG or PNG. Max size 2MB.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Basic Info */}
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Basic Information</h3>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={profile.name}
-                    onChange={(e) => handleProfileChange('name', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={profile.email}
-                    onChange={(e) => handleProfileChange('email', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    value={profile.phone}
-                    onChange={(e) => handleProfileChange('phone', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Date of Birth
-                    </label>
-                    <input
-                      type="date"
-                      value={profile.dateOfBirth}
-                      onChange={(e) => handleProfileChange('dateOfBirth', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Gender
-                    </label>
-                    <select
-                      value={profile.gender}
-                      onChange={(e) => handleProfileChange('gender', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                      <option value="prefer_not_to_say">Prefer not to say</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Bio
-                  </label>
-                  <textarea
-                    value={profile.bio}
-                    onChange={(e) => handleProfileChange('bio', e.target.value)}
-                    rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
-                    placeholder="Tell us about yourself..."
-                  />
-                </div>
-              </div>
-
-              {/* Professional Info */}
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Professional Information</h3>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Village
-                  </label>
-                  <select
-                    value={profile.village}
-                    onChange={(e) => handleProfileChange('village', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            {/* Tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                      isActive
+                        ? theme === 'dark'
+                          ? 'bg-gray-800 text-white'
+                          : 'bg-gray-100 text-gray-900'
+                        : theme === 'dark'
+                        ? 'text-gray-400 hover:bg-gray-800'
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
                   >
-                    {villages.map((village) => (
-                      <option key={village} value={village}>{village}</option>
-                    ))}
-                  </select>
-                </div>
+                    <Icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Profession
-                  </label>
-                  <input
-                    type="text"
-                    value={profile.profession}
-                    onChange={(e) => handleProfileChange('profession', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    placeholder="e.g., Software Engineer"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Website
-                  </label>
-                  <input
-                    type="url"
-                    value={profile.website || ''}
-                    onChange={(e) => handleProfileChange('website', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    placeholder="https://"
-                  />
-                </div>
-              </div>
-
-              {/* Location */}
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Location</h3>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Country
-                    </label>
-                    <input
-                      type="text"
-                      value={profile.location.country}
-                      onChange={(e) => handleLocationChange('country', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      value={profile.location.city}
-                      onChange={(e) => handleLocationChange('city', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Privacy Tab */}
-          {activeTab === 'privacy' && (
-            <motion.div
-              key="privacy"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Profile Visibility</h3>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Who can see your profile?
-                  </label>
-                  <select
-                    value={privacy.profileVisibility}
-                    onChange={(e) => handlePrivacyChange('profileVisibility', e.target.value as PrivacyLevel)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  >
-                    <option value="public">Everyone</option>
-                    <option value="connections">My Connections Only</option>
-                    <option value="private">Only Me</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email visibility
-                  </label>
-                  <select
-                    value={privacy.emailVisibility}
-                    onChange={(e) => handlePrivacyChange('emailVisibility', e.target.value as PrivacyLevel)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  >
-                    <option value="public">Everyone</option>
-                    <option value="connections">My Connections Only</option>
-                    <option value="private">Only Me</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone number visibility
-                  </label>
-                  <select
-                    value={privacy.phoneVisibility}
-                    onChange={(e) => handlePrivacyChange('phoneVisibility', e.target.value as PrivacyLevel)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  >
-                    <option value="public">Everyone</option>
-                    <option value="connections">My Connections Only</option>
-                    <option value="private">Only Me</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Location visibility
-                  </label>
-                  <select
-                    value={privacy.locationVisibility}
-                    onChange={(e) => handlePrivacyChange('locationVisibility', e.target.value as PrivacyLevel)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  >
-                    <option value="public">Everyone</option>
-                    <option value="connections">My Connections Only</option>
-                    <option value="private">Only Me</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Activity & Messaging</h3>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">Show online status</span>
-                  <input
-                    type="checkbox"
-                    checked={privacy.showOnlineStatus}
-                    onChange={(e) => handlePrivacyChange('showOnlineStatus', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Who can send you messages?
-                  </label>
-                  <select
-                    value={privacy.allowMessages}
-                    onChange={(e) => handlePrivacyChange('allowMessages', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  >
-                    <option value="everyone">Everyone</option>
-                    <option value="connections">My Connections Only</option>
-                    <option value="none">No One</option>
-                  </select>
-                </div>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">Show in search results</span>
-                  <input
-                    type="checkbox"
-                    checked={privacy.showInSearch}
-                    onChange={(e) => handlePrivacyChange('showInSearch', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Notifications Tab */}
-          {activeTab === 'notifications' && (
-            <motion.div
-              key="notifications"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Notification Channels</h3>
-
-                <label className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-5 h-5 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-700">Email notifications</span>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={notifications.emailNotifications}
-                    onChange={(e) => handleNotificationChange('emailNotifications', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-3">
-                    <Smartphone className="w-5 h-5 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-700">Push notifications</span>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={notifications.pushNotifications}
-                    onChange={(e) => handleNotificationChange('pushNotifications', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-700">SMS notifications</span>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={notifications.smsNotifications}
-                    onChange={(e) => handleNotificationChange('smsNotifications', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Activity Notifications</h3>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">Connection requests</span>
-                  <input
-                    type="checkbox"
-                    checked={notifications.connectionRequests}
-                    onChange={(e) => handleNotificationChange('connectionRequests', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">New messages</span>
-                  <input
-                    type="checkbox"
-                    checked={notifications.messages}
-                    onChange={(e) => handleNotificationChange('messages', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">Comments on posts</span>
-                  <input
-                    type="checkbox"
-                    checked={notifications.comments}
-                    onChange={(e) => handleNotificationChange('comments', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">Likes and reactions</span>
-                  <input
-                    type="checkbox"
-                    checked={notifications.likes}
-                    onChange={(e) => handleNotificationChange('likes', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">Achievements and milestones</span>
-                  <input
-                    type="checkbox"
-                    checked={notifications.achievements}
-                    onChange={(e) => handleNotificationChange('achievements', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">System updates</span>
-                  <input
-                    type="checkbox"
-                    checked={notifications.systemUpdates}
-                    onChange={(e) => handleNotificationChange('systemUpdates', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Preferences Tab */}
-          {activeTab === 'preferences' && (
-            <motion.div
-              key="preferences"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Appearance</h3>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Theme
-                  </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {[
-                      { value: 'light' as Theme, label: 'Light', icon: Sun },
-                      { value: 'dark' as Theme, label: 'Dark', icon: Moon },
-                      { value: 'system' as Theme, label: 'System', icon: Smartphone }
-                    ].map((option) => {
-                      const Icon = option.icon;
-                      return (
-                        <button
-                          key={option.value}
-                          onClick={() => handlePreferenceChange('theme', option.value)}
-                          className={`p-4 rounded-lg border-2 transition-all ${
-                            preferences.theme === option.value
-                              ? 'border-indigo-600 bg-indigo-50'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <Icon className={`w-6 h-6 mx-auto mb-2 ${
-                            preferences.theme === option.value ? 'text-indigo-600' : 'text-gray-600'
-                          }`} />
-                          <p className="text-sm font-medium text-gray-900">{option.label}</p>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Language
-                  </label>
-                  <select
-                    value={preferences.language}
-                    onChange={(e) => handlePreferenceChange('language', e.target.value as Language)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  >
-                    {languages.map((lang) => (
-                      <option key={lang.code} value={lang.code}>{lang.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Media & Content</h3>
-
-                <label className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-3">
-                    <Volume2 className="w-5 h-5 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-700">Sound effects</span>
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={preferences.soundEnabled}
-                    onChange={(e) => handlePreferenceChange('soundEnabled', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <label className="flex items-center justify-between py-2">
-                  <span className="text-sm font-medium text-gray-700">Auto-play videos</span>
-                  <input
-                    type="checkbox"
-                    checked={preferences.autoPlayVideos}
-                    onChange={(e) => handlePreferenceChange('autoPlayVideos', e.target.checked)}
-                    className="w-12 h-6 rounded-full appearance-none bg-gray-300 checked:bg-indigo-600 relative transition-colors cursor-pointer"
-                  />
-                </label>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Data usage mode
-                  </label>
-                  <select
-                    value={preferences.dataUsageMode}
-                    onChange={(e) => handlePreferenceChange('dataUsageMode', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  >
-                    <option value="normal">Normal Quality</option>
-                    <option value="low">Data Saver Mode</option>
-                  </select>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Security Tab */}
-          {activeTab === 'security' && (
-            <motion.div
-              key="security"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
-            >
-              <div className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-                <h3 className="font-semibold text-gray-900 mb-4">Account Security</h3>
-
-                <button
-                  onClick={onChangePassword}
-                  className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-6">
+            <AnimatePresence mode="wait">
+              {/* PROFILE TAB */}
+              {activeTab === 'profile' && (
+                <motion.div
+                  key="profile"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
                 >
-                  <div className="flex items-center gap-3">
-                    <Lock className="w-5 h-5 text-gray-600" />
-                    <div className="text-left">
-                      <p className="font-medium text-gray-900">Change Password</p>
-                      <p className="text-sm text-gray-600">Update your password regularly</p>
+                  {/* Avatar Upload */}
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      PROFILE PHOTO
+                    </h3>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
+                        theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                      }`}>
+                        {profile.avatar ? (
+                          <img src={profile.avatar} alt="Avatar" className="w-full h-full rounded-full object-cover" />
+                        ) : (
+                          <User className={`w-10 h-10 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                        )}
+                      </div>
+                      <button
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium transition-colors"
+                      >
+                        <Camera className="w-4 h-4" />
+                        Upload Photo
+                      </button>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400" />
-                </button>
-              </div>
 
-              <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-                <div className="flex items-start gap-3 mb-4">
-                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  {/* Afro-ID Card */}
                   <div>
-                    <h3 className="font-semibold text-red-900 mb-1">Danger Zone</h3>
-                    <p className="text-sm text-red-800">
-                      Once you delete your account, there is no going back. Please be certain.
-                    </p>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      YOUR AFRO-ID
+                    </h3>
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Fingerprint className="w-5 h-5" />
+                          <span className="text-sm font-semibold">Afro-ID</span>
+                        </div>
+                        <button
+                          onClick={handleCopyAfroId}
+                          className="p-1.5 rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
+                        >
+                          {copiedAfroId ? (
+                            <Check className="w-4 h-4" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                      <p className="text-lg font-mono font-bold mb-3">{profile.afroId}</p>
+                      <div className="flex items-start gap-2 p-2 rounded-lg bg-white/10">
+                        <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        <p className="text-xs">
+                          Keep your Afro-ID private. It's your unique identity in the Digital Motherland.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <button
-                  onClick={onDeleteAccount}
-                  className="w-full py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Trash2 className="w-5 h-5" />
-                  Delete Account
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
-      {/* Save Button (Fixed at bottom) */}
-      {hasChanges && activeTab !== 'security' && (
-        <div className="fixed bottom-20 left-0 right-0 p-4 bg-white border-t border-gray-200 shadow-lg">
-          <button
-            onClick={handleSave}
-            disabled={isSaving}
-            className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            {isSaving ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="w-5 h-5" />
-                Save Changes
-              </>
+                  {/* Basic Information */}
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      BASIC INFORMATION
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          value={profile.name}
+                          onChange={(e) => handleProfileChange('name', e.target.value)}
+                          className={`w-full px-4 py-2 rounded-lg border ${
+                            theme === 'dark'
+                              ? 'bg-gray-800 border-gray-700 text-white'
+                              : 'bg-white border-gray-300 text-gray-900'
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Phone Number
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <Phone className="w-5 h-5 text-gray-400" />
+                          <input
+                            type="tel"
+                            value={profile.phone}
+                            onChange={(e) => handleProfileChange('phone', e.target.value)}
+                            className={`flex-1 px-4 py-2 rounded-lg border ${
+                              theme === 'dark'
+                                ? 'bg-gray-800 border-gray-700 text-white'
+                                : 'bg-white border-gray-300 text-gray-900'
+                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Date of Birth
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-5 h-5 text-gray-400" />
+                          <input
+                            type="date"
+                            value={profile.dateOfBirth}
+                            onChange={(e) => handleProfileChange('dateOfBirth', e.target.value)}
+                            className={`flex-1 px-4 py-2 rounded-lg border ${
+                              theme === 'dark'
+                                ? 'bg-gray-800 border-gray-700 text-white'
+                                : 'bg-white border-gray-300 text-gray-900'
+                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Gender
+                        </label>
+                        <select
+                          value={profile.gender}
+                          onChange={(e) => handleProfileChange('gender', e.target.value)}
+                          className={`w-full px-4 py-2 rounded-lg border ${
+                            theme === 'dark'
+                              ? 'bg-gray-800 border-gray-700 text-white'
+                              : 'bg-white border-gray-300 text-gray-900'
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                        >
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="non-binary">Non-binary</option>
+                          <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Bio
+                        </label>
+                        <textarea
+                          value={profile.bio}
+                          onChange={(e) => handleProfileChange('bio', e.target.value)}
+                          rows={4}
+                          className={`w-full px-4 py-2 rounded-lg border ${
+                            theme === 'dark'
+                              ? 'bg-gray-800 border-gray-700 text-white'
+                              : 'bg-white border-gray-300 text-gray-900'
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          placeholder="Tell us about yourself..."
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      LOCATION
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Country
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-5 h-5 text-gray-400" />
+                          <input
+                            type="text"
+                            value={profile.location.country}
+                            onChange={(e) => handleLocationChange('country', e.target.value)}
+                            className={`flex-1 px-4 py-2 rounded-lg border ${
+                              theme === 'dark'
+                                ? 'bg-gray-800 border-gray-700 text-white'
+                                : 'bg-white border-gray-300 text-gray-900'
+                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          City
+                        </label>
+                        <input
+                          type="text"
+                          value={profile.location.city}
+                          onChange={(e) => handleLocationChange('city', e.target.value)}
+                          className={`w-full px-4 py-2 rounded-lg border ${
+                            theme === 'dark'
+                              ? 'bg-gray-800 border-gray-700 text-white'
+                              : 'bg-white border-gray-300 text-gray-900'
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Professional Information */}
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      PROFESSIONAL INFORMATION
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Village
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <Briefcase className="w-5 h-5 text-gray-400" />
+                          <select
+                            value={profile.village}
+                            onChange={(e) => handleProfileChange('village', e.target.value)}
+                            className={`flex-1 px-4 py-2 rounded-lg border ${
+                              theme === 'dark'
+                                ? 'bg-gray-800 border-gray-700 text-white'
+                                : 'bg-white border-gray-300 text-gray-900'
+                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          >
+                            {villages.map((village) => (
+                              <option key={village} value={village}>{village}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Profession/Role
+                        </label>
+                        <input
+                          type="text"
+                          value={profile.profession}
+                          onChange={(e) => handleProfileChange('profession', e.target.value)}
+                          className={`w-full px-4 py-2 rounded-lg border ${
+                            theme === 'dark'
+                              ? 'bg-gray-800 border-gray-700 text-white'
+                              : 'bg-white border-gray-300 text-gray-900'
+                          } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${
+                          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          Website
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <Globe className="w-5 h-5 text-gray-400" />
+                          <input
+                            type="url"
+                            value={profile.website || ''}
+                            onChange={(e) => handleProfileChange('website', e.target.value)}
+                            placeholder="https://..."
+                            className={`flex-1 px-4 py-2 rounded-lg border ${
+                              theme === 'dark'
+                                ? 'bg-gray-800 border-gray-700 text-white'
+                                : 'bg-white border-gray-300 text-gray-900'
+                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* PRIVACY TAB */}
+              {activeTab === 'privacy' && (
+                <motion.div
+                  key="privacy"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
+                >
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      VISIBILITY
+                    </h3>
+                    <div className="space-y-3">
+                      {[
+                        { key: 'profileVisibility' as keyof PrivacySettings, label: 'Profile Visibility', icon: User },
+                        { key: 'afroIdVisibility' as keyof PrivacySettings, label: 'Afro-ID Visibility', icon: Fingerprint },
+                        { key: 'phoneVisibility' as keyof PrivacySettings, label: 'Phone Visibility', icon: Phone },
+                        { key: 'locationVisibility' as keyof PrivacySettings, label: 'Location Visibility', icon: MapPin },
+                      ].map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <div key={item.key} className={`p-4 rounded-xl border ${
+                            theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                          }`}>
+                            <div className="flex items-center gap-3 mb-3">
+                              <Icon className="w-5 h-5 text-gray-400" />
+                              <span className={`font-semibold text-sm ${
+                                theme === 'dark' ? 'text-white' : 'text-gray-900'
+                              }`}>
+                                {item.label}
+                              </span>
+                            </div>
+                            <div className="flex gap-2">
+                              {['public', 'connections', 'private'].map((visibility) => (
+                                <button
+                                  key={visibility}
+                                  onClick={() => handlePrivacyChange(item.key, visibility)}
+                                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                                    privacy[item.key] === visibility
+                                      ? 'bg-purple-600 text-white'
+                                      : theme === 'dark'
+                                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                  }`}
+                                >
+                                  {visibility.charAt(0).toUpperCase() + visibility.slice(1)}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      ACTIVITY
+                    </h3>
+                    <div className="space-y-3">
+                      {[
+                        { key: 'showOnlineStatus' as keyof PrivacySettings, label: 'Show Online Status', desc: 'Let others see when you\'re active' },
+                        { key: 'showInSearch' as keyof PrivacySettings, label: 'Show in Search', desc: 'Allow others to find you in search results' },
+                      ].map((item) => (
+                        <div key={item.key} className={`p-4 rounded-xl border ${
+                          theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <p className={`font-semibold text-sm ${
+                                theme === 'dark' ? 'text-white' : 'text-gray-900'
+                              }`}>
+                                {item.label}
+                              </p>
+                              <p className={`text-xs ${
+                                theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                              }`}>
+                                {item.desc}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => handlePrivacyChange(item.key, !privacy[item.key])}
+                              className={`relative w-12 h-6 rounded-full transition-colors ${
+                                privacy[item.key] ? 'bg-green-600' : 'bg-gray-300'
+                              }`}
+                            >
+                              <motion.div
+                                className="absolute top-1 w-4 h-4 bg-white rounded-full"
+                                animate={{
+                                  x: privacy[item.key] ? 28 : 4,
+                                }}
+                                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      MESSAGES
+                    </h3>
+                    <div className={`p-4 rounded-xl border ${
+                      theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                    }`}>
+                      <p className={`font-semibold text-sm mb-3 ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Who can message you?
+                      </p>
+                      <div className="flex gap-2">
+                        {['everyone', 'connections', 'none'].map((option) => (
+                          <button
+                            key={option}
+                            onClick={() => handlePrivacyChange('allowMessages', option)}
+                            className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                              privacy.allowMessages === option
+                                ? 'bg-purple-600 text-white'
+                                : theme === 'dark'
+                                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                          >
+                            {option.charAt(0).toUpperCase() + option.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* NOTIFICATIONS TAB */}
+              {activeTab === 'notifications' && (
+                <motion.div
+                  key="notifications"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
+                >
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      PUSH NOTIFICATIONS
+                    </h3>
+                    <div className="space-y-3">
+                      {[
+                        { key: 'pushNotifications' as keyof NotificationSettings, label: 'Push Notifications', desc: 'Get notified about activity', icon: Bell },
+                        { key: 'smsNotifications' as keyof NotificationSettings, label: 'SMS Notifications', desc: 'Receive updates via SMS', icon: Smartphone },
+                      ].map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <div key={item.key} className={`p-4 rounded-xl border ${
+                            theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                          }`}>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3 flex-1">
+                                <Icon className="w-5 h-5 text-gray-400" />
+                                <div>
+                                  <p className={`font-semibold text-sm ${
+                                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                                  }`}>
+                                    {item.label}
+                                  </p>
+                                  <p className={`text-xs ${
+                                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                                  }`}>
+                                    {item.desc}
+                                  </p>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => handleNotificationChange(item.key, !notifications[item.key])}
+                                className={`relative w-12 h-6 rounded-full transition-colors ${
+                                  notifications[item.key] ? 'bg-green-600' : 'bg-gray-300'
+                                }`}
+                              >
+                                <motion.div
+                                  className="absolute top-1 w-4 h-4 bg-white rounded-full"
+                                  animate={{
+                                    x: notifications[item.key] ? 28 : 4,
+                                  }}
+                                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      ACTIVITY NOTIFICATIONS
+                    </h3>
+                    <div className="space-y-3">
+                      {[
+                        { key: 'connectionRequests' as keyof NotificationSettings, label: 'Connection Requests' },
+                        { key: 'messages' as keyof NotificationSettings, label: 'Messages' },
+                        { key: 'comments' as keyof NotificationSettings, label: 'Comments' },
+                        { key: 'likes' as keyof NotificationSettings, label: 'Likes' },
+                        { key: 'achievements' as keyof NotificationSettings, label: 'Achievements' },
+                        { key: 'systemUpdates' as keyof NotificationSettings, label: 'System Updates' },
+                      ].map((item) => (
+                        <div key={item.key} className={`p-4 rounded-xl border ${
+                          theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <span className={`font-semibold text-sm ${
+                              theme === 'dark' ? 'text-white' : 'text-gray-900'
+                            }`}>
+                              {item.label}
+                            </span>
+                            <button
+                              onClick={() => handleNotificationChange(item.key, !notifications[item.key])}
+                              className={`relative w-12 h-6 rounded-full transition-colors ${
+                                notifications[item.key] ? 'bg-green-600' : 'bg-gray-300'
+                              }`}
+                            >
+                              <motion.div
+                                className="absolute top-1 w-4 h-4 bg-white rounded-full"
+                                animate={{
+                                  x: notifications[item.key] ? 28 : 4,
+                                }}
+                                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* PREFERENCES TAB */}
+              {activeTab === 'preferences' && (
+                <motion.div
+                  key="preferences"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
+                >
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      APPEARANCE
+                    </h3>
+                    <div className={`p-4 rounded-xl border ${
+                      theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                    }`}>
+                      <p className={`font-semibold text-sm mb-3 ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Theme
+                      </p>
+                      <div className="flex gap-2">
+                        {['light', 'dark'].map((themeOption) => (
+                          <button
+                            key={themeOption}
+                            onClick={() => handlePreferenceChange('theme', themeOption as Theme)}
+                            className={`flex-1 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                              preferences.theme === themeOption
+                                ? 'bg-purple-600 text-white'
+                                : theme === 'dark'
+                                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                          >
+                            {themeOption.charAt(0).toUpperCase() + themeOption.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      LANGUAGE
+                    </h3>
+                    <select
+                      value={preferences.language}
+                      onChange={(e) => handlePreferenceChange('language', e.target.value)}
+                      className={`w-full px-4 py-3 rounded-lg border ${
+                        theme === 'dark'
+                          ? 'bg-gray-800 border-gray-700 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
+                      } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                    >
+                      <option value="en">English</option>
+                      <option value="sw">Swahili</option>
+                      <option value="yo">Yoruba</option>
+                      <option value="ig">Igbo</option>
+                      <option value="ha">Hausa</option>
+                      <option value="am">Amharic</option>
+                      <option value="zu">Zulu</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      MEDIA
+                    </h3>
+                    <div className="space-y-3">
+                      {[
+                        { key: 'soundEnabled' as keyof AppPreferences, label: 'Sound Effects', desc: 'Play sounds for interactions' },
+                        { key: 'autoPlayVideos' as keyof AppPreferences, label: 'Auto-play Videos', desc: 'Videos play automatically in feed' },
+                      ].map((item) => (
+                        <div key={item.key} className={`p-4 rounded-xl border ${
+                          theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                        }`}>
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className={`font-semibold text-sm ${
+                                theme === 'dark' ? 'text-white' : 'text-gray-900'
+                              }`}>
+                                {item.label}
+                              </p>
+                              <p className={`text-xs ${
+                                theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                              }`}>
+                                {item.desc}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => handlePreferenceChange(item.key, !preferences[item.key])}
+                              className={`relative w-12 h-6 rounded-full transition-colors ${
+                                preferences[item.key] ? 'bg-green-600' : 'bg-gray-300'
+                              }`}
+                            >
+                              <motion.div
+                                className="absolute top-1 w-4 h-4 bg-white rounded-full"
+                                animate={{
+                                  x: preferences[item.key] ? 28 : 4,
+                                }}
+                                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      DATA USAGE
+                    </h3>
+                    <div className={`p-4 rounded-xl border ${
+                      theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                    }`}>
+                      <p className={`font-semibold text-sm mb-3 ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Data Usage Mode
+                      </p>
+                      <div className="flex gap-2">
+                        {['low', 'normal', 'high'].map((mode) => (
+                          <button
+                            key={mode}
+                            onClick={() => handlePreferenceChange('dataUsageMode', mode)}
+                            className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                              preferences.dataUsageMode === mode
+                                ? 'bg-purple-600 text-white'
+                                : theme === 'dark'
+                                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                          >
+                            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* SECURITY TAB */}
+              {activeTab === 'security' && (
+                <motion.div
+                  key="security"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-6"
+                >
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                      AUTHENTICATION
+                    </h3>
+                    <button
+                      onClick={onChangePassword}
+                      className={`w-full p-4 rounded-xl border flex items-center justify-between ${
+                        theme === 'dark' 
+                          ? 'bg-gray-800 border-gray-700 hover:bg-gray-750' 
+                          : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Lock className="w-5 h-5 text-gray-400" />
+                        <div className="text-left">
+                          <p className={`font-semibold text-sm ${
+                            theme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
+                            Change Password
+                          </p>
+                          <p className={`text-xs ${
+                            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            Update your password regularly for security
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className={`text-sm font-semibold mb-3 text-red-500`}>
+                      DANGER ZONE
+                    </h3>
+                    <button
+                      onClick={onDeleteAccount}
+                      className={`w-full p-4 rounded-xl border border-red-500 flex items-center justify-between ${
+                        theme === 'dark' 
+                          ? 'bg-red-900/20 hover:bg-red-900/30' 
+                          : 'bg-red-50 hover:bg-red-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Trash2 className="w-5 h-5 text-red-500" />
+                        <div className="text-left">
+                          <p className="font-semibold text-sm text-red-500">
+                            Delete Account
+                          </p>
+                          <p className={`text-xs ${
+                            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            Permanently delete your account and all data
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Save Button */}
+          <AnimatePresence>
+            {hasChanges && (
+              <motion.div
+                initial={{ y: 100 }}
+                animate={{ y: 0 }}
+                exit={{ y: 100 }}
+                className={`flex-shrink-0 p-6 border-t ${
+                  theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
+                }`}
+              >
+                <button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white rounded-lg font-semibold transition-colors"
+                >
+                  {isSaving ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-5 h-5" />
+                      Save Changes
+                    </>
+                  )}
+                </button>
+              </motion.div>
             )}
-          </button>
-        </div>
-      )}
-    </div>
+          </AnimatePresence>
+
+          {/* Success Message */}
+          <AnimatePresence>
+            {saveSuccess && (
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 50 }}
+                className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-green-600 text-white rounded-lg shadow-lg flex items-center gap-2"
+              >
+                <CheckCircle className="w-5 h-5" />
+                <span className="font-medium">Changes saved successfully!</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </AnimatePresence>
   );
 };
 
