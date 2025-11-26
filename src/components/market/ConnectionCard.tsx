@@ -15,6 +15,8 @@ import {
   Check
 } from 'lucide-react';
 
+import { useAppSelector } from '@store/hooks';
+
 // Types
 type ConnectionTier = 'C1' | 'C2' | 'C3';
 type CardSize = 'compact' | 'default' | 'detailed';
@@ -95,6 +97,7 @@ const ConnectionCard: React.FC<ConnectionCardProps> = ({
   const tierColor = getTierColor(connection.kinshipTier);
   const businessLinkInfo = getBusinessLinkInfo(connection.businessLink);
   const BusinessLinkIcon = businessLinkInfo?.icon;
+  const theme = useAppSelector((state) => state.theme.theme);
 
   // Compact size - minimal info
   if (size === 'compact') {
@@ -102,7 +105,7 @@ const ConnectionCard: React.FC<ConnectionCardProps> = ({
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow cursor-pointer"
+        className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg p-3 hover:shadow-md transition-shadow cursor-pointer`}
         onClick={() => onViewProfile?.(connection.id)}
       >
         <div className="flex items-center gap-3">
