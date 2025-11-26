@@ -8,7 +8,6 @@ import {
   Video,
   MoreVertical,
   UserPlus,
-  //Star,
   Briefcase,
   Calendar
 } from 'lucide-react';
@@ -29,13 +28,17 @@ interface Connection {
 }
 
 /**
- * MY CIRCLE COMPONENT
+ * MY CIRCLE COMPONENT - MOBILE FRIENDLY
  * 
  * Shows people you have mutual access with after Business Sessions.
- * These are NOT random contacts - these are:
- * - People you completed work with
- * - Both sides agreed to "Keep Connection"
- * - Trusted relationships
+ * 
+ * Mobile Optimizations:
+ * - Responsive padding and text sizes
+ * - Touch-optimized buttons (min 44px)
+ * - Horizontal scrollable filters
+ * - Flexible card layouts
+ * - Larger tap targets
+ * - Truncated text handling
  * 
  * Location: src/components/circle/MyCircle.tsx
  */
@@ -55,7 +58,7 @@ export const MyCircle: React.FC = () => {
       villageColor: '#10b981',
       crestTier: 4,
       relationshipType: 'business',
-      lastContact: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+      lastContact: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       sessionsCompleted: 12,
       mutualConnections: 8,
     },
@@ -67,7 +70,7 @@ export const MyCircle: React.FC = () => {
       villageColor: '#3b82f6',
       crestTier: 5,
       relationshipType: 'friend',
-      lastContact: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+      lastContact: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       sessionsCompleted: 3,
       mutualConnections: 15,
     },
@@ -79,7 +82,7 @@ export const MyCircle: React.FC = () => {
       villageColor: '#8b5cf6',
       crestTier: 3,
       relationshipType: 'mentor',
-      lastContact: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+      lastContact: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
       sessionsCompleted: 7,
       mutualConnections: 4,
     },
@@ -91,7 +94,7 @@ export const MyCircle: React.FC = () => {
       villageColor: '#f59e0b',
       crestTier: 4,
       relationshipType: 'business',
-      lastContact: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
+      lastContact: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
       sessionsCompleted: 5,
       mutualConnections: 6,
     },
@@ -107,9 +110,9 @@ export const MyCircle: React.FC = () => {
   
   const getRelationshipColor = (type: Connection['relationshipType']) => {
     switch (type) {
-      case 'friend': return '#8b5cf6'; // Purple
-      case 'business': return '#3b82f6'; // Blue
-      case 'mentor': return '#f59e0b'; // Amber
+      case 'friend': return '#8b5cf6';
+      case 'business': return '#3b82f6';
+      case 'mentor': return '#f59e0b';
     }
   };
   
@@ -134,48 +137,48 @@ export const MyCircle: React.FC = () => {
   });
   
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6">
-      {/* Header */}
+    <div className="max-w-4xl mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
+      {/* Header - Mobile Responsive */}
       <div>
-        <h1 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+        <h1 className={`text-xl sm:text-2xl font-bold mb-1 sm:mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
           My Circle
         </h1>
-        <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+        <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
           People you've built trust with through completed work
         </p>
       </div>
       
-      {/* Stats Bar */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-          <p className={`text-2xl font-bold mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+      {/* Stats Bar - Mobile Grid */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div className={`p-3 sm:p-4 rounded-lg sm:rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <p className={`text-xl sm:text-2xl font-bold mb-0.5 sm:mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             {connections.length}
           </p>
-          <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-[10px] sm:text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             Connections
           </p>
         </div>
-        <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-          <p className={`text-2xl font-bold mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+        <div className={`p-3 sm:p-4 rounded-lg sm:rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <p className={`text-xl sm:text-2xl font-bold mb-0.5 sm:mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             {connections.reduce((sum, c) => sum + c.sessionsCompleted, 0)}
           </p>
-          <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-[10px] sm:text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             Sessions Done
           </p>
         </div>
-        <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-          <p className={`text-2xl font-bold mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+        <div className={`p-3 sm:p-4 rounded-lg sm:rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <p className={`text-xl sm:text-2xl font-bold mb-0.5 sm:mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             {connections.filter(c => c.crestTier >= 4).length}
           </p>
-          <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-[10px] sm:text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             High Trust
           </p>
         </div>
       </div>
       
-      {/* Search Bar */}
+      {/* Search Bar - Mobile Responsive */}
       <div className="relative">
-        <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${
+        <Search className={`absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${
           theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
         }`} />
         <input
@@ -183,7 +186,7 @@ export const MyCircle: React.FC = () => {
           placeholder="Search connections..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
+          className={`w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border text-sm sm:text-base ${
             theme === 'dark'
               ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500'
               : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -191,76 +194,78 @@ export const MyCircle: React.FC = () => {
         />
       </div>
       
-      {/* Filter Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
-        {(['all', 'friend', 'business', 'mentor'] as const).map((filter) => (
-          <button
-            key={filter}
-            onClick={() => setFilterType(filter)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors capitalize ${
-              filterType === filter
-                ? theme === 'dark'
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-purple-500 text-white'
-                : theme === 'dark'
-                ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            {filter === 'all' ? 'All' : getRelationshipLabel(filter).split(' ')[0]}
-          </button>
-        ))}
+      {/* Filter Tabs - Horizontal Scroll on Mobile */}
+      <div className="overflow-x-auto hide-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
+        <div className="flex items-center gap-2 min-w-max">
+          {(['all', 'friend', 'business', 'mentor'] as const).map((filter) => (
+            <button
+              key={filter}
+              onClick={() => setFilterType(filter)}
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors capitalize ${
+                filterType === filter
+                  ? theme === 'dark'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-purple-500 text-white'
+                  : theme === 'dark'
+                  ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {filter === 'all' ? 'All' : getRelationshipLabel(filter).split(' ')[0]}
+            </button>
+          ))}
+        </div>
       </div>
       
-      {/* Connections List */}
+      {/* Connections List - Mobile Optimized */}
       <div className="space-y-3">
         {filteredConnections.map((connection) => (
           <motion.div
             key={connection.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`p-4 rounded-xl border ${
+            className={`p-3 sm:p-4 rounded-xl border ${
               theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
             }`}
           >
-            <div className="flex items-start gap-4">
-              {/* Avatar */}
+            <div className="flex items-start gap-2.5 sm:gap-4">
+              {/* Avatar - Smaller on Mobile */}
               <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-lg flex-shrink-0"
+                className="w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-white text-sm sm:text-lg shrink-0"
                 style={{ backgroundColor: connection.villageColor }}
               >
                 {connection.name.charAt(0)}
               </div>
               
-              {/* Info */}
+              {/* Info - Flexible Layout */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between mb-2">
+                <div className="flex items-start justify-between mb-1.5 sm:mb-2 gap-2">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className={`font-bold text-base truncate ${
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                      <h3 className={`font-bold text-sm sm:text-base truncate ${
                         theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}>
                         {connection.name}
                       </h3>
-                      <span className="text-xs">
+                      <span className="text-[10px] sm:text-xs shrink-0">
                         {'⭐'.repeat(connection.crestTier)}
                       </span>
                     </div>
-                    <p className={`text-sm truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <p className={`text-xs sm:text-sm truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                       {connection.role} • {connection.village}
                     </p>
                   </div>
                   
-                  <button className={`p-1.5 rounded-lg ${
+                  <button className={`p-1 sm:p-1.5 rounded-lg shrink-0 ${
                     theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
                   }`}>
-                    <MoreVertical className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
+                    <MoreVertical className={`w-4 h-4 sm:w-5 sm:h-5 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
                   </button>
                 </div>
                 
                 {/* Relationship Badge */}
                 <span 
-                  className="inline-block px-2 py-1 rounded text-xs font-medium mb-3"
+                  className="inline-block px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-medium mb-2 sm:mb-3"
                   style={{ 
                     backgroundColor: `${getRelationshipColor(connection.relationshipType)}20`,
                     color: getRelationshipColor(connection.relationshipType)
@@ -269,49 +274,50 @@ export const MyCircle: React.FC = () => {
                   {getRelationshipLabel(connection.relationshipType)}
                 </span>
                 
-                {/* Stats */}
-                <div className="flex items-center gap-4 mb-3 text-xs">
+                {/* Stats - Responsive Wrap */}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2 sm:mb-3 text-[10px] sm:text-xs">
                   <div className="flex items-center gap-1">
-                    <Briefcase className="w-3.5 h-3.5 text-gray-500" />
+                    <Briefcase className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500" />
                     <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
                       {connection.sessionsCompleted} sessions
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5 text-gray-500" />
+                    <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500" />
                     <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
                       {connection.mutualConnections} mutual
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-gray-500" />
+                    <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500" />
                     <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
                       {formatLastContact(connection.lastContact)}
                     </span>
                   </div>
                 </div>
                 
-                {/* Actions */}
-                <div className="flex items-center gap-2">
+                {/* Actions - Mobile Optimized */}
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <button 
-                    className="flex-1 px-3 py-2 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors"
+                    className="flex-1 px-2.5 sm:px-3 py-2 rounded-lg font-medium text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 transition-colors"
                     style={{ 
                       backgroundColor: `${connection.villageColor}20`,
                       color: connection.villageColor
                     }}
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    Message
+                    <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden xs:inline">Message</span>
+                    <span className="xs:hidden">Chat</span>
                   </button>
                   <button className={`p-2 rounded-lg ${
                     theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
                   } transition-colors`}>
-                    <Phone className={`w-4 h-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
+                    <Phone className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
                   </button>
                   <button className={`p-2 rounded-lg ${
                     theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
                   } transition-colors`}>
-                    <Video className={`w-4 h-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
+                    <Video className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
                   </button>
                 </div>
               </div>
@@ -320,24 +326,24 @@ export const MyCircle: React.FC = () => {
         ))}
       </div>
       
-      {/* Empty State */}
+      {/* Empty State - Mobile Responsive */}
       {filteredConnections.length === 0 && (
-        <div className={`p-12 text-center rounded-xl ${
+        <div className={`p-8 sm:p-12 text-center rounded-xl ${
           theme === 'dark' ? 'bg-gray-800' : 'bg-white'
         }`}>
-          <Users className={`w-16 h-16 mx-auto mb-4 ${
+          <Users className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 ${
             theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
           }`} />
-          <p className={`text-lg font-semibold mb-2 ${
+          <p className={`text-base sm:text-lg font-semibold mb-2 ${
             theme === 'dark' ? 'text-white' : 'text-gray-900'
           }`}>
             No connections yet
           </p>
-          <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-xs sm:text-sm mb-3 sm:mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             Complete work sessions and keep connections to build your circle
           </p>
-          <button className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium flex items-center gap-2 mx-auto transition-colors">
-            <UserPlus className="w-4 h-4" />
+          <button className="px-3 sm:px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium flex items-center gap-2 mx-auto transition-colors">
+            <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Find People in Discover
           </button>
         </div>

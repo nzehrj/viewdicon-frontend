@@ -30,14 +30,17 @@ interface Appeal {
 type AppealType = 'dispute' | 'shield_appeal' | 'crest_review' | 'role_switch' | 'safety_request';
 
 /**
- * COUNCIL APPEALS COMPONENT
+ * COUNCIL APPEALS COMPONENT - MOBILE FRIENDLY
  * 
- * Interface for users to interact with village councils:
- * - Dispute resolution (payment, quality, harassment)
- * - Shield appeals (Amber/Red → Green)
- * - Crest review requests
- * - Role switch requests (change village/role)
- * - Safety requests (Warrior escort, Safe House)
+ * Interface for users to interact with village councils.
+ * 
+ * Mobile Optimizations:
+ * - Responsive padding and text sizes
+ * - Touch-optimized buttons (min 44px)
+ * - Horizontal scrollable appeal types
+ * - Stacked layouts on mobile
+ * - Larger tap targets
+ * - Better text truncation
  * 
  * Location: src/components/circle/CouncilAppeals.tsx
  */
@@ -173,93 +176,95 @@ export const CouncilAppeals: React.FC = () => {
   };
   
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+    <div className="max-w-4xl mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
+      {/* Header - Mobile Responsive */}
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-0">
+        <div className="flex-1">
+          <h1 className={`text-xl sm:text-2xl font-bold mb-1 sm:mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Council & Appeals
           </h1>
-          <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             Request help from {userVillage?.villageName || 'Village'} Council
           </p>
         </div>
         
         <button
           onClick={() => setShowNewAppeal(!showNewAppeal)}
-          className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium flex items-center gap-2 transition-colors"
+          className="w-full sm:w-auto px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium flex items-center justify-center gap-2 transition-colors"
         >
-          <FileText className="w-4 h-4" />
+          <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           New Appeal
         </button>
       </div>
       
-      {/* New Appeal Form */}
+      {/* New Appeal Form - Mobile Optimized */}
       {showNewAppeal && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className={`p-6 rounded-xl border-2 ${
+          className={`p-4 sm:p-6 rounded-xl border-2 ${
             theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
           }`}
         >
-          <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+          <h3 className={`text-base sm:text-lg font-bold mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Submit New Appeal
           </h3>
           
-          {/* Appeal Type Selector */}
+          {/* Appeal Type Selector - Horizontal Scroll on Mobile */}
           <div className="mb-4">
-            <label className={`block text-sm font-medium mb-2 ${
+            <label className={`block text-xs sm:text-sm font-medium mb-2 ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}>
               Appeal Type
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {appealTypes.map((type) => {
-                const Icon = type.icon;
-                const isSelected = selectedType === type.id;
-                
-                return (
-                  <button
-                    key={type.id}
-                    onClick={() => setSelectedType(type.id)}
-                    className={`p-3 rounded-lg text-left transition-all border-2 ${
-                      isSelected
-                        ? 'border-current'
-                        : theme === 'dark'
-                        ? 'border-gray-700 hover:border-gray-600'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    style={isSelected ? { borderColor: type.color } : {}}
-                  >
-                    <div className="flex items-start gap-2">
-                      <Icon 
-                        className="w-5 h-5 flex-shrink-0" 
-                        style={{ color: type.color }}
-                      />
-                      <div>
-                        <p className={`font-semibold text-sm ${
-                          theme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>
-                          {type.label}
-                        </p>
-                        <p className={`text-xs mt-0.5 ${
-                          theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                        }`}>
-                          {type.description}
-                        </p>
+            <div className="overflow-x-auto hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="flex sm:grid sm:grid-cols-2 gap-2 min-w-max sm:min-w-0">
+                {appealTypes.map((type) => {
+                  const Icon = type.icon;
+                  const isSelected = selectedType === type.id;
+                  
+                  return (
+                    <button
+                      key={type.id}
+                      onClick={() => setSelectedType(type.id)}
+                      className={`p-2.5 sm:p-3 rounded-lg text-left transition-all border-2 w-48 sm:w-auto shrink-0 sm:shrink ${
+                        isSelected
+                          ? 'border-current'
+                          : theme === 'dark'
+                          ? 'border-gray-700 hover:border-gray-600'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      style={isSelected ? { borderColor: type.color } : {}}
+                    >
+                      <div className="flex items-start gap-2">
+                        <Icon 
+                          className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" 
+                          style={{ color: type.color }}
+                        />
+                        <div className="min-w-0">
+                          <p className={`font-semibold text-xs sm:text-sm truncate ${
+                            theme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
+                            {type.label}
+                          </p>
+                          <p className={`text-[10px] sm:text-xs mt-0.5 line-clamp-2 ${
+                            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            {type.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                );
-              })}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
           
-          {/* Title Input */}
-          <div className="mb-4">
-            <label className={`block text-sm font-medium mb-2 ${
+          {/* Title Input - Mobile Responsive */}
+          <div className="mb-3 sm:mb-4">
+            <label className={`block text-xs sm:text-sm font-medium mb-2 ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}>
               Title
@@ -269,7 +274,7 @@ export const CouncilAppeals: React.FC = () => {
               value={appealTitle}
               onChange={(e) => setAppealTitle(e.target.value)}
               placeholder="Brief summary of your appeal..."
-              className={`w-full px-4 py-2 rounded-lg border ${
+              className={`w-full px-3 sm:px-4 py-2 rounded-lg border text-sm sm:text-base ${
                 theme === 'dark'
                   ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500'
                   : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -277,9 +282,9 @@ export const CouncilAppeals: React.FC = () => {
             />
           </div>
           
-          {/* Description Textarea */}
-          <div className="mb-4">
-            <label className={`block text-sm font-medium mb-2 ${
+          {/* Description Textarea - Mobile Responsive */}
+          <div className="mb-3 sm:mb-4">
+            <label className={`block text-xs sm:text-sm font-medium mb-2 ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}>
               Detailed Explanation
@@ -289,7 +294,7 @@ export const CouncilAppeals: React.FC = () => {
               onChange={(e) => setAppealDescription(e.target.value)}
               placeholder="Provide full details, evidence, and context..."
               rows={4}
-              className={`w-full px-4 py-2 rounded-lg border resize-none ${
+              className={`w-full px-3 sm:px-4 py-2 rounded-lg border resize-none text-sm sm:text-base ${
                 theme === 'dark'
                   ? 'bg-gray-900 border-gray-700 text-white placeholder-gray-500'
                   : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
@@ -297,48 +302,50 @@ export const CouncilAppeals: React.FC = () => {
             />
           </div>
           
-          {/* Attachments */}
+          {/* Attachments - Mobile Optimized */}
           <div className="mb-4">
-            <label className={`block text-sm font-medium mb-2 ${
+            <label className={`block text-xs sm:text-sm font-medium mb-2 ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
             }`}>
               Supporting Evidence
             </label>
-            <div className="flex items-center gap-2">
-              <button className={`flex-1 p-3 rounded-lg border-2 border-dashed flex items-center justify-center gap-2 ${
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <button className={`flex-1 p-2.5 sm:p-3 rounded-lg border-2 border-dashed flex items-center justify-center gap-2 ${
                 theme === 'dark'
                   ? 'border-gray-700 hover:border-gray-600 text-gray-400 hover:text-gray-300'
                   : 'border-gray-300 hover:border-gray-400 text-gray-600 hover:text-gray-700'
               } transition-colors`}>
-                <Upload className="w-4 h-4" />
-                <span className="text-sm font-medium">Upload Files</span>
+                <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="text-xs sm:text-sm font-medium">Upload Files</span>
               </button>
-              <button className={`p-3 rounded-lg ${
-                theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
-              } transition-colors`}>
-                <ImageIcon className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
-              </button>
-              <button className={`p-3 rounded-lg ${
-                theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
-              } transition-colors`}>
-                <Mic className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
-              </button>
+              <div className="flex gap-2">
+                <button className={`flex-1 sm:flex-initial p-2.5 sm:p-3 rounded-lg ${
+                  theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
+                } transition-colors`}>
+                  <ImageIcon className={`w-4 h-4 sm:w-5 sm:h-5 mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
+                </button>
+                <button className={`flex-1 sm:flex-initial p-2.5 sm:p-3 rounded-lg ${
+                  theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
+                } transition-colors`}>
+                  <Mic className={`w-4 h-4 sm:w-5 sm:h-5 mx-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
+                </button>
+              </div>
             </div>
           </div>
           
-          {/* Actions */}
-          <div className="flex items-center gap-3">
+          {/* Actions - Mobile Stacked */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
             <button
               onClick={handleSubmitAppeal}
               disabled={!appealTitle.trim() || !appealDescription.trim()}
-              className="flex-1 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium flex items-center justify-center gap-2 transition-colors"
+              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-sm font-medium flex items-center justify-center gap-2 transition-colors"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Submit Appeal
             </button>
             <button
               onClick={() => setShowNewAppeal(false)}
-              className={`px-4 py-2 rounded-lg font-medium ${
+              className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium ${
                 theme === 'dark'
                   ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -350,9 +357,9 @@ export const CouncilAppeals: React.FC = () => {
         </motion.div>
       )}
       
-      {/* Appeals List */}
-      <div className="space-y-4">
-        <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+      {/* Appeals List - Mobile Optimized */}
+      <div className="space-y-3 sm:space-y-4">
+        <h3 className={`text-base sm:text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
           Your Appeals
         </h3>
         
@@ -366,59 +373,59 @@ export const CouncilAppeals: React.FC = () => {
               key={appeal.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-xl border ${
+              className={`p-3 sm:p-4 rounded-xl border ${
                 theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               }`}
             >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-start gap-3">
+              {/* Header - Mobile Responsive */}
+              <div className="flex items-start justify-between mb-2 sm:mb-3 gap-2">
+                <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
                   <div 
-                    className="w-10 h-10 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${typeData?.color || '#6b7280'}20` }}
                   >
-                    <TypeIcon className="w-5 h-5" style={{ color: typeData?.color }} />
+                    <TypeIcon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: typeData?.color }} />
                   </div>
-                  <div>
-                    <h4 className={`font-bold text-base mb-1 ${
+                  <div className="min-w-0 flex-1">
+                    <h4 className={`font-bold text-sm sm:text-base mb-0.5 sm:mb-1 line-clamp-2 ${
                       theme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}>
                       {appeal.title}
                     </h4>
-                    <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <p className={`text-[10px] sm:text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                       {typeData?.label} • {formatDate(appeal.submittedAt)}
                     </p>
                   </div>
                 </div>
                 
                 <div 
-                  className="flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium"
+                  className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium whitespace-nowrap shrink-0"
                   style={{ 
                     backgroundColor: `${getStatusColor(appeal.status)}20`,
                     color: getStatusColor(appeal.status)
                   }}
                 >
-                  <StatusIcon className="w-3.5 h-3.5" />
-                  {getStatusLabel(appeal.status)}
+                  <StatusIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <span className="hidden xs:inline">{getStatusLabel(appeal.status)}</span>
                 </div>
               </div>
               
               {/* Description */}
-              <p className={`text-sm mb-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+              <p className={`text-xs sm:text-sm mb-2 sm:mb-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 {appeal.description}
               </p>
               
-              {/* Council Response */}
+              {/* Council Response - Mobile Responsive */}
               {appeal.councilResponse && (
-                <div className={`p-3 rounded-lg border-l-4 ${
+                <div className={`p-2.5 sm:p-3 rounded-lg border-l-4 ${
                   theme === 'dark' ? 'bg-gray-900 border-green-500' : 'bg-green-50 border-green-500'
                 }`}>
-                  <p className={`text-xs font-semibold mb-1 ${
+                  <p className={`text-[10px] sm:text-xs font-semibold mb-1 ${
                     theme === 'dark' ? 'text-green-400' : 'text-green-700'
                   }`}>
                     Council Response • {appeal.responseAt && formatDate(appeal.responseAt)}
                   </p>
-                  <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     {appeal.councilResponse}
                   </p>
                 </div>
@@ -428,20 +435,20 @@ export const CouncilAppeals: React.FC = () => {
         })}
       </div>
       
-      {/* Empty State */}
+      {/* Empty State - Mobile Responsive */}
       {appeals.length === 0 && (
-        <div className={`p-12 text-center rounded-xl ${
+        <div className={`p-8 sm:p-12 text-center rounded-xl ${
           theme === 'dark' ? 'bg-gray-800' : 'bg-white'
         }`}>
-          <FileText className={`w-16 h-16 mx-auto mb-4 ${
+          <FileText className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 ${
             theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
           }`} />
-          <p className={`text-lg font-semibold mb-2 ${
+          <p className={`text-base sm:text-lg font-semibold mb-2 ${
             theme === 'dark' ? 'text-white' : 'text-gray-900'
           }`}>
             No appeals yet
           </p>
-          <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-xs sm:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             You can submit appeals for disputes, shield status, or other issues
           </p>
         </div>
