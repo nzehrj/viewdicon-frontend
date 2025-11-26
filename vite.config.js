@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
+
 export default defineConfig({
     plugins: [
         react(),
@@ -31,6 +32,14 @@ export default defineConfig({
         port: 5173,
         host: true,
         open: true,
+        // ✅ FIX: Fallback to index.html for all routes (fixes 404 on reload)
+        historyApiFallback: true,
+    },
+    preview: {
+        port: 5173,
+        host: true,
+        // ✅ FIX: Fallback to index.html for production preview (fixes 404 on reload)
+        historyApiFallback: true,
     },
     build: {
         outDir: 'dist',

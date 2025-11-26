@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Home as HomeIcon,
@@ -11,6 +11,7 @@ import {
   Mic,
   Sparkles,
   Image,
+  Scale,
   X,
   LogOut,
   Grid,
@@ -40,7 +41,11 @@ import { GalleryFeed } from '@components/feeds/GalleryFeed';
 import { FamilyCircle } from '@components/feeds/FamilyCircle';
 import { DiscoverySpotlight } from '@components/feeds/DiscoverySpotlight';
 import { FeedComposer } from '@components/feeds/FeedComposer';
+import { VoiceFeed } from '@components/feeds/VoiceFeed';
+
+// ✅ DISCOVER COMPONENTS
 import { Discover } from '@components/discover/Discover';
+import { RequestWorkFlow } from '@components/discover/RequestWorkFlow';
 
 // ✅ CIRCLE Components - DEFAULT IMPORTS
 import VillageSquare from '@components/circle/VillageSquare';
@@ -76,6 +81,7 @@ import technologyConfig from '../../config/villages/technology.json';
 import transportConfig from '../../config/villages/transport.json';
 
 // ✅ PHASE 1-5: Core Components
+import { JollofTVBubble } from '@components/common/JollofTVBubble';
 import { FeedTimeline } from '@components/feed/FeedTimeline';
 import { ProfileCard } from './ProfileCard';
 import { AfroIDSection } from './AfroIDSection';
@@ -101,6 +107,13 @@ import BusinessSession from '@components/business/BusinessSession';
 import EscrowManager from '@components/business/EscrowManager';
 import DisputeResolution from '@components/business/DisputeResolution';
 import SessionHistory from '@components/business/SessionHistory';
+import  BusinessLinkBadge from '@components/business/BusinessLinkBadge';
+import  PaymentReceipt  from '@components/business/PaymentReceipt';
+import { RatingReview } from '@components/business/RatingReview';
+import  WorkProofGallery from '@components/business/WorkProofGallery';
+import { CAWSLawBanner } from '@components/business/CAWSLawBanner';
+import { CallWitness } from '@components/business/CallWitness';
+import { CircleMembershipOffer } from '@components/business/CircleMembershipOffer';
 
 // ✅ PHASE 7: LINK Tab (Networking) Components - DEFAULT IMPORTS
 import KinshipNetwork from '@components/market/KinshipNetwork';
@@ -160,6 +173,12 @@ const DashboardHome: React.FC = () => {
 
   const [activeChatTab, setActiveChatTab] = useState<'requests' | 'trusted' | 'all'>('all');
 
+  // Jollof TV state
+  const [isJollofTVVisible, setIsJollofTVVisible] = useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isJollofTVLive, _setIsJollofTVLive] = useState(true); // Set to true when live
+
   const [activeFeedType, setActiveFeedType] = useState<'village' | 'discover' | 'motion' | 'gallery' | 'voice' | 'family' | 'spotlight' | 'square' | 'mycircle' | 'rooms' | 'council'>('village');
   const [isComposerOpen, setIsComposerOpen] = useState(false);
   
@@ -167,7 +186,13 @@ const DashboardHome: React.FC = () => {
   const [activeBusinessTab, setActiveBusinessTab] = useState<'sessions' | 'escrow' | 'history' | 'disputes'>('sessions');
   const [activeNetworkTab, setActiveNetworkTab] = useState<'kinship' | 'requests' | 'stats'>('kinship');
   const [activeSecurityTab, setActiveSecurityTab] = useState<'dashboard' | 'watchful-eye' | 'verification' | 'devices' | 'sessions'>('dashboard');
-  
+  const [showCircleOffer, setShowCircleOffer] = useState(false);
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [showRating, setShowRating] = useState(false);
+  const [showWorkProof, setShowWorkProof] = useState(false);
+  const [currentProfessional, setCurrentProfessional] = useState<any>(null);
+  const [showDisputeModal, setShowDisputeModal] = useState(false);
+    
   // Modal States
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -181,6 +206,9 @@ const DashboardHome: React.FC = () => {
     roleName: string;
     roleIcon: string;
   } | null>(null);
+
+  const [selectedProfessional, setSelectedProfessional] = useState<any>(null);
+  const [showRequestWorkFlow, setShowRequestWorkFlow] = useState(false);
   
   // User States
   const [presenceMode, setPresenceMode] = useState<'spirit' | 'flesh'>('spirit');
@@ -193,6 +221,82 @@ const DashboardHome: React.FC = () => {
   const userRole = useAppSelector((state) => state.user.role);
   const phoneNumber = useAppSelector((state) => state.auth.phoneNumber);
   const messageRequests = useAppSelector((state) => state.user.messageRequests);
+
+  // Scroll-based Navigation Visibility
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Scroll-based Navigation
+  useEffect(() => {
+    const handleScroll = () => {
+      // Get scroll position - works for both window and containers
+      const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+      
+      // Hide when scrolling down (past 100px)
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsNavVisible(false);
+      } 
+      // Show when scrolling up
+      else if (currentScrollY < lastScrollY) {
+        setIsNavVisible(true);
+      }
+      
+      // Always show at very top
+      if (currentScrollY < 50) {
+        setIsNavVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    // Also listen to scroll on main container
+    const handleContainerScroll = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      
+      const currentScrollY = target.scrollTop;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsNavVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsNavVisible(true);
+      }
+      
+      if (currentScrollY < 50) {
+        setIsNavVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    // Throttle for performance
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Listen to window scroll
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    
+    // Listen to scroll on all scrollable containers
+    const scrollableContainers = document.querySelectorAll('[class*="overflow"]');
+    scrollableContainers.forEach((container) => {
+      container.addEventListener('scroll', handleContainerScroll, { passive: true });
+    });
+
+    return () => {
+      window.removeEventListener('scroll', throttledScroll);
+      scrollableContainers.forEach((container) => {
+        container.removeEventListener('scroll', handleContainerScroll);
+      });
+    };
+  }, [lastScrollY]);
 
   // Village Configuration
   const villageConfig = userVillage?.villageId ? villageConfigs[userVillage.villageId] : null;
@@ -228,6 +332,53 @@ const DashboardHome: React.FC = () => {
 
   const handleRequestCircle = () => {
     console.log('Requesting circle verification...');
+  };
+
+  const handleCallWitness = (witnessData: any) => {
+    console.log('Witness Alert:', witnessData);
+    alert('Safety team alerted!');
+  };
+
+
+  const handleAcceptCircle = () => {
+    console.log('Circle membership accepted');
+    alert('Welcome to the Circle! You now have priority access.');
+    setShowCircleOffer(false);
+  };
+
+  const handleSubmitRating = (ratingData: any) => {
+    console.log('Rating submitted:', ratingData);
+    alert('Thank you for your rating!');
+    setShowRating(false);
+  };
+
+  const handleProofUpload = async (file: File, type: string, caption?: string) => {
+    console.log('Uploading proof:', file.name, type, caption);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    alert('Proof uploaded successfully!');
+  };
+
+  const handleProofDelete = async (proofId: string) => {
+    console.log('Deleting proof:', proofId);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    alert('Proof deleted');
+  };
+
+  const handleCaptionUpdate = async (proofId: string, caption: string) => {
+    console.log('Updating caption:', proofId, caption);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    alert('Caption updated');
+  };
+
+  const handleSessionComplete = () => {
+    setCurrentProfessional({
+      id: 'prof-123',
+      name: 'John Doe',
+      village: 'Construction Village',
+      villageColor: '#10b981',
+      crest: 4,
+    });
+    setShowCircleOffer(true);
   };
 
   const handleContactSupport = () => {
@@ -266,16 +417,44 @@ const DashboardHome: React.FC = () => {
     navigate('/auth/login', { replace: true });
   };
 
+  const handleJollofTVClose = () => {
+    setIsJollofTVVisible(false);
+  };
+
+  const handleJollofTVMaximize = () => {
+    // TODO: Navigate to full-screen Jollof TV page or open modal
+    console.log('Maximize Jollof TV - open full screen');
+    alert('Full-screen Jollof TV coming soon!');
+  };
+
+  const handleSprayCowrie = (amount: number) => {
+    // TODO: Process Cowrie payment
+    console.log(`Sprayed ${amount} Cowries! 💰`);
+    alert(`You sprayed ${amount} Cowries! 🪙`);
+  };
+
+  const handleRequestWork = (professional: any) => {
+    setSelectedProfessional({
+      id: professional.id,
+      name: professional.name,
+      role: professional.role,
+      village: professional.village,
+      villageColor: professional.villageColor,
+      priceHint: professional.priceHint,
+    });
+    setShowRequestWorkFlow(true);
+  };
+
+  const handleSubmitWorkRequest = (requestData: any) => {
+    console.log('Work Request Submitted:', requestData);
+    alert(`Work request sent to ${selectedProfessional?.name}! They will respond soon.`);
+    setShowRequestWorkFlow(false);
+    setSelectedProfessional(null);
+  };
+
   // Helper to check if view should be full-screen
   const isFullScreenView = () => {
-    return (
-      activeView === 'profile' ||
-      activeView === 'business' ||
-      activeView === 'network' ||
-      activeView === 'security' ||
-      activeView === 'tools' ||
-      (activeView === 'home' && activeBottomTab === 'social')
-    );
+    return activeView !== 'home';
   };
 
   // Bottom Navigation Items
@@ -556,27 +735,37 @@ const DashboardHome: React.FC = () => {
             relative
           `}
         >
-          {/* Collapse/Expand Toggle Button */}
-          {isFullScreenView() && (
-            <button
-              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className={`
-                absolute -right-3 top-6 z-50
-                w-6 h-6 rounded-full
-                ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}
-                flex items-center justify-center
-                transition-all duration-200
-                shadow-md
-              `}
-            >
-              {isSidebarCollapsed ? (
-                <ChevronRight className="w-4 h-4" />
-              ) : (
-                <ChevronLeft className="w-4 h-4" />
-              )}
-            </button>
-          )}
+
           <div className={`${isSidebarCollapsed ? 'p-3' : 'p-6'} transition-all duration-300`}>
+            {/* Collapse/Expand Toggle Button */}
+            {isFullScreenView() && (
+              <div className="mb-4">
+                <button
+                  onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                  className={`
+                    w-full py-2 rounded-lg
+                    ${theme === 'dark' 
+                      ? 'bg-gray-700/50 hover:bg-gray-700 text-gray-300' 
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                    }
+                    flex items-center justify-center gap-2
+                    transition-all duration-200
+                    group
+                  `}
+                  title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                >
+                  {isSidebarCollapsed ? (
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  ) : (
+                    <>
+                      <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+                      <span className="text-sm font-medium">Collapse</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
             {/* User Profile Card */}
             <div className={`${isSidebarCollapsed ? 'p-2' : 'p-4'} rounded-xl mb-6 ${
               theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'
@@ -742,7 +931,7 @@ const DashboardHome: React.FC = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto" style={{ height: 'calc(100vh - 88px)' }}>
           {/* Mobile Sidebar Overlay */}
           <AnimatePresence>
             {isSidebarVisible && isFullScreenView() && (
@@ -1052,7 +1241,19 @@ const DashboardHome: React.FC = () => {
                     
                     {activeFeedType === 'discover' && (
                       <motion.div key="discover-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <Discover />
+                        <Discover onRequestWork={handleRequestWork} />
+                        
+                        {selectedProfessional && (
+                          <RequestWorkFlow
+                            isOpen={showRequestWorkFlow}
+                            onClose={() => {
+                              setShowRequestWorkFlow(false);
+                              setSelectedProfessional(null);
+                            }}
+                            professional={selectedProfessional}
+                            onSubmitRequest={handleSubmitWorkRequest}
+                          />
+                        )}
                       </motion.div>
                     )}
                     
@@ -1070,20 +1271,10 @@ const DashboardHome: React.FC = () => {
                     
                     {activeFeedType === 'voice' && (
                       <motion.div key="voice-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <div className={`p-4 sm:p-6 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
-                          <div className={`p-8 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white shadow-sm'}`}>
-                            <Mic className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                            <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                              Voice Feed
-                            </h3>
-                            <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                              Audio discussions and voice notes (Coming Soon)
-                            </p>
-                          </div>
-                        </div>
+                        <VoiceFeed />
                       </motion.div>
                     )}
-                    
+                                        
                     {activeFeedType === 'family' && (
                       <motion.div key="family-feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <FamilyCircle />
@@ -1128,7 +1319,7 @@ const DashboardHome: React.FC = () => {
                   {/* Floating Create Post Button */}
                   <button
                     onClick={() => setIsComposerOpen(true)}
-                    className="fixed bottom-24 right-6 lg:right-12 md:bottom-28 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
+                    className="fixed bottom-24 right-6 md:right-12 md:bottom-28 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
                   >
                     <Plus className="w-6 h-6" />
                   </button>
@@ -1331,18 +1522,117 @@ const DashboardHome: React.FC = () => {
                     {activeBusinessTab === 'sessions' && (
                       <motion.div key="sessions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         {showBusinessSession ? (
-                          <BusinessSession 
-                            professionalId="prof-123"
-                            professionalName="John Doe"
-                            professionalVillage={villageName}
-                            professionalVillageColor={villageColor}
-                            professionalCrest={8}
-                            serviceType="Professional Service"
-                            onClose={() => {
-                              console.log('Closing BusinessSession');
-                              setShowBusinessSession(false);
-                            }}
-                          />
+                          <div className="space-y-6">
+                            {/* 1. CAWS LAW BANNER */}
+                            <CAWSLawBanner 
+                              sessionType="work"
+                              isExpanded={false}
+                            />
+                            
+                            {/* 2. BUSINESS SESSION COMPONENT */}
+                            <BusinessSession 
+                              professionalId="prof-123"
+                              professionalName="John Doe"
+                              professionalVillage={villageName}
+                              professionalVillageColor={villageColor}
+                              professionalCrest={8}
+                              serviceType="Professional Service"
+                              onClose={() => {
+                                console.log('Closing BusinessSession');
+                                setShowBusinessSession(false);
+                              }}
+                            />
+                            
+                            {/* 4. BUSINESS LINK BADGE */}
+                            <div className={`p-4 rounded-xl ${
+                              theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                            }`}>
+                              <h3 className={`text-sm font-semibold mb-3 ${
+                                theme === 'dark' ? 'text-white' : 'text-gray-900'
+                              }`}>
+                                Your Partnership Status
+                              </h3>
+                              <BusinessLinkBadge
+                                otherParty={{
+                                  id: 'prof-123',
+                                  name: 'John Doe',
+                                  afroId: 'CONS-ELEC-001',
+                                  village: 'Construction Village',
+                                  crest: 8
+                                }}
+                                linkTier="trusted"
+                                stats={{
+                                  totalSessions: 5,
+                                  completedSessions: 5,
+                                  totalValue: 125000,
+                                  averageRating: 4.8,
+                                  firstSessionDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+                                  lastSessionDate: new Date().toISOString(),
+                                  successRate: 100
+                                }}
+                                size="large"
+                                showDetails={true}
+                              />
+                            </div>
+                            
+                            {/* ACTION BUTTONS ROW */}
+                            <div className="flex items-center gap-3 flex-wrap">
+                              {/* 3. CALL WITNESS BUTTON */}
+                              <CallWitness
+                                sessionId="sess-123"
+                                location="Port Harcourt, Rivers State"
+                                onCallWitness={handleCallWitness}
+                              />
+                              
+                              {/* 7. VIEW WORK PROOF BUTTON */}
+                              <button
+                                onClick={() => setShowWorkProof(true)}
+                                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                                  theme === 'dark'
+                                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                                    : 'bg-blue-500 hover:bg-blue-600 text-white'
+                                }`}
+                              >
+                                View Work Proof
+                              </button>
+                              
+                              {/* COMPLETE SESSION BUTTON (triggers Circle offer) */}
+                              <button
+                                onClick={handleSessionComplete}
+                                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                                  theme === 'dark'
+                                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                                    : 'bg-green-500 hover:bg-green-600 text-white'
+                                }`}
+                              >
+                                Complete Session
+                              </button>
+                              
+                              {/* 6. LEAVE RATING BUTTON */}
+                              <button
+                                onClick={() => setShowRating(true)}
+                                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                                  theme === 'dark'
+                                    ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                                    : 'bg-purple-500 hover:bg-purple-600 text-white'
+                                }`}
+                              >
+                                Leave Rating
+                              </button>
+                              
+                              {/* 5. VIEW RECEIPT BUTTON */}
+                              <button
+                                onClick={() => setShowReceipt(true)}
+                                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                                  theme === 'dark'
+                                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                                    : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                                }`}
+                              >
+                                View Receipt
+                              </button>
+                            </div>
+                          </div>
                         ) : (
                           <div className="space-y-4">
                             <div className={`p-6 rounded-xl border text-center ${
@@ -1372,6 +1662,8 @@ const DashboardHome: React.FC = () => {
                         )}
                       </motion.div>
                     )}
+                    
+                    {/* ESCROW TAB */}
                     {activeBusinessTab === 'escrow' && (
                       <motion.div key="escrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <EscrowManager 
@@ -1391,6 +1683,8 @@ const DashboardHome: React.FC = () => {
                         />
                       </motion.div>
                     )}
+                    
+                    {/* HISTORY TAB */}
                     {activeBusinessTab === 'history' && (
                       <motion.div key="history" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <SessionHistory 
@@ -1403,46 +1697,216 @@ const DashboardHome: React.FC = () => {
                         />
                       </motion.div>
                     )}
+                    
+                    {/* DISPUTES TAB */}
                     {activeBusinessTab === 'disputes' && (
                       <motion.div key="disputes" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <DisputeResolution 
-                          escrowId="esc-456"
-                          disputeId="disp-789"
-                          mootId="moot-101"
-                          sessionId="sess-202"
-                          amount={45000}
-                          raisedBy="payer"
-                          status="evidence_submission"
-                          parties={{
-                            payer: { id: user?.id || 'user-123', name: displayName, crest: 7 },
-                            beneficiary: { id: 'prof-123', name: 'John Doe', crest: 8 }
-                          }}
-                          mediator={{
-                            id: 'med-303',
-                            name: 'Elder Smith',
-                            village: villageName,
-                            crest: 10,
-                            mootsResolved: 45
-                          }}
-                          evidence={[]}
-                          messages={[]}
-                          timeline={{
-                            initiated: new Date().toISOString(),
-                            mediatorAssigned: new Date().toISOString(),
-                            evidenceDeadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-                          }}
-                          onFileUpload={async (file, description) => console.log('File upload', file, description)}
-                          onSendMessage={async (message, isPrivate) => console.log('Send message', message, isPrivate)}
-                          onAcceptResolution={async () => console.log('Accept resolution')}
-                          onRejectResolution={async () => console.log('Reject resolution')}
-                          onEscalate={async (reason) => console.log('Escalate', reason)}
-                          onClose={() => setActiveBusinessTab('disputes')}
-                        />
+                        {/* Disputes List/Button to Open Modal */}
+                        <div className="space-y-4">
+                          <div className={`p-6 rounded-xl border text-center ${
+                            theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                          }`}>
+                            <Scale className={`w-12 h-12 mx-auto mb-3 ${
+                              theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+                            }`} />
+                            <h3 className={`text-lg font-bold mb-2 ${
+                              theme === 'dark' ? 'text-white' : 'text-gray-900'
+                            }`}>
+                              Active Dispute
+                            </h3>
+                            <p className={`text-sm mb-4 ${
+                              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                              You have an ongoing dispute that needs resolution
+                            </p>
+                            <button
+                              onClick={() => setShowDisputeModal(true)}
+                              className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-semibold transition-colors"
+                            >
+                              View Dispute Details
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Dispute Resolution Modal */}
+                        {showDisputeModal && (
+                          <DisputeResolution 
+                            escrowId="esc-456"
+                            disputeId="disp-789"
+                            mootId="moot-101"
+                            sessionId="sess-202"
+                            amount={45000}
+                            raisedBy="payer"
+                            status="evidence_submission"
+                            parties={{
+                              payer: { id: user?.id || 'user-123', name: displayName, crest: 7 },
+                              beneficiary: { id: 'prof-123', name: 'John Doe', crest: 8 }
+                            }}
+                            mediator={{
+                              id: 'med-303',
+                              name: 'Elder Smith',
+                              village: villageName,
+                              crest: 10,
+                              mootsResolved: 45
+                            }}
+                            evidence={[]}
+                            messages={[]}
+                            timeline={{
+                              initiated: new Date().toISOString(),
+                              mediatorAssigned: new Date().toISOString(),
+                              evidenceDeadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+                            }}
+                            onFileUpload={async (file, description) => console.log('File upload', file, description)}
+                            onSendMessage={async (message, isPrivate) => console.log('Send message', message, isPrivate)}
+                            onAcceptResolution={async () => {
+                              console.log('Accept resolution');
+                              setShowDisputeModal(false); // ✅ Close modal
+                            }}
+                            onRejectResolution={async () => {
+                              console.log('Reject resolution');
+                              setShowDisputeModal(false); // ✅ Close modal
+                            }}
+                            onEscalate={async (reason) => {
+                              console.log('Escalate', reason);
+                              setShowDisputeModal(false); // ✅ Close modal
+                            }}
+                            onClose={() => setShowDisputeModal(false)} // ✅ THIS IS THE FIX
+                          />
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>
+                  
+                  
+                  
+                  {/* 3. CIRCLE MEMBERSHIP OFFER MODAL */}
+                  {currentProfessional && (
+                    <CircleMembershipOffer
+                      isOpen={showCircleOffer}
+                      onClose={() => setShowCircleOffer(false)}
+                      professionalId={currentProfessional.id}
+                      professionalName={currentProfessional.name}
+                      professionalVillage={currentProfessional.village}
+                      professionalVillageColor={currentProfessional.villageColor}
+                      professionalCrest={currentProfessional.crest}
+                      onAccept={handleAcceptCircle}
+                    />
+                  )}
+                  
+                  {/* 5. PAYMENT RECEIPT MODAL */}
+                  {showReceipt && (
+                    <PaymentReceipt
+                      receiptId="REC-2024-001"
+                      sessionId="SESS-123"
+                      escrowId="ESC-456"
+                      date={new Date().toISOString()}
+                      payer={{
+                        name: displayName,
+                        afroId: user?.afro_id || 'AFR-000',
+                        village: villageName
+                      }}
+                      beneficiary={{
+                        name: 'John Doe',
+                        afroId: 'CONS-ELEC-001',
+                        village: 'Construction Village'
+                      }}
+                      service={{
+                        name: 'Electrical Installation',
+                        category: 'Construction Services'
+                      }}
+                      subtotal={45000}
+                      platformFee={2250}
+                      total={47250}
+                      paymentMethod="escrow"
+                      status="paid"
+                      completedAt={new Date().toISOString()}
+                      notes="Payment released after successful completion and client approval"
+                      onClose={() => setShowReceipt(false)}
+                    />
+                  )}
+                  
+                  {/* 6. RATING & REVIEW MODAL */}
+                  {currentProfessional && (
+                    <RatingReview
+                      isOpen={showRating}
+                      onClose={() => setShowRating(false)}
+                      sessionId="SESS-123"
+                      ratingFor="professional"
+                      targetUserId={currentProfessional.id}
+                      targetUserName={currentProfessional.name}
+                      targetUserVillage={currentProfessional.village}
+                      targetUserVillageColor={currentProfessional.villageColor}
+                      serviceType="Electrical Installation"
+                      onSubmit={handleSubmitRating}
+                      onSkip={() => setShowRating(false)}
+                    />
+                  )}
+                  
+                  {/* 7. WORK PROOF GALLERY MODAL */}
+                  {showWorkProof && (
+                    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                      <div className="max-w-6xl w-full max-h-[90vh] overflow-auto relative">
+                        <WorkProofGallery
+                          sessionId="SESS-123"
+                          proofs={[
+                            {
+                              id: 'proof-1',
+                              type: 'before',
+                              mediaType: 'image',
+                              url: 'https://via.placeholder.com/400',
+                              fileName: 'before-1.jpg',
+                              fileSize: 1024000,
+                              uploadedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                              uploadedBy: 'beneficiary',
+                              caption: 'Initial state before work started',
+                              order: 1
+                            },
+                            {
+                              id: 'proof-2',
+                              type: 'progress',
+                              mediaType: 'image',
+                              url: 'https://via.placeholder.com/400',
+                              fileName: 'progress-1.jpg',
+                              fileSize: 1024000,
+                              uploadedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                              uploadedBy: 'beneficiary',
+                              caption: 'Work in progress - wiring completed',
+                              order: 2
+                            },
+                            {
+                              id: 'proof-3',
+                              type: 'after',
+                              mediaType: 'image',
+                              url: 'https://via.placeholder.com/400',
+                              fileName: 'after-1.jpg',
+                              fileSize: 1024000,
+                              uploadedAt: new Date().toISOString(),
+                              uploadedBy: 'beneficiary',
+                              caption: 'Final result - all installations complete',
+                              order: 3
+                            }
+                          ]}
+                          canUpload={true}
+                          userRole="payer"
+                          sessionStatus="in_progress"
+                          onUpload={handleProofUpload}
+                          onDelete={handleProofDelete}
+                          onUpdateCaption={handleCaptionUpdate}
+                        />
+                        
+                        {/* Close Button */}
+                        <button
+                          onClick={() => setShowWorkProof(false)}
+                          className="absolute top-4 right-4 p-2 bg-white rounded-lg hover:bg-gray-100 transition-colors z-10"
+                        >
+                          <X className="w-5 h-5 text-gray-700" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
+
 
               // ✅ PHASE 7: NETWORK VIEW - WITH SUB-TABS (Fixed)
               {activeView === 'network' && (
@@ -1885,7 +2349,21 @@ const DashboardHome: React.FC = () => {
       </div>
 
       {/* Bottom Navigation Bar */}
-      <nav className={`fixed bottom-0 left-0 right-0 z-50 h-22 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
+     <AnimatePresence>
+      {isNavVisible && (
+        <motion.nav
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          exit={{ y: 100 }}
+          transition={{ 
+            type: 'spring', 
+            stiffness: 300, 
+            damping: 30 
+          }}
+          className={`fixed bottom-0 left-0 right-0 z-50 h-22 ${
+            theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+          } border-t`}
+        >
           <div className="flex items-center justify-around px-2 py-2 max-w-screen-xl mx-auto">
             {bottomNavItems.map((item) => {
               const Icon = item.icon;
@@ -1926,108 +2404,123 @@ const DashboardHome: React.FC = () => {
               );
             })}
           </div>
-        </nav>
+        </motion.nav>
+      )}
+    </AnimatePresence>
       
 
-      {/* App Modals */}
-      <AnimatePresence>
-        {activeHomeApp && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={() => setActiveHomeApp(null)} 
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" 
-            />
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* App Modals */}
+        <AnimatePresence>
+          {activeHomeApp && (
+            <>
               <motion.div 
-                initial={{ opacity: 0, scale: 0.9, y: 20 }} 
-                animate={{ opacity: 1, scale: 1, y: 0 }} 
-                exit={{ opacity: 0, scale: 0.9, y: 20 }} 
-                className={`w-full max-w-4xl max-h-[90vh] overflow-y-auto ${
-                  theme === 'dark' ? 'bg-gray-900' : 'bg-white'
-                } rounded-2xl shadow-2xl`}
-              >
-                <div className={`sticky top-0 z-10 flex items-center justify-between p-6 border-b ${
-                  theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
-                }`}>
-                  <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    {activeHomeApp === 'requests' && 'Message Requests'}
-                    {activeHomeApp === 'connections' && 'My Connections'}
-                    {activeHomeApp === 'community' && 'Community'}
-                    {activeHomeApp === 'familytree' && 'Family Tree'}
-                    {activeHomeApp === 'preferences' && 'Content Preferences'}
-                    {activeHomeApp === 'village' && 'Change Village or Role'}
-                  </h2>
-                  <button 
-                    onClick={() => setActiveHomeApp(null)} 
-                    className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
-                </div>
-                <div className="p-6">
-                  {activeHomeApp === 'requests' && <RequestsSection />}
-                  {activeHomeApp === 'connections' && <ConnectionsSection />}
-                  {activeHomeApp === 'community' && <CommunitySection />}
-                  {activeHomeApp === 'familytree' && <FamilyTreeSection />}
-                  {activeHomeApp === 'preferences' && <ContentPreferencesSection />}
-                  {activeHomeApp === 'village' && (
-                    <VillageChangeSection onOpenVillageSelector={handleOpenVillageSelector} />
-                  )}
-                </div>
-              </motion.div>
-            </div>
-          </>
-        )}
-      </AnimatePresence>
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }} 
+                onClick={() => setActiveHomeApp(null)} 
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" 
+              />
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+                  animate={{ opacity: 1, scale: 1, y: 0 }} 
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }} 
+                  className={`w-full max-w-4xl max-h-[90vh] overflow-y-auto ${
+                    theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+                  } rounded-2xl shadow-2xl`}
+                >
+                  <div className={`sticky top-0 z-10 flex items-center justify-between p-6 border-b ${
+                    theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
+                  }`}>
+                    <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {activeHomeApp === 'requests' && 'Message Requests'}
+                      {activeHomeApp === 'connections' && 'My Connections'}
+                      {activeHomeApp === 'community' && 'Community'}
+                      {activeHomeApp === 'familytree' && 'Family Tree'}
+                      {activeHomeApp === 'preferences' && 'Content Preferences'}
+                      {activeHomeApp === 'village' && 'Change Village or Role'}
+                    </h2>
+                    <button 
+                      onClick={() => setActiveHomeApp(null)} 
+                      className={`p-2 rounded-lg ${theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'}`}
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  <div className="p-6">
+                    {activeHomeApp === 'requests' && <RequestsSection />}
+                    {activeHomeApp === 'connections' && <ConnectionsSection />}
+                    {activeHomeApp === 'community' && <CommunitySection />}
+                    {activeHomeApp === 'familytree' && <FamilyTreeSection />}
+                    {activeHomeApp === 'preferences' && <ContentPreferencesSection />}
+                    {activeHomeApp === 'village' && (
+                      <VillageChangeSection onOpenVillageSelector={handleOpenVillageSelector} />
+                    )}
+                  </div>
+                </motion.div>
+              </div>
+            </>
+          )}
+        </AnimatePresence>
 
-      {/* Global Modals */}
-      <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-      <NotificationCenter isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)} />
-      <VillageSelector 
-        isOpen={isVillageSelectorOpen} 
-        onClose={() => setIsVillageSelectorOpen(false)} 
-        onSelectVillage={handleSelectVillage} 
-      />
-      
-      {selectedVillageForChange && (
-        <RoleChangeRequest
-          isOpen={isRoleChangeRequestOpen}
-          onClose={() => {
-            setIsRoleChangeRequestOpen(false);
-            setSelectedVillageForChange(null);
-          }}
-          villageId={selectedVillageForChange.villageId}
-          villageName={selectedVillageForChange.villageName}
-          villageColor={selectedVillageForChange.villageColor}
-          roleId={selectedVillageForChange.roleId}
-          roleName={selectedVillageForChange.roleName}
-          roleIcon={selectedVillageForChange.roleIcon}
-          onSubmit={handleSubmitRoleChange}
+        {/* Global Modals */}
+        <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+        <NotificationCenter isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)} />
+        <VillageSelector 
+          isOpen={isVillageSelectorOpen} 
+          onClose={() => setIsVillageSelectorOpen(false)} 
+          onSelectVillage={handleSelectVillage} 
         />
-      )}
-      
-      {protectionMode?.active && (
-        <ProtectionModeScreen 
-          protectionMode={protectionMode} 
-          onRequestCircle={handleRequestCircle} 
-          onContactSupport={handleContactSupport} 
-        />
-      )}
+        
+        {selectedVillageForChange && (
+          <RoleChangeRequest
+            isOpen={isRoleChangeRequestOpen}
+            onClose={() => {
+              setIsRoleChangeRequestOpen(false);
+              setSelectedVillageForChange(null);
+            }}
+            villageId={selectedVillageForChange.villageId}
+            villageName={selectedVillageForChange.villageName}
+            villageColor={selectedVillageForChange.villageColor}
+            roleId={selectedVillageForChange.roleId}
+            roleName={selectedVillageForChange.roleName}
+            roleIcon={selectedVillageForChange.roleIcon}
+            onSubmit={handleSubmitRoleChange}
+          />
+        )}
+        
+        {protectionMode?.active && (
+          <ProtectionModeScreen 
+            protectionMode={protectionMode} 
+            onRequestCircle={handleRequestCircle} 
+            onContactSupport={handleContactSupport} 
+          />
+        )}
 
         {/* Feed Composer Modal */}
-      <FeedComposer 
-        isOpen={isComposerOpen} 
-        onClose={() => setIsComposerOpen(false)}
-        defaultFeedType={activeFeedType}
-        onPost={(postData) => {
-          console.log('Post created:', postData);
-          setIsComposerOpen(false);
-          // TODO: Handle post submission
-        }}
-      />
+        <FeedComposer 
+          isOpen={isComposerOpen} 
+          onClose={() => setIsComposerOpen(false)}
+          defaultFeedType={activeFeedType}
+          onPost={(postData) => {
+            console.log('Post created:', postData);
+            setIsComposerOpen(false);
+            // TODO: Handle post submission
+          }}
+        />
+
+        {/* Jollof TV Floating Bubble */}
+        {isJollofTVVisible && (
+          <JollofTVBubble
+            isLive={isJollofTVLive}
+            streamTitle="National Town Hall"
+            streamerName="Governor's Address"
+            viewerCount={1247}
+            onClose={handleJollofTVClose}
+            onMaximize={handleJollofTVMaximize}
+            onSprayCowrie={handleSprayCowrie}
+          />
+        )}
     </div>
   );
 };

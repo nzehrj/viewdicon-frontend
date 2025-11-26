@@ -60,7 +60,12 @@ type DiscoverMode = 'nearby' | 'urgent' | 'trusted';
  * 
  * Location: src/pages/Discover.tsx or src/components/discover/DiscoverPage.tsx
  */
-export const Discover: React.FC = () => {
+
+interface DiscoverProps {
+  onRequestWork?: (professional: Professional) => void;
+}
+
+export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
   const theme = useAppSelector((state) => state.theme.theme);
   
   // TODO: Replace with actual Redux selector when villages are in state
@@ -377,10 +382,7 @@ export const Discover: React.FC = () => {
               <ProfessionalCard
                 key={professional.id}
                 professional={professional}
-                onRequestWork={(id) => {
-                  // TODO: Navigate to business session creation
-                  console.log('Request work from professional:', id);
-                }}
+                onRequestWork={() => onRequestWork && onRequestWork(professional)}
               />
             ))}
           </div>
