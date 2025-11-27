@@ -78,7 +78,7 @@ export const JollofTVBubble: React.FC<JollofTVBubbleProps> = ({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0, opacity: 0 }}
         onClick={() => setIsMinimized(false)}
-        className={`fixed bottom-[160px] right-6 md:right-12 md:bottom-48 z-[100] w-14 h-14 rounded-md overflow-hidden shadow-lg border-2 ${
+        className={`fixed bottom-[170px] right-6 md:right-12 md:bottom-48 z-[100] w-12 h-12 rounded-2xl overflow-hidden shadow-lg border-2 ${
           theme === 'dark' ? 'border-red-500 shadow-red-500/20' : 'border-red-600 shadow-red-600/20'
         }`}
       >

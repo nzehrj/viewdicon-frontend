@@ -116,9 +116,10 @@ import { CallWitness } from '@components/business/CallWitness';
 import { CircleMembershipOffer } from '@components/business/CircleMembershipOffer';
 
 // ✅ PHASE 7: LINK Tab (Networking) Components - DEFAULT IMPORTS
-import KinshipNetwork from '@components/market/KinshipNetwork';
-import LinkRequest from '@components/market/LinkRequest';
-import NetworkStats from '@components/market/NetworkStats';
+import KinshipNetwork from '@components/network/KinshipNetwork';
+import LinkRequest from '@components/network/LinkRequest';
+import NetworkStats from '@components/network/NetworkStats';
+import ConnectionCard from '@/components/network/ConnectionCard';
 
 // ✅ PHASE 8: GUARD Tab (Security) Components - DEFAULT IMPORTS
 import SecurityDashboard from '@components/security/SecurityDashboard';
@@ -249,6 +250,7 @@ const DashboardHome: React.FC = () => {
       setLastScrollY(currentScrollY);
     };
 
+
     // Also listen to scroll on main container
     const handleContainerScroll = (e: Event) => {
       const target = e.target as HTMLElement;
@@ -297,6 +299,78 @@ const DashboardHome: React.FC = () => {
       });
     };
   }, [lastScrollY]);
+
+
+  // Sample connections for testing ConnectionCard 
+  const sampleConnections = [
+    {
+      id: '1',
+      afroId: 'AFRO-2024-001',
+      name: 'Chinwe Okafor',
+      displayName: 'Chinwe Okafor',
+      village: 'Technology',
+      role: 'Senior Software Engineer',
+      crest: 8,
+      kinshipTier: 'C1' as const,
+      location: { city: 'Lagos', country: 'Nigeria' },
+      stats: { connections: 245, sessions: 32, rating: 4.8 },
+      businessLink: {
+        tier: 'verified' as const,
+        totalSessions: 15,
+        totalValue: 2500000
+      },
+      isOnline: true,
+      mutualConnections: [
+        { id: '2', name: 'Adewale Johnson' },
+        { id: '3', name: 'Fatima Ahmed' },
+        { id: '4', name: 'Emeka Nwankwo' }
+      ]
+    },
+    {
+      id: '2',
+      afroId: 'AFRO-2024-002',
+      name: 'Kwame Mensah',
+      displayName: 'Kwame Mensah',
+      village: 'Creative',
+      role: 'UI/UX Designer',
+      crest: 7,
+      kinshipTier: 'C2' as const,
+      location: { city: 'Accra', country: 'Ghana' },
+      stats: { connections: 189, sessions: 24, rating: 4.6 },
+      businessLink: {
+        tier: 'trusted' as const,
+        totalSessions: 8,
+        totalValue: 1200000
+      },
+      isOnline: false,
+      mutualConnections: [
+        { id: '5', name: 'Aisha Mohammed' }
+      ]
+    },
+    {
+      id: '3',
+      afroId: 'AFRO-2024-003',
+      name: 'Amara Nkrumah',
+      displayName: 'Amara Nkrumah',
+      village: 'Business',
+      role: 'Business Consultant',
+      crest: 9,
+      kinshipTier: 'C1' as const,
+      location: { city: 'Nairobi', country: 'Kenya' },
+      stats: { connections: 312, sessions: 48, rating: 4.9 },
+      businessLink: {
+        tier: 'elite' as const,
+        totalSessions: 25,
+        totalValue: 5000000
+      },
+      isOnline: true,
+      mutualConnections: [
+        { id: '6', name: 'Oluwaseun Balogun' },
+        { id: '7', name: 'Thandiwe Moyo' }
+      ]
+    }
+  ];
+
 
   // Village Configuration
   const villageConfig = userVillage?.villageId ? villageConfigs[userVillage.villageId] : null;
@@ -455,6 +529,28 @@ const DashboardHome: React.FC = () => {
   // Helper to check if view should be full-screen
   const isFullScreenView = () => {
     return activeView !== 'home';
+  };
+
+  // handler functions for connection card
+
+  const handleViewConnectionProfile = (connectionId: string) => {
+    console.log('Viewing connection profile:', connectionId);
+    // TODO: Navigate to connection profile or open modal
+    // navigate(`/profile/${connectionId}`);
+  };
+
+  const handleSendConnectionMessage = (connectionId: string) => {
+    console.log('Sending message to connection:', connectionId);
+    // TODO: Open chat with connection
+    // navigate(`/chat/${connectionId}`);
+  };
+
+  const handleRemoveConnection = (connectionId: string) => {
+    console.log('Removing connection:', connectionId);
+    // TODO: Show confirmation dialog and remove connection
+    // if (confirm('Are you sure you want to remove this connection?')) {
+    //   removeConnection(connectionId);
+    // }
   };
 
   // Bottom Navigation Items
@@ -1319,7 +1415,7 @@ const DashboardHome: React.FC = () => {
                   {/* Floating Create Post Button */}
                   <button
                     onClick={() => setIsComposerOpen(true)}
-                    className="fixed bottom-24 right-6 md:right-12 md:bottom-28 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
+                    className="fixed bottom-24 right-6 md:right-12 md:bottom-28 w-12 h-12 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all flex items-center justify-center z-40"
                   >
                     <Plus className="w-6 h-6" />
                   </button>
@@ -1945,18 +2041,57 @@ const DashboardHome: React.FC = () => {
                   <AnimatePresence mode="wait">
                     {activeNetworkTab === 'kinship' && (
                       <motion.div key="kinship" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <KinshipNetwork 
-                          userId={user?.id || 'user-123'}
-                          userVillage={villageName}
-                          connections={[]}
-                          pendingRequests={0}
-                          isLoading={false}
-                          onViewProfile={(connectionId) => console.log('View profile', connectionId)}
-                          onSendMessage={(connectionId) => console.log('Send message', connectionId)}
-                          onViewRequests={() => setActiveNetworkTab('requests')}
-                        />
+                        <div className="space-y-6">
+                          {/* Featured Connection - Detailed View */}
+                          <div>
+                            <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                              Featured Connection
+                            </h3>
+                            <ConnectionCard
+                              connection={sampleConnections[0]}
+                              size="detailed"
+                              showActions={true}
+                              onViewProfile={handleViewConnectionProfile}
+                              onSendMessage={handleSendConnectionMessage}
+                              onRemove={handleRemoveConnection}
+                            />
+                          </div>
+
+                          {/* All Connections - Grid View */}
+                          <div>
+                            <h3 className={`text-lg font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                              Your Connections
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {sampleConnections.map((connection) => (
+                                <ConnectionCard
+                                  key={connection.id}
+                                  connection={connection}
+                                  size="default"
+                                  showActions={true}
+                                  onViewProfile={handleViewConnectionProfile}
+                                  onSendMessage={handleSendConnectionMessage}
+                                  onRemove={handleRemoveConnection}
+                                />
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Original KinshipNetwork Component (if you still want to show it) */}
+                          <KinshipNetwork 
+                            userId={user?.id || 'user-123'}
+                            userVillage={villageName}
+                            connections={[]}
+                            pendingRequests={0}
+                            isLoading={false}
+                            onViewProfile={handleViewConnectionProfile}
+                            onSendMessage={handleSendConnectionMessage}
+                            onViewRequests={() => setActiveNetworkTab('requests')}
+                          />
+                        </div>
                       </motion.div>
                     )}
+                    
                     {activeNetworkTab === 'requests' && (
                       <motion.div key="requests" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <LinkRequest 
@@ -1973,6 +2108,7 @@ const DashboardHome: React.FC = () => {
                         />
                       </motion.div>
                     )}
+                    
                     {activeNetworkTab === 'stats' && (
                       <motion.div key="stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <NetworkStats 

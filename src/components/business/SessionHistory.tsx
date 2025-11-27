@@ -20,6 +20,8 @@ import {
   MessageCircle
 } from 'lucide-react';
 
+import { useAppSelector } from '@store/hooks';
+
 // Types
 type SessionStatus = 
   | 'completed'
@@ -78,6 +80,8 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
   onDownloadReceipt,
   onViewDispute
 }) => {
+  const theme = useAppSelector((state) => state.theme.theme);
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>('all');
   const [sortBy, setSortBy] = useState<'date' | 'amount'>('date');
@@ -145,41 +149,41 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
         color: 'green', 
         label: 'Completed', 
         icon: CheckCircle,
-        bgColor: 'bg-green-50',
-        textColor: 'text-green-700',
-        borderColor: 'border-green-200'
+        bgColor: theme === 'dark' ? 'bg-green-900/30' : 'bg-green-50',
+        textColor: theme === 'dark' ? 'text-green-400' : 'text-green-700',
+        borderColor: theme === 'dark' ? 'border-green-700' : 'border-green-200'
       },
       cancelled: { 
         color: 'gray', 
         label: 'Cancelled', 
         icon: XCircle,
-        bgColor: 'bg-gray-50',
-        textColor: 'text-gray-700',
-        borderColor: 'border-gray-200'
+        bgColor: theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50',
+        textColor: theme === 'dark' ? 'text-gray-300' : 'text-gray-700',
+        borderColor: theme === 'dark' ? 'border-gray-600' : 'border-gray-200'
       },
       disputed: { 
         color: 'red', 
         label: 'Disputed', 
         icon: AlertCircle,
-        bgColor: 'bg-red-50',
-        textColor: 'text-red-700',
-        borderColor: 'border-red-200'
+        bgColor: theme === 'dark' ? 'bg-red-900/30' : 'bg-red-50',
+        textColor: theme === 'dark' ? 'text-red-400' : 'text-red-700',
+        borderColor: theme === 'dark' ? 'border-red-700' : 'border-red-200'
       },
       in_progress: { 
         color: 'blue', 
         label: 'In Progress', 
         icon: Clock,
-        bgColor: 'bg-blue-50',
-        textColor: 'text-blue-700',
-        borderColor: 'border-blue-200'
+        bgColor: theme === 'dark' ? 'bg-blue-900/30' : 'bg-blue-50',
+        textColor: theme === 'dark' ? 'text-blue-400' : 'text-blue-700',
+        borderColor: theme === 'dark' ? 'border-blue-700' : 'border-blue-200'
       },
       pending: { 
         color: 'yellow', 
         label: 'Pending', 
         icon: Clock,
-        bgColor: 'bg-yellow-50',
-        textColor: 'text-yellow-700',
-        borderColor: 'border-yellow-200'
+        bgColor: theme === 'dark' ? 'bg-yellow-900/30' : 'bg-yellow-50',
+        textColor: theme === 'dark' ? 'text-yellow-400' : 'text-yellow-700',
+        borderColor: theme === 'dark' ? 'border-yellow-700' : 'border-yellow-200'
       },
     };
     return statusMap[status];
@@ -195,66 +199,110 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className={`rounded-2xl shadow-lg overflow-hidden ${
+      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+    }`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 text-white">
-        <h2 className="text-xl font-bold mb-1">Session History</h2>
-        <p className="text-sm text-indigo-100">
+      <div className={`px-4 sm:px-6 py-4 ${
+        theme === 'dark' 
+          ? 'bg-gradient-to-r from-indigo-900 to-indigo-800' 
+          : 'bg-gradient-to-r from-indigo-600 to-indigo-700'
+      } text-white`}>
+        <h2 className="text-lg sm:text-xl font-bold mb-1">Session History</h2>
+        <p className={`text-xs sm:text-sm ${
+          theme === 'dark' ? 'text-indigo-200' : 'text-indigo-100'
+        }`}>
           All your business transactions and sessions
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50 border-b border-gray-200">
-        <div className="bg-white rounded-lg p-4">
+      <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 border-b ${
+        theme === 'dark' 
+          ? 'bg-gray-900 border-gray-700' 
+          : 'bg-gray-50 border-gray-200'
+      }`}>
+        <div className={`rounded-lg p-3 sm:p-4 ${
+          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+        }`}>
           <div className="flex items-center gap-2 mb-2">
-            <Package className="w-4 h-4 text-indigo-600" />
-            <p className="text-xs text-gray-500 uppercase">Total Sessions</p>
+            <Package className="w-3 h-3 sm:w-4 sm:h-4 text-indigo-600" />
+            <p className={`text-xs uppercase ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+            }`}>Total Sessions</p>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+          <p className={`text-xl sm:text-2xl font-bold ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>{stats.total}</p>
         </div>
 
-        <div className="bg-white rounded-lg p-4">
+        <div className={`rounded-lg p-3 sm:p-4 ${
+          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+        }`}>
           <div className="flex items-center gap-2 mb-2">
-            <CheckCircle className="w-4 h-4 text-green-600" />
-            <p className="text-xs text-gray-500 uppercase">Completed</p>
+            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
+            <p className={`text-xs uppercase ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+            }`}>Completed</p>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
+          <p className={`text-xl sm:text-2xl font-bold ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>{stats.completed}</p>
         </div>
 
-        <div className="bg-white rounded-lg p-4">
+        <div className={`rounded-lg p-3 sm:p-4 ${
+          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+        }`}>
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-blue-600" />
-            <p className="text-xs text-gray-500 uppercase">Earned</p>
+            <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+            <p className={`text-xs uppercase ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+            }`}>Earned</p>
           </div>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className={`text-xl sm:text-2xl font-bold ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             ₦{stats.totalEarned.toLocaleString()}
           </p>
         </div>
 
-        <div className="bg-white rounded-lg p-4">
+        <div className={`rounded-lg p-3 sm:p-4 ${
+          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+        }`}>
           <div className="flex items-center gap-2 mb-2">
-            <Star className="w-4 h-4 text-yellow-600" />
-            <p className="text-xs text-gray-500 uppercase">Avg Rating</p>
+            <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600" />
+            <p className={`text-xs uppercase ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+            }`}>Avg Rating</p>
           </div>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className={`text-xl sm:text-2xl font-bold ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
             {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : 'N/A'}
           </p>
         </div>
       </div>
 
       {/* Search & Filters */}
-      <div className="px-6 py-4 border-b border-gray-200">
+      <div className={`px-4 sm:px-6 py-4 border-b ${
+        theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+      }`}>
         <div className="flex flex-col sm:flex-row gap-3">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 ${
+              theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+            }`} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, Afro-ID, or service..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className={`w-full pl-9 sm:pl-10 pr-4 py-2 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                theme === 'dark'
+                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+              }`}
             />
           </div>
 
@@ -262,9 +310,11 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowFilterMenu(!showFilterMenu)}
-              className={`px-4 py-2 border rounded-lg font-medium flex items-center gap-2 transition-colors ${
+              className={`w-full sm:w-auto px-4 py-2 border rounded-lg font-medium flex items-center justify-center gap-2 transition-colors text-sm sm:text-base ${
                 selectedFilter !== 'all'
                   ? 'bg-indigo-600 text-white border-indigo-600'
+                  : theme === 'dark'
+                  ? 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600'
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
               }`}
             >
@@ -272,33 +322,54 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
               <span className="hidden sm:inline">
                 {selectedFilter === 'all' ? 'All Status' : getStatusInfo(selectedFilter).label}
               </span>
+              <span className="sm:hidden">
+                {selectedFilter === 'all' ? 'Filter' : getStatusInfo(selectedFilter).label}
+              </span>
               <ChevronDown className="w-4 h-4" />
             </button>
 
             {/* Filter Dropdown */}
             <AnimatePresence>
               {showFilterMenu && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 min-w-[180px]"
-                >
-                  {(['all', 'completed', 'in_progress', 'disputed', 'cancelled', 'pending'] as const).map((status) => (
-                    <button
-                      key={status}
-                      onClick={() => {
-                        setSelectedFilter(status);
-                        setShowFilterMenu(false);
-                      }}
-                      className={`w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
-                        selectedFilter === status ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-700'
-                      }`}
-                    >
-                      {status === 'all' ? 'All Status' : getStatusInfo(status).label}
-                    </button>
-                  ))}
-                </motion.div>
+                <>
+                  {/* Mobile backdrop */}
+                  <div 
+                    className="sm:hidden fixed inset-0 bg-black/50 z-40"
+                    onClick={() => setShowFilterMenu(false)}
+                  />
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className={`absolute right-0 top-full mt-2 rounded-lg shadow-lg border py-2 z-50 min-w-[180px] ${
+                      theme === 'dark'
+                        ? 'bg-gray-700 border-gray-600'
+                        : 'bg-white border-gray-200'
+                    }`}
+                  >
+                    {(['all', 'completed', 'in_progress', 'disputed', 'cancelled', 'pending'] as const).map((status) => (
+                      <button
+                        key={status}
+                        onClick={() => {
+                          setSelectedFilter(status);
+                          setShowFilterMenu(false);
+                        }}
+                        className={`w-full px-4 py-2 text-left text-sm transition-colors ${
+                          selectedFilter === status 
+                            ? theme === 'dark'
+                              ? 'bg-indigo-900/50 text-indigo-300 font-medium'
+                              : 'bg-indigo-50 text-indigo-700 font-medium'
+                            : theme === 'dark'
+                            ? 'text-gray-300 hover:bg-gray-600'
+                            : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {status === 'all' ? 'All Status' : getStatusInfo(status).label}
+                      </button>
+                    ))}
+                  </motion.div>
+                </>
               )}
             </AnimatePresence>
           </div>
@@ -307,9 +378,11 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
           <div className="flex gap-2">
             <button
               onClick={() => toggleSort('date')}
-              className={`px-4 py-2 border rounded-lg font-medium flex items-center gap-2 transition-colors ${
+              className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 border rounded-lg font-medium flex items-center justify-center gap-2 transition-colors text-sm sm:text-base ${
                 sortBy === 'date'
                   ? 'bg-indigo-600 text-white border-indigo-600'
+                  : theme === 'dark'
+                  ? 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600'
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
               }`}
             >
@@ -320,9 +393,11 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
             </button>
             <button
               onClick={() => toggleSort('amount')}
-              className={`px-4 py-2 border rounded-lg font-medium flex items-center gap-2 transition-colors ${
+              className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 border rounded-lg font-medium flex items-center justify-center gap-2 transition-colors text-sm sm:text-base ${
                 sortBy === 'amount'
                   ? 'bg-indigo-600 text-white border-indigo-600'
+                  : theme === 'dark'
+                  ? 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600'
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
               }`}
             >
@@ -336,8 +411,8 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
 
         {/* Active Filters Info */}
         {(searchQuery || selectedFilter !== 'all') && (
-          <div className="flex items-center gap-2 mt-3">
-            <p className="text-sm text-gray-600">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mt-3">
+            <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
               Showing <strong>{sortedTransactions.length}</strong> of <strong>{transactions.length}</strong> sessions
             </p>
             <button
@@ -354,17 +429,25 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
       </div>
 
       {/* Transactions List */}
-      <div className="divide-y divide-gray-200 max-h-[600px] overflow-y-auto">
+      <div className={`divide-y max-h-[600px] overflow-y-auto ${
+        theme === 'dark' ? 'divide-gray-700' : 'divide-gray-200'
+      }`}>
         {isLoading ? (
           <div className="py-12 text-center">
             <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full mx-auto mb-3" />
-            <p className="text-gray-600">Loading sessions...</p>
+            <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Loading sessions...</p>
           </div>
         ) : sortedTransactions.length === 0 ? (
-          <div className="py-12 text-center">
-            <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 font-medium mb-2">No sessions found</p>
-            <p className="text-sm text-gray-500">
+          <div className="py-12 text-center px-4">
+            <Package className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 ${
+              theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+            }`} />
+            <p className={`font-medium mb-2 ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            }`}>No sessions found</p>
+            <p className={`text-sm ${
+              theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
+            }`}>
               {searchQuery || selectedFilter !== 'all'
                 ? 'Try adjusting your filters'
                 : 'Your transaction history will appear here'}
@@ -380,32 +463,46 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
                 key={transaction.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="hover:bg-gray-50 transition-colors"
+                className={`transition-colors ${
+                  theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                }`}
               >
-                <div className="px-6 py-4">
+                <div className="px-4 sm:px-6 py-4">
                   <div className="flex items-start justify-between gap-4">
                     {/* Main Info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="flex-shrink-0 w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                          <User className="w-5 h-5 text-indigo-600" />
+                      <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                        <div className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
+                          theme === 'dark' ? 'bg-indigo-900/50' : 'bg-indigo-100'
+                        }`}>
+                          <User className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold text-gray-900 truncate">
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <h3 className={`font-semibold text-sm sm:text-base truncate ${
+                              theme === 'dark' ? 'text-white' : 'text-gray-900'
+                            }`}>
                               {transaction.otherParty.name}
                             </h3>
-                            <span className={`px-2 py-0.5 ${statusInfo.bgColor} ${statusInfo.textColor} text-xs font-semibold rounded-full`}>
+                            <span className={`px-2 py-0.5 ${statusInfo.bgColor} ${statusInfo.textColor} text-xs font-semibold rounded-full whitespace-nowrap`}>
                               {statusInfo.label}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-600">{transaction.service.name}</p>
-                          <div className="flex items-center gap-3 mt-1">
-                            <span className="text-xs text-gray-500">
+                          <p className={`text-xs sm:text-sm ${
+                            theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                          }`}>{transaction.service.name}</p>
+                          <div className="flex items-center gap-2 sm:gap-3 mt-1 flex-wrap">
+                            <span className={`text-xs ${
+                              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            }`}>
                               {transaction.otherParty.village} Village
                             </span>
-                            <span className="text-xs text-gray-400">•</span>
-                            <span className="text-xs text-gray-500">
+                            <span className={`text-xs ${
+                              theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+                            }`}>•</span>
+                            <span className={`text-xs ${
+                              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            }`}>
                               {transaction.userRole === 'payer' ? 'You paid' : 'You earned'}
                             </span>
                           </div>
@@ -415,12 +512,14 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
 
                     {/* Amount & Date */}
                     <div className="text-right flex-shrink-0">
-                      <p className={`text-lg font-bold ${
-                        transaction.userRole === 'beneficiary' ? 'text-green-600' : 'text-gray-900'
+                      <p className={`text-base sm:text-lg font-bold ${
+                        transaction.userRole === 'beneficiary' ? 'text-green-600' : theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}>
                         {transaction.userRole === 'beneficiary' ? '+' : '-'}₦{transaction.amount.toLocaleString()}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className={`text-xs mt-1 ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                      }`}>
                         {new Date(transaction.completedAt || transaction.createdAt).toLocaleDateString('en-NG', {
                           month: 'short',
                           day: 'numeric',
@@ -431,21 +530,29 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-2 mt-3">
+                  <div className="flex items-center gap-2 mt-3 flex-wrap">
                     <button
                       onClick={() => setExpandedTransaction(isExpanded ? null : transaction.id)}
-                      className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium transition-colors flex items-center gap-1.5"
+                      className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
+                        theme === 'dark'
+                          ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
                     >
-                      <Eye className="w-4 h-4" />
+                      <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
                       {isExpanded ? 'Hide' : 'Details'}
                     </button>
 
                     {transaction.status === 'completed' && transaction.receiptId && (
                       <button
                         onClick={() => onDownloadReceipt(transaction.receiptId!)}
-                        className="px-3 py-1.5 text-sm bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 font-medium transition-colors flex items-center gap-1.5"
+                        className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
+                          theme === 'dark'
+                            ? 'bg-indigo-900/50 text-indigo-300 hover:bg-indigo-900/70'
+                            : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+                        }`}
                       >
-                        <Download className="w-4 h-4" />
+                        <Download className="w-3 h-3 sm:w-4 sm:h-4" />
                         Receipt
                       </button>
                     )}
@@ -453,19 +560,25 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
                     {transaction.status === 'disputed' && (
                       <button
                         onClick={() => onViewDispute(transaction.sessionId)}
-                        className="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 font-medium transition-colors flex items-center gap-1.5"
+                        className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
+                          theme === 'dark'
+                            ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
+                            : 'bg-red-100 text-red-700 hover:bg-red-200'
+                        }`}
                       >
-                        <AlertCircle className="w-4 h-4" />
-                        View Dispute
+                        <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="hidden sm:inline">View Dispute</span>
+                        <span className="sm:hidden">Dispute</span>
                       </button>
                     )}
 
                     <button
                       onClick={() => onViewDetails(transaction.sessionId)}
-                      className="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors flex items-center gap-1.5"
+                      className="px-3 py-1.5 text-xs sm:text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors flex items-center gap-1.5"
                     >
-                      <MessageCircle className="w-4 h-4" />
-                      View Session
+                      <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">View Session</span>
+                      <span className="sm:hidden">View</span>
                     </button>
                   </div>
 
@@ -478,41 +591,61 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-2 gap-4">
+                        <div className={`mt-4 pt-4 border-t grid grid-cols-1 sm:grid-cols-2 gap-4 ${
+                          theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                        }`}>
                           <div>
-                            <p className="text-xs text-gray-500 mb-1">Session ID</p>
-                            <p className="text-sm text-gray-900 font-mono">{transaction.sessionId}</p>
+                            <p className={`text-xs mb-1 ${
+                              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            }`}>Session ID</p>
+                            <p className={`text-xs sm:text-sm font-mono break-all ${
+                              theme === 'dark' ? 'text-gray-300' : 'text-gray-900'
+                            }`}>{transaction.sessionId}</p>
                           </div>
 
                           {transaction.escrowId && (
                             <div>
-                              <p className="text-xs text-gray-500 mb-1">Escrow ID</p>
-                              <p className="text-sm text-gray-900 font-mono">{transaction.escrowId}</p>
+                              <p className={`text-xs mb-1 ${
+                                theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                              }`}>Escrow ID</p>
+                              <p className={`text-xs sm:text-sm font-mono break-all ${
+                                theme === 'dark' ? 'text-gray-300' : 'text-gray-900'
+                              }`}>{transaction.escrowId}</p>
                             </div>
                           )}
 
                           <div>
-                            <p className="text-xs text-gray-500 mb-1">Afro-ID</p>
-                            <p className="text-sm text-gray-900 font-mono">{transaction.otherParty.afroId}</p>
+                            <p className={`text-xs mb-1 ${
+                              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            }`}>Afro-ID</p>
+                            <p className={`text-xs sm:text-sm font-mono break-all ${
+                              theme === 'dark' ? 'text-gray-300' : 'text-gray-900'
+                            }`}>{transaction.otherParty.afroId}</p>
                           </div>
 
                           <div>
-                            <p className="text-xs text-gray-500 mb-1">Crest Level</p>
-                            <p className="text-sm text-gray-900">Level {transaction.otherParty.crest}</p>
+                            <p className={`text-xs mb-1 ${
+                              theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            }`}>Crest Level</p>
+                            <p className={`text-xs sm:text-sm ${
+                              theme === 'dark' ? 'text-gray-300' : 'text-gray-900'
+                            }`}>Level {transaction.otherParty.crest}</p>
                           </div>
 
                           {transaction.rating && (
                             <>
                               <div>
-                                <p className="text-xs text-gray-500 mb-1">Rating Given</p>
+                                <p className={`text-xs mb-1 ${
+                                  theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                                }`}>Rating Given</p>
                                 <div className="flex items-center gap-1">
                                   {[...Array(5)].map((_, i) => (
                                     <Star
                                       key={i}
-                                      className={`w-4 h-4 ${
+                                      className={`w-3 h-3 sm:w-4 sm:h-4 ${
                                         i < transaction.rating!.given
                                           ? 'text-yellow-500 fill-yellow-500'
-                                          : 'text-gray-300'
+                                          : theme === 'dark' ? 'text-gray-600' : 'text-gray-300'
                                       }`}
                                     />
                                   ))}
@@ -520,15 +653,17 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
                               </div>
 
                               <div>
-                                <p className="text-xs text-gray-500 mb-1">Rating Received</p>
+                                <p className={`text-xs mb-1 ${
+                                  theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                                }`}>Rating Received</p>
                                 <div className="flex items-center gap-1">
                                   {[...Array(5)].map((_, i) => (
                                     <Star
                                       key={i}
-                                      className={`w-4 h-4 ${
+                                      className={`w-3 h-3 sm:w-4 sm:h-4 ${
                                         i < transaction.rating!.received
                                           ? 'text-yellow-500 fill-yellow-500'
-                                          : 'text-gray-300'
+                                          : theme === 'dark' ? 'text-gray-600' : 'text-gray-300'
                                       }`}
                                     />
                                   ))}
@@ -538,12 +673,14 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
                           )}
 
                           {transaction.dispute && (
-                            <div className="col-span-2">
-                              <p className="text-xs text-gray-500 mb-1">Dispute Status</p>
+                            <div className="col-span-1 sm:col-span-2">
+                              <p className={`text-xs mb-1 ${
+                                theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                              }`}>Dispute Status</p>
                               <div className={`px-3 py-2 rounded-lg ${
                                 transaction.dispute.resolved
-                                  ? 'bg-green-50 text-green-700'
-                                  : 'bg-red-50 text-red-700'
+                                  ? theme === 'dark' ? 'bg-green-900/30 text-green-400' : 'bg-green-50 text-green-700'
+                                  : theme === 'dark' ? 'bg-red-900/30 text-red-400' : 'bg-red-50 text-red-700'
                               }`}>
                                 <p className="text-sm font-medium">
                                   {transaction.dispute.resolved ? 'Resolved' : 'Under Review'}
@@ -567,25 +704,33 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
 
       {/* Footer Summary */}
       {sortedTransactions.length > 0 && (
-        <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-4">
+        <div className={`px-4 sm:px-6 py-4 border-t ${
+          theme === 'dark' 
+            ? 'bg-gray-900 border-gray-700' 
+            : 'bg-gray-50 border-gray-200'
+        }`}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 text-xs sm:text-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-green-600" />
-                <span className="text-gray-600">Total Earned:</span>
+                <TrendingUp className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Total Earned:</span>
                 <span className="font-bold text-green-600">
                   ₦{stats.totalEarned.toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <TrendingDown className="w-4 h-4 text-gray-600" />
-                <span className="text-gray-600">Total Spent:</span>
-                <span className="font-bold text-gray-900">
+                <TrendingDown className={`w-4 h-4 flex-shrink-0 ${
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }`} />
+                <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Total Spent:</span>
+                <span className={`font-bold ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
                   ₦{stats.totalSpent.toLocaleString()}
                 </span>
               </div>
             </div>
-            <p className="text-gray-500">
+            <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}>
               Net: <span className={`font-bold ${stats.totalEarned - stats.totalSpent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 ₦{(stats.totalEarned - stats.totalSpent).toLocaleString()}
               </span>
