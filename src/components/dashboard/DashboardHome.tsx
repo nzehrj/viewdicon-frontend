@@ -7,6 +7,7 @@ import {
   User,
   Menu,
   Video,
+  Tv,
   Plus,
   Mic,
   Sparkles,
@@ -178,7 +179,7 @@ const DashboardHome: React.FC = () => {
   const [activeChatTab, setActiveChatTab] = useState<'requests' | 'trusted' | 'all'>('all');
 
   // Jollof TV state
-  const [isJollofTVVisible, setIsJollofTVVisible] = useState(true);
+  const [isJollofTVVisible, setIsJollofTVVisible] = useState(false); 
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isJollofTVLive, _setIsJollofTVLive] = useState(true); // Set to true when live
@@ -1406,6 +1407,30 @@ const DashboardHome: React.FC = () => {
                         theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}>
                         Change Village
+                      </span>
+                    </motion.button>
+
+                    {/* ICON 7: Jollof TV */}
+                    <motion.button
+                      onClick={() => setIsJollofTVVisible(true)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-red-500 to-pink-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow relative">
+                        <Tv className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                        {/* Live indicator */}
+                        {isJollofTVLive && (
+                          <div className="absolute -top-1 -right-1 flex items-center gap-1 bg-red-600 px-2 py-0.5 rounded-full">
+                            <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                            <span className="text-[10px] font-bold text-white">LIVE</span>
+                          </div>
+                        )}
+                      </div>
+                      <span className={`text-xs sm:text-sm font-medium text-center ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        Jollof TV
                       </span>
                     </motion.button>
                   </div>
