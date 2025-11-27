@@ -88,7 +88,6 @@ import { AfroIDSection } from './AfroIDSection';
 import { SettingsPanel } from '@components/settings/SettingsPanel';
 import NotificationCenter from '@components/notifications/NotificationCenter';
 import { TwinPresenceToggle } from '@components/dashboard/TwinPresenceToggle';
-import { ProtectionModeScreen } from '@components/security/ProtectionModeScreen';
 import { RequestsSection } from '@components/home/RequestsSection';
 import { ConnectionsSection } from '@components/home/ConnectionsSection';
 import { CommunitySection } from '@components/home/CommunitySection';
@@ -127,8 +126,12 @@ import WatchfulEye from '@components/security/WatchfulEye';
 import VerificationTiers from '@components/security/VerificationTiers';
 import DeviceManager from '@components/security/DeviceManager';
 import SessionMonitor from '@components/security/SessionMonitor';
+import ProtectionModeScreen  from '@components/security/ProtectionModeScreen';
+import EmergencyContactsManager from '@components/security/EmergencyContactsManager';
+import CircleAlertFlow from '@components/security/CircleAlertFlow';
 
-import type { ProtectionMode } from '@/types/security.types';
+import type { ProtectionMode, EmergencyContact, CircleAlert } from '@/types/security.types';
+
 
 const villageConfigs: Record<string, any> = {
   agriculture: agricultureConfig,
@@ -193,6 +196,25 @@ const DashboardHome: React.FC = () => {
   const [showWorkProof, setShowWorkProof] = useState(false);
   const [currentProfessional, setCurrentProfessional] = useState<any>(null);
   const [showDisputeModal, setShowDisputeModal] = useState(false);
+  // Emergency Contacts & Circle Alert State
+  const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([
+    {
+      afro_id: 'AFR-001',
+      display_name: 'Adebayo Johnson',
+      relationship: 'Brother',
+      phone: '8012345678'
+    },
+    {
+      afro_id: 'AFR-002',
+      display_name: 'Chidinma Okafor',
+      relationship: 'Sister',
+      phone: '8098765432'
+    }
+  ]);
+
+  const [circleAlert, setCircleAlert] = useState<CircleAlert | null>(null);
+  const [showCircleAlert, setShowCircleAlert] = useState(false);
+
     
   // Modal States
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -213,7 +235,7 @@ const DashboardHome: React.FC = () => {
   
   // User States
   const [presenceMode, setPresenceMode] = useState<'spirit' | 'flesh'>('spirit');
-  const [protectionMode] = useState<ProtectionMode | null>(null);
+  const [protectionMode, setProtectionMode] = useState<ProtectionMode | null>(null);
   
   // Redux State
   const theme = useAppSelector((state) => state.theme.theme);
@@ -382,6 +404,11 @@ const DashboardHome: React.FC = () => {
   const villageColor = villageConfig?.color || villageConfig?.visual?.colorPrimary || '#10b981';
   const pendingRequestsCount = messageRequests.filter(r => r.status === 'pending').length;
 
+
+
+
+
+
   // Helper Functions
   const resolveIcon = (iconName?: string) => {
     if (!iconName) return Grid;
@@ -404,9 +431,6 @@ const DashboardHome: React.FC = () => {
     setPresenceMode(mode);
   };
 
-  const handleRequestCircle = () => {
-    console.log('Requesting circle verification...');
-  };
 
   const handleCallWitness = (witnessData: any) => {
     console.log('Witness Alert:', witnessData);
@@ -551,6 +575,75 @@ const DashboardHome: React.FC = () => {
     // if (confirm('Are you sure you want to remove this connection?')) {
     //   removeConnection(connectionId);
     // }
+  };
+
+
+  // ====== EMERGENCY CONTACTS HANDLERS ======
+  const handleAddEmergencyContact = (contact: Omit<EmergencyContact, 'afro_id'>) => {
+    const newContact: EmergencyContact = {
+      ...contact,
+      afro_id: `AFR-${Date.now()}`
+    };
+    setEmergencyContacts([...emergencyContacts, newContact]);
+    console.log('Emergency contact added:', newContact);
+  };
+
+  const handleRemoveEmergencyContact = (afroId: string) => {
+    setEmergencyContacts(emergencyContacts.filter(c => c.afro_id !== afroId));
+    console.log('Emergency contact removed:', afroId);
+  };
+
+  const handleUpdateEmergencyContact = (afroId: string, contact: Omit<EmergencyContact, 'afro_id'>) => {
+    setEmergencyContacts(emergencyContacts.map(c => 
+      c.afro_id === afroId ? { ...contact, afro_id: afroId } : c
+    ));
+    console.log('Emergency contact updated:', afroId);
+  };
+
+  // ====== CIRCLE ALERT HANDLERS ======
+  const handleSendCircleAlert = async () => {
+    console.log('Sending alert to circle...');
+    
+    const alert: CircleAlert = {
+      alert_id: `ALERT-${Date.now()}`,
+      status: 'pending',
+      reason: 'suspicious_behavior',
+      confirmations: [],
+      expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString()
+    };
+    
+    setCircleAlert(alert);
+    setShowCircleAlert(true);
+    
+    // Simulate sending notifications
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('Alert sent to all contacts');
+  };
+
+  const handleCancelCircleAlert = () => {
+    setCircleAlert(null);
+    setShowCircleAlert(false);
+    console.log('Circle alert cancelled');
+  };
+
+  // ====== PROTECTION MODE HANDLERS ======
+  const handleRequestCircleFromProtection = () => {
+    console.log('Requesting circle verification from protection mode');
+    handleSendCircleAlert();
+  };
+
+  const handleTestProtectionMode = () => {
+    const testMode: ProtectionMode = {
+      active: true,
+      reason: 'suspicious_behavior',
+      restrictions: [
+        'Large transactions',
+        'Profile changes',
+        'Adding new devices',
+        'Changing security settings'
+      ],
+    };
+    setProtectionMode(testMode);
   };
 
   // Bottom Navigation Items
@@ -1866,7 +1959,7 @@ const DashboardHome: React.FC = () => {
                               console.log('Escalate', reason);
                               setShowDisputeModal(false); // ✅ Close modal
                             }}
-                            onClose={() => setShowDisputeModal(false)} // ✅ THIS IS THE FIX
+                            onClose={() => setShowDisputeModal(false)} 
                           />
                         )}
                       </motion.div>
@@ -2176,6 +2269,32 @@ const DashboardHome: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Test Controls - Remove in Production */}
+                  <div className={`rounded-xl p-4 border ${
+                    theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                  }`}>
+                    <h4 className={`text-sm font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    }`}>Security Testing (Remove in Production)</h4>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={handleTestProtectionMode}
+                        className="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"
+                      >
+                        Test Protection Mode
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleSendCircleAlert();
+                          setActiveSecurityTab('dashboard');
+                        }}
+                        className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700"
+                      >
+                        Test Circle Alert
+                      </button>
+                    </div>
+                  </div>
+
                   {/* Security Tabs */}
                   <div className={`flex gap-2 overflow-x-auto pb-2 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'} border-b`}>
                     {securityTabs.map((tab) => {
@@ -2199,63 +2318,88 @@ const DashboardHome: React.FC = () => {
 
                   {/* Security Tab Content */}
                   <AnimatePresence mode="wait">
+                    {/* DASHBOARD TAB */}
                     {activeSecurityTab === 'dashboard' && (
                       <motion.div key="security-dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <SecurityDashboard 
-                          userId={user?.id || 'user-123'}
-                          metrics={{
-                            overallScore: 85,
-                            securityLevel: 'high',
-                            threatLevel: 'low',
-                            lastSecurityCheck: new Date().toISOString(),
-                            protectionModesActive: 4
-                          }}
-                          verificationStatus={{
-                            crest: 7,
-                            shield: {
-                              level: 3,
-                              maxLevel: 5,
-                              status: 'active'
-                            },
-                            honor: {
-                              stage: 2,
-                              maxStage: 5,
-                              title: 'Trusted Member'
-                            }
-                          }}
-                          recentActivity={[
-                            {
-                              id: '1',
-                              type: 'login',
-                              description: 'Successful login from Lagos',
-                              timestamp: new Date().toISOString(),
-                              location: 'Lagos, Nigeria',
-                              device: 'iPhone 14',
-                              status: 'success'
-                            }
-                          ]}
-                          trustedDevices={[
-                            {
-                              id: 'dev-1',
-                              name: 'iPhone 14',
-                              type: 'mobile',
-                              lastUsed: new Date().toISOString(),
-                              location: 'Lagos, Nigeria',
-                              isCurrentDevice: true
-                            }
-                          ]}
-                          emergencyContacts={3}
-                          activeSessions={1}
-                          protectionModeActive={false}
-                          onViewActivity={() => console.log('View activity')}
-                          onManageDevices={() => setActiveSecurityTab('devices')}
-                          onManageContacts={() => console.log('Manage contacts')}
-                          onViewSessions={() => setActiveSecurityTab('sessions')}
-                          onConfigureSecurity={() => console.log('Configure security')}
-                          onActivateProtection={() => console.log('Activate protection')}
-                        />
+                        <div className="space-y-6">
+                          {/* Circle Alert Flow - Show when active */}
+                          {showCircleAlert && circleAlert && (
+                            <CircleAlertFlow
+                              alert={circleAlert}
+                              contacts={emergencyContacts}
+                              onSendAlert={handleSendCircleAlert}
+                              onCancel={handleCancelCircleAlert}
+                            />
+                          )}
+
+                          {/* Emergency Contacts Manager */}
+                          <EmergencyContactsManager
+                            contacts={emergencyContacts}
+                            maxContacts={5}
+                            onAdd={handleAddEmergencyContact}
+                            onRemove={handleRemoveEmergencyContact}
+                            onUpdate={handleUpdateEmergencyContact}
+                          />
+
+                          {/* Security Dashboard */}
+                          <SecurityDashboard 
+                            userId={user?.id || 'user-123'}
+                            metrics={{
+                              overallScore: 85,
+                              securityLevel: 'high',
+                              threatLevel: 'low',
+                              lastSecurityCheck: new Date().toISOString(),
+                              protectionModesActive: 4
+                            }}
+                            verificationStatus={{
+                              crest: 7,
+                              shield: {
+                                level: 3,
+                                maxLevel: 5,
+                                status: 'active'
+                              },
+                              honor: {
+                                stage: 2,
+                                maxStage: 5,
+                                title: 'Trusted Member'
+                              }
+                            }}
+                            recentActivity={[
+                              {
+                                id: '1',
+                                type: 'login',
+                                description: 'Successful login from Lagos',
+                                timestamp: new Date().toISOString(),
+                                location: 'Lagos, Nigeria',
+                                device: 'iPhone 14',
+                                status: 'success'
+                              }
+                            ]}
+                            trustedDevices={[
+                              {
+                                id: 'dev-1',
+                                name: 'iPhone 14',
+                                type: 'mobile',
+                                lastUsed: new Date().toISOString(),
+                                location: 'Lagos, Nigeria',
+                                isCurrentDevice: true
+                              }
+                            ]}
+                            emergencyContacts={emergencyContacts.length}
+                            activeSessions={1}
+                            protectionModeActive={!!protectionMode}
+                            onViewActivity={() => console.log('View activity')}
+                            onManageDevices={() => setActiveSecurityTab('devices')}
+                            onManageContacts={() => console.log('Manage contacts')}
+                            onViewSessions={() => setActiveSecurityTab('sessions')}
+                            onConfigureSecurity={() => console.log('Configure security')}
+                            onActivateProtection={() => console.log('Activate protection')}
+                          />
+                        </div>
                       </motion.div>
                     )}
+                    
+                    {/* WATCHFUL-EYE TAB */}
                     {activeSecurityTab === 'watchful-eye' && (
                       <motion.div key="watchful-eye" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <WatchfulEye 
@@ -2271,6 +2415,8 @@ const DashboardHome: React.FC = () => {
                         />
                       </motion.div>
                     )}
+                    
+                    {/* VERIFICATION TAB */}
                     {activeSecurityTab === 'verification' && (
                       <motion.div key="verification" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <VerificationTiers 
@@ -2347,6 +2493,8 @@ const DashboardHome: React.FC = () => {
                         />
                       </motion.div>
                     )}
+                    
+                    {/* DEVICES TAB */}
                     {activeSecurityTab === 'devices' && (
                       <motion.div key="devices" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <DeviceManager 
@@ -2381,6 +2529,8 @@ const DashboardHome: React.FC = () => {
                         />
                       </motion.div>
                     )}
+                    
+                    {/* SESSIONS TAB */}
                     {activeSecurityTab === 'sessions' && (
                       <motion.div key="sessions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <SessionMonitor 
@@ -2625,10 +2775,10 @@ const DashboardHome: React.FC = () => {
           />
         )}
         
-        {protectionMode?.active && (
+        {protectionMode && (
           <ProtectionModeScreen 
             protectionMode={protectionMode} 
-            onRequestCircle={handleRequestCircle} 
+            onRequestCircle={handleRequestCircleFromProtection} 
             onContactSupport={handleContactSupport} 
           />
         )}

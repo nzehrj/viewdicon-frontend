@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Plus, X, Check, Edit2 } from 'lucide-react'; // ✅ REMOVED: Phone
+import { Users, Plus, X, Check, Edit2 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import type { EmergencyContact } from '@/types/security.types';
 import { Button } from '@components/common/Button';
@@ -88,16 +88,16 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
 
   return (
     <div className={`rounded-xl sm:rounded-2xl p-4 sm:p-6 ${
-      theme === 'dark' ? 'bg-gray-800/50' : 'bg-white shadow-md'
+      theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white shadow-md'
     }`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4 sm:mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center flex-shrink-0">
             <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
-          <div>
-            <h3 className={`text-base sm:text-lg font-bold ${
+          <div className="min-w-0">
+            <h3 className={`text-base sm:text-lg font-bold truncate ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>
               Inner Fire Circle
@@ -112,10 +112,12 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
       </div>
 
       {/* Info Box */}
-      <div className={`p-3 sm:p-4 rounded-xl mb-4 sm:mb-6 ${
-        theme === 'dark' ? 'bg-purple-900/20 border border-purple-500/30' : 'bg-purple-50 border border-purple-200'
+      <div className={`p-3 sm:p-4 rounded-xl mb-4 sm:mb-6 border ${
+        theme === 'dark' 
+          ? 'bg-purple-900/20 border-purple-700' 
+          : 'bg-purple-50 border-purple-200'
       }`}>
-        <p className={`text-xs sm:text-sm ${
+        <p className={`text-xs sm:text-sm leading-relaxed ${
           theme === 'dark' ? 'text-purple-200' : 'text-purple-700'
         }`}>
           These people will be contacted if your account needs verification. Choose people you trust who can confirm your identity.
@@ -132,10 +134,12 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               className={`p-3 sm:p-4 rounded-xl border-2 ${
-                theme === 'dark' ? 'border-gray-700 bg-gray-900/50' : 'border-gray-200 bg-gray-50'
+                theme === 'dark' 
+                  ? 'border-gray-700 bg-gray-900/50' 
+                  : 'border-gray-200 bg-gray-50'
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 {/* Number Badge */}
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                   {index + 1}
@@ -156,11 +160,13 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                   <button
                     onClick={() => handleEdit(contact)}
-                    className={`p-2 rounded-lg transition-colors ${
-                      theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
+                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
+                      theme === 'dark' 
+                        ? 'hover:bg-gray-700 text-gray-400 hover:text-gray-200' 
+                        : 'hover:bg-gray-200 text-gray-600 hover:text-gray-900'
                     }`}
                     aria-label="Edit contact"
                   >
@@ -168,10 +174,14 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
                   </button>
                   <button
                     onClick={() => onRemove(contact.afro_id)}
-                    className="p-2 rounded-lg hover:bg-red-500/10 transition-colors"
+                    className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
+                      theme === 'dark'
+                        ? 'hover:bg-red-900/30 text-red-400'
+                        : 'hover:bg-red-50 text-red-500'
+                    }`}
                     aria-label="Remove contact"
                   >
-                    <X className="w-4 h-4 text-red-500" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -180,11 +190,11 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
         </AnimatePresence>
 
         {contacts.length === 0 && (
-          <div className={`text-center py-8 ${
+          <div className={`text-center py-8 sm:py-12 ${
             theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
           }`}>
-            <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">No emergency contacts yet</p>
+            <Users className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 opacity-50" />
+            <p className="text-xs sm:text-sm">No emergency contacts yet</p>
           </div>
         )}
       </div>
@@ -196,8 +206,10 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`p-4 sm:p-5 rounded-xl mb-4 ${
-              theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50'
+            className={`p-4 sm:p-5 rounded-xl mb-4 border ${
+              theme === 'dark' 
+                ? 'bg-gray-900/50 border-gray-700' 
+                : 'bg-gray-50 border-gray-200'
             }`}
           >
             <h4 className={`text-sm sm:text-base font-semibold mb-4 ${
@@ -224,17 +236,19 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
               />
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${
+                <label className={`block text-xs sm:text-sm font-medium mb-2 ${
                   theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                 }`}>
                   Phone Number
                 </label>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <div className={`flex items-center px-4 rounded-xl border-2 ${
-                    theme === 'dark' ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                  <div className={`flex items-center px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border-2 ${
+                    theme === 'dark' 
+                      ? 'bg-gray-900/50 border-gray-700' 
+                      : 'bg-gray-50 border-gray-200'
                   }`}>
-                    <span className="text-2xl mr-2">🇳🇬</span>
-                    <span className={`font-medium ${
+                    <span className="text-xl sm:text-2xl mr-1.5 sm:mr-2">🇳🇬</span>
+                    <span className={`font-medium text-sm sm:text-base ${
                       theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                     }`}>
                       +234
@@ -257,17 +271,25 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
                 <Button
                   variant="outline"
                   onClick={handleCancel}
-                  className="w-full sm:flex-1"
+                  className={`w-full sm:flex-1 ${
+                    theme === 'dark'
+                      ? 'border-gray-600 text-gray-300 hover:bg-gray-800'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleSubmit}
-                  className="w-full sm:flex-1"
+                  className={`w-full sm:flex-1 ${
+                    theme === 'dark'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700'
+                      : 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600'
+                  }`}
                 >
                   <Check className="w-4 h-4 mr-2" />
                   {editingId ? 'Update' : 'Add'} Contact
@@ -281,6 +303,11 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
               onClick={() => setShowAddForm(true)}
               variant="outline"
               fullWidth
+              className={`${
+                theme === 'dark'
+                  ? 'border-purple-600/50 text-purple-400 hover:bg-purple-900/30 hover:border-purple-500'
+                  : 'border-purple-300 text-purple-700 hover:bg-purple-50 hover:border-purple-400'
+              }`}
             >
               <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Add Emergency Contact
@@ -290,7 +317,7 @@ export const EmergencyContactsManager: React.FC<EmergencyContactsManagerProps> =
       </AnimatePresence>
 
       {!canAddMore && !showAddForm && (
-        <p className={`text-xs text-center ${
+        <p className={`text-xs sm:text-sm text-center ${
           theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
         }`}>
           Maximum contacts reached ({maxContacts})
