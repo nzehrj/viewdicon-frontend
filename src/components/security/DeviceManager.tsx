@@ -418,7 +418,7 @@ const DeviceManager: React.FC<DeviceManagerProps> = ({
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={onAddDevice}
-          className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
+          className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
         >
           <Plus className="w-6 h-6" />
         </motion.button>
