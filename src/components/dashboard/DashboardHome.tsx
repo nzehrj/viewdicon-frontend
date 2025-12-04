@@ -729,46 +729,6 @@ const DashboardHome: React.FC = () => {
                 </button>
               </div>
             </div>
-
-            {/* Feed Type Tabs - MUST BE INSIDE motion.header */}
-            {activeView === 'home' && activeBottomTab === 'social' && (
-              <div className="overflow-x-auto pb-2 px-2 hide-scrollbar max-w-4xl mx-auto">
-                <style>{`
-                  .hide-scrollbar::-webkit-scrollbar {
-                    display: none !important;
-                  }
-                  .hide-scrollbar {
-                    -ms-overflow-style: none !important;
-                    scrollbar-width: none !important;
-                  }
-                `}</style>
-                
-                <div className="flex items-center gap-2 min-w-max">
-                  {feedTabs.map((tab) => {
-                    const Icon = tab.icon;
-                    const isActive = activeFeedType === tab.id;
-                    
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveFeedType(tab.id as any)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
-                          isActive
-                            ? 'text-white'
-                            : theme === 'dark'
-                            ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                        style={isActive ? { backgroundColor: tab.color } : {}}
-                      >
-                        <Icon className="w-4 h-4" />
-                        {tab.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </motion.header>
         )}
       </AnimatePresence>
@@ -942,6 +902,47 @@ const DashboardHome: React.FC = () => {
               {/* SOCIAL VIEW */}
               {activeView === 'home' && activeBottomTab === 'social' && (
                 <motion.div key="social" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="relative">
+                  
+                  {/* Feed Type Tabs - MUST BE INSIDE motion.header */}
+                  {activeView === 'home' && activeBottomTab === 'social' && (
+                    <div className="overflow-x-auto pb-2 hide-scrollbar max-w-4xl mx-auto">
+                      <style>{`
+                        .hide-scrollbar::-webkit-scrollbar {
+                          display: none !important;
+                        }
+                        .hide-scrollbar {
+                          -ms-overflow-style: none !important;
+                          scrollbar-width: none !important;
+                        }
+                      `}</style>
+                      
+                      <div className="flex items-center gap-2 min-w-max">
+                        {feedTabs.map((tab) => {
+                          const Icon = tab.icon;
+                          const isActive = activeFeedType === tab.id;
+                          
+                          return (
+                            <button
+                              key={tab.id}
+                              onClick={() => setActiveFeedType(tab.id as any)}
+                              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+                                isActive
+                                  ? 'text-white'
+                                  : theme === 'dark'
+                                  ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                              }`}
+                              style={isActive ? { backgroundColor: tab.color } : {}}
+                            >
+                              <Icon className="w-4 h-4" />
+                              {tab.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   <AnimatePresence mode="wait">
                     {activeFeedType === 'feed' && (
                       <motion.div key="feed-view" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>

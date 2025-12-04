@@ -211,7 +211,7 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  flex-1 relative px-2 py-2.5 sm:px-4 sm:py-3
+                  flex-1 relative px-2 py-2.5 sm:px-4 sm:py-3 outline-none
                   font-semibold text-xs sm:text-sm transition-all
                   ${isActive
                     ? theme === 'dark'
@@ -237,13 +237,6 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
                   </span>
                 </div>
                 
-                {/* Active indicator */}
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-500 to-emerald-500"
-                  />
-                )}
               </button>
             );
           })}
