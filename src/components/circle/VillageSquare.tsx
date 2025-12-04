@@ -154,13 +154,26 @@ export const VillageSquare: React.FC = () => {
   });
   
   return (
-    <div className="max-w-4xl mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
+    <div className="space-y-4 sm:space-y-6">
+      <style>{`
+          .hide-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+          }
+          .hide-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+            overflow-y: hidden !important;
+          }
+        `}
+      </style>
       {/* Village Header - Mobile Responsive */}
       <div 
-        className="p-4 sm:p-6 rounded-xl sm:rounded-2xl text-white relative overflow-hidden"
+        className="mx-1 p-4 sm:p-6 rounded-xl sm:rounded-2xl text-white relative overflow-hidden"
         style={{ background: `linear-gradient(135deg, ${villageColor} 0%, ${villageColor}dd 100%)` }}
       >
-        <div className="relative z-10">
+        <div className="relative z-10 my">
           <h1 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">{villageName} Square</h1>
           <p className="text-white/90 text-xs sm:text-sm">
             Your village house. Discuss work, ask questions, share knowledge.
@@ -190,7 +203,7 @@ export const VillageSquare: React.FC = () => {
         </div>
         
         {/* Post Type Selector - Horizontal Scroll on Mobile */}
-        <div className="mb-3 overflow-x-auto hide-scrollbar">
+        <div className="mb-3 overflow-x-auto hide-scrollbar ">
           <div className="flex items-center gap-2 min-w-max">
             <span className={`text-xs font-medium shrink-0 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               Type:

@@ -60,7 +60,6 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
     if (onRequestWork) {
       onRequestWork(professional.id);
     } else {
-      // TODO: Navigate to business session creation
       console.log('Request work from:', professional.name);
     }
   };
@@ -70,17 +69,17 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.01 }}
-      className={`p-4 rounded-xl border-2 transition-all ${
+      className={`p-3 md:p-4 border-b md:border-2 md:rounded-xl transition-all ${
         theme === 'dark'
-          ? 'bg-gray-800 border-gray-700 hover:border-gray-600'
-          : 'bg-white border-gray-200 hover:border-gray-300'
+          ? 'bg-gray-900 md:bg-gray-800 border-gray-800 md:border-gray-700 md:hover:border-gray-600'
+          : 'bg-white border-gray-100 md:border-gray-200 md:hover:border-gray-300'
       }`}
     >
       {/* Header - Identity */}
       <div className="flex items-start gap-3 mb-3">
         {/* Avatar */}
         <div 
-          className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-lg flex-shrink-0"
+          className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center font-bold text-white text-base md:text-lg flex-shrink-0"
           style={{ backgroundColor: professional.villageColor }}
         >
           {professional.name.charAt(0)}
@@ -91,7 +90,7 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
           <div className="flex items-start justify-between mb-1">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className={`font-bold text-base truncate ${
+                <h3 className={`font-bold text-sm md:text-base truncate ${
                   theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>
                   {professional.name}
@@ -100,21 +99,21 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                 )}
               </div>
-              <p className={`text-sm truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+              <p className={`text-xs md:text-sm truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                 {professional.role} • {professional.village}
               </p>
             </div>
             
             {/* Shield Badge */}
             <Shield 
-              className="w-5 h-5 flex-shrink-0" 
+              className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" 
               style={{ color: shieldColors[professional.shieldState] }}
               fill={shieldColors[professional.shieldState]}
             />
           </div>
           
           {/* Trust Indicators Row */}
-          <div className="flex items-center gap-3 text-xs">
+          <div className="flex items-center gap-2 md:gap-3 text-xs">
             {/* Crest */}
             <div className="flex items-center gap-1">
               <span>{'⭐'.repeat(professional.crestTier)}</span>
@@ -123,7 +122,7 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
             {/* Rating */}
             {professional.rating && (
               <div className="flex items-center gap-1">
-                <Star className="w-3.5 h-3.5 text-amber-500" fill="#f59e0b" />
+                <Star className="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-500" fill="#f59e0b" />
                 <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
                   {professional.rating}
                 </span>
@@ -133,8 +132,8 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
             {/* Jobs Completed */}
             {professional.completedJobs && (
               <div className="flex items-center gap-1 text-gray-500">
-                <Briefcase className="w-3.5 h-3.5" />
-                <span>{professional.completedJobs} jobs</span>
+                <Briefcase className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                <span className="text-[10px] md:text-xs">{professional.completedJobs} jobs</span>
               </div>
             )}
           </div>
@@ -145,7 +144,7 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
       {professional.honorStage && (
         <div className="mb-3">
           <span 
-            className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium"
+            className="inline-flex items-center gap-1 px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-medium"
             style={{ 
               backgroundColor: `${professional.villageColor}20`,
               color: professional.villageColor
@@ -158,16 +157,16 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
       )}
       
       {/* Offer Line */}
-      <p className={`text-sm mb-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+      <p className={`text-xs md:text-sm mb-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
         {professional.offerLine}
       </p>
       
       {/* Meta Info */}
-      <div className="flex items-center gap-4 mb-4 text-xs">
+      <div className="flex items-center gap-3 md:gap-4 mb-4 text-[10px] md:text-xs">
         {/* Distance */}
         {professional.distance !== undefined && (
           <div className="flex items-center gap-1 text-gray-500">
-            <MapPin className="w-3.5 h-3.5" />
+            <MapPin className="w-3 h-3 md:w-3.5 md:h-3.5" />
             <span>{professional.distance} km away</span>
           </div>
         )}
@@ -175,7 +174,7 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
         {/* Price Hint */}
         {professional.priceHint && (
           <div className="flex items-center gap-1 text-gray-500">
-            <DollarSign className="w-3.5 h-3.5" />
+            <DollarSign className="w-3 h-3 md:w-3.5 md:h-3.5" />
             <span>{professional.priceHint}</span>
           </div>
         )}
@@ -183,7 +182,7 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
         {/* Available Now Badge */}
         {professional.isOnline && (
           <div className="flex items-center gap-1 text-green-500">
-            <Zap className="w-3.5 h-3.5" />
+            <Zap className="w-3 h-3 md:w-3.5 md:h-3.5" />
             <span className="font-medium">Available now</span>
           </div>
         )}
@@ -195,7 +194,7 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
         <button
           onClick={handleRequestWork}
           disabled={!professional.canBookNow}
-          className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2 ${
+          className={`flex-1 px-3 py-2 md:px-4 md:py-2.5 font-semibold text-xs md:text-sm transition-colors flex items-center justify-center gap-2 ${
             professional.canBookNow
               ? 'text-white hover:opacity-90'
               : theme === 'dark'
@@ -209,14 +208,14 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
         
         {/* Secondary Action - Quick Message */}
         <button
-          className={`p-2.5 rounded-lg transition-colors ${
+          className={`p-2 md:p-2.5 transition-colors ${
             theme === 'dark'
               ? 'bg-gray-700 hover:bg-gray-600'
               : 'bg-gray-100 hover:bg-gray-200'
           }`}
           title="Quick question"
         >
-          <MessageCircle className={`w-5 h-5 ${
+          <MessageCircle className={`w-4 h-4 md:w-5 md:h-5 ${
             theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
           }`} />
         </button>
@@ -224,7 +223,7 @@ export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
       
       {/* Unavailable Notice */}
       {!professional.canBookNow && (
-        <p className={`text-xs mt-2 text-center ${
+        <p className={`text-[10px] md:text-xs mt-2 text-center ${
           theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
         }`}>
           {professional.isOnline 

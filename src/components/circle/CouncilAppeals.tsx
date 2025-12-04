@@ -176,7 +176,7 @@ export const CouncilAppeals: React.FC = () => {
   };
   
   return (
-    <div className="max-w-4xl mx-auto p-3 sm:p-4 space-y-4 sm:space-y-6">
+    <div className="max-w-4xl mx-auto p-1 sm:p-4 space-y-4 sm:space-y-6">
       {/* Header - Mobile Responsive */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-0">
         <div className="flex-1">

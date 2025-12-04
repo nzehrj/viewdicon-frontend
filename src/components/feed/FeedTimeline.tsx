@@ -6,22 +6,20 @@ import type { FeedPost as FeedPostType } from '@/types/feed.types';
 import { FeedPost } from './FeedPost';
 
 interface FeedTimelineProps {
-  // initialFilter?: FeedFilter; // ❌ REMOVED - not used
   onLoadMore?: () => void;
 }
 
 type FeedTab = 'hottest' | 'fresh' | 'ready';
 
 export const FeedTimeline: React.FC<FeedTimelineProps> = ({
-  // initialFilter, // ❌ REMOVED - not used
   onLoadMore,
 }) => {
   const [activeTab, setActiveTab] = useState<FeedTab>('hottest');
   const [posts, setPosts] = useState<FeedPostType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasMore] = useState(true); // ✅ Changed to read-only (removed setHasMore)
+  const [hasMore] = useState(true); 
   const theme = useAppSelector((state) => state.theme.theme);
-  // const currentUserAfroId = useAppSelector((state) => state.user.user?.afro_id); // ❌ REMOVED - not used
+  
 
   // Mock data - Replace with actual API call
   useEffect(() => {
@@ -31,9 +29,6 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
 
   const loadPosts = async () => {
     setIsLoading(true);
-    
-    // TODO: Replace with actual API call
-    // const response = await feedApi.getPosts({ sort_by: activeTab });
     
     // Mock delay
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -197,16 +192,16 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
   ];
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       {/* Feed Tabs */}
       <div className={`
-        sticky top-0 z-10 mb-4 p-2 rounded-2xl backdrop-blur-xl
+        sticky top-0 z-10 mb-4
         ${theme === 'dark' 
-          ? 'bg-gray-800/80 border border-gray-700' 
-          : 'bg-white/80 border border-gray-200 shadow-sm'
+          ? 'bg-gray-900 border-b border-gray-800' 
+          : 'bg-white border-b border-gray-100'
         }
       `}>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -216,15 +211,15 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  flex-1 relative px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl
+                  flex-1 relative px-2 py-2.5 sm:px-4 sm:py-3
                   font-semibold text-xs sm:text-sm transition-all
                   ${isActive
                     ? theme === 'dark'
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-gray-100 text-gray-900'
+                      ? 'bg-gray-800 text-white'
+                      : 'bg-gray-50 text-gray-900'
                     : theme === 'dark'
-                    ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50/50'
                   }
                 `}
               >
@@ -312,8 +307,8 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className={`
-            text-center py-16 px-6 rounded-2xl
-            ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-gray-50'}
+            text-center py-16 px-6
+            ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}
           `}
         >
           <div className="text-6xl mb-4">🍲</div>
@@ -336,10 +331,10 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
           <button
             onClick={onLoadMore}
             className={`
-              px-6 py-3 rounded-xl font-semibold text-sm transition-all
+              px-6 py-3 font-semibold text-sm transition-all
               ${theme === 'dark'
-                ? 'bg-gray-800 hover:bg-gray-700 text-white border border-gray-700'
-                : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200'
+                ? 'bg-gray-800 hover:bg-gray-700 text-white border-b border-gray-700'
+                : 'bg-white hover:bg-gray-50 text-gray-900 border-b border-gray-100'
               }
             `}
           >

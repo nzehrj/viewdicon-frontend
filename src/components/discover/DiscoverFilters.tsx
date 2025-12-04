@@ -102,7 +102,7 @@ export const DiscoverFilters: React.FC<DiscoverFiltersProps> = ({
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className={`fixed bottom-0 left-0 right-0 z-50 max-h-[90vh] overflow-y-auto rounded-t-3xl ${
+            className={`fixed max-w-4xl mx-auto bottom-0 left-0 right-0 z-50 max-h-[90vh] overflow-y-auto rounded-t-3xl ${
               theme === 'dark' ? 'bg-gray-900' : 'bg-white'
             }`}
           >
@@ -391,7 +391,7 @@ export const DiscoverFilters: React.FC<DiscoverFiltersProps> = ({
             </div>
             
             {/* Footer */}
-            <div className={`fixed bottom-0 left-0 right-0 p-4 border-t ${
+            <div className={`fixed max-w-4xl mx-auto bottom-0 left-0 right-0 p-4 border-t ${
               theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
             }`}>
               <div className="flex items-center gap-3">

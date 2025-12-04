@@ -51,7 +51,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={`
-        rounded-2xl p-4 sm:p-6 mb-4 transition-all
+        rounded-2xl p-2 sm:p-6 mb-4 transition-all
         ${theme === 'dark' 
           ? 'bg-gray-800/50 border border-gray-700' 
           : 'bg-white border border-gray-200 shadow-sm'

@@ -127,10 +127,10 @@ export const RequestWorkFlow: React.FC<RequestWorkFlowProps> = ({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed inset-0 flex items-center justify-center z-[111] p-0 sm:p-4"
+            className="fixed inset-0 flex items-center justify-center z-[111]"
           >
             <div className="w-full h-full sm:h-auto sm:w-full sm:max-w-lg overflow-hidden">
-            <div className={`h-full sm:h-auto rounded-none sm:rounded-2xl shadow-2xl flex flex-col ${
+            <div className={`h-full sm:h-auto rounded-none sm:rounded-2xl flex flex-col ${
               theme === 'dark' ? 'bg-gray-900' : 'bg-white'
             }`}>
               {/* Header */}

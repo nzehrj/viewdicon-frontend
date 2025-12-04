@@ -30,13 +30,13 @@ interface BusinessSessionProps {
 }
 
 type SessionStage = 
-  | 'request'        // 1. Initial request
-  | 'negotiation'    // 2. Price & terms discussion
-  | 'agreement'      // 3. Final agreement & escrow
-  | 'inProgress'     // 4. Work in progress
-  | 'review'         // 5. Client reviews work
-  | 'completion'     // 6. Payment released
-  | 'dispute';       // 7. If issues arise
+  | 'request'
+  | 'negotiation'
+  | 'agreement'
+  | 'inProgress'
+  | 'review'
+  | 'completion'
+  | 'dispute';
 
 interface SessionData {
   sessionId?: string;
@@ -50,7 +50,7 @@ interface SessionData {
   termsAccepted: boolean;
   clientNotes?: string;
   professionalResponse?: string;
-  workProof?: string[]; // Photos/videos of completed work
+  workProof?: string[];
   rating?: number;
   review?: string;
   disputeReason?: string;
@@ -60,44 +60,6 @@ interface SessionData {
  * BUSINESS SESSION COMPONENT
  * 
  * The core workflow for professional work requests and transactions.
- * This is what makes Viewdicon unique - NOT open chat, but structured business.
- * 
- * Flow Stages:
- * 
- * 1. REQUEST
- *    - Client describes work needed
- *    - Location, timeline, budget hints
- *    - Submit request
- * 
- * 2. NEGOTIATION
- *    - Professional responds with quote
- *    - Back-and-forth on price/terms
- *    - Can chat, call, or video call
- * 
- * 3. AGREEMENT
- *    - Final terms locked
- *    - Client deposits to escrow (50-100%)
- *    - Both parties sign digitally
- * 
- * 4. IN PROGRESS
- *    - Work begins
- *    - Client can track progress
- *    - Professional uploads proof
- * 
- * 5. REVIEW
- *    - Client reviews completed work
- *    - Can accept or request changes
- *    - Can escalate to dispute
- * 
- * 6. COMPLETION
- *    - Payment released from escrow
- *    - Both parties rate each other
- *    - Business Link created
- * 
- * 7. DISPUTE (if needed)
- *    - Either party raises issue
- *    - Evidence submitted
- *    - Village Council mediates
  * 
  * Location: src/components/business/BusinessSession.tsx
  */
@@ -137,7 +99,6 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
     }
     
     setSession({ ...session, stage: 'negotiation' });
-    // TODO: API call to create session
     console.log('Submit request:', session);
   };
   
@@ -147,7 +108,6 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
       agreedPrice: price,
       stage: 'agreement' 
     });
-    // TODO: API call
   };
   
   const handleDepositEscrow = () => {
@@ -160,13 +120,11 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
       escrowAmount: session.agreedPrice,
       stage: 'inProgress'
     });
-    // TODO: Payment flow
     console.log('Deposit to escrow:', session.agreedPrice);
   };
   
   const handleApproveWork = () => {
     setSession({ ...session, stage: 'completion' });
-    // TODO: Release escrow
     console.log('Release payment');
   };
   
@@ -176,13 +134,11 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
       disputeReason: reason,
       stage: 'dispute' 
     });
-    // TODO: API call
     console.log('Raise dispute:', reason);
   };
   
   const handleRating = (rating: number, review: string) => {
     setSession({ ...session, rating, review });
-    // TODO: API call
     console.log('Submit rating:', rating, review);
     onClose?.();
   };
@@ -196,6 +152,16 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
   
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       
@@ -205,12 +171,12 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 25 }}
-        className={`absolute right-0 top-0 bottom-0 w-full md:w-[600px] overflow-y-auto ${
+        className={`absolute right-0 top-0 bottom-0 w-full md:w-[600px] overflow-y-auto hide-scrollbar ${
           theme === 'dark' ? 'bg-gray-900' : 'bg-white'
         }`}
       >
         {/* Header */}
-        <div className={`sticky top-0 z-10 p-4 border-b ${
+        <div className={`sticky top-0 z-10 p-2 border-b ${
           theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
         }`}>
           <div className="flex items-center gap-3 mb-4">
@@ -238,7 +204,7 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
           </div>
           
           {/* Progress Steps */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between overflow-x-auto hide-scrollbar">
             {stages.map((stage, index) => {
               const Icon = stage.icon;
               const isActive = index === currentStageIndex;
@@ -807,3 +773,6 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
 };
 
 export default BusinessSession;
+
+
+ 

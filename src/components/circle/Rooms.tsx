@@ -247,7 +247,20 @@ export const Rooms: React.FC = () => {
   };
   
   return (
-    <div className="max-w-6xl mx-auto p-4 space-y-6">
+    <div className=" p-1 space-y-6">
+      <style>{`
+          .hide-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+          }
+          .hide-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+            overflow-y: hidden !important;
+          }
+        `}
+      </style>
       {/* Header */}
       <div>
         <h1 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -277,7 +290,7 @@ export const Rooms: React.FC = () => {
       </div>
       
       {/* Category Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+      <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2">
         {categories.map((cat) => (
           <button
             key={cat}

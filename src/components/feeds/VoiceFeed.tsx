@@ -230,7 +230,7 @@ export const VoiceFeed: React.FC = () => {
       </div>
       
       {/* Feed */}
-      <div className="max-w-2xl mx-auto">
+      <div>
         {filteredPosts.map((post) => {
           const isPlaying = playingPostId === post.id;
           

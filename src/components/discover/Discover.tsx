@@ -51,13 +51,6 @@ type DiscoverMode = 'nearby' | 'urgent' | 'trusted';
  * - Search by proximity, urgency, trust
  * - Result cards with "Request Work" CTA
  * 
- * TODO - Redux Integration:
- * Replace the mock villages array with:
- * const villages = useAppSelector((state) => state.yourVillageSlice.villages);
- * 
- * Or fetch from API:
- * useEffect(() => { dispatch(fetchVillages()); }, []);
- * 
  * Location: src/pages/Discover.tsx or src/components/discover/DiscoverPage.tsx
  */
 
@@ -68,8 +61,6 @@ interface DiscoverProps {
 export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
   const theme = useAppSelector((state) => state.theme.theme);
   
-  // TODO: Replace with actual Redux selector when villages are in state
-  // For now, using mock data structure that matches your villages config
   const villages: Village[] = [
     { villageId: 'agriculture', villageName: 'Agriculture Village', primaryColor: '#10b981', roles: [] },
     { villageId: 'business', villageName: 'Business Village', primaryColor: '#f59e0b', roles: [] },
@@ -99,10 +90,9 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
   
   const handleApplyFilters = (filters: FilterState) => {
     setAppliedFilters(filters);
-    // TODO: Apply filters to results
   };
   
-  // Mock professionals data - TODO: Replace with API call
+  // Mock professionals data
   const professionals: Professional[] = [
     {
       id: '1',
@@ -163,11 +153,9 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
     },
   ];
   
-  // Get guilds for selected village
   const selectedVillage = villages.find((v) => v.villageId === selectedVillageId);
   const guilds = selectedVillage?.roles || [];
   
-  // Filter professionals
   const filteredProfessionals = professionals.filter(prof => {
     const matchesVillage = !selectedVillageId || prof.villageId === selectedVillageId;
     const matchesGuild = !selectedGuildId || prof.roleId === selectedGuildId;
@@ -179,7 +167,6 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
     return matchesVillage && matchesGuild && matchesSearch;
   });
   
-  // Sort by mode
   const sortedProfessionals = [...filteredProfessionals].sort((a, b) => {
     if (discoverMode === 'nearby') {
       return (a.distance || 999) - (b.distance || 999);
@@ -211,12 +198,36 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
   };
   
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 p-[2px]">
+      {/* CRITICAL: Scrollbar hiding CSS - Must be at component level */}
+      <style>{`
+        .village-scroll::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+        .village-scroll {
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
+          overflow-y: hidden !important;
+        }
+        .guild-scroll::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+        .guild-scroll {
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
+          overflow-y: hidden !important;
+        }
+      `}</style>
+      
       {/* Header */}
       <div className={`sticky top-0 z-40 ${
-        theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'
-      } border-b ${theme === 'dark' ? 'border-gray-800' : 'border-gray-200'}`}>
-        <div className="max-w-7xl mx-auto p-4 space-y-4">
+        theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+      } border-b ${theme === 'dark' ? 'border-gray-800' : 'border-gray-100'}`}>
+        <div className="p-2 space-y-4">
           {/* Title */}
           <div className="flex items-center justify-between">
             <div>
@@ -231,7 +242,7 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`p-2 rounded-lg ${
-                theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'
+                theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-50 hover:bg-gray-100'
               } transition-colors`}
             >
               <SlidersHorizontal className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`} />
@@ -248,17 +259,17 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
               placeholder="Search by name, role, or service..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
+              className={`w-full pl-10 pr-4 py-3 border-b ${
                 theme === 'dark'
-                  ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500'
-                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
-              } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                  ? 'bg-gray-900 border-gray-800 text-white placeholder-gray-500'
+                  : 'bg-white border-gray-100 text-gray-900 placeholder-gray-400'
+              } focus:outline-none focus:border-purple-500`}
             />
           </div>
           
-          {/* Village Selector - Horizontal Scroll */}
-          <div className="overflow-x-auto pb-2 -mx-4 px-4">
-            <div className="flex items-center gap-2 min-w-max">
+          {/* Village Selector - Horizontal Scroll with HIDDEN SCROLLBAR */}
+          <div className="overflow-x-auto pb-2 -mx-4 px-4 village-scroll">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => {
                   setSelectedVillageId('');
@@ -271,7 +282,7 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
                       : 'bg-purple-500 text-white'
                     : theme === 'dark'
                     ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 All Villages
@@ -284,12 +295,12 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
                     setSelectedVillageId(village.villageId);
                     setSelectedGuildId('');
                   }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                  className={`px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
                     selectedVillageId === village.villageId
                       ? 'text-white'
                       : theme === 'dark'
                       ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                   }`}
                   style={selectedVillageId === village.villageId ? { backgroundColor: village.primaryColor } : {}}
                 >
@@ -299,13 +310,13 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
             </div>
           </div>
           
-          {/* Guild Filter (if village selected) */}
+          {/* Guild Filter (if village selected) - with HIDDEN SCROLLBAR */}
           {selectedVillageId && guilds.length > 0 && (
-            <div className="overflow-x-auto pb-2 -mx-4 px-4">
-              <div className="flex items-center gap-2 min-w-max">
+            <div className="overflow-x-auto pb-2 -mx-4 px-4 guild-scroll">
+              <div className="flex items-center gap-2">
                 <button
                   onClick={() => setSelectedGuildId('')}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                  className={`px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors ${
                     !selectedGuildId
                       ? theme === 'dark'
                         ? 'bg-gray-700 text-white'
@@ -322,7 +333,7 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
                   <button
                     key={guild.roleId}
                     onClick={() => setSelectedGuildId(guild.roleId)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                    className={`px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors ${
                       selectedGuildId === guild.roleId
                         ? theme === 'dark'
                           ? 'bg-gray-700 text-white'
@@ -356,7 +367,7 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
                         : 'bg-purple-500 text-white'
                       : theme === 'dark'
                       ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -369,9 +380,9 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
       </div>
       
       {/* Results */}
-      <div className="max-w-7xl mx-auto p-4">
+      <div>
         {/* Results Count */}
-        <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+        <p className={`text-sm mb-4 p-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
           {sortedProfessionals.length} professional{sortedProfessionals.length !== 1 ? 's' : ''} found
         </p>
         
@@ -388,8 +399,8 @@ export const Discover: React.FC<DiscoverProps> = ({ onRequestWork }) => {
           </div>
         ) : (
           /* Empty State */
-          <div className={`p-12 text-center rounded-xl ${
-            theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+          <div className={`p-12 text-center ${
+            theme === 'dark' ? 'bg-gray-900' : 'bg-white'
           }`}>
             <Search className={`w-16 h-16 mx-auto mb-4 ${
               theme === 'dark' ? 'text-gray-600' : 'text-gray-400'

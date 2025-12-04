@@ -230,7 +230,7 @@ export const DiscoverySpotlight: React.FC = () => {
       </div>
       
       {/* Posts Grid */}
-      <div className="p-4 space-y-4">
+      <div className="space-y-4">
         {filteredPosts.map((post, index) => {
           const typeColor = getTypeColor(post.type);
           

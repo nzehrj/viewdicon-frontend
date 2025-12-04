@@ -264,7 +264,7 @@ export const FamilyCircle: React.FC = () => {
       </div>
       
       {/* Feed */}
-      <div className="max-w-2xl mx-auto p-4 space-y-4">
+      <div className="space-y-4">
         {filteredPosts.map((post) => {
           const TypeIcon = getTypeIcon(post.type);
           const typeColor = getTypeColor(post.type);

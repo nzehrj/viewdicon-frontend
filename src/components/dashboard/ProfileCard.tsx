@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, 
   Award, 
   Users, 
-  MessageSquare,
-  Heart,
   Edit3,
-  Eye,
-  EyeOff
+  Menu,
+  X,
+  Home as HomeIcon,
+  Grid,
+  Shield,
+  Settings,
+  LogOut,
+  Briefcase,
+  Link as LinkIcon,
+  ChevronRight,
+  Bell,
+  Globe,
+  CreditCard,
+  HelpCircle,
+  FileText,
+  Share2
 } from 'lucide-react';
-import { useAppSelector, useAppDispatch } from '@store/hooks';
-import { toggleAfroIdVisibility } from '@store/slices/userSlice';
+import { useAppSelector } from '@store/hooks';
 import { formatHandle } from '@/types/profile.types';
 import { VerificationBadge } from '@components/verification/VerificationBadge';
 import { NkisiShield } from '@components/verification/NkisiShield';
@@ -20,28 +31,33 @@ import type { VerificationTier, ShieldState, ProfessionalBadge as ProfessionalBa
 
 interface ProfileCardProps {
   viewType: 'self' | 'stranger' | 'trusted';
+  isVisible?: boolean; // When profile tab is active
   onEditProfile?: () => void;
-  onMessageRequest?: () => void;
-  onAddToCircle?: () => void;
+  onNavigate?: (view: 'home' | 'profile' | 'tools' | 'business' | 'network' | 'security') => void;
+  onLogout?: () => void;
+  onOpenSettings?: () => void;
+  currentView?: string;
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({
   viewType,
+  isVisible = false,
   onEditProfile,
-  onMessageRequest,
-  onAddToCircle,
+  onNavigate,
+  onLogout,
+  onOpenSettings,
+  currentView = 'home'
 }) => {
-  const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
   const user = useAppSelector((state) => state.user.user);
   const publicProfile = useAppSelector((state) => state.user.publicProfile);
   const afroIdentity = useAppSelector((state) => state.user.afroIdentity);
   const village = useAppSelector((state) => state.user.village);
   const role = useAppSelector((state) => state.user.role);
-  const showAfroId = useAppSelector((state) => state.user.showAfroId);
   const rank = useAppSelector((state) => state.user.rank);
 
-  const [isFollowing, setIsFollowing] = useState(false);
+  // Menu sidebar state
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Use publicProfile if available, fallback to legacy user data
   const displayName = publicProfile?.display_name || user?.full_name || user?.name || 'User';
@@ -73,293 +89,394 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const shieldState: ShieldState = 'calm';
   const professionalBadges: ProfessionalBadgeType[] = [];
 
-  const handleToggleAfroId = () => {
-    dispatch(toggleAfroIdVisibility());
+  const handleMenuItemClick = (action: () => void) => {
+    action();
+    setIsMenuOpen(false); // Close menu after navigation
   };
 
+  // Menu items configuration
+  const menuSections = [
+    {
+      title: 'Navigate',
+      items: [
+        { 
+          icon: HomeIcon, 
+          label: 'Home', 
+          action: () => onNavigate?.('home'),
+          active: currentView === 'home'
+        },
+        { 
+          icon: Briefcase, 
+          label: 'Business', 
+          action: () => onNavigate?.('business'),
+          active: currentView === 'business'
+        },
+        { 
+          icon: LinkIcon, 
+          label: 'Network', 
+          action: () => onNavigate?.('network'),
+          active: currentView === 'network'
+        },
+        { 
+          icon: Shield, 
+          label: 'Security', 
+          action: () => onNavigate?.('security'),
+          active: currentView === 'security'
+        },
+        { 
+          icon: Grid, 
+          label: 'My Tools', 
+          action: () => onNavigate?.('tools'),
+          active: currentView === 'tools'
+        },
+      ]
+    },
+    {
+      title: 'Settings',
+      items: [
+        { 
+          icon: Settings, 
+          label: 'Settings', 
+          action: () => onOpenSettings?.()
+        },
+        { 
+          icon: Bell, 
+          label: 'Notifications', 
+          action: () => console.log('Notifications')
+        },
+      ]
+    },
+    {
+      title: 'Account',
+      items: [
+        { 
+          icon: CreditCard, 
+          label: 'Billing', 
+          action: () => console.log('Billing')
+        },
+        { 
+          icon: Globe, 
+          label: 'Language', 
+          action: () => console.log('Language')
+        },
+      ]
+    },
+    {
+      title: 'Support',
+      items: [
+        { 
+          icon: HelpCircle, 
+          label: 'Help Center', 
+          action: () => console.log('Help')
+        },
+        { 
+          icon: FileText, 
+          label: 'Terms & Privacy', 
+          action: () => console.log('Terms')
+        },
+        { 
+          icon: Share2, 
+          label: 'Share Profile', 
+          action: () => console.log('Share')
+        },
+      ]
+    }
+  ];
+
+  //Don't return null - always render for self view
+  if (viewType !== 'self') return null;
+
   return (
-    <div className={`
-      rounded-3xl overflow-hidden shadow-xl
-      ${theme === 'dark' 
-        ? 'bg-gray-800/50 border border-gray-700' 
-        : 'bg-white border border-gray-200'
-      }
-    `}>
-      {/* Cover Image */}
-      <div className="relative h-32 sm:h-48 bg-gradient-to-br from-green-500 via-emerald-600 to-green-700">
-        {coverUrl ? (
-          <img 
-            src={coverUrl} 
-            alt="Cover"
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center opacity-20">
-            <div className="text-6xl">🌍</div>
-          </div>
-        )}
-
-        {/* Edit button (self view only) */}
-        {viewType === 'self' && onEditProfile && (
+    <>
+      <div 
+        className={`fixed inset-0 z-40 overflow-y-auto max-w-4xl mx-auto ${isVisible ? 'block' : 'hidden'} ${
+          theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+        }`}
+        style={{ 
+          top: 0,  
+          paddingBottom: '88px'  // Space for bottom nav only
+        }}
+      >
+        {/* ProfileCard Header with Menu Button */}
+        <div className={`sticky top-0 z-10 flex items-center justify-between p-4 ${
+          theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+        }`}>
+          <h2 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            Profile
+          </h2>
+          {/* Hamburger Menu Button */}
           <button
-            onClick={onEditProfile}
-            className={`
-              absolute top-4 right-4 p-2 rounded-xl backdrop-blur-xl
-              ${theme === 'dark'
-                ? 'bg-gray-800/80 hover:bg-gray-700/80 text-white'
-                : 'bg-white/80 hover:bg-white/90 text-gray-900'
-              }
-            `}
+            onClick={() => setIsMenuOpen(true)}
+            className={`p-2 rounded-lg transition-colors ${
+              theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+            }`}
+            aria-label="Open menu"
           >
-            <Edit3 className="w-5 h-5" />
+            <Menu className="w-6 h-6" />
           </button>
-        )}
-      </div>
+        </div>
 
-      {/* Profile Content */}
-      <div className="px-4 sm:px-6 pb-6">
-        {/* Avatar with Nkisi Shield */}
-        <div className="flex items-end justify-between -mt-12 sm:-mt-16 mb-4">
-          <div className="relative">
-            {/* Nkisi Shield Wrapper */}
-            <NkisiShield state={shieldState} size="lg" showTooltip={viewType !== 'self'}>
-              <div className={`
-                w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-4
-                ${theme === 'dark' ? 'border-gray-800' : 'border-white'}
-                bg-gradient-to-br from-green-500 to-emerald-600 shadow-xl
-              `}>
-                {avatarUrl ? (
-                  <img 
-                    src={avatarUrl} 
-                    alt={displayName}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-white font-bold text-3xl sm:text-5xl">
-                    {displayName.charAt(0)}
+        {/* Profile Content  */}
+        <div className="p-[2px] pb-24">
+          {/* Profile Card Content  */}
+          <div className={`overflow-hidden mb-6 ${
+            theme === 'dark' ? 'bg-gray-800/50' : 'bg-white'
+          }`}>
+            {/* Cover Image */}
+            <div className="relative h-32 sm:h-48 bg-gradient-to-br from-green-500 via-emerald-600 to-green-700">
+              {coverUrl ? (
+                <img src={coverUrl} alt="Cover" className="w-full h-full object-cover" />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                  <div className="text-6xl">🌍</div>
+                </div>
+              )}
+
+              {/* Edit button */}
+              <button
+                onClick={onEditProfile}
+                className={`absolute top-4 right-4 p-2 rounded-xl backdrop-blur-xl transition-transform active:scale-95 ${
+                  theme === 'dark' ? 'bg-gray-800/80 hover:bg-gray-700/80 text-white' : 'bg-white/80 hover:bg-white/90 text-gray-900'
+                }`}
+              >
+                <Edit3 className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Profile Content */}
+            <div className="px-4 sm:px-6 pb-6">
+              {/* Avatar with Nkisi Shield */}
+              <div className="flex items-end justify-between -mt-12 sm:-mt-16 mb-4">
+                <div className="relative">
+                  <NkisiShield state={shieldState} size="lg" showTooltip={false}>
+                    <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-4 ${
+                      theme === 'dark' ? 'border-gray-800' : 'border-white'
+                    } bg-gradient-to-br from-green-500 to-emerald-600 shadow-xl`}>
+                      {avatarUrl ? (
+                        <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-white font-bold text-3xl sm:text-5xl">
+                          {displayName.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                  </NkisiShield>
+
+                  <div className="absolute -bottom-2 -right-2">
+                    <VerificationBadge tier={verificationTier} size="md" showTooltip />
+                  </div>
+                </div>
+
+                {/* Edit Button (Mobile) */}
+                <button
+                  onClick={onEditProfile}
+                  className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all active:scale-95 ${
+                    theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                >
+                  <Edit3 className="w-4 h-4 inline mr-1" />
+                  Edit
+                </button>
+              </div>
+
+              {/* Name & Handle */}
+              <div className="mb-3">
+                <h1 className={`text-2xl sm:text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {displayName}
+                </h1>
+                <p className={`text-sm sm:text-base ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {formatHandle(handle)}
+                </p>
+              </div>
+
+              {/* Bio */}
+              {bio && (
+                <p className={`text-sm sm:text-base mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                  {bio}
+                </p>
+              )}
+
+              {/* Professional Badges */}
+              {professionalBadges.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {professionalBadges.map((badge, idx) => (
+                    <ProfessionalBadge key={idx} badge={badge} size="sm" showVerifier={false} />
+                  ))}
+                </div>
+              )}
+
+              {/* Village & Role Badge */}
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold ${
+                  theme === 'dark' ? 'bg-green-900/30 text-green-400 border border-green-500/30' : 'bg-green-50 text-green-700 border border-green-200'
+                }`}>
+                  <Users className="w-4 h-4" />
+                  {villageRoleBadge}
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold"
+                  style={{ backgroundColor: `${rankColor}20`, color: rankColor, border: `1px solid ${rankColor}40` }}>
+                  <Award className="w-4 h-4" />
+                  {rankTitle} • Lv.{rankLevel}
+                </div>
+
+                {showHeritage && heritage && (
+                  <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold ${
+                    theme === 'dark' ? 'bg-amber-900/30 text-amber-400 border border-amber-500/30' : 'bg-amber-50 text-amber-700 border border-amber-200'
+                  }`}>
+                    🌍 {heritage} Heritage
                   </div>
                 )}
               </div>
-            </NkisiShield>
 
-            {/* Verification Badge (overlaid on avatar) */}
-            <div className="absolute -bottom-2 -right-2">
-              <VerificationBadge tier={verificationTier} size="md" showTooltip />
-            </div>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex items-center gap-2 mb-2">
-            {viewType === 'self' ? (
-              <button
-                onClick={onEditProfile}
-                className={`
-                  px-4 py-2 rounded-xl font-semibold text-sm transition-all
-                  ${theme === 'dark'
-                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                  }
-                `}
-              >
-                <Edit3 className="w-4 h-4 inline mr-1" />
-                Edit
-              </button>
-            ) : (
-              <>
-                <button
-                  onClick={() => setIsFollowing(!isFollowing)}
-                  className={`
-                    px-4 py-2 rounded-xl font-semibold text-sm transition-all
-                    ${isFollowing
-                      ? theme === 'dark'
-                        ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                      : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white'
-                    }
-                  `}
-                >
-                  {isFollowing ? 'Following' : 'Follow'}
-                </button>
-
-                <button
-                  onClick={onMessageRequest}
-                  className={`
-                    p-2 rounded-xl transition-all
-                    ${theme === 'dark'
-                      ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                    }
-                  `}
-                  title="Send Whisper"
-                >
-                  <MessageSquare className="w-5 h-5" />
-                </button>
-
-                {viewType === 'trusted' && onAddToCircle && (
-                  <button
-                    onClick={onAddToCircle}
-                    className={`
-                      p-2 rounded-xl transition-all
-                      ${theme === 'dark'
-                        ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                      }
-                    `}
-                    title="Add to Circle"
-                  >
-                    <Heart className="w-5 h-5" />
-                  </button>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Name & Handle */}
-        <div className="mb-3">
-          <div className="flex items-center gap-2 mb-1">
-            <h1 className={`text-2xl sm:text-3xl font-bold ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}>
-              {displayName}
-            </h1>
-          </div>
-          <p className={`text-sm sm:text-base ${
-            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-          }`}>
-            {formatHandle(handle)}
-          </p>
-        </div>
-
-        {/* Bio */}
-        {bio && (
-          <p className={`text-sm sm:text-base mb-4 ${
-            theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-          }`}>
-            {bio}
-          </p>
-        )}
-
-        {/* Professional Badges (if any) */}
-        {professionalBadges.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {professionalBadges.map((badge, idx) => (
-              <ProfessionalBadge key={idx} badge={badge} size="sm" showVerifier={false} />
-            ))}
-          </div>
-        )}
-
-        {/* Village & Role Badge */}
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <div className={`
-            inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold
-            ${theme === 'dark'
-              ? 'bg-green-900/30 text-green-400 border border-green-500/30'
-              : 'bg-green-50 text-green-700 border border-green-200'
-            }
-          `}>
-            <Users className="w-4 h-4" />
-            {villageRoleBadge}
-          </div>
-
-          {/* Rank Badge */}
-          <div 
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold"
-            style={{ 
-              backgroundColor: `${rankColor}20`,
-              color: rankColor,
-              border: `1px solid ${rankColor}40`
-            }}
-          >
-            <Award className="w-4 h-4" />
-            {rankTitle} • Lv.{rankLevel}
-          </div>
-
-          {/* Heritage Pill (if allowed) */}
-          {showHeritage && heritage && (
-            <div className={`
-              inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold
-              ${theme === 'dark'
-                ? 'bg-amber-900/30 text-amber-400 border border-amber-500/30'
-                : 'bg-amber-50 text-amber-700 border border-amber-200'
-              }
-            `}>
-              🌍 {heritage} Heritage
-            </div>
-          )}
-        </div>
-
-        {/* Location */}
-        {location && (
-          <div className="flex items-center gap-2 mb-4">
-            <MapPin className={`w-4 h-4 ${
-              theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
-            }`} />
-            <span className={`text-sm ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-            }`}>
-              {location}
-            </span>
-          </div>
-        )}
-
-        {/* Stats - ONLY POSTS NOW */}
-        <div className="py-4 border-t border-b border-gray-200 dark:border-gray-700">
-          <div className="text-center">
-            <p className={`text-2xl font-bold ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}>
-              {postCount}
-            </p>
-            <p className={`text-xs ${
-              theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
-            }`}>
-              Posts
-            </p>
-          </div>
-        </div>
-
-        {/* Afro-ID Section (self view only) */}
-        {viewType === 'self' && user?.afro_id && (
-          <div className="mt-4">
-            <button
-              onClick={handleToggleAfroId}
-              className={`
-                w-full flex items-center justify-between p-3 rounded-xl text-sm font-semibold transition-all
-                ${theme === 'dark'
-                  ? 'bg-gray-900/50 hover:bg-gray-900/70 text-gray-300 border border-gray-700'
-                  : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200'
-                }
-              `}
-            >
-              <span>Your Afro-ID</span>
-              {showAfroId ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
+              {/* Location */}
+              {location && (
+                <div className="flex items-center gap-2 mb-4">
+                  <MapPin className={`w-4 h-4 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`} />
+                  <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {location}
+                  </span>
+                </div>
               )}
-            </button>
 
-            {showAfroId && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className={`
-                  mt-2 p-3 rounded-xl font-mono text-xs break-all
-                  ${theme === 'dark'
-                    ? 'bg-gray-900 text-green-400 border border-gray-700'
-                    : 'bg-gray-50 text-green-600 border border-gray-200'
-                  }
-                `}
-              >
-                {user.afro_id}
-              </motion.div>
-            )}
+              {/* Stats */}
+              <div className={`py-4 border-t border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                <div className="text-center">
+                  <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    {postCount}
+                  </p>
+                  <p className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
+                    Posts
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
+
+          {/* Analytics Section - No rounded corners, no border, no shadow */}
+          <div className={`p-6 sm:p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <h3 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              Analytics
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>248</p>
+                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Connections</p>
+              </div>
+              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>1.2k</p>
+                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Views</p>
+              </div>
+              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>42</p>
+                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Posts</p>
+              </div>
+              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>89%</p>
+                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Engagement</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      {/* Menu Sidebar - Slides from Right (Mobile Responsive) */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            />
+
+            {/* Menu Drawer - Mobile Responsive Width */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className={`fixed right-0 top-0 bottom-0 w-[85vw] sm:w-80 md:w-96 max-w-md z-50 overflow-y-auto ${
+                theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+              } shadow-2xl`}
+            >
+              {/* Menu Header */}
+              <div className={`sticky top-0 z-10 flex items-center justify-between p-4 border-b ${
+                theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
+              }`}>
+                <h2 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  Menu
+                </h2>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`p-2 rounded-lg transition-colors active:scale-95 ${
+                    theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+                  }`}
+                  aria-label="Close menu"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Menu Content */}
+              <div className="p-4 space-y-6">
+                {menuSections.map((section, sectionIdx) => (
+                  <div key={sectionIdx}>
+                    <h3 className={`text-xs font-semibold uppercase tracking-wider mb-3 px-2 ${
+                      theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
+                    }`}>
+                      {section.title}
+                    </h3>
+                    <div className="space-y-1">
+                      {section.items.map((item, itemIdx) => {
+                        const Icon = item.icon;
+                        const isActive = 'active' in item && item.active;
+                        
+                        return (
+                          <button
+                            key={itemIdx}
+                            onClick={() => handleMenuItemClick(item.action)}
+                            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all active:scale-95 ${
+                              isActive
+                                ? theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'
+                                : theme === 'dark' ? 'text-gray-400 hover:bg-gray-800 hover:text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <Icon className="w-5 h-5 flex-shrink-0" />
+                              <span className="font-medium text-sm sm:text-base">{item.label}</span>
+                            </div>
+                            <ChevronRight className="w-5 h-5 flex-shrink-0" />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Logout Button */}
+                <div className={`pt-6 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                  <button
+                    onClick={() => handleMenuItemClick(() => onLogout?.())}
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all active:scale-95 ${
+                      theme === 'dark' ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <LogOut className="w-5 h-5 flex-shrink-0" />
+                      <span className="font-medium text-sm sm:text-base">Logout</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
