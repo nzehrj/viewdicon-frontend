@@ -58,7 +58,7 @@ export const UnifiedFeedView: React.FC<UnifiedFeedViewProps> = ({ onRequestWork 
       `}</style>
 
       {/* Sub-tabs inside Feed */}
-      <div className={`flex gap-2 overflow-x-auto pb-2 mb-4 ${
+      <div className={`flex mt-4 gap-2 overflow-x-auto pb-2 mb-4 ${
         theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
       } border-b hide-scrollbar`}>
         {feedSubTabs.map((tab) => {

@@ -36,7 +36,7 @@ export const CircleHub: React.FC = () => {
         `}
       </style>
       {/* Sub-tabs inside Circle */}
-      <div className={`flex gap-2 overflow-x-auto pb-2 mb-4 ${
+      <div className={`flex mt-4 gap-2 overflow-x-auto pb-2 mb-4 ${
         theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
       } border-none hide-scrollbar`}>
         {circleSubTabs.map((tab) => {
