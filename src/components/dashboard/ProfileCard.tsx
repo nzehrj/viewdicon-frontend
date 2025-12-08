@@ -15,12 +15,8 @@ import {
   Briefcase,
   Link as LinkIcon,
   ChevronRight,
-  Bell,
   Globe,
-  CreditCard,
-  HelpCircle,
   FileText,
-  Share2
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import { formatHandle } from '@/types/profile.types';
@@ -140,21 +136,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           action: () => onOpenSettings?.()
         },
         { 
-          icon: Bell, 
-          label: 'Notifications', 
-          action: () => console.log('Notifications')
-        },
-      ]
-    },
-    {
-      title: 'Account',
-      items: [
-        { 
-          icon: CreditCard, 
-          label: 'Billing', 
-          action: () => console.log('Billing')
-        },
-        { 
           icon: Globe, 
           label: 'Language', 
           action: () => console.log('Language')
@@ -162,22 +143,12 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       ]
     },
     {
-      title: 'Support',
+      title: 'Legal',
       items: [
-        { 
-          icon: HelpCircle, 
-          label: 'Help Center', 
-          action: () => console.log('Help')
-        },
         { 
           icon: FileText, 
           label: 'Terms & Privacy', 
           action: () => console.log('Terms')
-        },
-        { 
-          icon: Share2, 
-          label: 'Share Profile', 
-          action: () => console.log('Share')
         },
       ]
     }
@@ -380,7 +351,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
       </div>
 
-      {/* Menu Sidebar - Slides from Right (Mobile Responsive) */}
+      {/* Menu Sidebar - Slides from Right (Mobile Responsive) - FULL SCREEN */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
@@ -390,16 +361,16 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
             />
 
-            {/* Menu Drawer - Mobile Responsive Width */}
+            {/* Menu Drawer - Mobile Responsive Width - ABOVE BOTTOM NAV */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className={`fixed right-0 top-0 bottom-0 w-[85vw] sm:w-80 md:w-96 max-w-md z-50 overflow-y-auto ${
+              className={`fixed right-0 top-0 bottom-0 w-[85vw] sm:w-80 md:w-96 max-w-md z-[60] overflow-y-auto ${
                 theme === 'dark' ? 'bg-gray-900' : 'bg-white'
               } shadow-2xl`}
             >

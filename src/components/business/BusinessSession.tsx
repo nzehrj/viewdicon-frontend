@@ -151,7 +151,7 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
   };
   
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div className="fixed inset-0 z-[60] overflow-hidden">
       <style>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
@@ -773,6 +773,3 @@ export const BusinessSession: React.FC<BusinessSessionProps> = ({
 };
 
 export default BusinessSession;
-
-
- 

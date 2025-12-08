@@ -775,7 +775,7 @@ const DashboardHome: React.FC = () => {
                       onClick={() => setActiveHomeApp('requests')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-2 outline-none"
                     >
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow relative">
                         <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
@@ -796,7 +796,7 @@ const DashboardHome: React.FC = () => {
                       onClick={() => setActiveHomeApp('connections')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-2 outline-none"
                     >
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
                         <Heart className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
@@ -828,7 +828,7 @@ const DashboardHome: React.FC = () => {
                       onClick={() => setActiveHomeApp('familytree')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-2 outline-none"
                     >
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
                         <span className="text-3xl sm:text-4xl">🌳</span>
@@ -844,7 +844,7 @@ const DashboardHome: React.FC = () => {
                       onClick={() => setActiveHomeApp('preferences')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-2 outline-none"
                     >
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
                         <span className="text-3xl sm:text-4xl">🎨</span>
@@ -860,7 +860,7 @@ const DashboardHome: React.FC = () => {
                       onClick={() => setActiveHomeApp('village')}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-2 outline-none"
                     >
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
                         <RefreshCw className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
@@ -877,7 +877,7 @@ const DashboardHome: React.FC = () => {
                       onClick={() => setIsJollofTVVisible(true)}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-2 outline-none"
                     >
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-red-500 to-pink-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow relative">
                         <Tv className="w-8 h-8 sm:w-10 sm:h-10 text-white" />

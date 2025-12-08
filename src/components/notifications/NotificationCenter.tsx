@@ -18,6 +18,7 @@ import {
   Users,
   Clock
 } from 'lucide-react';
+import { useAppSelector } from '@store/hooks';
 
 // Types
 type NotificationType = 
@@ -109,6 +110,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
   onRejectRequest,
   onOpenChat
 }) => {
+  const theme = useAppSelector((state) => state.theme.theme);
   const [activeTab, setActiveTab] = useState<'notifications' | 'whispers' | 'trusted'>('notifications');
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
 
@@ -132,59 +134,59 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
   const getNotificationColor = (type: NotificationType) => {
     const colorMap = {
       whisper_request: {
-        bg: 'bg-purple-100',
-        text: 'text-purple-600',
-        border: 'border-purple-200'
+        bg: theme === 'dark' ? 'bg-purple-900/30' : 'bg-purple-100',
+        text: theme === 'dark' ? 'text-purple-400' : 'text-purple-600',
+        border: theme === 'dark' ? 'border-purple-700' : 'border-purple-200'
       },
       message: {
-        bg: 'bg-blue-100',
-        text: 'text-blue-600',
-        border: 'border-blue-200'
+        bg: theme === 'dark' ? 'bg-blue-900/30' : 'bg-blue-100',
+        text: theme === 'dark' ? 'text-blue-400' : 'text-blue-600',
+        border: theme === 'dark' ? 'border-blue-700' : 'border-blue-200'
       },
       like: {
-        bg: 'bg-pink-100',
-        text: 'text-pink-600',
-        border: 'border-pink-200'
+        bg: theme === 'dark' ? 'bg-pink-900/30' : 'bg-pink-100',
+        text: theme === 'dark' ? 'text-pink-400' : 'text-pink-600',
+        border: theme === 'dark' ? 'border-pink-700' : 'border-pink-200'
       },
       comment: {
-        bg: 'bg-purple-100',
-        text: 'text-purple-600',
-        border: 'border-purple-200'
+        bg: theme === 'dark' ? 'bg-purple-900/30' : 'bg-purple-100',
+        text: theme === 'dark' ? 'text-purple-400' : 'text-purple-600',
+        border: theme === 'dark' ? 'border-purple-700' : 'border-purple-200'
       },
       connection: {
-        bg: 'bg-green-100',
-        text: 'text-green-600',
-        border: 'border-green-200'
+        bg: theme === 'dark' ? 'bg-green-900/30' : 'bg-green-100',
+        text: theme === 'dark' ? 'text-green-400' : 'text-green-600',
+        border: theme === 'dark' ? 'border-green-700' : 'border-green-200'
       },
       session: {
-        bg: 'bg-cyan-100',
-        text: 'text-cyan-600',
-        border: 'border-cyan-200'
+        bg: theme === 'dark' ? 'bg-cyan-900/30' : 'bg-cyan-100',
+        text: theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600',
+        border: theme === 'dark' ? 'border-cyan-700' : 'border-cyan-200'
       },
       security: {
-        bg: 'bg-red-100',
-        text: 'text-red-600',
-        border: 'border-red-200'
+        bg: theme === 'dark' ? 'bg-red-900/30' : 'bg-red-100',
+        text: theme === 'dark' ? 'text-red-400' : 'text-red-600',
+        border: theme === 'dark' ? 'border-red-700' : 'border-red-200'
       },
       achievement: {
-        bg: 'bg-amber-100',
-        text: 'text-amber-600',
-        border: 'border-amber-200'
+        bg: theme === 'dark' ? 'bg-amber-900/30' : 'bg-amber-100',
+        text: theme === 'dark' ? 'text-amber-400' : 'text-amber-600',
+        border: theme === 'dark' ? 'border-amber-700' : 'border-amber-200'
       },
       transaction: {
-        bg: 'bg-emerald-100',
-        text: 'text-emerald-600',
-        border: 'border-emerald-200'
+        bg: theme === 'dark' ? 'bg-emerald-900/30' : 'bg-emerald-100',
+        text: theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600',
+        border: theme === 'dark' ? 'border-emerald-700' : 'border-emerald-200'
       },
       system: {
-        bg: 'bg-gray-100',
-        text: 'text-gray-600',
-        border: 'border-gray-200'
+        bg: theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100',
+        text: theme === 'dark' ? 'text-gray-400' : 'text-gray-600',
+        border: theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
       },
       milestone: {
-        bg: 'bg-orange-100',
-        text: 'text-orange-600',
-        border: 'border-orange-200'
+        bg: theme === 'dark' ? 'bg-orange-900/30' : 'bg-orange-100',
+        text: theme === 'dark' ? 'text-orange-400' : 'text-orange-600',
+        border: theme === 'dark' ? 'border-orange-700' : 'border-orange-200'
       }
     };
     return colorMap[type];
@@ -222,7 +224,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
     },
     { 
       id: 'whispers' as const, 
-      label: 'Whisper Requests', 
+      label: 'Whispers', 
       icon: MessageSquare,
       count: pendingRequestsCount,
     },
@@ -253,23 +255,25 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 bottom-0 w-full sm:w-[440px] bg-white shadow-2xl overflow-y-auto z-50"
+            className={`fixed right-0 top-0 bottom-0 w-full sm:w-[440px] ${
+              theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+            } shadow-2xl overflow-y-auto z-50`}
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6">
+            <div className={`sticky top-0 z-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 md:p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Bell className="w-6 h-6" />
+                  <Bell className="w-5 h-5 md:w-6 md:h-6" />
                   <div>
-                    <h2 className="text-xl font-bold">Notifications</h2>
-                    <p className="text-purple-100 text-sm">
+                    <h2 className="text-lg md:text-xl font-bold">Notifications</h2>
+                    <p className="text-purple-100 text-xs md:text-sm">
                       {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up!'}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
+                  className="p-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -285,17 +289,17 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex-1 relative flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+                      className={`flex-1 relative flex items-center justify-center gap-1 md:gap-2 px-2 md:px-3 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold transition-colors ${
                         isActive
                           ? 'bg-white text-purple-600'
                           : 'bg-white/20 text-white hover:bg-white/30'
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
+                      <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
                       <span className="hidden sm:inline">{tab.label}</span>
                       
                       {tab.count > 0 && (
-                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                        <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 text-white text-[10px] md:text-xs rounded-full flex items-center justify-center font-bold">
                           {tab.count}
                         </span>
                       )}
@@ -309,23 +313,23 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 <div className="flex gap-2 mt-3">
                   <button
                     onClick={() => setShowUnreadOnly(!showUnreadOnly)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-2 md:px-3 py-1 md:py-1.5 rounded-lg text-xs md:text-sm font-medium transition-colors ${
                       showUnreadOnly
                         ? 'bg-white text-purple-600'
                         : 'bg-white/20 hover:bg-white/30'
                     }`}
                   >
-                    <EyeOff className="w-3.5 h-3.5 inline mr-1.5" />
-                    Unread Only
+                    <EyeOff className="w-3 h-3 md:w-3.5 md:h-3.5 inline mr-1 md:mr-1.5" />
+                    Unread
                   </button>
                   
                   {unreadCount > 0 && (
                     <button
                       onClick={onMarkAllAsRead}
-                      className="px-3 py-1.5 bg-white/20 rounded-lg text-sm font-medium hover:bg-white/30 transition-colors"
+                      className="px-2 md:px-3 py-1 md:py-1.5 bg-white/20 rounded-lg text-xs md:text-sm font-medium hover:bg-white/30 transition-colors"
                     >
-                      <Check className="w-3.5 h-3.5 inline mr-1.5" />
-                      Mark All Read
+                      <Check className="w-3 h-3 md:w-3.5 md:h-3.5 inline mr-1 md:mr-1.5" />
+                      Mark All
                     </button>
                   )}
                 </div>
@@ -333,7 +337,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
             </div>
 
             {/* Content */}
-            <div className="p-4">
+            <div className="p-3 md:p-4">
               <AnimatePresence mode="wait">
                 {/* All Notifications Tab */}
                 {activeTab === 'notifications' && (
@@ -345,12 +349,12 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     className="space-y-3"
                   >
                     {filteredNotifications.length === 0 ? (
-                      <div className="bg-gray-50 rounded-xl p-12 text-center">
-                        <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'} rounded-xl p-8 md:p-12 text-center`}>
+                        <Bell className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'} mx-auto mb-3 md:mb-4`} />
+                        <h3 className={`text-base md:text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                           No notifications
                         </h3>
-                        <p className="text-gray-600 text-sm">
+                        <p className={`text-xs md:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                           {showUnreadOnly 
                             ? "You're all caught up! No unread notifications."
                             : "You don't have any notifications yet."}
@@ -367,10 +371,12 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, x: -100 }}
-                            className={`bg-white rounded-xl p-4 shadow-sm border-2 transition-all ${
+                            className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl p-3 md:p-4 shadow-sm border-2 transition-all cursor-pointer ${
                               !notification.isRead 
-                                ? 'border-purple-200 bg-purple-50/50' 
-                                : 'border-gray-100'
+                                ? theme === 'dark' 
+                                  ? 'border-purple-700 bg-purple-900/20' 
+                                  : 'border-purple-200 bg-purple-50/50'
+                                : theme === 'dark' ? 'border-gray-700' : 'border-gray-100'
                             }`}
                             onClick={() => {
                               if (!notification.isRead) {
@@ -378,16 +384,16 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                               }
                             }}
                           >
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-start gap-2 md:gap-3">
                               {/* Icon */}
-                              <div className={`${colors.bg} ${colors.border} border-2 p-2.5 rounded-xl flex-shrink-0`}>
-                                <Icon className={`w-5 h-5 ${colors.text}`} />
+                              <div className={`${colors.bg} ${colors.border} border-2 p-2 md:p-2.5 rounded-lg md:rounded-xl flex-shrink-0`}>
+                                <Icon className={`w-4 h-4 md:w-5 md:h-5 ${colors.text}`} />
                               </div>
 
                               {/* Content */}
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-2 mb-1">
-                                  <h3 className="font-semibold text-gray-900 text-sm">
+                                  <h3 className={`font-semibold text-xs md:text-sm ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                                     {notification.title}
                                   </h3>
                                   <button
@@ -395,25 +401,27 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                                       e.stopPropagation();
                                       onDelete?.(notification.id);
                                     }}
-                                    className="p-1 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+                                    className={`p-1 rounded-lg transition-colors flex-shrink-0 ${
+                                      theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                                    }`}
                                   >
-                                    <X className="w-4 h-4 text-gray-400" />
+                                    <X className={`w-3 h-3 md:w-4 md:h-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'}`} />
                                   </button>
                                 </div>
 
                                 {notification.sender && (
-                                  <p className="text-xs text-gray-600 mb-1">
+                                  <p className={`text-[10px] md:text-xs mb-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                                     {notification.sender.name}
                                   </p>
                                 )}
 
-                                <p className="text-sm text-gray-700 mb-2 line-clamp-2">
+                                <p className={`text-xs md:text-sm mb-2 line-clamp-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                                   {notification.message}
                                 </p>
 
                                 {/* Timestamp & Actions */}
                                 <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                                  <div className={`flex items-center gap-1 md:gap-2 text-[10px] md:text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
                                     <Clock className="w-3 h-3" />
                                     <span>{formatTimestamp(notification.timestamp)}</span>
                                     {!notification.isRead && (
@@ -430,7 +438,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                                         e.stopPropagation();
                                         onActionClick?.(notification);
                                       }}
-                                      className="text-xs font-semibold text-purple-600 hover:text-purple-700 transition-colors"
+                                      className="text-[10px] md:text-xs font-semibold text-purple-600 hover:text-purple-700 transition-colors"
                                     >
                                       {notification.actionLabel}
                                     </button>
@@ -455,12 +463,12 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     className="space-y-3"
                   >
                     {messageRequests.filter(r => r.status === 'pending').length === 0 ? (
-                      <div className="bg-gray-50 rounded-xl p-12 text-center">
-                        <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'} rounded-xl p-8 md:p-12 text-center`}>
+                        <MessageSquare className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'} mx-auto mb-3 md:mb-4`} />
+                        <h3 className={`text-base md:text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                           No pending requests
                         </h3>
-                        <p className="text-gray-600 text-sm">
+                        <p className={`text-xs md:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                           You don't have any whisper requests at the moment.
                         </p>
                       </div>
@@ -470,48 +478,52 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                         .map((request) => (
                           <div
                             key={request.id}
-                            className="bg-white rounded-xl p-4 shadow-sm border-2 border-purple-200"
+                            className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-3 md:p-4 shadow-sm border-2`}
                           >
-                            <div className="flex items-start gap-3 mb-3">
+                            <div className="flex items-start gap-2 md:gap-3 mb-3">
                               {request.senderAvatar ? (
                                 <img
                                   src={request.senderAvatar}
                                   alt={request.senderName}
-                                  className="w-12 h-12 rounded-full object-cover"
+                                  className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
                                 />
                               ) : (
-                                <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                                  <Users className="w-6 h-6 text-purple-600" />
+                                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${theme === 'dark' ? 'bg-purple-900/30' : 'bg-purple-100'} flex items-center justify-center`}>
+                                  <Users className={`w-5 h-5 md:w-6 md:h-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'}`} />
                                 </div>
                               )}
                               <div className="flex-1">
-                                <h3 className="font-semibold text-gray-900">
+                                <h3 className={`font-semibold text-sm md:text-base ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                                   {request.senderName}
                                 </h3>
-                                <p className="text-sm text-gray-600">
-                                  {request.senderVillage} • Crest Level {request.senderCrest}
+                                <p className={`text-xs md:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                                  {request.senderVillage} • Crest {request.senderCrest}
                                 </p>
                               </div>
                             </div>
 
-                            <p className="text-sm text-gray-700 mb-3 line-clamp-3">
+                            <p className={`text-xs md:text-sm mb-3 line-clamp-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                               {request.message}
                             </p>
 
-                            <div className="text-xs text-gray-500 mb-3">
+                            <div className={`text-[10px] md:text-xs mb-3 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
                               {formatTimestamp(request.timestamp)}
                             </div>
 
                             <div className="flex gap-2">
                               <button
                                 onClick={() => onAcceptRequest?.(request.id)}
-                                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+                                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold hover:shadow-lg transition-shadow"
                               >
                                 Accept
                               </button>
                               <button
                                 onClick={() => onRejectRequest?.(request.id)}
-                                className="flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                                className={`flex-1 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold transition-colors ${
+                                  theme === 'dark' 
+                                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                }`}
                               >
                                 Decline
                               </button>
@@ -532,12 +544,12 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     className="space-y-3"
                   >
                     {trustedConnections.length === 0 ? (
-                      <div className="bg-gray-50 rounded-xl p-12 text-center">
-                        <Shield className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'} rounded-xl p-8 md:p-12 text-center`}>
+                        <Shield className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'} mx-auto mb-3 md:mb-4`} />
+                        <h3 className={`text-base md:text-lg font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                           No trusted connections
                         </h3>
-                        <p className="text-gray-600 text-sm">
+                        <p className={`text-xs md:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                           Accept whisper requests to build your trusted network.
                         </p>
                       </div>
@@ -546,35 +558,35 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
                         <div
                           key={connection.id}
                           onClick={() => onOpenChat?.(connection.id)}
-                          className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:border-purple-300 cursor-pointer transition-all"
+                          className={`${theme === 'dark' ? 'bg-gray-800 border-gray-700 hover:border-purple-600' : 'bg-white border-gray-200 hover:border-purple-300'} rounded-xl p-3 md:p-4 shadow-sm border cursor-pointer transition-all`}
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 md:gap-3">
                             {connection.avatar ? (
                               <img
                                 src={connection.avatar}
                                 alt={connection.name}
-                                className="w-12 h-12 rounded-full object-cover"
+                                className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
                               />
                             ) : (
-                              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                                <Users className="w-6 h-6 text-blue-600" />
+                              <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${theme === 'dark' ? 'bg-blue-900/30' : 'bg-blue-100'} flex items-center justify-center`}>
+                                <Users className={`w-5 h-5 md:w-6 md:h-6 ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`} />
                               </div>
                             )}
                             <div className="flex-1">
-                              <h3 className="font-semibold text-gray-900">
+                              <h3 className={`font-semibold text-sm md:text-base ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                                 {connection.name}
                               </h3>
-                              <p className="text-sm text-gray-600">
+                              <p className={`text-xs md:text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                                 {connection.village} • {connection.afroId}
                               </p>
                               {connection.lastMessage && (
-                                <p className="text-xs text-gray-500 mt-1">
-                                  Last message: {formatTimestamp(connection.lastMessage)}
+                                <p className={`text-[10px] md:text-xs mt-1 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
+                                  Last: {formatTimestamp(connection.lastMessage)}
                                 </p>
                               )}
                             </div>
                             {connection.unreadCount && connection.unreadCount > 0 && (
-                              <div className="w-6 h-6 bg-purple-600 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                              <div className="w-5 h-5 md:w-6 md:h-6 bg-purple-600 text-white text-[10px] md:text-xs rounded-full flex items-center justify-center font-bold">
                                 {connection.unreadCount}
                               </div>
                             )}
@@ -589,13 +601,17 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
             {/* Clear All Button (Only for Notifications Tab) */}
             {activeTab === 'notifications' && filteredNotifications.length > 0 && (
-              <div className="p-4 pt-0">
+              <div className="p-3 md:p-4 pt-0">
                 <button
                   onClick={onClearAll}
-                  className="w-full py-3 bg-red-50 text-red-600 rounded-xl font-semibold hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
+                  className={`w-full py-2.5 md:py-3 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2 ${
+                    theme === 'dark' 
+                      ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50' 
+                      : 'bg-red-50 text-red-600 hover:bg-red-100'
+                  }`}
                 >
-                  <Trash2 className="w-5 h-5" />
-                  Clear All Notifications
+                  <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
+                  Clear All
                 </button>
               </div>
             )}
