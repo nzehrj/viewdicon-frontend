@@ -16,7 +16,6 @@ import {
   ChevronDown,
   Eye,
 } from 'lucide-react';
-
 import { useAppSelector } from '@store/hooks';
 
 // Types
@@ -73,6 +72,7 @@ const KinshipNetwork: React.FC<KinshipNetworkProps> = ({
   onViewRequests
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
+  
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<FilterType>('all');
@@ -456,7 +456,7 @@ const KinshipNetwork: React.FC<KinshipNetworkProps> = ({
                     </div>
                   )}
 
-                  {/* Actions - ALWAYS STACKED */}
+                  {/* Actions */}
                   <div className="flex flex-col gap-1.5 md:gap-2">
                     <button
                       onClick={() => onViewProfile(connection.id)}
@@ -524,7 +524,7 @@ const KinshipNetwork: React.FC<KinshipNetworkProps> = ({
                     </div>
                   </div>
                   
-                  {/* Actions - ALWAYS STACKED */}
+                  {/* Actions */}
                   <div className="flex flex-col gap-1.5 md:gap-2">
                     <button
                       onClick={() => onViewProfile(connection.id)}

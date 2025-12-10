@@ -5,6 +5,7 @@ import themeReducer from './slices/themeSlice';
 import dashboardReducer from './slices/dashboardSlice';
 import authFlowReducer from './slices/authFlowSlice';
 import i18nReducer from './slices/i18nSlice';
+import syncReducer from './slices/syncSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     authFlow: authFlowReducer,
     i18n: i18nReducer,
+    sync: syncReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

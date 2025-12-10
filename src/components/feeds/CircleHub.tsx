@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Users, Grid, Shield } from 'lucide-react';
+import { MessageSquare, Users, Grid, Shield, UserCheck } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import VillageSquare from '@components/circle/VillageSquare';
 import MyCircle from '@components/circle/MyCircle';
 import Rooms from '@components/circle/Rooms';
 import CouncilAppeals from '@components/circle/CouncilAppeals';
+import { KinsfolkDirectory } from '@components/village/KinsfolkDirectory';
 
-type CircleSubType = 'square' | 'mycircle' | 'rooms' | 'council';
+type CircleSubType = 'square' | 'mycircle' | 'rooms' | 'council' | 'kinsfolk';
 
 export const CircleHub: React.FC = () => {
   const [activeCircleSubType, setActiveCircleSubType] = useState<CircleSubType>('square');
   const theme = useAppSelector((state) => state.theme.theme);
+  const village = useAppSelector((state) => state.user.village);
 
   const circleSubTabs = [
     { id: 'square' as const, label: 'Village Square', icon: MessageSquare },
     { id: 'mycircle' as const, label: 'My Circle', icon: Users },
     { id: 'rooms' as const, label: 'Rooms', icon: Grid },
+    { id: 'kinsfolk' as const, label: 'Kinsfolk', icon: UserCheck },
     { id: 'council' as const, label: 'Council', icon: Shield },
   ];
 
@@ -35,6 +38,7 @@ export const CircleHub: React.FC = () => {
           }
         `}
       </style>
+      
       {/* Sub-tabs inside Circle */}
       <div className={`flex mt-4 gap-2 overflow-x-auto pb-2 mb-4 ${
         theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
@@ -92,6 +96,31 @@ export const CircleHub: React.FC = () => {
             exit={{ opacity: 0 }}
           >
             <Rooms />
+          </motion.div>
+        )}
+        
+        {activeCircleSubType === 'kinsfolk' && (
+          <motion.div 
+            key="kinsfolk" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+          >
+            <KinsfolkDirectory
+              villageId={village?.villageId || ''}
+              onMemberClick={(memberId) => {
+                console.log('View member profile:', memberId);
+                // TODO: Navigate to member profile
+              }}
+              onMessageClick={(memberId) => {
+                console.log('Message member:', memberId);
+                // TODO: Open chat with member
+              }}
+              onConnectClick={(memberId) => {
+                console.log('Connect with member:', memberId);
+                // TODO: Send connection request
+              }}
+            />
           </motion.div>
         )}
         

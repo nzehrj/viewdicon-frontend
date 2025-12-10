@@ -25,17 +25,21 @@ import {
   AlertCircle,
   CheckCircle,
   Trash2,
+  CreditCard,
+  Award,
 } from 'lucide-react';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { toggleTheme } from '@store/slices/themeSlice';
 import { Button } from '@components/common/Button';
+import { AfroIDCard } from '@components/profile/AfroIDCard';
+import { CrestProgress } from '@components/profile/CrestProgress';
 
 interface SettingsPanelProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type SettingsTab = 'general' | 'profile' | 'privacy' | 'notifications' | 'account';
+type SettingsTab = 'general' | 'profile' | 'privacy' | 'notifications' | 'account' | 'crest';
 
 export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose }) => {
   const dispatch = useAppDispatch();
@@ -48,6 +52,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
   const [smsNotifications, setSmsNotifications] = useState(false);
   const [privateProfile, setPrivateProfile] = useState(false);
   const [showOnlineStatus, setShowOnlineStatus] = useState(true);
+  const [showAfroIDCard, setShowAfroIDCard] = useState(false);
 
   // Profile Settings States
   const [copiedAfroId, setCopiedAfroId] = useState(false);
@@ -135,6 +140,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
     { id: 'privacy' as SettingsTab, label: 'Privacy', icon: Lock },
     { id: 'notifications' as SettingsTab, label: 'Notifications', icon: Bell },
     { id: 'account' as SettingsTab, label: 'Account', icon: Shield },
+    { id: 'crest' as SettingsTab, label: 'Crest', icon: Award },
   ];
 
   return (
@@ -363,6 +369,16 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
                         <p className="text-base sm:text-lg font-mono font-bold mb-3 break-all">
                           {user?.afro_id || 'AFR-NG-G1-2024-XXXX'}
                         </p>
+                        
+                        
+                        <button
+                          onClick={() => setShowAfroIDCard(true)}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2 mb-3 rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
+                        >
+                          <CreditCard className="w-4 h-4" />
+                          <span className="text-sm font-semibold">View Full ID Card</span>
+                        </button>
+                        
                         <div className="flex items-start gap-2 p-2 rounded-lg bg-white/10">
                           <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                           <p className="text-xs">
@@ -952,6 +968,18 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
                     </div>
                   </motion.div>
                 )}
+
+                {activeTab === 'crest' && (
+                  <motion.div
+                    key="crest"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-6"
+                  >
+                    <CrestProgress showHistory={true} />
+                  </motion.div>
+                )}
               </AnimatePresence>
             </div>
 
@@ -999,6 +1027,36 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
                   <CheckCircle className="w-5 h-5" />
                   <span className="font-medium text-sm">Changes saved successfully!</span>
                 </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {showAfroIDCard && (
+                <>
+                  {/* Backdrop */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setShowAfroIDCard(false)}
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70]"
+                  />
+                  
+                  {/* Modal */}
+                  <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
+                    <motion.div
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.9, opacity: 0 }}
+                      className="w-full max-w-md pointer-events-auto"
+                    >
+                      <AfroIDCard 
+                        showActions={true}
+                        onClose={() => setShowAfroIDCard(false)}
+                      />
+                    </motion.div>
+                  </div>
+                </>
               )}
             </AnimatePresence>
           </motion.div>

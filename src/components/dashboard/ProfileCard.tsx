@@ -17,17 +17,21 @@ import {
   ChevronRight,
   Globe,
   FileText,
+  Calendar,
+  BarChart3,
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import { formatHandle } from '@/types/profile.types';
 import { VerificationBadge } from '@components/verification/VerificationBadge';
 import { NkisiShield } from '@components/verification/NkisiShield';
 import { ProfessionalBadge } from '@components/verification/ProfessionalBadge';
+import { EventCalendar } from '@components/events/EventCalendar';
+import { AnalyticsDashboard } from '@components/profile/AnalyticsDashboard';
 import type { VerificationTier, ShieldState, ProfessionalBadge as ProfessionalBadgeType } from '@/types/verification.types';
 
 interface ProfileCardProps {
   viewType: 'self' | 'stranger' | 'trusted';
-  isVisible?: boolean; // When profile tab is active
+  isVisible?: boolean;
   onEditProfile?: () => void;
   onNavigate?: (view: 'home' | 'profile' | 'tools' | 'business' | 'network' | 'security') => void;
   onLogout?: () => void;
@@ -54,6 +58,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 
   // Menu sidebar state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showEventCalendar, setShowEventCalendar] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   // Use publicProfile if available, fallback to legacy user data
   const displayName = publicProfile?.display_name || user?.full_name || user?.name || 'User';
@@ -87,7 +93,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const handleMenuItemClick = (action: () => void) => {
     action();
-    setIsMenuOpen(false); // Close menu after navigation
+    setIsMenuOpen(false);
   };
 
   // Menu items configuration
@@ -124,6 +130,16 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           label: 'My Tools', 
           action: () => onNavigate?.('tools'),
           active: currentView === 'tools'
+        },
+        { 
+          icon: BarChart3, 
+          label: 'Analytics', 
+          action: () => setShowAnalytics(true)
+        },
+        { 
+          icon: Calendar, 
+          label: 'Events', 
+          action: () => setShowEventCalendar(true)
         },
       ]
     },
@@ -165,7 +181,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         }`}
         style={{ 
           top: 0,  
-          paddingBottom: '88px'  // Space for bottom nav only
+          paddingBottom: '88px'
         }}
       >
         {/* ProfileCard Header with Menu Button */}
@@ -323,39 +339,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               </div>
             </div>
           </div>
-
-          {/* Analytics Section - No rounded corners, no border, no shadow */}
-          <div className={`p-6 sm:p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-            <h3 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              Analytics
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>248</p>
-                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Connections</p>
-              </div>
-              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>1.2k</p>
-                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Views</p>
-              </div>
-              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>42</p>
-                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Posts</p>
-              </div>
-              <div className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>89%</p>
-                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Engagement</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Menu Sidebar - Slides from Right (Mobile Responsive) - FULL SCREEN */}
+      {/* Menu Sidebar */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -364,7 +354,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
             />
 
-            {/* Menu Drawer - Mobile Responsive Width - ABOVE BOTTOM NAV */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -374,7 +363,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 theme === 'dark' ? 'bg-gray-900' : 'bg-white'
               } shadow-2xl`}
             >
-              {/* Menu Header */}
               <div className={`sticky top-0 z-10 flex items-center justify-between p-4 border-b ${
                 theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
               }`}>
@@ -386,13 +374,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   className={`p-2 rounded-lg transition-colors active:scale-95 ${
                     theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
                   }`}
-                  aria-label="Close menu"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
-              {/* Menu Content */}
               <div className="p-4 space-y-6">
                 {menuSections.map((section, sectionIdx) => (
                   <div key={sectionIdx}>
@@ -428,7 +414,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   </div>
                 ))}
 
-                {/* Logout Button */}
                 <div className={`pt-6 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
                   <button
                     onClick={() => handleMenuItemClick(() => onLogout?.())}
@@ -444,6 +429,101 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 </div>
               </div>
             </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Analytics Dashboard - Full Page Slide-In */}
+      <AnimatePresence>
+        {showAnalytics && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className={`fixed inset-0 z-[70] ${
+              theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+            }`}
+          >
+            {/* Header with Close Button */}
+            <div className={`flex items-center justify-between max-w-4xl mx-auto px-4 sm:px-6 py-4 border-b ${
+              theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
+            }`}>
+              <h2 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                Analytics
+              </h2>
+              <button
+                onClick={() => setShowAnalytics(false)}
+                className={`p-2 rounded-lg transition-colors ${
+                  theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+                }`}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Scrollable Content */}
+            <div className="h-[calc(100vh-73px)] overflow-y-auto">
+              <AnalyticsDashboard
+                userId={user?.id || undefined}
+                timeRange="30d"
+                onTimeRangeChange={(range) => console.log('Time range:', range)}
+                onExport={() => console.log('Export analytics')}
+                onRefresh={() => console.log('Refresh analytics')}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Event Calendar Modal */}
+      <AnimatePresence>
+        {showEventCalendar && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowEventCalendar(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70]"
+            />
+            
+            <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className={`w-full max-w-2xl max-h-[90vh] overflow-y-auto pointer-events-auto rounded-2xl ${
+                  theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+                }`}
+              >
+                {/* Modal Header */}
+                <div className={`sticky top-0 z-10 flex items-center justify-between p-4 border-b backdrop-blur-sm ${
+                  theme === 'dark' ? 'bg-gray-900/95 border-gray-800' : 'bg-white/95 border-gray-200'
+                }`}>
+                  <h2 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    Events Calendar
+                  </h2>
+                  <button
+                    onClick={() => setShowEventCalendar(false)}
+                    className={`p-2 rounded-lg ${
+                      theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                {/* Event Calendar Component */}
+                <div className="p-4">
+                  <EventCalendar
+                    onCreateEvent={() => console.log('Create event')}
+                    onEventClick={(id) => console.log('Event clicked:', id)}
+                    onRSVP={(id, status) => console.log('RSVP:', id, status)}
+                  />
+                </div>
+              </motion.div>
+            </div>
           </>
         )}
       </AnimatePresence>

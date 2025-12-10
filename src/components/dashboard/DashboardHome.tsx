@@ -26,6 +26,9 @@ import {
   Briefcase,
 } from 'lucide-react';
 
+// ✅ PHASE 9: Onboarding Tour
+import { OnboardingTour } from '@components/onboarding/OnboardingTour';
+
 // ✅ FEED COMPONENTS
 import { FeedComposer } from '@components/feeds/FeedComposer';
 import { UnifiedFeedView } from '@components/feeds/UnifiedFeedView';
@@ -80,6 +83,7 @@ import { RoleChangeRequest } from '@components/village/RoleChangeRequest';
 // ✅ CHAT Components - DEFAULT IMPORTS
 import MessageRequests from '@components/messaging/MessageRequests';
 import TrustedConnections from '@components/messaging/TrustedConnections';
+import { ChatInterface } from '@components/messaging/ChatInterface';
 
 // ✅ PHASE 6: Business Session Components - DEFAULT IMPORTS
 import BusinessSession from '@components/business/BusinessSession';
@@ -154,6 +158,9 @@ const DashboardHome: React.FC = () => {
 
   const [activeChatTab, setActiveChatTab] = useState<'requests' | 'trusted' | 'all'>('all');
 
+  // Onboarding Tour State
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
   // Jollof TV state
   const [isJollofTVVisible, setIsJollofTVVisible] = useState(false); 
 
@@ -213,6 +220,47 @@ const DashboardHome: React.FC = () => {
   // User States
   const [presenceMode, setPresenceMode] = useState<'spirit' | 'flesh'>('spirit');
   const [protectionMode, setProtectionMode] = useState<ProtectionMode | null>(null);
+
+  // Chat Interface State
+  const [selectedChat, setSelectedChat] = useState<{
+    contactId: string;
+    contactName: string;
+    contactAvatar?: string;
+    isOnline: boolean;
+  } | null>(null);
+
+  const [isChatFullScreen, setIsChatFullScreen] = useState(false);
+
+  // Mock conversations (add this too)
+  const mockConversations = [
+    {
+      id: 'user-1',
+      name: 'Chioma Adeyemi',
+      avatar: undefined,
+      lastMessage: 'Thanks for your help with the project!',
+      lastMessageTime: '2m ago',
+      unreadCount: 2,
+      isOnline: true
+    },
+    {
+      id: 'user-2',
+      name: 'Kwame Osei',
+      avatar: undefined,
+      lastMessage: 'See you at the meeting tomorrow',
+      lastMessageTime: '1h ago',
+      unreadCount: 0,
+      isOnline: false
+    },
+    {
+      id: 'user-3',
+      name: 'Amara Nwosu',
+      avatar: undefined,
+      lastMessage: 'That sounds great! Let me know when you\'re ready',
+      lastMessageTime: '3h ago',
+      unreadCount: 1,
+      isOnline: true
+    }
+  ];
   
   // Redux State
   const theme = useAppSelector((state) => state.theme.theme);
@@ -298,6 +346,21 @@ const DashboardHome: React.FC = () => {
       });
     };
   }, [lastScrollY]);
+
+  // Check onboarding status on mount
+  useEffect(() => {
+    if (user) {
+      const hasCompletedTour = localStorage.getItem('onboardingCompleted');
+      
+      // Show tour for new users who haven't completed it
+      if (!hasCompletedTour) {
+        // Small delay for better UX (1 second)
+        setTimeout(() => {
+          setShowOnboarding(true);
+        }, 1000);
+      }
+    }
+  }, [user]);
 
 
   // Sample connections for testing ConnectionCard 
@@ -402,6 +465,29 @@ const DashboardHome: React.FC = () => {
   const spiritAvatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=spirit';
   const fleshPhoto = 'https://api.dicebear.com/7.x/avataaars/svg?seed=real';
   const photoStatus: 'verified_real' | 'flagged_filtered' | 'rejected_ai' | 'not_uploaded' = 'verified_real';
+
+
+  // ====== ONBOARDING HANDLERS ======
+  const handleOnboardingComplete = async () => {
+    // Save to localStorage immediately
+    localStorage.setItem('onboardingCompleted', 'true');
+    
+    // Optional: Save to backend asynchronously
+    try {
+      // await api.post('/api/user/complete-onboarding');
+      console.log('Onboarding completed!');
+    } catch (error) {
+      console.error('Failed to save onboarding status:', error);
+    }
+    
+    // Close tour
+    setShowOnboarding(false);
+  };
+
+  const handleOnboardingSkip = () => {
+    localStorage.setItem('onboardingSkipped', 'true');
+    setShowOnboarding(false);
+  };
 
   // Event Handlers
   const handlePresenceToggle = (mode: 'spirit' | 'flesh') => {
@@ -528,12 +614,10 @@ const DashboardHome: React.FC = () => {
   };
 
   // Helper to check if view should be full-screen
-  const isFullScreenView = () => {
-    return activeView !== 'home';
-  };
+  const isFullScreenView = activeView !== 'home';
+
 
   // handler functions for connection card
-
   const handleViewConnectionProfile = (connectionId: string) => {
     console.log('Viewing connection profile:', connectionId);
     // TODO: Navigate to connection profile or open modal
@@ -683,7 +767,7 @@ const DashboardHome: React.FC = () => {
     <div className={`min-h-screen pb-20 mb-4 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Mobile Header */}
       <AnimatePresence>
-        {isNavVisible && activeBottomTab !== 'profile' && (activeView === 'home' || !isFullScreenView()) && (
+        {isNavVisible && activeBottomTab !== 'profile' && (activeView === 'home' || !isFullScreenView) && !isChatFullScreen && !isChatFullScreen && (
           <motion.header
             initial={{ y: -100 }}
             animate={{ y: 0 }}
@@ -736,7 +820,7 @@ const DashboardHome: React.FC = () => {
       <div className="flex">
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto max-w-4xl mx-auto mt-4" style={{ height: 'calc(100vh - 88px)' }}>
-          <div className={isFullScreenView() ? 'h-screen' : ''}>
+          <div className={isFullScreenView ? 'h-screen' : ''}>
             <AnimatePresence mode="wait">
               {/* HOME VIEW */}
               {activeView === 'home' && activeBottomTab === 'home' && (
@@ -1063,16 +1147,136 @@ const DashboardHome: React.FC = () => {
                   {/* Chat Tab Content */}
                   <AnimatePresence mode="wait">
                     {activeChatTab === 'all' && (
-                      <motion.div key="all-chats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <div className={`p-12 rounded-2xl text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                          <MessageCircle className={`w-16 h-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
-                          <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                            All Chats
-                          </h3>
-                          <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                            Your recent conversations will appear here (Coming Soon)
-                          </p>
-                        </div>
+                      <motion.div 
+                        key="all-chats" 
+                        initial={{ opacity: 0 }} 
+                        animate={{ opacity: 1 }} 
+                        exit={{ opacity: 0 }}
+                      >
+                        {selectedChat ? (
+                          <div className="fixed inset-0 z-[60] bg-white dark:bg-gray-900">
+                            <ChatInterface
+                              contactId={selectedChat.contactId}
+                              contactName={selectedChat.contactName}
+                              contactAvatar={selectedChat.contactAvatar}
+                              isOnline={selectedChat.isOnline}
+                              onBack={() => {
+                                setSelectedChat(null);
+                                setIsChatFullScreen(false);
+                              }}
+                              onVoiceCall={() => {
+                                console.log('Voice call:', selectedChat.contactId);
+                              }}
+                              onVideoCall={() => {
+                                console.log('Video call:', selectedChat.contactId);
+                              }}
+                              onViewProfile={() => {
+                                console.log('View profile:', selectedChat.contactId);
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          // Chat list UI
+                          <div className="space-y-3">
+                            <h3 className={`text-lg font-bold px-2 ${
+                              theme === 'dark' ? 'text-white' : 'text-gray-900'
+                            }`}>
+                              Recent Conversations
+                            </h3>
+                            
+                            {mockConversations.length > 0 ? (
+                              <div className="space-y-2">
+                                {mockConversations.map((conversation) => (
+                                  <button
+                                    key={conversation.id}
+                                    onClick={() => {
+                                      setSelectedChat({
+                                        contactId: conversation.id,
+                                        contactName: conversation.name,
+                                        contactAvatar: conversation.avatar,
+                                        isOnline: conversation.isOnline
+                                      });
+                                      setIsChatFullScreen(true); // 👈 SET FULL-SCREEN MODE
+                                    }}
+                                    className={`w-full p-4 rounded-xl flex items-center gap-3 transition-colors ${
+                                      theme === 'dark' 
+                                        ? 'bg-gray-800 hover:bg-gray-750' 
+                                        : 'bg-white hover:bg-gray-50 border border-gray-200'
+                                    }`}
+                                  >
+                                    {/* Chat list item content */}
+                                    <div className="relative flex-shrink-0">
+                                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                                        theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+                                      }`}>
+                                        {conversation.avatar ? (
+                                          <img 
+                                            src={conversation.avatar} 
+                                            alt={conversation.name}
+                                            className="w-full h-full rounded-full object-cover"
+                                          />
+                                        ) : (
+                                          <span className={`text-lg font-bold ${
+                                            theme === 'dark' ? 'text-white' : 'text-gray-900'
+                                          }`}>
+                                            {conversation.name.charAt(0)}
+                                          </span>
+                                        )}
+                                      </div>
+                                      {conversation.isOnline && (
+                                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full" />
+                                      )}
+                                    </div>
+                                    
+                                    <div className="flex-1 min-w-0 text-left">
+                                      <div className="flex items-center justify-between mb-1">
+                                        <p className={`font-semibold truncate ${
+                                          theme === 'dark' ? 'text-white' : 'text-gray-900'
+                                        }`}>
+                                          {conversation.name}
+                                        </p>
+                                        <span className={`text-xs flex-shrink-0 ml-2 ${
+                                          theme === 'dark' ? 'text-gray-500' : 'text-gray-500'
+                                        }`}>
+                                          {conversation.lastMessageTime}
+                                        </span>
+                                      </div>
+                                      <p className={`text-sm truncate ${
+                                        conversation.unreadCount > 0
+                                          ? theme === 'dark' ? 'text-white font-medium' : 'text-gray-900 font-medium'
+                                          : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                                      }`}>
+                                        {conversation.lastMessage}
+                                      </p>
+                                    </div>
+                                    
+                                    {conversation.unreadCount > 0 && (
+                                      <div className="flex-shrink-0 w-6 h-6 bg-purple-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                                        {conversation.unreadCount}
+                                      </div>
+                                    )}
+                                  </button>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className={`p-12 rounded-2xl text-center ${
+                                theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                              }`}>
+                                <MessageCircle className={`w-16 h-16 mx-auto mb-4 ${
+                                  theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+                                }`} />
+                                <h3 className={`text-xl font-bold mb-2 ${
+                                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                                }`}>
+                                  No conversations yet
+                                </h3>
+                                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                                  Start a conversation from your connections
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </motion.div>
                     )}
                     
@@ -2138,7 +2342,7 @@ const DashboardHome: React.FC = () => {
 
       {/* Bottom Navigation Bar */}
         <AnimatePresence>
-          {isNavVisible && (
+          {isNavVisible && activeBottomTab !== 'profile' && (activeView === 'home' || !isFullScreenView) && !isChatFullScreen && (
             <motion.nav
               initial={{ y: 100 }}
               animate={{ y: 0 }}
@@ -2309,6 +2513,13 @@ const DashboardHome: React.FC = () => {
             onSprayCowrie={handleSprayCowrie}
           />
         )}
+
+        {/* Onboarding Tour - Shows automatically on first login */}
+        <OnboardingTour
+          isOpen={showOnboarding}
+          onComplete={handleOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
           
     </div>
   );
