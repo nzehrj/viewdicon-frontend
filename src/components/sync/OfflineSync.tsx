@@ -10,7 +10,6 @@ import {
   Upload,
   MessageCircle,
   FileText,
-  Image as ImageIcon,
   AlertCircle,
   Trash2,
   Play,
@@ -62,7 +61,6 @@ export const OfflineSync: React.FC<OfflineSyncProps> = ({
   const theme = useAppSelector((state) => state.theme.theme);
   
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [isSyncing, setIsSyncing] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
   // Listen to online/offline events
