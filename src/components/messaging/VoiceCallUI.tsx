@@ -109,7 +109,7 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
   };
 
   return (
-    <div className={`fixed inset-0 z-[80] ${
+    <div className={`fixed max-w-4xl mx-auto inset-0 z-[80] ${
       theme === 'dark' ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-gray-100'
     }`}>
       {/* Professional Background Pattern with Viewdicon Logos */}

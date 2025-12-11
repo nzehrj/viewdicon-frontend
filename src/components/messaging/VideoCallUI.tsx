@@ -200,7 +200,7 @@ export const VideoCallUI: React.FC<VideoCallUIProps> = ({
 
   return (
     <div 
-      className={`fixed inset-0 z-50 bg-black flex items-center justify-center font-sans`}
+      className={`fixed max-w-4xl mx-auto inset-0 z-50 bg-black flex items-center justify-center font-sans`}
       onClick={() => callType === 'active' && setShowControls(true)}
     >
       {/* 1. Local User's Camera Feed (Full Screen Background) */}
