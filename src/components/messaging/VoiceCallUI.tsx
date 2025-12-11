@@ -37,7 +37,7 @@ interface VoiceCallUIProps {
  * 
  * Audio call interface with real-time call controls
  * Supports incoming, outgoing, and active call states
- * Mobile-first design with large touch targets
+ * Mobile-first design matching VideoCallUI style
  * 
  * Location: src/components/messaging/VoiceCallUI.tsx
  */
@@ -204,7 +204,7 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
 
         {/* Call Info - Professional Center Section */}
         <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6">
-          {/* Enhanced Avatar with Glassmorphism */}
+          {/* Enhanced Avatar - Static, No Layout Shifts */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -212,29 +212,7 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
             className="mb-6 sm:mb-10"
           >
             <div className="relative">
-              {/* Pulse rings for active call */}
-              {callType === 'active' && (
-                <>
-                  <motion.div
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0, 0.4] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className={`absolute inset-0 rounded-full ${
-                      theme === 'dark' ? 'bg-purple-600' : 'bg-purple-500'
-                    }`}
-                    style={{ transform: 'scale(1.2)' }}
-                  />
-                  <motion.div
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                    className={`absolute inset-0 rounded-full ${
-                      theme === 'dark' ? 'bg-purple-600' : 'bg-purple-500'
-                    }`}
-                    style={{ transform: 'scale(1.4)' }}
-                  />
-                </>
-              )}
-
-              {/* Main Avatar Container with Glassmorphism - Responsive */}
+              {/* Main Avatar Container - Fixed Size */}
               <div className={`relative w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full ${
                 theme === 'dark' 
                   ? 'bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-gray-700/50' 
@@ -253,17 +231,20 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
                     {contactName.charAt(0)}
                   </span>
                 )}
+
+                {/* Active call indicator - subtle inner glow, no animation */}
+                {callType === 'active' && (
+                  <div className={`absolute inset-0 rounded-full border-2 ${
+                    theme === 'dark' ? 'border-green-500' : 'border-green-600'
+                  } opacity-80`} />
+                )}
               </div>
 
-              {/* Call type indicator badge */}
+              {/* Call type indicator badge - no animation */}
               {callType === 'incoming' && (
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-green-500 text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-semibold shadow-lg"
-                >
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-green-500 text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-semibold shadow-lg">
                   Incoming
-                </motion.div>
+                </div>
               )}
             </div>
           </motion.div>
@@ -286,15 +267,10 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
             </div>
           )}
 
-          {/* Call Status with Icon - Responsive */}
-          <motion.div
-            key={getCallStatus()}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full ${
-              theme === 'dark' ? 'bg-gray-800/40' : 'bg-white/40'
-            } backdrop-blur-md`}
-          >
+          {/* Call Status - Static, No Layout Shifts */}
+          <div className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full ${
+            theme === 'dark' ? 'bg-gray-800/40' : 'bg-white/40'
+          } backdrop-blur-md`}>
             <Phone className={`w-3 h-3 sm:w-4 sm:h-4 ${
               theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
             }`} />
@@ -303,11 +279,11 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
             }`}>
               {getCallStatus()}
             </p>
-          </motion.div>
+          </div>
 
-          {/* Enhanced Audio Wave Animation - Responsive */}
+          {/* Audio Wave Animation - Fixed Height Container */}
           {callType === 'active' && !isMuted && (
-            <div className="flex items-center gap-1 sm:gap-1.5 mt-6 sm:mt-8">
+            <div className="h-8 flex items-center justify-center gap-1 sm:gap-1.5 mt-6 sm:mt-8">
               {[...Array(5)].map((_, i) => (
                 <motion.div
                   key={i}
@@ -328,123 +304,114 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
               ))}
             </div>
           )}
+          {/* Placeholder when not showing wave - maintains layout */}
+          {(callType !== 'active' || isMuted) && (
+            <div className="h-8 mt-6 sm:mt-8" />
+          )}
         </div>
 
-        {/* Professional Controls Section - STATIC, NO ANIMATIONS */}
+        {/* WhatsApp-Style Controls Section */}
         <div className={`px-4 sm:px-6 pb-8 sm:pb-10 pt-4 sm:pt-6 ${
           theme === 'dark' ? 'bg-gray-900/30' : 'bg-white/30'
         } backdrop-blur-xl border-t ${
           theme === 'dark' ? 'border-gray-800/50' : 'border-gray-200/50'
         }`}>
           {callType === 'incoming' ? (
-            // Incoming call actions - Static buttons
-            <div className="flex items-center justify-center gap-4 sm:gap-6">
-              <button
-                onClick={onDecline}
-                className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 flex items-center justify-center shadow-2xl shadow-red-500/50 transition-colors active:scale-95"
+            // Incoming call actions - WhatsApp style horizontal
+            <div className="flex items-center justify-center gap-12 sm:gap-16">
+              <ActionButton 
+                label="Decline" 
+                onClick={onDecline} 
+                color="bg-red-500 hover:bg-red-600"
+                size="large"
               >
-                <PhoneOff className="w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-white" />
-              </button>
+                <PhoneOff className="w-7 h-7 sm:w-9 sm:h-9 text-white" />
+              </ActionButton>
 
-              <button
-                onClick={onAccept}
-                className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 flex items-center justify-center shadow-2xl shadow-green-500/50 transition-colors active:scale-95"
+              <ActionButton 
+                label="Accept" 
+                onClick={onAccept} 
+                color="bg-green-500 hover:bg-green-600"
+                size="large"
               >
-                <Phone className="w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-white" />
-              </button>
+                <Phone className="w-7 h-7 sm:w-9 sm:h-9 text-white" />
+              </ActionButton>
             </div>
           ) : (
-            // Active/Outgoing call controls - Static buttons
+            // Active/Outgoing call controls - WhatsApp grid layout
             <>
-              {/* Primary Controls - NO MOTION ANIMATIONS */}
-              <div className="flex items-center justify-center gap-3 sm:gap-5 mb-4 sm:mb-6">
+              {/* Control Icons Grid - WhatsApp 4-column Style */}
+              <div className="grid grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 {/* Mute Button */}
-                <button
+                <ActionButton 
+                  label={isMuted ? "Unmute" : "Mute"} 
                   onClick={handleMuteToggle}
-                  className={`relative w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center transition-colors active:scale-95 ${
-                    isMuted
-                      ? 'bg-gradient-to-br from-red-500 to-red-600 shadow-xl shadow-red-500/40'
-                      : theme === 'dark'
-                      ? 'bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50'
-                      : 'bg-white/60 hover:bg-gray-50/60 border border-gray-300/50'
-                  } backdrop-blur-xl`}
+                  isActive={isMuted}
+                  whatsappStyle
                 >
                   {isMuted ? (
-                    <MicOff className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                    <MicOff className="w-6 h-6 sm:w-7 sm:h-7" />
                   ) : (
-                    <Mic className={`w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`} />
+                    <Mic className="w-6 h-6 sm:w-7 sm:h-7" />
                   )}
-                </button>
+                </ActionButton>
 
-                {/* End Call Button - Larger & Prominent */}
-                <button
-                  onClick={onEnd}
-                  className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 flex items-center justify-center shadow-2xl shadow-red-500/50 transition-colors active:scale-95"
-                >
-                  <PhoneOff className="w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-white" />
-                </button>
+                {/* Video Button */}
+                {onUpgradeToVideo && (
+                  <ActionButton 
+                    label="Video" 
+                    onClick={onUpgradeToVideo}
+                    whatsappStyle
+                  >
+                    <Video className="w-6 h-6 sm:w-7 sm:h-7" />
+                  </ActionButton>
+                )}
 
                 {/* Speaker Button */}
-                <button
+                <ActionButton 
+                  label="Speaker" 
                   onClick={handleSpeakerToggle}
-                  className={`relative w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center transition-colors active:scale-95 ${
-                    isSpeakerOn
-                      ? 'bg-gradient-to-br from-purple-500 to-purple-600 shadow-xl shadow-purple-500/40'
-                      : theme === 'dark'
-                      ? 'bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50'
-                      : 'bg-white/60 hover:bg-gray-50/60 border border-gray-300/50'
-                  } backdrop-blur-xl`}
+                  isActive={isSpeakerOn}
+                  whatsappStyle
                 >
                   {isSpeakerOn ? (
-                    <Volume2 className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                    <Volume2 className="w-6 h-6 sm:w-7 sm:h-7" />
                   ) : (
-                    <VolumeX className={`w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`} />
+                    <VolumeX className="w-6 h-6 sm:w-7 sm:h-7" />
                   )}
-                </button>
+                </ActionButton>
+
+                {/* Add Participant or Message Button */}
+                {onAddParticipant ? (
+                  <ActionButton 
+                    label="Add" 
+                    onClick={onAddParticipant}
+                    whatsappStyle
+                  >
+                    <UserPlus className="w-6 h-6 sm:w-7 sm:h-7" />
+                  </ActionButton>
+                ) : onSendMessage && (
+                  <ActionButton 
+                    label="Message" 
+                    onClick={onSendMessage}
+                    whatsappStyle
+                  >
+                    <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
+                  </ActionButton>
+                )}
               </div>
 
-              {/* Secondary Controls - Simple Static Buttons */}
-              {callType === 'active' && (
-                <div className={`flex items-center justify-center gap-6 sm:gap-8 pt-3 sm:pt-4 border-t ${
-                  theme === 'dark' ? 'border-gray-800/30' : 'border-gray-200/30'
-                }`}>
-                  {onUpgradeToVideo && (
-                    <button
-                      onClick={onUpgradeToVideo}
-                      className={`flex flex-col items-center gap-1 sm:gap-2 p-2 rounded-xl transition-colors active:scale-95 ${
-                        theme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-gray-800/40' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/40'
-                      }`}
-                    >
-                      <Video className="w-5 h-5 sm:w-6 sm:h-6" />
-                      <span className="text-xs font-medium">Video</span>
-                    </button>
-                  )}
-
-                  {onAddParticipant && (
-                    <button
-                      onClick={onAddParticipant}
-                      className={`flex flex-col items-center gap-1 sm:gap-2 p-2 rounded-xl transition-colors active:scale-95 ${
-                        theme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-gray-800/40' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/40'
-                      }`}
-                    >
-                      <UserPlus className="w-5 h-5 sm:w-6 sm:h-6" />
-                      <span className="text-xs font-medium">Add</span>
-                    </button>
-                  )}
-
-                  {onSendMessage && (
-                    <button
-                      onClick={onSendMessage}
-                      className={`flex flex-col items-center gap-1 sm:gap-2 p-2 rounded-xl transition-colors active:scale-95 ${
-                        theme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-gray-800/40' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/40'
-                      }`}
-                    >
-                      <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
-                      <span className="text-xs font-medium">Message</span>
-                    </button>
-                  )}
-                </div>
-              )}
+              {/* End Call Button - WhatsApp Style Centered Below */}
+              <div className="flex justify-center">
+                <ActionButton 
+                  label="End Call" 
+                  onClick={onEnd} 
+                  color="bg-red-500 hover:bg-red-600"
+                  size="large"
+                >
+                  <PhoneOff className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                </ActionButton>
+              </div>
             </>
           )}
         </div>
@@ -453,18 +420,12 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
         <AnimatePresence>
           {showMoreOptions && (
             <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+              <div
                 onClick={() => setShowMoreOptions(false)}
                 className="fixed inset-0 bg-black/50 z-[90]"
               />
 
-              <motion.div
-                initial={{ y: '100%' }}
-                animate={{ y: 0 }}
-                exit={{ y: '100%' }}
+              <div
                 className={`fixed bottom-0 left-0 right-0 z-[100] rounded-t-2xl p-6 ${
                   theme === 'dark' ? 'bg-gray-800' : 'bg-white'
                 }`}
@@ -501,11 +462,69 @@ export const VoiceCallUI: React.FC<VoiceCallUIProps> = ({
                     </span>
                   </button>
                 </div>
-              </motion.div>
+              </div>
             </>
           )}
         </AnimatePresence>
       </div>
+    </div>
+  );
+};
+
+// Helper component for action buttons - WhatsApp Style
+const ActionButton: React.FC<{
+  label: string;
+  onClick?: () => void;
+  color?: string;
+  isActive?: boolean;
+  size?: 'normal' | 'large';
+  whatsappStyle?: boolean;
+  children: React.ReactNode;
+}> = ({ label, onClick, color, isActive, size = 'normal', whatsappStyle, children }) => {
+  const theme = useAppSelector((state) => state.theme.theme);
+  
+  // WhatsApp-style button
+  if (whatsappStyle) {
+    return (
+      <div className="flex flex-col items-center gap-2">
+        <button
+          onClick={onClick}
+          className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all active:scale-95 shadow-lg ${
+            isActive
+              ? 'bg-white text-gray-900'
+              : theme === 'dark'
+              ? 'bg-gray-800/60 text-white hover:bg-gray-700/60'
+              : 'bg-white/60 text-gray-900 hover:bg-gray-50/60'
+          } backdrop-blur-xl`}
+        >
+          {children}
+        </button>
+        <span className={`text-xs font-medium ${
+          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+        }`}>
+          {label}
+        </span>
+      </div>
+    );
+  }
+  
+  // Standard button (for incoming call actions)
+  const buttonSize = size === 'large' ? 'w-16 h-16 sm:w-20 sm:h-20' : 'w-14 h-14 sm:w-16 sm:h-16';
+  const buttonColor = color || 'bg-white/20 backdrop-blur-sm';
+  
+  return (
+    <div className="flex flex-col items-center gap-2 sm:gap-3">
+      <button
+        onClick={onClick}
+        className={`${buttonSize} rounded-full flex items-center justify-center transition-colors shadow-lg active:scale-95 ${buttonColor}`}
+      >
+        {children}
+      </button>
+      <span className={`text-xs sm:text-sm font-medium ${
+        theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+      }`}>
+        {label}
+      </span>
     </div>
   );
 };
