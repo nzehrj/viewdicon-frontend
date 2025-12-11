@@ -780,7 +780,7 @@ const DashboardHome: React.FC = () => {
             className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-none`}
           >
             {/* Main Header Content */}
-            <div className="flex items-center justify-between px-4 py-4 max-w-4xl mx-auto">
+            <div className="flex items-center justify-between px-1 py-4 max-w-4xl mx-auto">
               <div className="flex items-center gap-3">
                 <div 
                   className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -1100,7 +1100,7 @@ const DashboardHome: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }} 
                   animate={{ opacity: 1, y: 0 }} 
                   exit={{ opacity: 0, y: -20 }}
-                  className="space-y-6 p-4"
+                  className="space-y-6 p-1"
                 >
                   <div>
                     <h2 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>

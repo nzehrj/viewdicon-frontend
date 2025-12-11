@@ -306,7 +306,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   return (
     <div className={`flex flex-col mx-auto max-w-4xl h-full ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {/* Header */}
-      <div className={`flex items-center justify-between px-4 py-3 border-b ${
+      <div className={`flex items-center justify-between px-1 py-3 border-b ${
         theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
       }`}>
         <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -383,7 +383,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-1 py-4 space-y-4">
         {Object.keys(groupedMessages).map((dateKey) => (
           <div key={dateKey}>
             {/* Date Separator */}
