@@ -27,21 +27,25 @@ import {
   Trash2,
   CreditCard,
   Award,
+  RefreshCw,
 } from 'lucide-react';
+
 import { useAppSelector, useAppDispatch } from '@store/hooks';
 import { toggleTheme } from '@store/slices/themeSlice';
 import { Button } from '@components/common/Button';
 import { AfroIDCard } from '@components/profile/AfroIDCard';
 import { CrestProgress } from '@components/profile/CrestProgress';
+import { VillageChangeSection } from '@components/home/VillageChangeSection'; 
 
 interface SettingsPanelProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenVillageSelector?: () => void;
 }
 
-type SettingsTab = 'general' | 'profile' | 'privacy' | 'notifications' | 'account' | 'crest';
+type SettingsTab = 'general' | 'profile' | 'privacy' | 'notifications' | 'account' | 'crest' | 'village';
 
-export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose }) => {
+export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose, onOpenVillageSelector }) => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
   const user = useAppSelector((state) => state.user.user);
@@ -135,13 +139,14 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
   };
 
   const tabs = [
-    { id: 'general' as SettingsTab, label: 'General', icon: SettingsIcon },
-    { id: 'profile' as SettingsTab, label: 'Profile', icon: User },
-    { id: 'privacy' as SettingsTab, label: 'Privacy', icon: Lock },
-    { id: 'notifications' as SettingsTab, label: 'Notifications', icon: Bell },
-    { id: 'account' as SettingsTab, label: 'Account', icon: Shield },
-    { id: 'crest' as SettingsTab, label: 'Crest', icon: Award },
-  ];
+  { id: 'general' as SettingsTab, label: 'General', icon: SettingsIcon },
+  { id: 'profile' as SettingsTab, label: 'Profile', icon: User },
+  { id: 'privacy' as SettingsTab, label: 'Privacy', icon: Lock },
+  { id: 'notifications' as SettingsTab, label: 'Notifications', icon: Bell },
+  { id: 'account' as SettingsTab, label: 'Account', icon: Shield },
+  { id: 'crest' as SettingsTab, label: 'Crest', icon: Award },
+  { id: 'village' as SettingsTab, label: 'Village', icon: RefreshCw }, 
+];
 
   return (
     <AnimatePresence>
@@ -978,6 +983,25 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
                     className="space-y-6"
                   >
                     <CrestProgress showHistory={true} />
+                  </motion.div>
+                )}
+
+                {activeTab === 'village' && (
+                  <motion.div
+                    key="village"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-6"
+                  >
+                    <VillageChangeSection 
+                      onOpenVillageSelector={() => {
+                        if (onOpenVillageSelector) {
+                          onOpenVillageSelector();
+                          onClose(); // Close settings panel when opening village selector
+                        }
+                      }}
+                    />
                   </motion.div>
                 )}
               </AnimatePresence>

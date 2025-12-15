@@ -12,7 +12,6 @@ import {
   Shield,
   Settings,
   LogOut,
-  Briefcase,
   Link as LinkIcon,
   ChevronRight,
   Globe,
@@ -96,7 +95,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     setIsMenuOpen(false);
   };
 
-  // Menu items configuration
+  // Menu items configuration - Business removed (now in Chat → Business tab)
   const menuSections = [
     {
       title: 'Navigate',
@@ -106,12 +105,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           label: 'Home', 
           action: () => onNavigate?.('home'),
           active: currentView === 'home'
-        },
-        { 
-          icon: Briefcase, 
-          label: 'Business', 
-          action: () => onNavigate?.('business'),
-          active: currentView === 'business'
         },
         { 
           icon: LinkIcon, 
@@ -351,7 +344,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[80]"
             />
 
             <motion.div
@@ -359,7 +352,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className={`fixed right-0 top-0 bottom-0 w-[85vw] sm:w-80 md:w-96 max-w-md z-[60] overflow-y-auto ${
+              className={`fixed right-0 top-0 bottom-0 w-[85vw] sm:w-80 md:w-96 max-w-md z-[80] overflow-y-auto ${
                 theme === 'dark' ? 'bg-gray-900' : 'bg-white'
               } shadow-2xl`}
             >
@@ -441,7 +434,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className={`fixed inset-0 z-[70] ${
+            className={`fixed inset-0 z-[90] ${
               theme === 'dark' ? 'bg-gray-900' : 'bg-white'
             }`}
           >
@@ -485,10 +478,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowEventCalendar(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70]"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90]"
             />
             
-            <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
+            <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 pointer-events-none">
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}

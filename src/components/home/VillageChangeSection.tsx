@@ -5,32 +5,42 @@ import * as Icons from 'lucide-react';
 import { Button } from '@components/common/Button';
 
 // Import village configs
-import healthcareConfig from '../../config/villages/healthcare.json';
-import farmingConfig from '../../config/villages/farming.json';
-import constructionConfig from '../../config/villages/construction.json';
+import agricultureConfig from '../../config/villages/agriculture.json';
 import businessConfig from '../../config/villages/business.json';
+import constructionConfig from '../../config/villages/construction.json';
+import craftsConfig from '../../config/villages/crafts.json';
 import creativeConfig from '../../config/villages/creative.json';
 import educationConfig from '../../config/villages/education.json';
-import governmentConfig from '../../config/villages/government.json';
-import transportConfig from '../../config/villages/transport.json';
-import technologyConfig from '../../config/villages/technology.json';
-import hospitalityConfig from '../../config/villages/hospitality.json';
 import financeConfig from '../../config/villages/finance.json';
-import environmentConfig from '../../config/villages/environment.json';
+import governanceConfig from '../../config/villages/governance.json';
+import governmentConfig from '../../config/villages/government.json';
+import healthcareConfig from '../../config/villages/healthcare.json';
+import gettingStartedConfig from '../../config/villages/getting_started.json';
+import hospitalityConfig from '../../config/villages/hospitality.json';
+import mediaConfig from '../../config/villages/media.json';
+import securityConfig from '../../config/villages/security.json';
+import spiritualConfig from '../../config/villages/spiritual.json';
+import technologyConfig from '../../config/villages/technology.json';
+import transportConfig from '../../config/villages/transport.json';
 
 const villageConfigs: Record<string, any> = {
-  healthcare: healthcareConfig,
-  farming: farmingConfig,
-  construction: constructionConfig,
+  agriculture: agricultureConfig,
   business: businessConfig,
+  construction: constructionConfig,
+  crafts: craftsConfig,
   creative: creativeConfig,
   education: educationConfig,
-  government: governmentConfig,
-  transport: transportConfig,
-  technology: technologyConfig,
-  hospitality: hospitalityConfig,
   finance: financeConfig,
-  environment: environmentConfig,
+  governance: governanceConfig,
+  government: governmentConfig,
+  healthcare: healthcareConfig,
+  getting_started: gettingStartedConfig,
+  hospitality: hospitalityConfig,
+  media: mediaConfig,
+  security: securityConfig,
+  spiritual: spiritualConfig,
+  technology: technologyConfig,
+  transport: transportConfig,
 };
 
 interface VillageChangeSectionProps {
