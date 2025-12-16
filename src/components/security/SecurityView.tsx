@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Eye, CreditCard, Monitor, Activity } from 'lucide-react';
+import { Shield, Eye, CreditCard, Monitor, Activity, ArrowLeft } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 
 // Security Components
@@ -21,11 +21,13 @@ interface SecurityViewProps {
   userId?: string | null; 
   protectionMode?: ProtectionMode | null;
   onRequestCircle?: () => void;
+  onBack?: () => void; // ✅ NEW: Back button handler
 }
 
 export const SecurityView: React.FC<SecurityViewProps> = ({
   userId,
-  protectionMode
+  protectionMode,
+  onBack, // ✅ NEW: Receive back handler
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
   const user = useAppSelector((state) => state.user.user);
@@ -123,12 +125,30 @@ export const SecurityView: React.FC<SecurityViewProps> = ({
 
   return (
     <div className="space-y-4 sm:space-y-6 p-2 sm:p-4">
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+      {/* Header with Back Button */}
+      <div className="flex items-center gap-3 mb-6">
+        {/* ✅ NEW: Back Button */}
+        {onBack && (
+          <button
+            onClick={() => {
+              console.log('🔙 Going back from Security view');
+              onBack();
+            }}
+            className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
+              theme === 'dark' 
+                ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+            }`}
+            aria-label="Back to profile"
+          >
+            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+        )}
+
+        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center flex-shrink-0">
           <Shield className="w-7 h-7 text-white" />
         </div>
-        <div>
+        <div className="flex-1 min-w-0">
           <h2 className={`text-2xl sm:text-3xl font-bold ${
             theme === 'dark' ? 'text-white' : 'text-gray-900'
           }`}>

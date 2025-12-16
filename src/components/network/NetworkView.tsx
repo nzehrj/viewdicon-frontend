@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Heart, Activity } from 'lucide-react';
+import { Users, Heart, Activity, ArrowLeft } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 
 // Network Components
@@ -13,12 +13,14 @@ type NetworkTab = 'kinship' | 'requests' | 'stats';
 
 interface NetworkViewProps {
   villageName?: string;
-  userId?: string | null; 
+  userId?: string | null;
+  onBack?: () => void;
 }
 
 export const NetworkView: React.FC<NetworkViewProps> = ({ 
   villageName = 'Village',
-  userId
+  userId,
+  onBack,
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
   const user = useAppSelector((state) => state.user.user);
@@ -26,6 +28,9 @@ export const NetworkView: React.FC<NetworkViewProps> = ({
   const [activeNetworkTab, setActiveNetworkTab] = useState<NetworkTab>('kinship');
 
   const currentUserId = userId || user?.id || 'user-123';
+
+  // Debug logging
+  console.log('NetworkView rendered - onBack:', !!onBack);
 
   // Sample connections for testing ConnectionCard
   const sampleConnections = [
@@ -107,33 +112,56 @@ export const NetworkView: React.FC<NetworkViewProps> = ({
   // Event Handlers
   const handleViewConnectionProfile = (connectionId: string) => {
     console.log('Viewing connection profile:', connectionId);
-    // TODO: Navigate to connection profile or open modal
   };
 
   const handleSendConnectionMessage = (connectionId: string) => {
     console.log('Sending message to connection:', connectionId);
-    // TODO: Open chat with connection
   };
 
   const handleRemoveConnection = (connectionId: string) => {
     console.log('Removing connection:', connectionId);
-    // TODO: Show confirmation dialog and remove connection
   };
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Header */}
+      {/* Header with Back Button - ALWAYS VISIBLE */}
       <div className="p-2 md:p-4">
-        <h2 className={`text-xl md:text-3xl font-bold mb-1 md:mb-2 ${
-          theme === 'dark' ? 'text-white' : 'text-gray-900'
-        }`}>
-          Kinship Network
-        </h2>
-        <p className={`text-xs md:text-sm ${
-          theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-        }`}>
-          Your professional connections and community
-        </p>
+        <div className="flex items-center gap-2 md:gap-3 mb-2">
+          {/* Back Button - NO CONDITIONAL */}
+          <button
+            onClick={() => {
+              console.log('🔥 Back button clicked!');
+              if (onBack) {
+                console.log('✅ Calling onBack handler');
+                onBack();
+              } else {
+                console.warn('⚠️ No onBack handler provided');
+              }
+            }}
+            className={`p-1.5 md:p-2 rounded-lg transition-colors flex-shrink-0 ${
+              theme === 'dark' 
+                ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+            }`}
+            aria-label="Back to profile"
+          >
+            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+          
+          {/* Title */}
+          <div className="flex-1 min-w-0">
+            <h2 className={`text-xl md:text-3xl font-bold mb-0.5 md:mb-1 ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              Kinship Network
+            </h2>
+            <p className={`text-xs md:text-sm ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Your professional connections and community
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Network Tabs */}

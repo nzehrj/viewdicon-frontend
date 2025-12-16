@@ -15,6 +15,7 @@ import {
   Briefcase,
   ChevronDown,
   Eye,
+  ArrowLeft,
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 
@@ -60,6 +61,7 @@ interface KinshipNetworkProps {
   onViewProfile: (connectionId: string) => void;
   onSendMessage: (connectionId: string) => void;
   onViewRequests: () => void;
+  onBack?: () => void; // ✅ NEW: Back navigation to profile
 }
 
 const KinshipNetwork: React.FC<KinshipNetworkProps> = ({
@@ -69,7 +71,8 @@ const KinshipNetwork: React.FC<KinshipNetworkProps> = ({
   isLoading,
   onViewProfile,
   onSendMessage,
-  onViewRequests
+  onViewRequests,
+  onBack, // ✅ NEW: Receive back handler
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
   
@@ -169,14 +172,26 @@ const KinshipNetwork: React.FC<KinshipNetworkProps> = ({
         }
       `}</style>
 
-      {/* Header */}
+      {/* Header with Back Button */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-2 md:p-6 text-white border-b border-blue-800">
         <div className="flex items-center justify-between gap-2 mb-2">
-          <div>
-            <h2 className="text-base md:text-2xl font-bold">Kinship Network</h2>
-            <p className="text-xs md:text-sm text-blue-100 mt-0.5">
-              Your professional connections
-            </p>
+          <div className="flex items-center gap-2">
+            {/* ✅ NEW: Back Button */}
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                aria-label="Back to profile"
+              >
+                <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+            )}
+            <div>
+              <h2 className="text-base md:text-2xl font-bold">Kinship Network</h2>
+              <p className="text-xs md:text-sm text-blue-100 mt-0.5">
+                Your professional connections
+              </p>
+            </div>
           </div>
           {pendingRequests > 0 && (
             <button

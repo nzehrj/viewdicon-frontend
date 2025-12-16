@@ -622,26 +622,13 @@ const DashboardHome: React.FC = () => {
               )}
 
               {/* ✅ PROFILE BOTTOM TAB VIEW - NEW! */}
-              {activeBottomTab === 'profile' && (
+              {activeBottomTab === 'profile' && activeView === 'home' && (
                 <ProfileView
                   onEditProfile={() => console.log('Edit profile')}
                   onNavigate={(view) => {
+                    console.log('ProfileCard navigating to:', view);
                     setActiveView(view);
-                    setActiveBottomTab('home');
-                  }}
-                  onLogout={handleLogout}
-                  onOpenSettings={() => setIsSettingsOpen(true)}
-                  currentView="profile"
-                />
-              )}
-
-              {/* PROFILE VIEW */}
-              {activeView === 'profile' && (
-                <ProfileView
-                  onEditProfile={() => console.log('Edit profile')}
-                  onNavigate={(view) => {
-                    setActiveView(view);
-                    setActiveBottomTab('home');
+                    // ✅ DON'T change activeBottomTab - keep it as 'profile'!
                   }}
                   onLogout={handleLogout}
                   onOpenSettings={() => setIsSettingsOpen(true)}
@@ -649,8 +636,9 @@ const DashboardHome: React.FC = () => {
                 />
               )}
 
+              
               {/* ✅ PHASE 7: NETWORK VIEW - Uses NetworkView Component */}
-              {activeView === 'network' && (
+              {activeView === 'network' && activeBottomTab === 'profile' && (
                 <motion.div 
                   key="network" 
                   initial={{ opacity: 0, y: 20 }} 
@@ -660,12 +648,17 @@ const DashboardHome: React.FC = () => {
                   <NetworkView 
                     villageName={villageName}
                     userId={user?.id}
+                    onBack={() => {
+                      console.log('🔙 Going back to ProfileCard from Network');
+                      setActiveView('home');
+                      // activeBottomTab stays 'profile'
+                    }}
                   />
                 </motion.div>
               )}
 
               {/* ✅ PHASE 8: SECURITY VIEW - Uses SecurityView Component */}
-              {activeView === 'security' && (
+              {activeView === 'security' && activeBottomTab === 'profile' && (
                 <motion.div 
                   key="security" 
                   initial={{ opacity: 0, y: 20 }} 
@@ -677,18 +670,26 @@ const DashboardHome: React.FC = () => {
                     userId={user?.id}
                     protectionMode={protectionMode}
                     onRequestCircle={() => console.log('Request circle from security view')}
+                    onBack={() => {
+                      console.log('🔙 Going back to ProfileCard from Security');
+                      setActiveView('home');
+                    }}
                   />
                 </motion.div>
               )}
 
               {/* TOOLS VIEW */}
-              {activeView === 'tools' && (
-                <ToolsView
-                  tools={tools}
-                  roleName={roleName}
-                  villageColor={villageColor}
-                />
-              )}
+              {activeView === 'tools' && activeBottomTab === 'profile' && (
+              <ToolsView
+                tools={tools}
+                roleName={roleName}
+                villageColor={villageColor}
+                onBack={() => {
+                  console.log('🔙 Going back to ProfileCard from Tools');
+                  setActiveView('home');
+                }}
+              />
+            )}
             </AnimatePresence>
           </div>
         </main>

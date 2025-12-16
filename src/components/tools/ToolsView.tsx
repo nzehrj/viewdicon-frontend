@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Grid } from 'lucide-react';
+import { Grid, ArrowLeft } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import * as Icons from 'lucide-react';
 
@@ -16,12 +16,14 @@ interface ToolsViewProps {
   tools?: Tool[];
   roleName?: string;
   villageColor?: string;
+  onBack?: () => void; // ✅ NEW: Back button handler
 }
 
 export const ToolsView: React.FC<ToolsViewProps> = ({
   tools = [],
   roleName = 'User',
-  villageColor = '#10b981'
+  villageColor = '#10b981',
+  onBack, // ✅ NEW: Receive back handler
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
 
@@ -40,16 +42,36 @@ export const ToolsView: React.FC<ToolsViewProps> = ({
       exit={{ opacity: 0, y: -20 }} 
       className="space-y-6 p-4"
     >
-      {/* Header */}
-      <div>
-        <h2 className={`text-2xl font-bold mb-2 ${
-          theme === 'dark' ? 'text-white' : 'text-gray-900'
-        }`}>
-          My Tools
-        </h2>
-        <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-          {tools.length} tools available for {roleName}
-        </p>
+      {/* Header with Back Button */}
+      <div className="flex items-center gap-3">
+        {/* ✅ NEW: Back Button */}
+        {onBack && (
+          <button
+            onClick={() => {
+              console.log('🔙 Going back from Tools view');
+              onBack();
+            }}
+            className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
+              theme === 'dark' 
+                ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-900'
+            }`}
+            aria-label="Back to profile"
+          >
+            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
+          </button>
+        )}
+
+        <div className="flex-1 min-w-0">
+          <h2 className={`text-2xl font-bold mb-1 ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
+            My Tools
+          </h2>
+          <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            {tools.length} tools available for {roleName}
+          </p>
+        </div>
       </div>
       
       {/* Empty State */}
