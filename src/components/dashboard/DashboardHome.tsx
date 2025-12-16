@@ -23,7 +23,6 @@ import { OnboardingTour } from '@components/onboarding/OnboardingTour';
 // ✅ SOCIAL VIEW COMPONENT
 import { SocialView } from '@components/feeds/SocialView';
 
-
 import { useNavigate } from 'react-router-dom';
 import * as Icons from 'lucide-react';
 import { useAppSelector, useAppDispatch } from '@store/hooks';
@@ -50,11 +49,10 @@ import technologyConfig from '../../config/villages/technology.json';
 import transportConfig from '../../config/villages/transport.json';
 
 // ✅ PHASE 1-5: Core Components
-// ✅ PHASE 1-5: Core Components
 import { JollofTVBubble } from '@components/common/JollofTVBubble';
 import { SettingsPanel } from '@components/settings/SettingsPanel';
 import NotificationCenter from '@components/notifications/NotificationCenter';
-import { ProfileView } from '@components/profile/ProfileView';
+import { ProfileCard } from '@components/profile/ProfileCard';
 import { ToolsView } from '@components/tools/ToolsView';
 import { RequestsSection } from '@components/home/RequestsSection';
 import { ConnectionsSection } from '@components/home/ConnectionsSection';
@@ -114,7 +112,7 @@ const DashboardHome: React.FC = () => {
   const [activeView, setActiveView] = useState<'home' | 'profile' | 'tools' | 'business' | 'network' | 'security'>('home');
   const [activeBottomTab, setActiveBottomTab] = useState<'home' | 'social' | 'banking' | 'ai' | 'chat' | 'profile'>('home');
   const [activeHomeApp, setActiveHomeApp] = useState<string | null>(null);
-
+  const [shouldOpenMenu, setShouldOpenMenu] = useState(false); // ✅ NEW: Track if menu should open
 
   // Onboarding Tour State
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -623,73 +621,69 @@ const DashboardHome: React.FC = () => {
 
               {/* ✅ PROFILE BOTTOM TAB VIEW - NEW! */}
               {activeBottomTab === 'profile' && activeView === 'home' && (
-                <ProfileView
+                <ProfileCard
+                  viewType="self"
+                  isVisible={true}
                   onEditProfile={() => console.log('Edit profile')}
                   onNavigate={(view) => {
-                    console.log('ProfileCard navigating to:', view);
+                    setShouldOpenMenu(false); // ✅ Reset flag when navigating away
                     setActiveView(view);
-                    // ✅ DON'T change activeBottomTab - keep it as 'profile'!
                   }}
                   onLogout={handleLogout}
                   onOpenSettings={() => setIsSettingsOpen(true)}
                   currentView={activeView}
+                  activeBottomTab={activeBottomTab}
+                  onBottomNavClick={(tab) => {
+                    setShouldOpenMenu(false); // ✅ Reset flag when changing tabs
+                    setActiveBottomTab(tab);
+                    setActiveView('home');
+                  }}
+                  openMenuOnLoad={shouldOpenMenu} // ✅ Open menu only when flag is true
+                  onMenuOpened={() => setShouldOpenMenu(false)} // ✅ Reset flag after opening
                 />
               )}
-
               
               {/* ✅ PHASE 7: NETWORK VIEW - Uses NetworkView Component */}
               {activeView === 'network' && activeBottomTab === 'profile' && (
-                <motion.div 
-                  key="network" 
-                  initial={{ opacity: 0, y: 20 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  exit={{ opacity: 0, y: -20 }}
-                >
-                  <NetworkView 
-                    villageName={villageName}
-                    userId={user?.id}
-                    onBack={() => {
-                      console.log('🔙 Going back to ProfileCard from Network');
-                      setActiveView('home');
-                      // activeBottomTab stays 'profile'
-                    }}
-                  />
-                </motion.div>
+                <NetworkView 
+                  villageName={villageName}
+                  userId={user?.id}
+                  onBack={() => {
+                    console.log('🔙 Going back to open menu from Network');
+                    setShouldOpenMenu(true); // ✅ Set flag to open menu
+                    setActiveView('home');
+                  }}
+                />
               )}
 
               {/* ✅ PHASE 8: SECURITY VIEW - Uses SecurityView Component */}
               {activeView === 'security' && activeBottomTab === 'profile' && (
-                <motion.div 
-                  key="security" 
-                  initial={{ opacity: 0, y: 20 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  exit={{ opacity: 0, y: -20 }}
-                >
-                  <SecurityView 
-                    villageName={villageName}
-                    userId={user?.id}
-                    protectionMode={protectionMode}
-                    onRequestCircle={() => console.log('Request circle from security view')}
-                    onBack={() => {
-                      console.log('🔙 Going back to ProfileCard from Security');
-                      setActiveView('home');
-                    }}
-                  />
-                </motion.div>
+                <SecurityView 
+                  villageName={villageName}
+                  userId={user?.id}
+                  protectionMode={protectionMode}
+                  onRequestCircle={() => console.log('Request circle from security view')}
+                  onBack={() => {
+                    console.log('🔙 Going back to ProfileCard from Security');
+                    setActiveView('home');
+                  }}
+                />
               )}
+
 
               {/* TOOLS VIEW */}
               {activeView === 'tools' && activeBottomTab === 'profile' && (
-              <ToolsView
-                tools={tools}
-                roleName={roleName}
-                villageColor={villageColor}
-                onBack={() => {
-                  console.log('🔙 Going back to ProfileCard from Tools');
-                  setActiveView('home');
-                }}
-              />
-            )}
+                <ToolsView
+                  tools={tools}
+                  roleName={roleName}
+                  villageColor={villageColor}
+                  onBack={() => {
+                    console.log('🔙 Going back to open menu from Tools');
+                    setShouldOpenMenu(true); // ✅ Set flag to open menu
+                    setActiveView('home');
+                  }}
+                />
+              )}
             </AnimatePresence>
           </div>
         </main>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, 
@@ -18,6 +18,10 @@ import {
   FileText,
   Calendar,
   BarChart3,
+  Share2,
+  Bot,
+  MessageCircle,
+  User,
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import { formatHandle } from '@/types/profile.types';
@@ -36,6 +40,10 @@ interface ProfileCardProps {
   onLogout?: () => void;
   onOpenSettings?: () => void;
   currentView?: string;
+  onBottomNavClick?: (tab: 'home' | 'social' | 'ai' | 'chat' | 'profile') => void;
+  activeBottomTab?: 'home' | 'social' | 'ai' | 'chat' | 'profile';
+  openMenuOnLoad?: boolean;
+  onMenuOpened?: () => void; // ✅ Callback when menu opens
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -45,7 +53,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   onNavigate,
   onLogout,
   onOpenSettings,
-  currentView = 'home'
+  currentView = 'home',
+  onBottomNavClick,
+  activeBottomTab = 'profile',
+  openMenuOnLoad = false,
+  onMenuOpened,
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
   const user = useAppSelector((state) => state.user.user);
@@ -59,6 +71,15 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showEventCalendar, setShowEventCalendar] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
+
+  // ✅ Auto-open menu when openMenuOnLoad prop is true
+  useEffect(() => {
+    if (openMenuOnLoad) {
+      setIsMenuOpen(true);
+      // Notify parent that menu was opened
+      onMenuOpened?.();
+    }
+  }, [openMenuOnLoad]); // Don't add onMenuOpened to deps to avoid loops
 
   // Use publicProfile if available, fallback to legacy user data
   const displayName = publicProfile?.display_name || user?.full_name || user?.name || 'User';
@@ -95,7 +116,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     setIsMenuOpen(false);
   };
 
-  // Menu items configuration - Business removed (now in Chat → Business tab)
+  // Menu items configuration
   const menuSections = [
     {
       title: 'Navigate',
@@ -163,11 +184,21 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     }
   ];
 
-  //Don't return null - always render for self view
+  // Bottom Navigation Items
+  const bottomNavItems = [
+    { id: 'home', icon: HomeIcon, label: 'Home', color: '#10b981' },
+    { id: 'social', icon: Share2, label: 'Social', color: '#3b82f6' },
+    { id: 'ai', icon: Bot, label: 'AI Agent', color: '#8b5cf6' },
+    { id: 'chat', icon: MessageCircle, label: 'Chat', color: '#ec4899' },
+    { id: 'profile', icon: User, label: 'Profile', color: '#6b7280' },
+  ];
+
+  // Don't return null - always render for self view
   if (viewType !== 'self') return null;
 
   return (
     <>
+      {/* Main Profile Card Container */}
       <div 
         className={`fixed inset-0 z-40 overflow-y-auto max-w-4xl mx-auto ${isVisible ? 'block' : 'hidden'} ${
           theme === 'dark' ? 'bg-gray-900' : 'bg-white'
@@ -177,13 +208,14 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           paddingBottom: '88px'
         }}
       >
-        {/* ProfileCard Header with Menu Button */}
+        {/* Header with Menu Button */}
         <div className={`sticky top-0 z-10 flex items-center justify-between p-4 ${
           theme === 'dark' ? 'bg-gray-900' : 'bg-white'
         }`}>
           <h2 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Profile
           </h2>
+          
           {/* Hamburger Menu Button */}
           <button
             onClick={() => setIsMenuOpen(true)}
@@ -196,9 +228,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           </button>
         </div>
 
-        {/* Profile Content  */}
+        {/* Profile Content */}
         <div className="p-[2px] pb-24">
-          {/* Profile Card Content  */}
           <div className={`overflow-hidden mb-6 ${
             theme === 'dark' ? 'bg-gray-800/50' : 'bg-white'
           }`}>
@@ -212,7 +243,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 </div>
               )}
 
-              {/* Edit button */}
+              {/* Edit Button on Cover */}
               <button
                 onClick={onEditProfile}
                 className={`absolute top-4 right-4 p-2 rounded-xl backdrop-blur-xl transition-transform active:scale-95 ${
@@ -223,9 +254,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               </button>
             </div>
 
-            {/* Profile Content */}
+            {/* Profile Info Section */}
             <div className="px-4 sm:px-6 pb-6">
-              {/* Avatar with Nkisi Shield */}
+              {/* Avatar with Verification */}
               <div className="flex items-end justify-between -mt-12 sm:-mt-16 mb-4">
                 <div className="relative">
                   <NkisiShield state={shieldState} size="lg" showTooltip={false}>
@@ -285,8 +316,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 </div>
               )}
 
-              {/* Village & Role Badge */}
+              {/* Village, Role & Rank Badges */}
               <div className="flex flex-wrap items-center gap-2 mb-4">
+                {/* Village & Role */}
                 <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold ${
                   theme === 'dark' ? 'bg-green-900/30 text-green-400 border border-green-500/30' : 'bg-green-50 text-green-700 border border-green-200'
                 }`}>
@@ -294,12 +326,20 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   {villageRoleBadge}
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold"
-                  style={{ backgroundColor: `${rankColor}20`, color: rankColor, border: `1px solid ${rankColor}40` }}>
+                {/* Rank */}
+                <div 
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold"
+                  style={{ 
+                    backgroundColor: `${rankColor}20`, 
+                    color: rankColor, 
+                    border: `1px solid ${rankColor}40` 
+                  }}
+                >
                   <Award className="w-4 h-4" />
                   {rankTitle} • Lv.{rankLevel}
                 </div>
 
+                {/* Heritage */}
                 {showHeritage && heritage && (
                   <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold ${
                     theme === 'dark' ? 'bg-amber-900/30 text-amber-400 border border-amber-500/30' : 'bg-amber-50 text-amber-700 border border-amber-200'
@@ -335,10 +375,67 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
       </div>
 
+      {/* Bottom Navigation Bar */}
+      <AnimatePresence>
+        <motion.nav
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          exit={{ y: 100 }}
+          transition={{ 
+            type: 'spring', 
+            stiffness: 300, 
+            damping: 30 
+          }}
+          className={`fixed bottom-0 left-0 right-0 z-50 h-22 ${
+            theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+          } border-t`}
+        >
+          <div className="flex items-center justify-between px-2 py-2 max-w-4xl mx-auto">
+            {bottomNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeBottomTab === item.id;
+              
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onBottomNavClick?.(item.id as any)}
+                  className={`flex flex-col outline-none items-center gap-1 px-2 py-2 rounded-xl transition-all ${
+                    isActive ? 'scale-105' : 'opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <div 
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all ${
+                      isActive ? 'scale-110' : ''
+                    }`} 
+                    style={{ 
+                      backgroundColor: isActive ? `${item.color}20` : theme === 'dark' ? '#374151' : '#f3f4f6', 
+                      color: isActive ? item.color : theme === 'dark' ? '#9ca3af' : '#6b7280' 
+                    }}
+                  >
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </div>
+                  <span 
+                    className={`text-xs font-medium transition-colors ${
+                      isActive 
+                        ? theme === 'dark' ? 'text-white' : 'text-gray-900' 
+                        : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                    }`} 
+                    style={{ color: isActive ? item.color : undefined }}
+                  >
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </motion.nav>
+      </AnimatePresence>
+
       {/* Menu Sidebar */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -347,6 +444,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[80]"
             />
 
+            {/* Sidebar */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -356,6 +454,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 theme === 'dark' ? 'bg-gray-900' : 'bg-white'
               } shadow-2xl`}
             >
+              {/* Sidebar Header */}
               <div className={`sticky top-0 z-10 flex items-center justify-between p-4 border-b ${
                 theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
               }`}>
@@ -372,6 +471,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 </button>
               </div>
 
+              {/* Menu Sections */}
               <div className="p-4 space-y-6">
                 {menuSections.map((section, sectionIdx) => (
                   <div key={sectionIdx}>
@@ -407,6 +507,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   </div>
                 ))}
 
+                {/* Logout Section */}
                 <div className={`pt-6 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
                   <button
                     onClick={() => handleMenuItemClick(() => onLogout?.())}
@@ -426,7 +527,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Analytics Dashboard - Full Page Slide-In */}
+      {/* Analytics Dashboard - Full Page */}
       <AnimatePresence>
         {showAnalytics && (
           <motion.div
@@ -438,7 +539,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               theme === 'dark' ? 'bg-gray-900' : 'bg-white'
             }`}
           >
-            {/* Header with Close Button */}
+            {/* Analytics Header */}
             <div className={`flex items-center justify-between max-w-4xl mx-auto px-4 sm:px-6 py-4 border-b ${
               theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
             }`}>
@@ -455,7 +556,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               </button>
             </div>
             
-            {/* Scrollable Content */}
+            {/* Analytics Content */}
             <div className="h-[calc(100vh-73px)] overflow-y-auto">
               <AnalyticsDashboard
                 userId={user?.id || undefined}
@@ -473,6 +574,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       <AnimatePresence>
         {showEventCalendar && (
           <>
+            {/* Calendar Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -481,6 +583,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90]"
             />
             
+            {/* Calendar Modal */}
             <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 pointer-events-none">
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -490,7 +593,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   theme === 'dark' ? 'bg-gray-900' : 'bg-white'
                 }`}
               >
-                {/* Modal Header */}
+                {/* Calendar Header */}
                 <div className={`sticky top-0 z-10 flex items-center justify-between p-4 border-b backdrop-blur-sm ${
                   theme === 'dark' ? 'bg-gray-900/95 border-gray-800' : 'bg-white/95 border-gray-200'
                 }`}>
@@ -507,7 +610,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   </button>
                 </div>
                 
-                {/* Event Calendar Component */}
+                {/* Calendar Content */}
                 <div className="p-4">
                   <EventCalendar
                     onCreateEvent={() => console.log('Create event')}
