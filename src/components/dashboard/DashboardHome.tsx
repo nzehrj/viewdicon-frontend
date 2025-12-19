@@ -5,7 +5,6 @@ import {
   Bell,
   Search,
   User,
-  Tv,
   X,
   Grid,
   Share2,
@@ -49,7 +48,6 @@ import technologyConfig from '../../config/villages/technology.json';
 import transportConfig from '../../config/villages/transport.json';
 
 // ✅ PHASE 1-5: Core Components
-import { JollofTVBubble } from '@components/common/JollofTVBubble';
 import { SettingsPanel } from '@components/settings/SettingsPanel';
 import NotificationCenter from '@components/notifications/NotificationCenter';
 import { ProfileCard } from '@components/profile/ProfileCard';
@@ -116,13 +114,6 @@ const DashboardHome: React.FC = () => {
 
   // Onboarding Tour State
   const [showOnboarding, setShowOnboarding] = useState(false);
-
-  // Jollof TV state
-  const [isJollofTVVisible, setIsJollofTVVisible] = useState(false); 
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isJollofTVLive, _setIsJollofTVLive] = useState(true); // Set to true when live
-
     
   // Modal States
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -325,21 +316,6 @@ const DashboardHome: React.FC = () => {
     navigate('/auth/login', { replace: true });
   };
 
-  const handleJollofTVClose = () => {
-    setIsJollofTVVisible(false);
-  };
-
-  const handleJollofTVMaximize = () => {
-    // TODO: Navigate to full-screen Jollof TV page or open modal
-    console.log('Maximize Jollof TV - open full screen');
-    alert('Full-screen Jollof TV coming soon!');
-  };
-
-  const handleSprayCowrie = (amount: number) => {
-    // TODO: Process Cowrie payment
-    console.log(`Sprayed ${amount} Cowries! 💰`);
-    alert(`You sprayed ${amount} Cowries! 🪙`);
-  };
 
   // Helper to check if view should be full-screen
   const isFullScreenView = activeView !== 'home';
@@ -541,31 +517,7 @@ const DashboardHome: React.FC = () => {
                       </span>
                     </motion.button>
 
-                    {/* ICON 7: Jollof TV */}
-                    <motion.button
-                      onClick={() => setIsJollofTVVisible(true)}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center gap-2 outline-none"
-                    >
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-red-500 to-pink-600 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow relative">
-                        <Tv className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-                        {/* Live indicator */}
-                        {isJollofTVLive && (
-                          <div className="absolute -top-1 -right-1 flex items-center gap-1 bg-red-600 px-2 py-0.5 rounded-full">
-                            <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                            <span className="text-[10px] font-bold text-white">LIVE</span>
-                          </div>
-                        )}
-                      </div>
-                      <span className={`text-xs sm:text-sm font-medium text-center ${
-                        theme === 'dark' ? 'text-white' : 'text-gray-900'
-                      }`}>
-                        Jollof TV
-                      </span>
-                    </motion.button>
-
-                    {/* ICON 8: Cowrie Banking */}
+                    {/* Cowrie Banking */}
                     <motion.button
                       onClick={() => setActiveHomeApp('banking')}
                       whileHover={{ scale: 1.05 }}
@@ -949,19 +901,6 @@ const DashboardHome: React.FC = () => {
               // TODO: Implement circle alert
             }}
             onContactSupport={handleContactSupport} 
-          />
-        )}
-
-        {/* Jollof TV Floating Bubble */}
-        {isJollofTVVisible && (
-          <JollofTVBubble
-            isLive={isJollofTVLive}
-            streamTitle="National Town Hall"
-            streamerName="Governor's Address"
-            viewerCount={1247}
-            onClose={handleJollofTVClose}
-            onMaximize={handleJollofTVMaximize}
-            onSprayCowrie={handleSprayCowrie}
           />
         )}
 

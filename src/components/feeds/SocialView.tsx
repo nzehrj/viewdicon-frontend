@@ -1,3 +1,6 @@
+// src/components/feeds/SocialView.tsx
+// UPDATED - With Jollof TV Integration
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Plus } from 'lucide-react';
@@ -9,6 +12,9 @@ import { UnifiedFeedView } from '@components/feeds/UnifiedFeedView';
 import { CircleHub } from '@components/feeds/CircleHub';
 import { RequestWorkFlow } from '@components/discover/RequestWorkFlow';
 
+// ✅ Jollof TV Integration
+import { JollofTVContainer } from '@components/tv/JollofTVContainer';
+
 type FeedType = 'feed' | 'circle';
 
 interface SocialViewProps {
@@ -19,11 +25,16 @@ export const SocialView: React.FC<SocialViewProps> = ({
   isNavVisible = true 
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
+  const userVillage = useAppSelector((state) => state.user.village);
   
   const [activeFeedType, setActiveFeedType] = useState<FeedType>('feed');
   const [isComposerOpen, setIsComposerOpen] = useState(false);
   const [selectedProfessional, setSelectedProfessional] = useState<any>(null);
   const [showRequestWorkFlow, setShowRequestWorkFlow] = useState(false);
+
+  // Get village info for TV
+  const villageName = userVillage?.villageName || 'Technology';
+  const villageColor = (userVillage as any)?.villageColor || '#3b82f6';
 
   // ✅ Feed Tab Configuration
   const feedTabs = [
@@ -53,8 +64,15 @@ export const SocialView: React.FC<SocialViewProps> = ({
 
   return (
     <div className="relative">
+      {/* ✅ JOLLOF TV STATUS BAR - At the very top */}
+      <JollofTVContainer 
+        showStatusBar={true}
+        villageName={villageName}
+        villageColor={villageColor}
+      />
+
       {/* Feed Type Tabs */}
-      <div className="overflow-x-auto pb-2 hide-scrollbar max-w-4xl mx-auto">
+      <div className="overflow-x-auto pb-2 hide-scrollbar max-w-4xl mx-auto mt-4">
         <style>{`
           .hide-scrollbar::-webkit-scrollbar {
             display: none !important;
