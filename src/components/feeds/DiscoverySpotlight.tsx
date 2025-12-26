@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   TrendingUp, 
   Sparkles,
-  Heart,
-  MessageCircle,
   Eye,
   Award,
   Zap,
@@ -12,6 +10,12 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
+import { HeatIndicator } from '@/components/social/HeatIndicator';
+import { RankBadge } from '@/components/social/RankBadge';
+import { CouncilSealBadge } from '@/components/social/CouncilSealBadge';
+import { PotSystem } from '@/components/social/PotSystem';
+import { DrumRing } from '@/components/social/DrumRing';
+import type { PotHeatLevel, PotStatus, FeedPost } from '@/types/feed.types';
 
 interface SpotlightPost {
   id: string;
@@ -22,15 +26,22 @@ interface SpotlightPost {
   authorVillage?: string;
   authorVillageColor?: string;
   authorCrest?: number;
+  authorRank?: number;
+  authorCouncilTier?: 'verified' | 'elder' | 'council' | 'chief' | 'ancestor';
   title?: string;
   preview: string;
   thumbnailUrl?: string;
-  likes: number;
-  comments: number;
+  pots: number; // Changed from likes
+  echoes: number; // Changed from comments
+  drums: number; // Changed from shares
   views: number;
   score: number; // AI quality score
+  heatLevel: PotHeatLevel;
+  heatScore: number;
+  totalPots: number;
   timestamp: Date;
   tags?: string[];
+  potStatus: PotStatus; // Add pot status
 }
 
 type SpotlightCategory = 'all' | 'trending' | 'viral' | 'quality' | 'rising' | 'featured';
@@ -38,26 +49,7 @@ type SpotlightCategory = 'all' | 'trending' | 'viral' | 'quality' | 'rising' | '
 /**
  * DISCOVERY SPOTLIGHT COMPONENT
  * 
- * AI-curated content board showing the best posts across all feeds.
- * 
- * Features:
- * - Trending posts (high engagement in last 24h)
- * - Viral content (rapid growth)
- * - Quality picks (high AI scores)
- * - Rising stars (new creators)
- * - Featured (curated by moderators)
- * - Cross-feed discovery
- * - Engagement metrics
- * - Quality scores
- * 
- * AI Criteria:
- * - Engagement rate (likes, comments, shares)
- * - View-to-completion rate (for video)
- * - Cowrie tips received
- * - Author trust level
- * - Content quality (CAWS analysis)
- * - Recency
- * - Diversity (different villages/topics)
+ * AI-curated content board showing the best posts across all feeds with Pot/Echo/Drum interactions.
  * 
  * Location: src/components/feeds/DiscoverySpotlight.tsx
  */
@@ -65,6 +57,7 @@ export const DiscoverySpotlight: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.theme);
   
   const [selectedCategory, setSelectedCategory] = useState<SpotlightCategory>('all');
+  const [selectedDrumPost, setSelectedDrumPost] = useState<string | null>(null);
   
   // Mock posts data - TODO: Replace with AI-curated API
   const posts: SpotlightPost[] = [
@@ -77,14 +70,33 @@ export const DiscoverySpotlight: React.FC = () => {
       authorVillage: 'Hospitality Village',
       authorVillageColor: '#f97316',
       authorCrest: 4,
+      authorRank: 67,
+      authorCouncilTier: 'verified',
       title: '3-Minute Jollof Rice Hack',
       preview: 'This cooking hack is changing the game! Watch how I make perfect jollof in under 3 minutes...',
-      likes: 24500,
-      comments: 1234,
+      pots: 24500,
+      echoes: 1234,
+      drums: 456,
       views: 458000,
       score: 95,
+      heatLevel: 'ready',
+      heatScore: 95,
+      totalPots: 24500,
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
       tags: ['cooking', 'jollof', 'viral'],
+      potStatus: {
+        post_id: '1',
+        total_pots: 24500,
+        heat_level: 'ready',
+        heat_score: 95,
+        started_cooking_at: new Date(Date.now() - 6 * 60 * 60 * 1000),
+        reached_boiling_at: new Date(Date.now() - 4 * 60 * 60 * 1000),
+        ready_at: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        last_pot_at: new Date(Date.now() - 5 * 60 * 1000),
+        cooling_rate: 0.05,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
     {
       id: '2',
@@ -95,14 +107,33 @@ export const DiscoverySpotlight: React.FC = () => {
       authorVillage: 'Construction Village',
       authorVillageColor: '#10b981',
       authorCrest: 5,
+      authorRank: 89,
+      authorCouncilTier: 'elder',
       title: 'Eco-Friendly Building Materials',
       preview: 'Building sustainable homes with local materials. This 4-bedroom house uses 80% recycled content...',
-      likes: 8900,
-      comments: 567,
+      pots: 8900,
+      echoes: 567,
+      drums: 234,
       views: 45000,
       score: 98,
+      heatLevel: 'boiling',
+      heatScore: 88,
+      totalPots: 8900,
       timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       tags: ['construction', 'eco', 'innovation'],
+      potStatus: {
+        post_id: '2',
+        total_pots: 8900,
+        heat_level: 'boiling',
+        heat_score: 88,
+        started_cooking_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        reached_boiling_at: new Date(Date.now() - 12 * 60 * 60 * 1000),
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 10 * 60 * 1000),
+        cooling_rate: 0.08,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
     {
       id: '3',
@@ -113,13 +144,32 @@ export const DiscoverySpotlight: React.FC = () => {
       authorVillage: 'Governance Village',
       authorVillageColor: '#dc2626',
       authorCrest: 4,
+      authorRank: 72,
+      authorCouncilTier: 'council',
       preview: 'The new education policy changes everything. Here\'s what parents need to know urgently...',
-      likes: 15600,
-      comments: 2341,
+      pots: 15600,
+      echoes: 2341,
+      drums: 892,
       views: 123000,
       score: 92,
+      heatLevel: 'boiling',
+      heatScore: 85,
+      totalPots: 15600,
       timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
       tags: ['education', 'policy', 'parents'],
+      potStatus: {
+        post_id: '3',
+        total_pots: 15600,
+        heat_level: 'boiling',
+        heat_score: 85,
+        started_cooking_at: new Date(Date.now() - 4 * 60 * 60 * 1000),
+        reached_boiling_at: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 15 * 60 * 1000),
+        cooling_rate: 0.10,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
     {
       id: '4',
@@ -130,14 +180,33 @@ export const DiscoverySpotlight: React.FC = () => {
       authorVillage: 'Crafts Village',
       authorVillageColor: '#8b5cf6',
       authorCrest: 2,
+      authorRank: 34,
+      authorCouncilTier: 'verified',
       title: 'Modern Ankara Fusion',
       preview: 'Mixing traditional ankara with contemporary designs. This collection sold out in 2 hours!',
-      likes: 3400,
-      comments: 234,
+      pots: 3400,
+      echoes: 234,
+      drums: 89,
       views: 18000,
       score: 88,
+      heatLevel: 'cooking',
+      heatScore: 65,
+      totalPots: 3400,
       timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
       tags: ['fashion', 'ankara', 'design'],
+      potStatus: {
+        post_id: '4',
+        total_pots: 3400,
+        heat_level: 'cooking',
+        heat_score: 65,
+        started_cooking_at: new Date(Date.now() - 6 * 60 * 60 * 1000),
+        reached_boiling_at: null,
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 30 * 60 * 1000),
+        cooling_rate: 0.12,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
   ];
   
@@ -180,6 +249,34 @@ export const DiscoverySpotlight: React.FC = () => {
   const handlePostClick = (postId: string) => {
     // TODO: Navigate to post detail
     console.log('View post:', postId);
+  };
+
+  // Convert SpotlightPost to FeedPost for ThreadViewer
+  const convertToFeedPost = (spotlightPost: SpotlightPost): FeedPost => {
+    return {
+      post_id: spotlightPost.id,
+      author_afro_id: spotlightPost.authorId,
+      author_display_name: spotlightPost.authorName,
+      author_handle: `@${spotlightPost.authorName.toLowerCase().replace(/\s+/g, '')}`,
+      author_avatar_url: spotlightPost.authorVillage || '',
+      author_village_role: spotlightPost.authorVillage || '',
+      author_rank_level: spotlightPost.authorRank || 0,
+      author_badges: [],
+      type: 'text',
+      content: spotlightPost.preview,
+      media_urls: spotlightPost.thumbnailUrl ? [spotlightPost.thumbnailUrl] : [],
+      visibility: 'public',
+      tagged_handles: [],
+      hashtags: spotlightPost.tags || [],
+      location: null,
+      pot_status: spotlightPost.potStatus,
+      comment_count: spotlightPost.echoes,
+      share_count: spotlightPost.drums,
+      bookmark_count: 0,
+      created_at: spotlightPost.timestamp,
+      updated_at: spotlightPost.timestamp,
+      edited: false,
+    };
   };
   
   return (
@@ -230,7 +327,7 @@ export const DiscoverySpotlight: React.FC = () => {
       </div>
       
       {/* Posts Grid */}
-      <div className="space-y-4">
+      <div className="space-y-4 p-4">
         {filteredPosts.map((post, index) => {
           const typeColor = getTypeColor(post.type);
           
@@ -240,8 +337,7 @@ export const DiscoverySpotlight: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              onClick={() => handlePostClick(post.id)}
-              className={`rounded-xl border overflow-hidden cursor-pointer transition-transform hover:scale-[1.02] ${
+              className={`rounded-xl border overflow-hidden ${
                 theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               }`}
             >
@@ -276,7 +372,10 @@ export const DiscoverySpotlight: React.FC = () => {
               </div>
               
               {/* Content */}
-              <div className="p-4">
+              <div 
+                className="p-4 cursor-pointer"
+                onClick={() => handlePostClick(post.id)}
+              >
                 {/* Author */}
                 <div className="flex items-center gap-3 mb-3">
                   <div 
@@ -287,12 +386,18 @@ export const DiscoverySpotlight: React.FC = () => {
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <p className={`font-bold text-sm truncate ${
                         theme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}>
                         {post.authorName}
                       </p>
+                      {post.authorCouncilTier && (
+                        <CouncilSealBadge tier={post.authorCouncilTier} size="xs" showTooltip />
+                      )}
+                      {post.authorRank && (
+                        <RankBadge rank={post.authorRank} size="xs" animated={false} showTooltip />
+                      )}
                       {post.authorCrest && (
                         <span className="text-xs">
                           {'⭐'.repeat(post.authorCrest)}
@@ -310,6 +415,18 @@ export const DiscoverySpotlight: React.FC = () => {
                     <Clock className="w-3 h-3" />
                     {formatTimestamp(post.timestamp)}
                   </div>
+                </div>
+
+                {/* Heat Indicator */}
+                <div className="mb-3">
+                  <HeatIndicator
+                    heatLevel={post.heatLevel}
+                    heatScore={post.heatScore}
+                    totalPots={post.totalPots}
+                    animated={false}
+                    showLabel={false}
+                    size="sm"
+                  />
                 </div>
                 
                 {/* Title */}
@@ -351,23 +468,27 @@ export const DiscoverySpotlight: React.FC = () => {
                         {formatNumber(post.views)}
                       </span>
                     </div>
-                    
-                    <div className="flex items-center gap-1 text-sm">
-                      <Heart className={`w-4 h-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
-                        {formatNumber(post.likes)}
-                      </span>
-                    </div>
-                    
-                    <div className="flex items-center gap-1 text-sm">
-                      <MessageCircle className={`w-4 h-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>
-                        {formatNumber(post.comments)}
-                      </span>
-                    </div>
                   </div>
                   
                   <ChevronRight className={`w-5 h-5 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`} />
+                </div>
+              </div>
+              
+              {/* Pot System */}
+              <div className={`px-4 pb-4 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                <div className="pt-3">
+                  <PotSystem
+                    post={convertToFeedPost(post)}
+                    onPot={async () => console.log('Pot:', post.id)}
+                    onEcho={async (content, parentId) => {
+                      console.log('Echo:', content, parentId);
+                      // TODO: API call
+                    }}
+                    onDrum={() => setSelectedDrumPost(post.id)}
+                    onBasket={() => console.log('Basket:', post.id)}
+                    showHeatIndicator={true}
+                    compact={false}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -400,6 +521,38 @@ export const DiscoverySpotlight: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* DrumRing Modal */}
+      <AnimatePresence>
+        {selectedDrumPost && (
+          <DrumRing
+            postId={selectedDrumPost}
+            postUrl={`https://viewdicon.com/spotlight/${selectedDrumPost}`}
+            onDrumToVillage={(villageId) => {
+              console.log('Drum to village:', villageId);
+              setSelectedDrumPost(null);
+            }}
+            onDrumToFeed={(feedType) => {
+              console.log('Drum to feed:', feedType);
+              setSelectedDrumPost(null);
+            }}
+            onCopyLink={() => {
+              console.log('Link copied');
+            }}
+            onClose={() => setSelectedDrumPost(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 };

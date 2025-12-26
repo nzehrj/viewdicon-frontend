@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mic, 
-  Heart, 
-  MessageCircle, 
-  Share2,
-  Play,
-  Pause,
-  Volume2,
   MoreVertical,
   AlertCircle,
   TrendingUp,
@@ -16,6 +10,13 @@ import {
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
 import { IdentitySkinBadge } from '@components/identity/IdentitySkinSelector';
+import { VoiceInteractionBar } from '@/components/social/VoiceInteractionBar';
+import { CouncilSealBadge } from '@/components/social/CouncilSealBadge';
+import { InteractionBar } from '@/components/social/InteractionBar';
+import { ThreadViewer } from '@/components/social/ThreadViewer';
+import { DrumRing } from '@/components/social/DrumRing';
+import type { FeedPost } from '@/types/feed.types';
+import type { PotStatus } from '@/types/feed.types';
 
 interface VoicePost {
   id: string;
@@ -25,6 +26,7 @@ interface VoicePost {
   authorVillage?: string;
   authorVillageColor?: string;
   authorCrest?: number;
+  authorCouncilTier?: 'verified' | 'elder' | 'council' | 'chief' | 'ancestor';
   identitySkin: 'work' | 'public' | 'clan';
   type: 'voice' | 'text' | 'voice_text'; // Voice note, text, or both
   voiceUrl?: string;
@@ -39,6 +41,7 @@ interface VoicePost {
   timestamp: Date;
   tags?: string[];
   category?: 'national_pulse' | 'street_vibes' | 'market_shouts' | 'wisdom_corner' | 'innovation_fire';
+  potStatus: PotStatus; // Add pot status
 }
 
 type CategoryType = 'all' | 'national_pulse' | 'street_vibes' | 'market_shouts' | 'wisdom_corner' | 'innovation_fire';
@@ -71,6 +74,8 @@ export const VoiceFeed: React.FC = () => {
   
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('all');
   const [playingPostId, setPlayingPostId] = useState<string | null>(null);
+  const [selectedThreadPost, setSelectedThreadPost] = useState<VoicePost | null>(null);
+  const [selectedDrumPost, setSelectedDrumPost] = useState<string | null>(null);
   
   // Mock posts data - TODO: Replace with API
   const posts: VoicePost[] = [
@@ -81,6 +86,7 @@ export const VoiceFeed: React.FC = () => {
       authorVillage: 'Governance Village',
       authorVillageColor: '#dc2626',
       authorCrest: 5,
+      authorCouncilTier: 'chief',
       identitySkin: 'work',
       type: 'voice_text',
       voiceUrl: '/audio/voice1.mp3',
@@ -94,6 +100,19 @@ export const VoiceFeed: React.FC = () => {
       timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
       tags: ['politics', 'workers', 'wages'],
       category: 'national_pulse',
+      potStatus: {
+        post_id: '1',
+        total_pots: 3421,
+        heat_level: 'boiling',
+        heat_score: 85,
+        started_cooking_at: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        reached_boiling_at: new Date(Date.now() - 1 * 60 * 60 * 1000),
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 5 * 60 * 1000),
+        cooling_rate: 0.1,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
     {
       id: '2',
@@ -102,6 +121,7 @@ export const VoiceFeed: React.FC = () => {
       authorVillage: 'Business Village',
       authorVillageColor: '#f59e0b',
       authorCrest: 3,
+      authorCouncilTier: 'verified',
       identitySkin: 'public',
       type: 'text',
       text: '🔥 Fresh tomatoes just arrived! ₵500 per basket. Available at Oshodi Market. First come, first served! Call 0803-XXX-XXXX',
@@ -112,6 +132,19 @@ export const VoiceFeed: React.FC = () => {
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
       tags: ['market', 'tomatoes', 'oshodi'],
       category: 'market_shouts',
+      potStatus: {
+        post_id: '2',
+        total_pots: 156,
+        heat_level: 'cooking',
+        heat_score: 45,
+        started_cooking_at: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        reached_boiling_at: null,
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 15 * 60 * 1000),
+        cooling_rate: 0.15,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
     {
       id: '3',
@@ -120,6 +153,7 @@ export const VoiceFeed: React.FC = () => {
       authorVillage: 'Spiritual Village',
       authorVillageColor: '#6366f1',
       authorCrest: 5,
+      authorCouncilTier: 'elder',
       identitySkin: 'clan',
       type: 'voice',
       voiceUrl: '/audio/voice3.mp3',
@@ -131,6 +165,19 @@ export const VoiceFeed: React.FC = () => {
       timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
       tags: ['wisdom', 'prayer', 'guidance'],
       category: 'wisdom_corner',
+      potStatus: {
+        post_id: '3',
+        total_pots: 892,
+        heat_level: 'cooking',
+        heat_score: 62,
+        started_cooking_at: new Date(Date.now() - 5 * 60 * 60 * 1000),
+        reached_boiling_at: null,
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 30 * 60 * 1000),
+        cooling_rate: 0.12,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
   ];
   
@@ -138,7 +185,7 @@ export const VoiceFeed: React.FC = () => {
     { id: 'all', label: 'All', icon: Hash, color: '#6b7280' },
     { id: 'national_pulse', label: 'National Pulse', icon: AlertCircle, color: '#dc2626' },
     { id: 'street_vibes', label: 'Street Vibes', icon: TrendingUp, color: '#8b5cf6' },
-    { id: 'market_shouts', label: 'Market Shouts', icon: Volume2, color: '#f59e0b' },
+    { id: 'market_shouts', label: 'Market Shouts', icon: Mic, color: '#f59e0b' },
     { id: 'wisdom_corner', label: 'Wisdom', icon: Award, color: '#6366f1' },
     { id: 'innovation_fire', label: 'Innovation', icon: TrendingUp, color: '#0ea5e9' },
   ];
@@ -158,19 +205,14 @@ export const VoiceFeed: React.FC = () => {
   };
   
   const handleComment = (postId: string) => {
-    // TODO: Open comment thread
-    console.log('Comment on:', postId);
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+      setSelectedThreadPost(post);
+    }
   };
   
   const handleShare = (postId: string) => {
-    // TODO: Raise Calabash (repost)
-    console.log('Share post:', postId);
-  };
-  
-  const formatDuration = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    setSelectedDrumPost(postId);
   };
   
   const formatTimestamp = (date: Date) => {
@@ -183,6 +225,34 @@ export const VoiceFeed: React.FC = () => {
     if (diffMins < 60) return `${diffMins}m`;
     if (diffHours < 24) return `${diffHours}h`;
     return `${diffDays}d`;
+  };
+
+  // Convert VoicePost to FeedPost for ThreadViewer
+  const convertToFeedPost = (voicePost: VoicePost): FeedPost => {
+    return {
+      post_id: voicePost.id,
+      author_afro_id: voicePost.authorId,
+      author_display_name: voicePost.authorName,
+      author_handle: `@${voicePost.authorName.toLowerCase().replace(/\s+/g, '')}`,
+      author_avatar_url: voicePost.authorAvatar || '',
+      author_village_role: voicePost.authorVillage || '',
+      author_rank_level: voicePost.authorCrest || 0,
+      author_badges: [],
+      type: voicePost.type === 'voice' ? 'music' : 'text',
+      content: voicePost.text || '',
+      media_urls: voicePost.image ? [voicePost.image] : [],
+      visibility: 'public',
+      tagged_handles: [],
+      hashtags: voicePost.tags || [],
+      location: null,
+      pot_status: voicePost.potStatus,
+      comment_count: voicePost.comments,
+      share_count: voicePost.shares,
+      bookmark_count: 0,
+      created_at: voicePost.timestamp,
+      updated_at: voicePost.timestamp,
+      edited: false,
+    };
   };
   
   return (
@@ -262,6 +332,9 @@ export const VoiceFeed: React.FC = () => {
                       {post.authorName}
                     </p>
                     <IdentitySkinBadge skin={post.identitySkin} size="sm" />
+                    {post.authorCouncilTier && (
+                      <CouncilSealBadge tier={post.authorCouncilTier} size="sm" showTooltip />
+                    )}
                     {post.authorCrest && (
                       <span className="text-xs">
                         {'⭐'.repeat(post.authorCrest)}
@@ -289,44 +362,18 @@ export const VoiceFeed: React.FC = () => {
               
               {/* Voice Note */}
               {(post.type === 'voice' || post.type === 'voice_text') && post.voiceUrl && (
-                <div className={`mb-3 p-3 rounded-xl ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-                }`}>
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => handlePlayVoice(post.id)}
-                      className="w-10 h-10 rounded-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center flex-shrink-0 transition-colors"
-                    >
-                      {isPlaying ? (
-                        <Pause className="w-5 h-5 text-white" />
-                      ) : (
-                        <Play className="w-5 h-5 text-white ml-0.5" />
-                      )}
-                    </button>
-                    
-                    {/* Waveform Placeholder */}
-                    <div className="flex-1 h-8 rounded bg-purple-600/20 flex items-center px-2">
-                      <div className="flex items-center gap-0.5 h-full">
-                        {Array.from({ length: 30 }).map((_, i) => (
-                          <div
-                            key={i}
-                            className="w-1 bg-purple-600 rounded-full"
-                            style={{ height: `${Math.random() * 100}%` }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Duration */}
-                    <div className="flex items-center gap-1 flex-shrink-0">
-                      <Mic className={`w-4 h-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`} />
-                      <span className={`text-xs font-medium ${
-                        theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                      }`}>
-                        {formatDuration(post.voiceDuration || 0)}
-                      </span>
-                    </div>
-                  </div>
+                <div className="mb-3">
+                  <VoiceInteractionBar
+                    isPlaying={isPlaying}
+                    duration={post.voiceDuration || 0}
+                    currentTime={0}
+                    listeners={post.likes}
+                    onPlay={() => handlePlayVoice(post.id)}
+                    onPause={() => handlePlayVoice(post.id)}
+                    onSeek={(time) => console.log('Seek to:', time)}
+                    onListen={() => console.log('Listen')}
+                    compact={true}
+                  />
                 </div>
               )}
               
@@ -367,49 +414,23 @@ export const VoiceFeed: React.FC = () => {
                 </div>
               )}
               
-              {/* Action Bar */}
-              <div className="flex items-center gap-6">
-                {/* Like */}
-                <button
-                  onClick={() => handleLike(post.id)}
-                  className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                    post.isLiked
-                      ? 'text-red-500'
-                      : theme === 'dark'
-                      ? 'text-gray-400 hover:text-red-400'
-                      : 'text-gray-600 hover:text-red-500'
-                  }`}
-                >
-                  <Heart className="w-5 h-5" fill={post.isLiked ? 'currentColor' : 'none'} />
-                  {post.likes > 999 ? `${(post.likes / 1000).toFixed(1)}k` : post.likes}
-                </button>
-                
-                {/* Comment */}
-                <button
-                  onClick={() => handleComment(post.id)}
-                  className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                    theme === 'dark'
-                      ? 'text-gray-400 hover:text-blue-400'
-                      : 'text-gray-600 hover:text-blue-500'
-                  }`}
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  {post.comments}
-                </button>
-                
-                {/* Share (Raise Calabash) */}
-                <button
-                  onClick={() => handleShare(post.id)}
-                  className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                    theme === 'dark'
-                      ? 'text-gray-400 hover:text-green-400'
-                      : 'text-gray-600 hover:text-green-500'
-                  }`}
-                >
-                  <Share2 className="w-5 h-5" />
-                  {post.shares}
-                </button>
-              </div>
+              {/* Interaction Bar */}
+              <InteractionBar
+                postId={post.id}
+                potStatus={post.potStatus}
+                echoCount={post.comments}
+                drumCount={post.shares}
+                hasUserStirred={false}
+                hasUserEchoed={false}
+                hasUserDrummed={false}
+                hasUserBasket={false}
+                onPot={async () => handleLike(post.id)}
+                onEcho={() => handleComment(post.id)}
+                onDrum={() => handleShare(post.id)}
+                onBasket={() => console.log('Basket:', post.id)}
+                showLabels={false}
+                compact={true}
+              />
             </motion.div>
           );
         })}
@@ -427,6 +448,56 @@ export const VoiceFeed: React.FC = () => {
           </p>
         </div>
       )}
+
+      {/* Thread Viewer Modal */}
+      <AnimatePresence>
+        {selectedThreadPost && (
+          <ThreadViewer
+            post={convertToFeedPost(selectedThreadPost)}
+            onClose={() => setSelectedThreadPost(null)}
+            onAddEcho={async (content, parentId) => {
+              console.log('Add echo:', content, parentId);
+              // TODO: API call
+            }}
+            onHeartEcho={(echoId) => {
+              console.log('Heart echo:', echoId);
+              // TODO: API call
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* DrumRing Modal */}
+      <AnimatePresence>
+        {selectedDrumPost && (
+          <DrumRing
+            postId={selectedDrumPost}
+            postUrl={`https://viewdicon.com/voice/${selectedDrumPost}`}
+            onDrumToVillage={(villageId) => {
+              console.log('Drum to village:', villageId);
+              setSelectedDrumPost(null);
+            }}
+            onDrumToFeed={(feedType) => {
+              console.log('Drum to feed:', feedType);
+              setSelectedDrumPost(null);
+            }}
+            onCopyLink={() => {
+              console.log('Link copied');
+            }}
+            onClose={() => setSelectedDrumPost(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 };

@@ -4,19 +4,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Bookmark, 
   MoreHorizontal,
   MapPin,
   Clock,
-  MessageCircle,
-  Share2
 } from 'lucide-react';
 import { useAppSelector } from '@/store/hooks';
-import { PotButton } from '@/components/common/PotButton';
-import { PotHeatBar } from '@/components/common/PotHeatBar';
 import { VerificationBadge } from '@/components/verification/VerificationBadge';
 import { NkisiShield } from '@/components/verification/NkisiShield';
 import { PostInteractionRenderer } from '@/components/cultural/PostInteractionRenderer';
+import { PotSystem } from '@/components/social/PotSystem';
+import { CouncilSealBadge } from '@/components/social/CouncilSealBadge';
+import { RankBadge } from '@/components/social/RankBadge';
 import { mapToCulturalPost } from '@/types/feed-cultural.types';
 import type { FeedPost as BaseFeedPost } from '@/types/feed.types';
 import type { PostInteractionType } from '@/types/feed-cultural.types';
@@ -24,7 +22,6 @@ import type { PostInteractionType } from '@/types/feed-cultural.types';
 interface FeedPostProps {
   post: BaseFeedPost;
   onPot: (postId: string) => Promise<void>;
-  onComment: (postId: string) => void;
   onShare: (postId: string) => void;
   onBookmark: (postId: string) => void;
   onCulturalInteraction?: (interactionType: string, data?: any) => void;
@@ -36,28 +33,27 @@ interface FeedPostProps {
 export const FeedPost: React.FC<FeedPostProps> = ({
   post,
   onPot,
-  onComment,
   onShare,
   onBookmark,
   onCulturalInteraction,
   interactionType = 'standard',
   interactionData,
 }) => {
-  const [hasStirred, setHasStirred] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
-  const [showCulturalInteraction, setShowCulturalInteraction] = useState(false);
+  const [showCulturalInteraction] = useState(false);
   const theme = useAppSelector((state) => state.theme.theme);
 
   // Convert to cultural post using helper
   const culturalPost = mapToCulturalPost(post, interactionType, interactionData);
 
-  const handlePot = async () => {
-    await onPot(post.post_id);
-    setHasStirred(true);
-  };
-
   const handleCulturalInteraction = (type: string, data?: any) => {
     onCulturalInteraction?.(type, data);
+  };
+
+  const handleEchoSubmit = async (content: string, parentId?: string) => {
+    console.log('💬 Submitting echo:', content, parentId);
+    // TODO: API call to add comment
+    // await api.post(`/posts/${post.post_id}/comments`, { content, parentId });
   };
 
   // Truncate long content
@@ -68,6 +64,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
   // Verification defaults (these would come from author data in production)
   const authorVerificationTier = 'silver'; // TODO: Get from author profile
   const authorShieldState = 'calm'; // TODO: Get from author profile
+  const authorCouncilTier = 'verified'; // TODO: Get from author profile
 
   // Format timestamp
   const formatPostTime = (date: Date): string => {
@@ -131,6 +128,17 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             
             {/* Verification Badge */}
             <VerificationBadge tier={authorVerificationTier} size="sm" showTooltip />
+            
+            {/* Council Seal Badge */}
+            <CouncilSealBadge tier={authorCouncilTier} size="sm" showTooltip />
+            
+            {/* Rank Badge */}
+            <RankBadge 
+              rank={post.author_rank_level} 
+              size="xs" 
+              animated={false}
+              showTooltip
+            />
           </div>
 
           <div className="flex items-center gap-2 flex-wrap mt-0.5">
@@ -241,85 +249,16 @@ export const FeedPost: React.FC<FeedPostProps> = ({
         </div>
       )}
 
-      {/* Pot Heat Bar */}
-      <div className="mb-4">
-        <PotHeatBar 
-          potStatus={post.pot_status}
-          showMessage={true}
-          animated={true}
-        />
-      </div>
-
-      {/* Engagement Actions */}
-      <div className={`
-        flex items-center justify-between pt-4 pb-3
-        border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}
-      `}>
-        {/* Pot Button */}
-        <PotButton
-          potStatus={post.pot_status}
-          hasUserStirred={hasStirred}
-          onPot={handlePot}
-          size="md"
-          showLabel={true}
-        />
-
-        {/* Comment Button */}
-        <button
-          onClick={() => {
-            if (culturalPost.interactionType === 'standard') {
-              onComment(post.post_id);
-            } else {
-              setShowCulturalInteraction(!showCulturalInteraction);
-            }
-          }}
-          className={`
-            flex items-center gap-2 px-4 py-2 rounded-xl transition-all
-            ${theme === 'dark'
-              ? 'hover:bg-gray-700 text-gray-400 hover:text-white'
-              : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
-            }
-            ${showCulturalInteraction ? 'bg-blue-500/10 text-blue-500' : ''}
-          `}
-        >
-          <MessageCircle className="w-5 h-5" />
-          <span className="text-sm font-semibold hidden sm:inline">
-            {culturalPost.comments}
-          </span>
-        </button>
-
-        {/* Share Button */}
-        <button
-          onClick={() => onShare(post.post_id)}
-          className={`
-            flex items-center gap-2 px-4 py-2 rounded-xl transition-all
-            ${theme === 'dark'
-              ? 'hover:bg-gray-700 text-gray-400 hover:text-white'
-              : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
-            }
-          `}
-        >
-          <Share2 className="w-5 h-5" />
-          <span className="text-sm font-semibold hidden sm:inline">
-            {culturalPost.shares}
-          </span>
-        </button>
-
-        {/* Bookmark */}
-        <button
-          onClick={() => onBookmark(post.post_id)}
-          className={`
-            p-2 rounded-xl transition-all
-            ${theme === 'dark'
-              ? 'hover:bg-gray-700 text-gray-400 hover:text-white'
-              : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
-            }
-          `}
-          title="Bookmark"
-        >
-          <Bookmark className="w-5 h-5" />
-        </button>
-      </div>
+      {/* POT SYSTEM - Replaces old interaction bar */}
+      <PotSystem
+        post={post}
+        onPot={() => onPot(post.post_id)}
+        onEcho={handleEchoSubmit}
+        onDrum={() => onShare(post.post_id)}
+        onBasket={() => onBookmark(post.post_id)}
+        showHeatIndicator={true}
+        compact={false}
+      />
 
       {/* Cultural Interaction Renderer */}
       {showCulturalInteraction && culturalPost.interactionType !== 'standard' && (
@@ -327,10 +266,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className={`
-            mt-4 pt-4 border-t overflow-hidden
-            ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}
-          `}
+          className="mt-4 overflow-hidden"
         >
           <PostInteractionRenderer
             post={culturalPost}
@@ -340,7 +276,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       )}
 
       {/* Timestamp */}
-      <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-gray-700/50">
+      <div className="flex items-center gap-1.5 mt-3">
         <Clock className={`w-3.5 h-3.5 ${
           theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
         }`} />

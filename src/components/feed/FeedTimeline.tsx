@@ -150,39 +150,187 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
   };
 
   const handlePot = async (postId: string) => {
-    // TODO: API call to stir pot
-    console.log('Stirring pot:', postId);
+    try {
+      console.log('🔥 Stirring pot:', postId);
+      
+      // TODO: Replace with actual API call
+      // await api.post(`/posts/${postId}/pot`);
+      
+      // Optimistically update UI
+      setPosts(prev => prev.map(post => {
+        if (post.post_id === postId) {
+          const newTotalPots = post.pot_status.total_pots + 1;
+          const newHeatScore = Math.min(100, post.pot_status.heat_score + 2);
+          
+          // Determine new heat level
+          let newHeatLevel = post.pot_status.heat_level;
+          if (newHeatScore >= 91) newHeatLevel = 'ready';
+          else if (newHeatScore >= 61) newHeatLevel = 'boiling';
+          else if (newHeatScore >= 31) newHeatLevel = 'cooking';
+          else if (newHeatScore >= 11) newHeatLevel = 'warming';
+          
+          return {
+            ...post,
+            pot_status: {
+              ...post.pot_status,
+              total_pots: newTotalPots,
+              heat_score: newHeatScore,
+              heat_level: newHeatLevel,
+              last_pot_at: new Date(),
+            },
+          };
+        }
+        return post;
+      }));
+      
+      // TODO: Show success toast
+      // toast.success('Pot stirred! 🔥');
+    } catch (error) {
+      console.error('Failed to stir pot:', error);
+      // TODO: Show error toast
+      // toast.error('Failed to stir pot. Try again.');
+    }
+  };
+
+  const handleShare = (postId: string) => {
+    console.log('🥁 Drumming post:', postId);
     
-    // Optimistically update UI
+    // TODO: Implement share functionality
+    // Option 1: Open share modal with options (Villages, Circles, Copy Link)
+    // setShareModalOpen(true);
+    // setSharePostId(postId);
+    
+    // Option 2: Quick copy link to clipboard
+    const shareLink = `https://viewdicon.com/post/${postId}`;
+    navigator.clipboard.writeText(shareLink).then(() => {
+      console.log('✅ Link copied to clipboard!');
+      // TODO: Show toast
+      // toast.success('Link copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+    });
+    
+    // Optimistically update share count
     setPosts(prev => prev.map(post => {
       if (post.post_id === postId) {
         return {
           ...post,
-          pot_status: {
-            ...post.pot_status,
-            total_pots: post.pot_status.total_pots + 1,
-            heat_score: Math.min(100, post.pot_status.heat_score + 2),
-            last_pot_at: new Date(),
-          },
+          share_count: post.share_count + 1,
         };
       }
       return post;
     }));
   };
 
-  const handleComment = (postId: string) => {
-    console.log('Comment on:', postId);
-    // TODO: Open comment modal
-  };
-
-  const handleShare = (postId: string) => {
-    console.log('Share:', postId);
-    // TODO: Open share modal
-  };
-
   const handleBookmark = (postId: string) => {
-    console.log('Bookmark:', postId);
-    // TODO: Toggle bookmark
+    console.log('🧺 Keeping in basket:', postId);
+    
+    // TODO: Implement bookmark API call
+    // await api.post(`/posts/${postId}/bookmark`);
+    
+    // Optimistically update bookmark count
+    setPosts(prev => prev.map(post => {
+      if (post.post_id === postId) {
+        return {
+          ...post,
+          bookmark_count: post.bookmark_count + 1,
+        };
+      }
+      return post;
+    }));
+    
+    // TODO: Show success toast
+    // toast.success('Kept in your basket! 🧺');
+  };
+
+  const handleCulturalInteraction = (interactionType: string, data?: any) => {
+    console.log('🎨 Cultural interaction:', interactionType, data);
+    
+    // Handle different cultural interaction types
+    switch (interactionType) {
+      case 'create_challenge':
+        console.log('Navigate to challenge creation');
+        // navigate('/challenges/create');
+        break;
+        
+      case 'view_challenge':
+        console.log('View challenge:', data?.challengeId);
+        // navigate(`/challenges/${data.challengeId}`);
+        break;
+        
+      case 'submit_entry':
+        console.log('Submit challenge entry:', data?.challengeId);
+        // openSubmissionModal(data.challengeId);
+        break;
+        
+      case 'submit_challenge_entry':
+        console.log('Challenge entry submitted:', data);
+        // TODO: API call to submit entry
+        // await api.post(`/challenges/${data.challengeId}/submit`, data);
+        break;
+        
+      case 'submit_judgment':
+        console.log('Submit judgment:', data);
+        // TODO: API call to submit scores
+        break;
+        
+      case 'add_comment':
+        console.log('Add comment:', data?.content);
+        // TODO: API call to add comment
+        break;
+        
+      case 'join_story_circle':
+        console.log('Join story circle');
+        // navigate('/stories/live');
+        break;
+        
+      case 'share_story':
+        console.log('Share story');
+        // openStoryCreationModal();
+        break;
+        
+      case 'view_story_version':
+        console.log('View story version:', data?.nodeId);
+        break;
+        
+      case 'quiz_complete':
+        console.log('Quiz complete. Score:', data?.score, 'Heat:', data?.heat);
+        // TODO: Update user stats
+        break;
+        
+      case 'duel_complete':
+        console.log('Duel complete. Won:', data?.won, 'Score:', data?.score);
+        // TODO: Update leaderboard
+        break;
+        
+      case 'view_profile':
+        console.log('View profile:', data?.userId);
+        // navigate(`/profile/${data.userId}`);
+        break;
+        
+      case 'request_more_context':
+        console.log('Request context for:', data?.word);
+        // openLanguageContextModal(data.word);
+        break;
+        
+      case 'contribute_proverb':
+        console.log('Contribute proverb:', data);
+        // TODO: API call to add proverb to chain
+        break;
+        
+      case 'view_nft_details':
+        console.log('View NFT:', data?.nftId);
+        // openNFTDetailModal(data.nftId);
+        break;
+        
+      case 'share_nft':
+        console.log('Share NFT:', data?.nftId);
+        // openNFTShareModal(data.nftId);
+        break;
+        
+      default:
+        console.log('Unknown interaction type:', interactionType);
+    }
   };
 
   const tabs = [
@@ -243,7 +391,7 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
         </div>
 
         {/* Tab description */}
-        <p className={`text-xs text-center mt-2 px-2 ${
+        <p className={`text-xs text-center mt-2 px-2 pb-2 ${
           theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
         }`}>
           {tabs.find(t => t.id === activeTab)?.description}
@@ -284,9 +432,9 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
                 <FeedPost
                   post={post}
                   onPot={handlePot}
-                  onComment={handleComment}
                   onShare={handleShare}
                   onBookmark={handleBookmark}
+                  onCulturalInteraction={handleCulturalInteraction}
                 />
               </motion.div>
             ))}
@@ -300,8 +448,8 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className={`
-            text-center py-16 px-6
-            ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}
+            text-center py-16 px-6 rounded-2xl
+            ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}
           `}
         >
           <div className="text-6xl mb-4">🍲</div>
@@ -324,10 +472,10 @@ export const FeedTimeline: React.FC<FeedTimelineProps> = ({
           <button
             onClick={onLoadMore}
             className={`
-              px-6 py-3 font-semibold text-sm transition-all
+              px-6 py-3 rounded-xl font-semibold text-sm transition-all
               ${theme === 'dark'
-                ? 'bg-gray-800 hover:bg-gray-700 text-white border-b border-gray-700'
-                : 'bg-white hover:bg-gray-50 text-gray-900 border-b border-gray-100'
+                ? 'bg-gray-800 hover:bg-gray-700 text-white'
+                : 'bg-white hover:bg-gray-50 text-gray-900 border border-gray-200'
               }
             `}
           >

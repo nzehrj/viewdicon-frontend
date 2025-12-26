@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
   MapPin, 
-  Heart,
-  MessageCircle,
-  Share2,
   DollarSign,
   Eye,
   EyeOff,
@@ -17,6 +14,9 @@ import {
   TreeDeciduous
 } from 'lucide-react';
 import { useAppSelector } from '@store/hooks';
+import { PotSystem } from '@/components/social/PotSystem';
+import { DrumRing } from '@/components/social/DrumRing';
+import type { PotStatus, FeedPost, PostVisibility } from '@/types/feed.types';
 
 interface FamilyPost {
   id: string;
@@ -35,12 +35,13 @@ interface FamilyPost {
   raisedAmount?: number;
   eventDate?: Date;
   location?: string;
-  likes: number;
-  comments: number;
-  shares: number;
+  pots: number; // Changed from likes
+  echoes: number; // Changed from comments
+  drums: number; // Changed from shares
   privacy: 'public' | 'tribe_only' | 'family_only';
   timestamp: Date;
   tags?: string[];
+  potStatus: PotStatus; // Add pot status
 }
 
 type PostType = 'all' | 'announcement' | 'fundraising' | 'reunion' | 'burial' | 'birth' | 'marriage' | 'community';
@@ -48,21 +49,7 @@ type PostType = 'all' | 'announcement' | 'fundraising' | 'reunion' | 'burial' | 
 /**
  * FAMILY CIRCLE COMPONENT (Facebook-style)
  * 
- * Family, clan, and hometown network.
- * 
- * Features:
- * - Family lineage updates
- * - Birth/naming/funeral announcements
- * - Reunion planning
- * - Community fundraising
- * - Political mobilization
- * - Tribal/hometown discussions
- * - Ghost identity mode (masked/anonymous)
- * 
- * Privacy Levels:
- * - Public (everyone)
- * - Tribe Only (same tribe members)
- * - Family Only (verified family tree)
+ * Family, clan, and hometown network with Pot/Echo/Drum interactions.
  * 
  * Location: src/components/feeds/FamilyCircle.tsx
  */
@@ -72,6 +59,7 @@ export const FamilyCircle: React.FC = () => {
   
   const [selectedType, setSelectedType] = useState<PostType>('all');
   const [ghostMode, setGhostMode] = useState(false);
+  const [selectedDrumPost, setSelectedDrumPost] = useState<string | null>(null);
   
   // Mock posts data - TODO: Replace with API
   const posts: FamilyPost[] = [
@@ -88,12 +76,25 @@ export const FamilyCircle: React.FC = () => {
       content: 'With heavy hearts, we announce the final burial ceremony of our beloved mother, Mama Ngozi Okonkwo (1945-2024). Ceremony will hold on Saturday, December 28th at our family compound in Nnewi. All family members and well-wishers are invited.',
       eventDate: new Date('2024-12-28'),
       location: 'Nnewi, Anambra State',
-      likes: 234,
-      comments: 67,
-      shares: 12,
+      pots: 234,
+      echoes: 67,
+      drums: 12,
       privacy: 'public',
       timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       tags: ['burial', 'nnewi', 'family'],
+      potStatus: {
+        post_id: '1',
+        total_pots: 234,
+        heat_level: 'cooking',
+        heat_score: 45,
+        started_cooking_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        reached_boiling_at: null,
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 1 * 60 * 60 * 1000),
+        cooling_rate: 0.15,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
     {
       id: '2',
@@ -109,12 +110,25 @@ export const FamilyCircle: React.FC = () => {
       content: 'Our village has been without clean water for 3 years. We have government approval to drill a borehole but need ₦500,000. Any amount helps. This is for our children and elders.',
       targetAmount: 500000,
       raisedAmount: 234000,
-      likes: 567,
-      comments: 89,
-      shares: 123,
+      pots: 567,
+      echoes: 89,
+      drums: 123,
       privacy: 'public',
       timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
       tags: ['community', 'water', 'benin'],
+      potStatus: {
+        post_id: '2',
+        total_pots: 567,
+        heat_level: 'boiling',
+        heat_score: 72,
+        started_cooking_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+        reached_boiling_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+        ready_at: null,
+        last_pot_at: new Date(Date.now() - 30 * 60 * 1000),
+        cooling_rate: 0.10,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
     {
       id: '3',
@@ -128,23 +142,35 @@ export const FamilyCircle: React.FC = () => {
       title: '🎉 New Addition to Our Family!',
       content: 'Alhamdulillah! We are blessed with a baby boy. Name: Ibrahim Mohammed. Born: November 12, 2024. Mother and baby are doing well. Naming ceremony will be announced soon.',
       eventDate: new Date('2024-11-12'),
-      likes: 892,
-      comments: 156,
-      shares: 45,
+      pots: 892,
+      echoes: 156,
+      drums: 45,
       privacy: 'tribe_only',
       timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       tags: ['birth', 'blessing', 'kano'],
+      potStatus: {
+        post_id: '3',
+        total_pots: 892,
+        heat_level: 'ready',
+        heat_score: 95,
+        started_cooking_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        reached_boiling_at: new Date(Date.now() - 12 * 60 * 60 * 1000),
+        ready_at: new Date(Date.now() - 6 * 60 * 60 * 1000),
+        last_pot_at: new Date(Date.now() - 10 * 60 * 1000),
+        cooling_rate: 0.05,
+        boosted: false,
+        boost_multiplier: 1.0,
+      },
     },
   ];
   
   const postTypes: Array<{ id: PostType; label: string; icon: React.ElementType; color: string }> = [
     { id: 'all', label: 'All', icon: Globe, color: '#6b7280' },
-    { id: 'announcement', label: 'Announcements', icon: MessageCircle, color: '#3b82f6' },
+    { id: 'announcement', label: 'Announcements', icon: Users, color: '#3b82f6' },
     { id: 'fundraising', label: 'Fundraising', icon: DollarSign, color: '#10b981' },
     { id: 'reunion', label: 'Reunions', icon: Users, color: '#8b5cf6' },
     { id: 'burial', label: 'Burials', icon: TreeDeciduous, color: '#6b7280' },
     { id: 'birth', label: 'Births', icon: Baby, color: '#ec4899' },
-    { id: 'marriage', label: 'Marriages', icon: Heart, color: '#ef4444' },
     { id: 'community', label: 'Community', icon: Home, color: '#f59e0b' },
   ];
   
@@ -154,7 +180,7 @@ export const FamilyCircle: React.FC = () => {
   
   const getTypeIcon = (type: FamilyPost['type']) => {
     const typeData = postTypes.find(t => t.id === type);
-    return typeData?.icon || MessageCircle;
+    return typeData?.icon || Users;
   };
   
   const getTypeColor = (type: FamilyPost['type']) => {
@@ -170,24 +196,44 @@ export const FamilyCircle: React.FC = () => {
     });
   };
   
-  const handleLike = (postId: string) => {
-    // TODO: API call
-    console.log('Like post:', postId);
-  };
-  
-  const handleComment = (postId: string) => {
-    // TODO: Open comment modal
-    console.log('Comment on:', postId);
-  };
-  
-  const handleShare = (postId: string) => {
-    // TODO: Share modal
-    console.log('Share post:', postId);
-  };
-  
   const handleDonate = (post: FamilyPost) => {
     // TODO: Open donation modal
     console.log('Donate to:', post.id);
+  };
+
+  // Convert FamilyPost to FeedPost for PotSystem
+  const convertToFeedPost = (familyPost: FamilyPost): FeedPost => {
+    // Map privacy to visibility (PostVisibility = 'public' | 'followers' | 'village' | 'inner_fire')
+    const visibilityMap: { [key: string]: PostVisibility } = {
+      'public': 'public',
+      'tribe_only': 'village',      // tribe_only maps to village
+      'family_only': 'inner_fire',  // family_only maps to inner_fire
+    };
+
+    return {
+      post_id: familyPost.id,
+      author_afro_id: familyPost.authorId,
+      author_display_name: familyPost.authorName,
+      author_handle: `@${familyPost.authorName.toLowerCase().replace(/\s+/g, '')}`,
+      author_avatar_url: familyPost.image || '', // Use image field or empty
+      author_village_role: familyPost.tribe || '', // Use tribe as village role
+      author_rank_level: 0, // FamilyPost doesn't have crest/rank
+      author_badges: [],
+      type: 'text',
+      content: familyPost.content,
+      media_urls: [],
+      visibility: visibilityMap[familyPost.privacy] || 'public', // Map privacy to visibility
+      tagged_handles: [],
+      hashtags: familyPost.tags || [],
+      location: familyPost.location || null,
+      pot_status: familyPost.potStatus,
+      comment_count: familyPost.echoes,
+      share_count: familyPost.drums,
+      bookmark_count: 0,
+      created_at: familyPost.timestamp,
+      updated_at: familyPost.timestamp,
+      edited: false,
+    };
   };
   
   return (
@@ -264,7 +310,7 @@ export const FamilyCircle: React.FC = () => {
       </div>
       
       {/* Feed */}
-      <div className="space-y-4">
+      <div className="space-y-4 p-4">
         {filteredPosts.map((post) => {
           const TypeIcon = getTypeIcon(post.type);
           const typeColor = getTypeColor(post.type);
@@ -279,7 +325,7 @@ export const FamilyCircle: React.FC = () => {
               }`}
             >
               {/* Header */}
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+              <div className={`p-4 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
                 <div className="flex items-start gap-3">
                   {/* Avatar / Icon */}
                   {post.isMasked ? (
@@ -407,47 +453,20 @@ export const FamilyCircle: React.FC = () => {
                 )}
               </div>
               
-              {/* Action Bar */}
-              <div className={`p-4 border-t flex items-center justify-between ${
-                theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
-              }`}>
-                <div className="flex items-center gap-6">
-                  <button
-                    onClick={() => handleLike(post.id)}
-                    className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                      theme === 'dark'
-                        ? 'text-gray-400 hover:text-red-400'
-                        : 'text-gray-600 hover:text-red-500'
-                    }`}
-                  >
-                    <Heart className="w-5 h-5" />
-                    {post.likes}
-                  </button>
-                  
-                  <button
-                    onClick={() => handleComment(post.id)}
-                    className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                      theme === 'dark'
-                        ? 'text-gray-400 hover:text-blue-400'
-                        : 'text-gray-600 hover:text-blue-500'
-                    }`}
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    {post.comments}
-                  </button>
-                  
-                  <button
-                    onClick={() => handleShare(post.id)}
-                    className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                      theme === 'dark'
-                        ? 'text-gray-400 hover:text-green-400'
-                        : 'text-gray-600 hover:text-green-500'
-                    }`}
-                  >
-                    <Share2 className="w-5 h-5" />
-                    {post.shares}
-                  </button>
-                </div>
+              {/* Pot System */}
+              <div className={`p-4 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                <PotSystem
+                  post={convertToFeedPost(post)}
+                  onPot={async () => console.log('Pot:', post.id)}
+                  onEcho={async (content, parentId) => {
+                    console.log('Echo:', content, parentId);
+                    // TODO: API call
+                  }}
+                  onDrum={() => setSelectedDrumPost(post.id)}
+                  onBasket={() => console.log('Basket:', post.id)}
+                  showHeatIndicator={true}
+                  compact={false}
+                />
               </div>
             </motion.div>
           );
@@ -466,6 +485,38 @@ export const FamilyCircle: React.FC = () => {
           </p>
         </div>
       )}
+
+      {/* DrumRing Modal */}
+      <AnimatePresence>
+        {selectedDrumPost && (
+          <DrumRing
+            postId={selectedDrumPost}
+            postUrl={`https://viewdicon.com/family/${selectedDrumPost}`}
+            onDrumToVillage={(villageId) => {
+              console.log('Drum to village:', villageId);
+              setSelectedDrumPost(null);
+            }}
+            onDrumToFeed={(feedType) => {
+              console.log('Drum to feed:', feedType);
+              setSelectedDrumPost(null);
+            }}
+            onCopyLink={() => {
+              console.log('Link copied');
+            }}
+            onClose={() => setSelectedDrumPost(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 };
